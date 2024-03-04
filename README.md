@@ -43,6 +43,21 @@
     </tr>
     <tr>
       <td width="100" align="center">
+        <img src="https://avatars.githubusercontent.com/u/109820506?s=400&u=fc8afe76399865166d588f3f35ac0b59aff30808&v=4"
+          width="100%" height="100%">
+      </td>
+      <td width="100" align="center">양지웅</td>
+      <td width="200" align="center">Spring<br>Backend Developer</td>
+      <td width="200" align="center">jerry3269@ajou.ac.kr</td>
+      <td width="200" align="center">
+        <a href="https://github.com/jerry3269" target="_blank">
+          <img src="https://img.shields.io/badge/github-181717.svg?style=for-the-badge&logo=github&logoColor=white"
+            alt="github" />
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td width="100" align="center">
         <img src="https://github.com/U2DJ/booki-today/assets/76727686/09460a5f-8fc7-4fdf-ade3-4ff0eb5a82c9"
           width="100%" height="100%">
       </td>
@@ -66,21 +81,6 @@
       <td width="200" align="center">tjclear214@ajou.ac.kr</td>
       <td width="200" align="center">
         <a href="https://github.com/linearjun" target="_blank">
-          <img src="https://img.shields.io/badge/github-181717.svg?style=for-the-badge&logo=github&logoColor=white"
-            alt="github" />
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td width="100" align="center">
-        <img src="https://avatars.githubusercontent.com/u/109820506?s=400&u=fc8afe76399865166d588f3f35ac0b59aff30808&v=4"
-          width="100%" height="100%">
-      </td>
-      <td width="100" align="center">양지웅</td>
-      <td width="200" align="center">Spring<br>Backend Developer</td>
-      <td width="200" align="center">jerry3269@ajou.ac.kr</td>
-      <td width="200" align="center">
-        <a href="https://github.com/gwsl" target="_blank">
           <img src="https://img.shields.io/badge/github-181717.svg?style=for-the-badge&logo=github&logoColor=white"
             alt="github" />
         </a>
