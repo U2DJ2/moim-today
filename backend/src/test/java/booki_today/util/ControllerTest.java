@@ -1,4 +1,4 @@
-package bookie_today.util;
+package booki_today.util;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
