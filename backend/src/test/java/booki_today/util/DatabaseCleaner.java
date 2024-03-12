@@ -1,4 +1,4 @@
-package bookie_today.util;
+package booki_today.util;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;

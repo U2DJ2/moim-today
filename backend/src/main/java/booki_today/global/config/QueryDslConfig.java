@@ -1,4 +1,4 @@
-package bookie_today.global.config;
+package booki_today.global.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
