@@ -1,10 +1,11 @@
-name: Build with Gradle
+name: Backend Build with Gradle
 
 on:
   push:
     branches: [ "backend-main" ]
   pull_request:
     branches: [ "main", "backend-main" ]
+  workflow_dispatch:
 
 permissions:
   contents: read
