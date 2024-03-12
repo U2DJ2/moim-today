@@ -32,6 +32,7 @@ jobs:
           distribution: 'temurin'
       - name: Create Config
         run: |
+          mkdir -p backend/src/main/resources
           mkdir -p backend/src/test/resources
           echo "${{ secrets.MAIN_APPLICATION_YML }}" > backend/src/main/resources/application.yml
           echo "${{ secrets.MAIN_APPLICATION_DEV_YML }}" > backend/src/main/resources/application-dev.yml
@@ -50,6 +51,6 @@ jobs:
       - name: Add SSH key to known hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.BE_SERVER_IP }} >> ~/.ssh/known_hosts
       - name: SCP transfer
-        run: scp backend/build/libs/*.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:~/deploy
+        run: scp backend/build/libs/*.jar ${{ secrets.SSH_USER }}@${{ secrets.BE_SERVER_IP }}:~/deploy
