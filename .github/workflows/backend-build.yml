@@ -1,0 +1,54 @@
+name: Build with Gradle
+
+on:
+  push:
+    branches: [ "backend-main" ]
+  pull_request:
+    branches: [ "main", "backend-main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Create Config
+        run: |
+          mkdir -p src/test/resources
+          echo "${{ secrets.MAIN_APPLICATION_YML }}" > backend/src/main/resources/application.yml
+          echo "${{ secrets.MAIN_APPLICATION_DEV_YML }}" > backend/src/main/resources/application-dev.yml
+          echo "${{ secrets.MAIN_APPLICATION_PROD_YML }}" > backend/src/main/resources/application-prod.yml
+          echo "${{ secrets.TEST_APPLICATION_YML }}" > backend/src/test/resources/application.yml
+          echo "${{ secrets.TEST_APPLICATION_TEST_YML }}" > backend/src/test/resources/application-test.yml
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          arguments: build
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Add SSH key to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+      - name: SCP transfer
+        run: scp build/libs/*.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:~/deploy
