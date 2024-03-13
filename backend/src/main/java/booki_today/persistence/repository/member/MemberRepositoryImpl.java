@@ -1,4 +1,4 @@
-package booki_today.persistence.repository;
+package booki_today.persistence.repository.member;
 
 import org.springframework.stereotype.Repository;
 

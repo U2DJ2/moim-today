@@ -1,4 +1,4 @@
-package booki_today.persistence.entity;
+package booki_today.persistence.entity.member;
 
 import booki_today.domain.member.Gender;
 import booki_today.domain.member.LoginType;
