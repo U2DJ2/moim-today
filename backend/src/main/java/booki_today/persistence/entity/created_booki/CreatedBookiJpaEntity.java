@@ -56,11 +56,11 @@ public class CreatedBookiJpaEntity {
 
     @Builder
     private CreatedBookiJpaEntity(final Long memberId, final String title, final String contents, final int capacity,
-                                 final int currentCount, final String place, final String imageUrl,
-                                 final String password, final long views, final int attendanceNumber,
-                                 final LocalDateTime eventStartDateTime, final LocalDateTime eventEndDateTime,
-                                 final LocalDateTime bookiStartDateTime, final LocalDateTime bookiEndDateTime,
-                                 final LocalDateTime expiredDateTime, final BookiType bookiType) {
+                                  final int currentCount, final String place, final String imageUrl,
+                                  final String password, final long views, final int attendanceNumber,
+                                  final LocalDateTime eventStartDateTime, final LocalDateTime eventEndDateTime,
+                                  final LocalDateTime bookiStartDateTime, final LocalDateTime bookiEndDateTime,
+                                  final LocalDateTime expiredDateTime, final BookiType bookiType) {
         this.memberId = memberId;
         this.title = title;
         this.contents = contents;

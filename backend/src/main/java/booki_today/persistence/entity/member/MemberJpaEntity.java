@@ -44,9 +44,9 @@ public class MemberJpaEntity {
 
     @Builder
     private MemberJpaEntity(final String loginId, final String password, final String email,
-                           final String username, final String nickname, final String uniqueName,
-                           final String userProfileImageUrl, final LoginType loginType,
-                           final Gender gender, final LocalDate birthDate) {
+                            final String username, final String nickname, final String uniqueName,
+                            final String userProfileImageUrl, final LoginType loginType,
+                            final Gender gender, final LocalDate birthDate) {
         this.loginId = loginId;
         this.password = password;
         this.email = email;

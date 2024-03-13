@@ -28,7 +28,7 @@ public class InvitationLinkJpaEntity {
 
     @Builder
     private InvitationLinkJpaEntity(final Long createdBookiId, final String invitationLink,
-                                   final LocalDateTime linkExpiredDateTime) {
+                                    final LocalDateTime linkExpiredDateTime) {
         this.createdBookiId = createdBookiId;
         this.invitationLink = invitationLink;
         this.linkExpiredDateTime = linkExpiredDateTime;
