@@ -1,6 +1,7 @@
 package booki_today.persistence.entity.member;
 
 import booki_today.domain.member.Gender;
+import booki_today.global.annotation.Association;
 import booki_today.persistence.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -16,6 +17,9 @@ public class MemberJpaEntity extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
+
+    @Association
+    private Long universityId;
 
     private String loginId;
 
@@ -40,9 +44,10 @@ public class MemberJpaEntity extends BaseTimeEntity {
     }
 
     @Builder
-    private MemberJpaEntity(final String loginId, final String password, final String email,
-                            final String username, final String nickname, final String uniqueName,
+    private MemberJpaEntity(final Long universityId, final String loginId, final String password,
+                            final String email, final String username, final String nickname, final String uniqueName,
                             final String userProfileImageUrl, final Gender gender, final LocalDate birthDate) {
+        this.universityId = universityId;
         this.loginId = loginId;
         this.password = password;
         this.email = email;

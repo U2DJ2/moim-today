@@ -21,6 +21,9 @@ public class CreatedBookiJpaEntity extends BaseTimeEntity {
     @Association
     private Long memberId;
 
+    @Association
+    private Long categoryId;
+
     private String title;
 
     private String contents;
@@ -56,13 +59,15 @@ public class CreatedBookiJpaEntity extends BaseTimeEntity {
     }
 
     @Builder
-    private CreatedBookiJpaEntity(final Long memberId, final String title, final String contents, final int capacity,
-                                  final int currentCount, final String place, final String imageUrl,
-                                  final String password, final long views, final int attendanceNumber,
-                                  final LocalDateTime eventStartDateTime, final LocalDateTime eventEndDateTime,
-                                  final LocalDateTime bookiStartDateTime, final LocalDateTime bookiEndDateTime,
-                                  final LocalDateTime expiredDateTime, final BookiType bookiType) {
+    private CreatedBookiJpaEntity(final Long memberId, final Long categoryId, final String title,
+                                  final String contents, final int capacity, final int currentCount,
+                                  final String place, final String imageUrl, final String password,
+                                  final long views, final int attendanceNumber, final LocalDateTime eventStartDateTime,
+                                  final LocalDateTime eventEndDateTime, final LocalDateTime bookiStartDateTime,
+                                  final LocalDateTime bookiEndDateTime, final LocalDateTime expiredDateTime,
+                                  final BookiType bookiType) {
         this.memberId = memberId;
+        this.categoryId = categoryId;
         this.title = title;
         this.contents = contents;
         this.capacity = capacity;
