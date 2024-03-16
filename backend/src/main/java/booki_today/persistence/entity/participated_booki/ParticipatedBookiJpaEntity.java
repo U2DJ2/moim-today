@@ -2,6 +2,7 @@ package booki_today.persistence.entity.participated_booki;
 
 import booki_today.domain.participated_booki.ParticipatedStatus;
 import booki_today.global.annotation.Association;
+import booki_today.persistence.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.Getter;
 @Getter
 @Table(name = "participated_booki")
 @Entity
-public class ParticipatedBookiJpaEntity {
+public class ParticipatedBookiJpaEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "participated_booki_id")

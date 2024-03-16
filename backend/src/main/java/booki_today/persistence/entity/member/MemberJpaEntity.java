@@ -1,7 +1,8 @@
 package booki_today.persistence.entity.member;
 
 import booki_today.domain.member.Gender;
-import booki_today.domain.member.LoginType;
+import booki_today.global.annotation.Association;
+import booki_today.persistence.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,11 +12,14 @@ import java.time.LocalDate;
 @Getter
 @Table(name = "member")
 @Entity
-public class MemberJpaEntity {
+public class MemberJpaEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
+
+    @Association
+    private Long universityId;
 
     private String loginId;
 
@@ -32,9 +36,6 @@ public class MemberJpaEntity {
     private String userProfileImageUrl;
 
     @Enumerated(EnumType.STRING)
-    private LoginType loginType;
-
-    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     private LocalDate birthDate;
@@ -43,10 +44,10 @@ public class MemberJpaEntity {
     }
 
     @Builder
-    private MemberJpaEntity(final String loginId, final String password, final String email,
-                            final String username, final String nickname, final String uniqueName,
-                            final String userProfileImageUrl, final LoginType loginType,
-                            final Gender gender, final LocalDate birthDate) {
+    private MemberJpaEntity(final Long universityId, final String loginId, final String password,
+                            final String email, final String username, final String nickname, final String uniqueName,
+                            final String userProfileImageUrl, final Gender gender, final LocalDate birthDate) {
+        this.universityId = universityId;
         this.loginId = loginId;
         this.password = password;
         this.email = email;
@@ -54,7 +55,6 @@ public class MemberJpaEntity {
         this.nickname = nickname;
         this.uniqueName = uniqueName;
         this.userProfileImageUrl = userProfileImageUrl;
-        this.loginType = loginType;
         this.gender = gender;
         this.birthDate = birthDate;
     }
