@@ -2,6 +2,7 @@ package booki_today.persistence.entity.created_booki;
 
 import booki_today.domain.created_booki.BookiType;
 import booki_today.global.annotation.Association;
+import booki_today.persistence.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "created_booki")
 @Entity
-public class CreatedBookiJpaEntity {
+public class CreatedBookiJpaEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "created_booki_id")
