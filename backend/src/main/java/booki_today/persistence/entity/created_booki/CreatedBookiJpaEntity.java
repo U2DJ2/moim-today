@@ -38,6 +38,7 @@ public class CreatedBookiJpaEntity extends BaseTimeEntity {
 
     private String password;
 
+
     private long views;
 
     private int attendanceNumber;
