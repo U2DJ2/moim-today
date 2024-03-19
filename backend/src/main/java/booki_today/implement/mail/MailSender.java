@@ -1,10 +1,10 @@
-package booki_today.application.mail;
+package booki_today.implement.mail;
 
+import booki_today.dto.mail.MailSendRequest;
+import booki_today.global.annotation.Implement;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.*;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -12,14 +12,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
-@Service
-@Slf4j
-public class AmazonSMTPService implements SMTPService{
+@Implement
+public class MailSender {
+
     private final AmazonSimpleEmailService amazonSimpleEmailService;
     private final TemplateEngine htmlTemplateEngine;
     private final String from;
 
-    public AmazonSMTPService(
+    public MailSender(
             final AmazonSimpleEmailService amazonSimpleEmailService,
             final TemplateEngine htmlTemplateEngine,
             @Value("${cloud.aws.ses.from}") final String from
@@ -29,15 +29,16 @@ public class AmazonSMTPService implements SMTPService{
         this.from = from;
     }
 
-    @Override
-    public void send(final String subject, Map<String, Object> variables, List<String> to) {
-        String content = htmlTemplateEngine.process("index.html", createContext(variables));
+    public void send(final MailSendRequest mailSendRequest) {
+        String subject = mailSendRequest.subject();
+        Map<String, Object> variables = Map.of("data", mailSendRequest.content());
+        List<String> to = mailSendRequest.to();
+
         try{
+            String content = htmlTemplateEngine.process("authenticationMail.html", createContext(variables));
             SendEmailRequest sendEmailRequest = createSendEmailRequest(subject, content, to);
             amazonSimpleEmailService.sendEmail(sendEmailRequest);
         }catch (Exception e){
-            log.info("Email Failed");
-            log.info("Error message: " + e.getMessage());
             e.printStackTrace();
         }
     }

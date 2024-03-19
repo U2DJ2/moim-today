@@ -8,7 +8,8 @@ public enum StatusCodeConstant {
     FORBIDDEN("403"),
     NOT_FOUND("404"),
     METHOD_NOT_ALLOWED("405"),
-    INTERNAL_SERVER("500");
+    INTERNAL_SERVER("500"),
+    SERVICE_UNAVAILABLE("503");
 
     private final String statusCode;
 

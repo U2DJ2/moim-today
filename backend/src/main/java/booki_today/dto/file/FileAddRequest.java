@@ -1,11 +1,11 @@
 package booki_today.dto.file;
 
 import lombok.Builder;
+import org.springframework.web.multipart.MultipartFile;
 
 @Builder
-public class FileAddRequest {
-    private String originalFileName;
-    private String uploadFileName;
-    private String uploadFilePath;
-    private String uploadFileUrl;
+public record FileAddRequest(
+        String uploadFilePath,
+        MultipartFile multipartFile
+) {
 }
