@@ -53,11 +53,19 @@ public class ApiRestControllerAdvice {
         return ErrorResponse.of(e.getStatusCode(), e.getMessage());
     }
 
-    // 503
+    // 503 파일 업로드 에러
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     @ExceptionHandler(FileUploadException.class)
     public ErrorResponse handleException(final FileUploadException e){
         log.info("FileUploadException Exception={}", e.getMessage());
+        return ErrorResponse.of(e.getStatusCode(), e.getMessage());
+    }
+
+    // 503 메일 전송 에러
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @ExceptionHandler(MailSendException.class)
+    public ErrorResponse handleException(final MailSendException e){
+        log.info("MailSendException Exception={}", e.getMessage());
         return ErrorResponse.of(e.getStatusCode(), e.getMessage());
     }
 

@@ -24,7 +24,7 @@ class FileControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("S3 파일 업로드 테스트")
-    void uploadFiles() throws Exception{
+    void uploadFileTest() throws Exception{
         MockMultipartFile file1 = new MockMultipartFile("file", "file1.txt", MediaType.TEXT_PLAIN_VALUE, "Test File 1".getBytes());
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -38,6 +38,7 @@ class FileControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("파일 삭제 테스트")
     void deleteFileTest() throws Exception {
         FileDeleteRequest fileDeleteRequest = new FileDeleteRequest("temp", "1111");
 

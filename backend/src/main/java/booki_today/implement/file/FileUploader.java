@@ -52,7 +52,7 @@ public class FileUploader {
             uploadFileUrl = amazonS3.getUrl(bucketName, keyName).toString();
 
         } catch (IOException e) {
-            throw new FileUploadException("파일 업로드에 실패했습니다.");
+            throw new FileUploadException("파일 업로드 도중에 에러가 발생했습니다. 관리자에게 문의 바랍니다.");
         }
     }
 

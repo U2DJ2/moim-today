@@ -2,6 +2,7 @@ package booki_today.implement.mail;
 
 import booki_today.dto.mail.MailSendRequest;
 import booki_today.global.annotation.Implement;
+import booki_today.global.error.MailSendException;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,12 +36,16 @@ public class MailSender {
         List<String> to = mailSendRequest.to();
 
         try{
-            String content = htmlTemplateEngine.process("authenticationMail.html", createContext(variables));
+            String content = makeHtmlTemplate(variables);
             SendEmailRequest sendEmailRequest = createSendEmailRequest(subject, content, to);
             amazonSimpleEmailService.sendEmail(sendEmailRequest);
         }catch (Exception e){
-            e.printStackTrace();
+            throw new MailSendException("메일 전송 도중에 에러가 발생했습니다. 관리자에게 문의 바랍니다.");
         }
+    }
+
+    public String makeHtmlTemplate(Map<String, Object> variables){
+        return htmlTemplateEngine.process("authenticationMail.html", createContext(variables));
     }
 
     private Context createContext(Map<String, Object> variables) {
