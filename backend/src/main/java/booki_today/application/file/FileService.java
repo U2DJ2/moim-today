@@ -5,6 +5,7 @@ import booki_today.dto.file.FileDeleteRequest;
 import booki_today.implement.file.FileDeleter;
 import booki_today.implement.file.FileUploader;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FileService {
@@ -18,8 +19,8 @@ public class FileService {
     }
 
 
-    public void uploadFile(FileAddRequest fileAddRequest){
-        fileUploader.uploadFile(fileAddRequest);
+    public void uploadFile(FileAddRequest fileAddRequest, MultipartFile multipartFile){
+        fileUploader.uploadFile(fileAddRequest, multipartFile);
     }
     public void deleteFile(FileDeleteRequest fileDeleteRequest){
         fileDeleter.deleteFile(fileDeleteRequest);

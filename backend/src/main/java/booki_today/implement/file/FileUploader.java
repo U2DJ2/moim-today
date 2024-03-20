@@ -29,9 +29,8 @@ public class FileUploader {
         this.bucketName = bucketName;
     }
 
-    public void uploadFile(final FileAddRequest fileAddRequest) {
+    public void uploadFile(final FileAddRequest fileAddRequest, final MultipartFile multipartFile) {
         String uploadFilePath = fileAddRequest.uploadFilePath();
-        MultipartFile multipartFile = fileAddRequest.multipartFile();
         List<FileAddRequest> s3files = new ArrayList<>();
 
         String originalFileName = multipartFile.getOriginalFilename();

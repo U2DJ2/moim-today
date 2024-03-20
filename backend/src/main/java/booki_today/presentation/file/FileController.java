@@ -3,8 +3,8 @@ package booki_today.presentation.file;
 import booki_today.application.file.FileService;
 import booki_today.dto.file.FileAddRequest;
 import booki_today.dto.file.FileDeleteRequest;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api")
@@ -16,10 +16,10 @@ public class FileController {
         this.fileService = fileService;
     }
 
-    @PostMapping(value = "/files",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadFiles(@RequestBody FileAddRequest fileAddRequest) {
-        fileService.uploadFile(fileAddRequest);
+    @PostMapping(value = "/files")
+    public void uploadFiles(@RequestPart(value = "fileAddRequest") FileAddRequest fileAddRequest,
+                            @RequestPart(value = "file") MultipartFile multipartFile) {
+        fileService.uploadFile(fileAddRequest, multipartFile);
     }
 
     @DeleteMapping("/files")
