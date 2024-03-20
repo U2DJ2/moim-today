@@ -40,6 +40,7 @@ public class MailSender {
             SendEmailRequest sendEmailRequest = createSendEmailRequest(subject, content, to);
             amazonSimpleEmailService.sendEmail(sendEmailRequest);
         }catch (Exception e){
+            e.printStackTrace();
             throw new MailSendException("메일 전송 도중에 에러가 발생했습니다. 관리자에게 문의 바랍니다.");
         }
     }
@@ -70,4 +71,5 @@ public class MailSender {
                 .withCharset(StandardCharsets.UTF_8.name())
                 .withData(text);
     }
+
 }

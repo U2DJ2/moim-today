@@ -18,8 +18,7 @@ public class MailController {
     }
 
     @PostMapping("/mails/send")
-    public String sendMail(@RequestBody MailSendRequest mailSendRequest){
+    public void sendMail(@RequestBody MailSendRequest mailSendRequest){
         mailService.send(mailSendRequest);
-        return "메일 전송 완료";
     }
 }
