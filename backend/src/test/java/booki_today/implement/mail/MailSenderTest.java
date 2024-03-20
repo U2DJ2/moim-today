@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.test.context.ActiveProfiles;
 import org.thymeleaf.TemplateEngine;
 
 import java.util.Collections;
@@ -19,7 +18,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ActiveProfiles("dev")
 class MailSenderTest extends ImplementTest {
 
     @Mock
