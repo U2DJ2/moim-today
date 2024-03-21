@@ -4,6 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record FileAddRequest(
-        String uploadFilePath
+        String uploadFilePath,
+        String studentId
 ) {
 }

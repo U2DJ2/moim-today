@@ -21,18 +21,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class MailSenderTest extends ImplementTest {
 
     @Mock
-    AmazonSimpleEmailService amazonSimpleEmailService;
+    private AmazonSimpleEmailService amazonSimpleEmailService;
     @Autowired
-    TemplateEngine htmlTemplateEngine;
+    private TemplateEngine htmlTemplateEngine;
     @Value("${cloud.aws.ses.from}")
-    String from;
+    private String from;
     @InjectMocks
-    MailSender mailSender;
+    private MailSender mailSender;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this); // Mock 초기화
-        mailSender = new MailSender(amazonSimpleEmailService, htmlTemplateEngine, from);
+        mailSender = new MailSender(amazonSimpleEmailService, htmlTemplateEngine);
     }
 
     @DisplayName("메일 전송 테스트")

@@ -22,16 +22,15 @@ public class MailSender {
 
     private final AmazonSimpleEmailService amazonSimpleEmailService;
     private final TemplateEngine htmlTemplateEngine;
-    private final String from;
+    @Value("${cloud.aws.ses.from}")
+    private String from;
 
     public MailSender(
             final AmazonSimpleEmailService amazonSimpleEmailService,
-            final TemplateEngine htmlTemplateEngine,
-            @Value("${cloud.aws.ses.from}") final String from
+            final TemplateEngine htmlTemplateEngine
     ) {
         this.amazonSimpleEmailService = amazonSimpleEmailService;
         this.htmlTemplateEngine = htmlTemplateEngine;
-        this.from = from;
     }
 
     public void send(final MailSendRequest mailSendRequest) {

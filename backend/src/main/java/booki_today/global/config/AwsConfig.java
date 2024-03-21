@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AwsConfig {
+
     @Value("${cloud.aws.credentials.access-key}")
     private String accessKey;
 
@@ -26,6 +27,7 @@ public class AwsConfig {
     private AWSCredentials getAWSCredentials() {
         return new BasicAWSCredentials(accessKey, secretKey);
     }
+
     @Bean
     public AmazonSimpleEmailService amazonSimpleEmailService() {
         return AmazonSimpleEmailServiceClientBuilder.standard()

@@ -24,7 +24,7 @@ class FileControllerTest extends ControllerTest {
 
     @DisplayName("S3 파일 업로드 테스트")
     @Test
-    void uploadFileTest() throws Exception{
+    void uploadFileTest() throws Exception {
 
     }
 

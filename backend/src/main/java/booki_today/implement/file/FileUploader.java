@@ -24,11 +24,11 @@ import static booki_today.global.constant.FileExceptionConstant.FILE_UPLOAD_ERRO
 public class FileUploader {
 
     private final AmazonS3 amazonS3;
-    private final String bucketName;
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucketName;
 
-    public FileUploader(final AmazonS3 amazonS3, @Value("${cloud.aws.s3.bucket}") final String bucketName) {
+    public FileUploader(final AmazonS3 amazonS3) {
         this.amazonS3 = amazonS3;
-        this.bucketName = bucketName;
     }
 
     public void uploadFile(final FileAddRequest fileAddRequest, final MultipartFile multipartFile) {
@@ -36,8 +36,7 @@ public class FileUploader {
         List<FileAddRequest> s3files = new ArrayList<>();
 
         String originalFileName = multipartFile.getOriginalFilename();
-        String uploadFileName = getUuidFileName(originalFileName);
-        String uploadFileUrl = "";
+        String uploadFileName = fileAddRequest.studentId()+"-"+originalFileName;
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(multipartFile.getSize());
@@ -51,16 +50,11 @@ public class FileUploader {
                     new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead));
 
-            uploadFileUrl = amazonS3.getUrl(bucketName, keyName).toString();
+            String uploadFileUrl = amazonS3.getUrl(bucketName, keyName).toString();
 
         } catch (IOException e) {
             log.error("Exception [Err_Location]: {}", e.getStackTrace()[0]);
             throw new InternalServerException(FILE_UPLOAD_ERROR.message());
         }
-    }
-
-    public String getUuidFileName(final String fileName) {
-        String ext = fileName.substring(fileName.indexOf(".") + 1);
-        return UUID.randomUUID() + "." + ext;
     }
 }
