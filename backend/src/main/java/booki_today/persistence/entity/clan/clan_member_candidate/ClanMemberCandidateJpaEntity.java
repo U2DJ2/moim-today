@@ -12,8 +12,8 @@ import lombok.Getter;
 @Entity
 public class ClanMemberCandidateJpaEntity extends BaseTimeEntity {
 
-    @Id @GeneratedValue
-    @Column(name = "clan_member_candidate")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "clan_member_candidate_id")
     private long id;
 
     @Association
