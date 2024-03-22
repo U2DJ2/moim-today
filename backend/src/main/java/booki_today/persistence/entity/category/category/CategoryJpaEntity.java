@@ -1,4 +1,4 @@
-package booki_today.persistence.entity.category;
+package booki_today.persistence.entity.category.category;
 
 import booki_today.domain.category.CategoryType;
 import booki_today.persistence.entity.BaseTimeEntity;
@@ -13,19 +13,16 @@ public class CategoryJpaEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    private Long id;
+    private long id;
 
     @Enumerated(EnumType.STRING)
     private CategoryType categoryType;
-
-    private String categoryName;
 
     protected CategoryJpaEntity() {
     }
 
     @Builder
-    private CategoryJpaEntity(final CategoryType categoryType, final String categoryName) {
+    private CategoryJpaEntity(final CategoryType categoryType) {
         this.categoryType = categoryType;
-        this.categoryName = categoryName;
     }
 }
