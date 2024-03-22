@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface FileService {
 
-    void uploadFile(FileAddRequest fileAddRequest, MultipartFile multipartFile);
+    void uploadFile(final FileAddRequest fileAddRequest, final MultipartFile multipartFile);
 
-    void deleteFile(FileDeleteRequest fileDeleteRequest);
+    void deleteFile(final FileDeleteRequest fileDeleteRequest);
 }

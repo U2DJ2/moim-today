@@ -10,11 +10,12 @@ import org.springframework.beans.factory.annotation.Value;
 
 import static booki_today.global.constant.FileExceptionConstant.FILE_DELETE_ERROR;
 
-@Implement
 @Slf4j
+@Implement
 public class FileRemover {
 
     private final AmazonS3 amazonS3;
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 

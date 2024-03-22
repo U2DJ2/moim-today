@@ -19,11 +19,12 @@ import java.util.UUID;
 
 import static booki_today.global.constant.FileExceptionConstant.FILE_UPLOAD_ERROR;
 
-@Implement
 @Slf4j
+@Implement
 public class FileUploader {
 
     private final AmazonS3 amazonS3;
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 

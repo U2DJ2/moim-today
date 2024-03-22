@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class AmazonS3Service implements FileService{
 
     private final FileUploader fileUploader;
+
     private final FileRemover fileRemover;
 
     public AmazonS3Service(final FileUploader fileUploader, final FileRemover fileRemover) {
@@ -18,11 +19,11 @@ public class AmazonS3Service implements FileService{
         this.fileRemover = fileRemover;
     }
 
-    public void uploadFile(FileAddRequest fileAddRequest, MultipartFile multipartFile){
+    public void uploadFile(final FileAddRequest fileAddRequest, final MultipartFile multipartFile){
         fileUploader.uploadFile(fileAddRequest, multipartFile);
     }
 
-    public void deleteFile(FileDeleteRequest fileDeleteRequest){
+    public void deleteFile(final FileDeleteRequest fileDeleteRequest){
         fileRemover.deleteFile(fileDeleteRequest);
     }
 }

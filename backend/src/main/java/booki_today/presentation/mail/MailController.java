@@ -18,7 +18,7 @@ public class MailController {
     }
 
     @PostMapping("/mails/send")
-    public void sendMail(@RequestBody MailSendRequest mailSendRequest){
+    public void sendMail(@RequestBody final MailSendRequest mailSendRequest){
         mailService.send(mailSendRequest);
     }
 }

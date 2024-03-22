@@ -16,12 +16,14 @@ import java.util.Map;
 
 import static booki_today.global.constant.MailExceptionConstant.MAIL_SEND_ERROR;
 
-@Implement
 @Slf4j
+@Implement
 public class MailSender {
 
     private final AmazonSimpleEmailService amazonSimpleEmailService;
+
     private final TemplateEngine htmlTemplateEngine;
+
     @Value("${cloud.aws.ses.from}")
     private String from;
 

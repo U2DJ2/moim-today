@@ -17,14 +17,14 @@ public class FileController {
     }
 
     @PostMapping(value = "/files")
-    public void uploadFile(@RequestPart(value = "fileAddRequest") FileAddRequest fileAddRequest,
-                            @RequestPart(value = "file") MultipartFile multipartFile) {
+    public void uploadFile(@RequestPart final FileAddRequest fileAddRequest,
+                            @RequestPart final MultipartFile file) {
 
-        fileService.uploadFile(fileAddRequest, multipartFile);
+        fileService.uploadFile(fileAddRequest, file);
     }
 
     @DeleteMapping("/files")
-    public void deleteFile(@RequestBody FileDeleteRequest fileDeleteRequest){
+    public void deleteFile(@RequestBody final FileDeleteRequest fileDeleteRequest){
         fileService.deleteFile(fileDeleteRequest);
     }
 }
