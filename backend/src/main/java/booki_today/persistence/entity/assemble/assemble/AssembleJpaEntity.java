@@ -1,6 +1,6 @@
 package booki_today.persistence.entity.assemble.assemble;
 
-import booki_today.domain.created_booki.AssembleType;
+import booki_today.domain.assemble.AssembleType;
 import booki_today.global.annotation.Association;
 import booki_today.persistence.entity.BaseTimeEntity;
 import jakarta.persistence.*;

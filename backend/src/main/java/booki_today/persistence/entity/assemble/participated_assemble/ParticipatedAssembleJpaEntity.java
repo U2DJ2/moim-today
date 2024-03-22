@@ -1,6 +1,6 @@
 package booki_today.persistence.entity.assemble.participated_assemble;
 
-import booki_today.domain.participated_booki.ParticipatedStatus;
+import booki_today.domain.participated_assemble.ParticipatedStatus;
 import booki_today.global.annotation.Association;
 import booki_today.persistence.entity.BaseTimeEntity;
 import jakarta.persistence.*;

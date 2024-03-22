@@ -1,4 +1,4 @@
-package booki_today.domain.created_booki;
+package booki_today.domain.assemble;
 
 public enum AssembleType {
 
