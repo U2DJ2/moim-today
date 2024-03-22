@@ -1,6 +1,6 @@
 package booki_today.domain.created_booki;
 
-public enum BookiType {
+public enum AssembleType {
 
     RAFFLE, FIFO
 }
