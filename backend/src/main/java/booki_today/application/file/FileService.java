@@ -7,22 +7,11 @@ import booki_today.implement.file.FileUploader;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-@Service
-public class FileService {
+import java.util.List;
 
-    private final FileUploader fileUploader;
-    private final FileRemover fileRemover;
+public interface FileService {
 
-    public FileService(final FileUploader fileUploader, final FileRemover fileRemover) {
-        this.fileUploader = fileUploader;
-        this.fileRemover = fileRemover;
-    }
+    void uploadFile(FileAddRequest fileAddRequest, MultipartFile multipartFile);
 
-    public void uploadFile(FileAddRequest fileAddRequest, MultipartFile multipartFile){
-        fileUploader.uploadFile(fileAddRequest, multipartFile);
-    }
-
-    public void deleteFile(FileDeleteRequest fileDeleteRequest){
-        fileRemover.deleteFile(fileDeleteRequest);
-    }
+    void deleteFile(FileDeleteRequest fileDeleteRequest);
 }

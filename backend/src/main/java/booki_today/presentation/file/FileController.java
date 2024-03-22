@@ -19,6 +19,7 @@ public class FileController {
     @PostMapping(value = "/files")
     public void uploadFile(@RequestPart(value = "fileAddRequest") FileAddRequest fileAddRequest,
                             @RequestPart(value = "file") MultipartFile multipartFile) {
+
         fileService.uploadFile(fileAddRequest, multipartFile);
     }
 
