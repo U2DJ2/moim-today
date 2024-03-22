@@ -12,22 +12,15 @@ public class UniversityJpaEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "university_id")
-    private Long id;
+    private long id;
 
     private String universityName;
-
-    private String universityDescription;
-
-    private String universityImageUrl;
 
     protected UniversityJpaEntity() {
     }
 
     @Builder
-    private UniversityJpaEntity(final String universityName, final String universityDescription,
-                                final String universityImageUrl) {
+    private UniversityJpaEntity(final String universityName) {
         this.universityName = universityName;
-        this.universityDescription = universityDescription;
-        this.universityImageUrl = universityImageUrl;
     }
 }
