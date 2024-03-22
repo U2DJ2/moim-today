@@ -12,7 +12,7 @@ public class EmailCertificationNumberJpaEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "email_certification_number_id")
-    private Long id;
+    private long id;
 
     private String email;
 

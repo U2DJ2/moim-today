@@ -16,46 +16,44 @@ public class MemberJpaEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private Long id;
+    private long id;
 
     @Association
-    private Long universityId;
+    private long universityId;
 
-    private String loginId;
-
-    private String password;
+    @Association
+    private long departmentId;
 
     private String email;
 
+    private String password;
+
     private String username;
 
-    private String nickname;
+    private String studentId;
 
-    private String uniqueName;
-
-    private String userProfileImageUrl;
+    private LocalDate birthDate;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private LocalDate birthDate;
+    private String memberProfileImageUrl;
 
     protected MemberJpaEntity() {
     }
 
     @Builder
-    private MemberJpaEntity(final Long universityId, final String loginId, final String password,
-                            final String email, final String username, final String nickname, final String uniqueName,
-                            final String userProfileImageUrl, final Gender gender, final LocalDate birthDate) {
+    private MemberJpaEntity(final long universityId, final long departmentId, final String email,
+                            final String password, final String username, final String studentId,
+                            final LocalDate birthDate, final Gender gender, final String memberProfileImageUrl) {
         this.universityId = universityId;
-        this.loginId = loginId;
-        this.password = password;
+        this.departmentId = departmentId;
         this.email = email;
+        this.password = password;
         this.username = username;
-        this.nickname = nickname;
-        this.uniqueName = uniqueName;
-        this.userProfileImageUrl = userProfileImageUrl;
-        this.gender = gender;
+        this.studentId = studentId;
         this.birthDate = birthDate;
+        this.gender = gender;
+        this.memberProfileImageUrl = memberProfileImageUrl;
     }
 }

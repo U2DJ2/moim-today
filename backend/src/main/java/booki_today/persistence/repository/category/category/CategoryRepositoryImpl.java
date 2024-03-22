@@ -1,4 +1,4 @@
-package booki_today.persistence.repository.category;
+package booki_today.persistence.repository.category.category;
 
 import org.springframework.stereotype.Repository;
 

@@ -17,7 +17,7 @@ public abstract class ControllerTest {
     protected final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
-    void setUp(RestDocumentationContextProvider provider) {
+    void setUp(final RestDocumentationContextProvider provider) {
         this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
                 .apply(documentationConfiguration(provider))
                 .build();

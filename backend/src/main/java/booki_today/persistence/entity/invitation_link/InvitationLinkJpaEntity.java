@@ -15,10 +15,10 @@ public class InvitationLinkJpaEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "invitation_link_id")
-    private Long id;
+    private long id;
 
     @Association
-    private Long createdBookiId;
+    private long assembleId;
 
     private String invitationLink;
 
@@ -28,9 +28,9 @@ public class InvitationLinkJpaEntity extends BaseTimeEntity {
     }
 
     @Builder
-    private InvitationLinkJpaEntity(final Long createdBookiId, final String invitationLink,
+    private InvitationLinkJpaEntity(final long assembleId, final String invitationLink,
                                     final LocalDateTime linkExpiredDateTime) {
-        this.createdBookiId = createdBookiId;
+        this.assembleId = assembleId;
         this.invitationLink = invitationLink;
         this.linkExpiredDateTime = linkExpiredDateTime;
     }
