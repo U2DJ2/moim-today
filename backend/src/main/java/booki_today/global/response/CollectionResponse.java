@@ -1,9 +1,9 @@
 package booki_today.global.response;
 
-public record ApiResponse<T> (
+public record CollectionResponse<T> (
         T data
 ) {
-    public static <T> ApiResponse<T> of(final T data) {
-        return new ApiResponse<>(data);
+    public static <T> CollectionResponse<T> of(final T data) {
+        return new CollectionResponse<>(data);
     }
 }
