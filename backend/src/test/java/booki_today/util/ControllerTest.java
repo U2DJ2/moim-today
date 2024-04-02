@@ -16,12 +16,14 @@ public abstract class ControllerTest {
 
     protected MockMvc mockMvc;
     protected final ObjectMapper objectMapper = new ObjectMapper();
+    private final ApiRestControllerAdvice apiRestControllerAdvice = new ApiRestControllerAdvice();
 
     @BeforeEach
     void setUp(final RestDocumentationContextProvider provider) {
         this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
+                .setControllerAdvice(apiRestControllerAdvice)
                 .apply(documentationConfiguration(provider))
-                .build();
+                .build()
     }
 
     protected abstract Object initController();
