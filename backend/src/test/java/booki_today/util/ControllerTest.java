@@ -23,7 +23,7 @@ public abstract class ControllerTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
                 .setControllerAdvice(apiRestControllerAdvice)
                 .apply(documentationConfiguration(provider))
-                .build()
+                .build();
     }
 
     protected abstract Object initController();
