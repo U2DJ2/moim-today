@@ -8,6 +8,7 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static booki_today.util.TestConstant.*;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -28,7 +29,7 @@ class AuthControllerTest extends ControllerTest {
     @DisplayName("로그인 테스트")
     @Test
     void loginTest() throws Exception {
-        MemberLoginRequest memberLoginRequest = new MemberLoginRequest("email", "password");
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(EMAIL.value(), PASSWORD.value());
         String json = objectMapper.writeValueAsString(memberLoginRequest);
 
         mockMvc.perform(post("/api/auth")
@@ -51,7 +52,7 @@ class AuthControllerTest extends ControllerTest {
     @DisplayName("로그인 테스트 실패")
     @Test
     void loginTestFail() throws Exception {
-        MemberLoginRequest memberLoginRequest = new MemberLoginRequest("wrongEmail", "wrongPassword");
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(WRONG_EMAIL.value(), WRONG_PASSWORD.value());
         String json = objectMapper.writeValueAsString(memberLoginRequest);
 
         mockMvc.perform(post("/api/auth")

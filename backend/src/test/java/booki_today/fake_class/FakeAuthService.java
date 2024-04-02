@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static booki_today.global.constant.MemberExceptionConstant.EMAIL_PASSWORD_ERROR;
+import static booki_today.util.TestConstant.EMAIL;
+import static booki_today.util.TestConstant.PASSWORD;
 
 public class FakeAuthService implements AuthService {
 
@@ -18,8 +20,8 @@ public class FakeAuthService implements AuthService {
     @Override
     public void login(final MemberLoginRequest memberLoginRequest, final HttpServletRequest request) {
         MemberJpaEntity entity = MemberJpaEntity.builder()
-                .email("email")
-                .password("password")
+                .email(EMAIL.value())
+                .password(PASSWORD.value())
                 .build();
 
         MemberJpaEntity memberJpaEntity = fakeDB.getOrDefault(1L, entity);
@@ -30,6 +32,5 @@ public class FakeAuthService implements AuthService {
         }
 
         throw new NotFoundException(EMAIL_PASSWORD_ERROR.message());
-
     }
 }
