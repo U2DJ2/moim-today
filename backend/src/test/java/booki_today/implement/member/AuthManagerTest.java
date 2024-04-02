@@ -10,27 +10,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import static booki_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
+import static booki_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class MemberAuthenticationTest extends ImplementTest {
+class AuthManagerTest extends ImplementTest {
 
     @Autowired
-    private MemberAuthentication memberAuthentication;
+    private AuthManager authManager;
 
     @DisplayName("올바른 정보가 입력되면 로그인에 성공한다.")
     @Test
     void loginSuccess() {
         //given
-        MemberJpaEntity entity = MemberJpaEntity.builder().email("email")
-                .password(passwordEncoder.encode("password")).build();
+        MemberJpaEntity entity = MemberJpaEntity.builder().email(EMAIL.value())
+                .password(passwordEncoder.encode(PASSWORD.value())).build();
 
         memberRepository.save(entity);
-        MemberLoginRequest memberLoginRequest = new MemberLoginRequest("email", "password");
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(EMAIL.value(), PASSWORD.value());
         MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
 
         //when
-        memberAuthentication.login(memberLoginRequest, mockHttpServletRequest);
+        authManager.login(memberLoginRequest, mockHttpServletRequest);
 
         //then
         assertThat(mockHttpServletRequest.getSession(false)).isNotNull();
@@ -41,18 +42,17 @@ class MemberAuthenticationTest extends ImplementTest {
     @Test
     void loginFail() {
         //given
-        MemberJpaEntity entity = MemberJpaEntity.builder().email("email")
-                .password(passwordEncoder.encode("password")).build();
+        MemberJpaEntity entity = MemberJpaEntity.builder().email(EMAIL.value())
+                .password(passwordEncoder.encode(PASSWORD.value())).build();
 
         memberRepository.save(entity);
-        MemberLoginRequest memberLoginRequest = new MemberLoginRequest("wrongEmail", "wrongPassword");
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(WRONG_EMAIL.value(), WRONG_PASSWORD.value());
         MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
 
         //when && then
-        assertThrows(
-                NotFoundException.class,
-                () -> memberAuthentication.login(memberLoginRequest, mockHttpServletRequest)
-        );
+        assertThatThrownBy(() -> authManager.login(memberLoginRequest, mockHttpServletRequest))
+                .isInstanceOf(NotFoundException.class);
+
         assertThat(mockHttpServletRequest.getSession(false)).isNull();
     }
 }

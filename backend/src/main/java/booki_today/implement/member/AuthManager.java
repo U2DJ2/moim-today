@@ -16,15 +16,15 @@ import static booki_today.global.constant.MemberExceptionConstant.EMAIL_PASSWORD
 import static booki_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
 
 @Implement
-public class MemberAuthentication {
+public class AuthManager {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final ObjectMapper objectMapper;
 
-    public MemberAuthentication(final MemberRepository memberRepository,
-                                final PasswordEncoder passwordEncoder,
-                                final ObjectMapper objectMapper) {
+    public AuthManager(final MemberRepository memberRepository,
+                       final PasswordEncoder passwordEncoder,
+                       final ObjectMapper objectMapper) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.objectMapper = objectMapper;
