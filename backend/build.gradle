@@ -101,6 +101,12 @@ dependencies {
 
     //AWS S3
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+    // Spring Security Crypto 라이브러리
+    implementation 'org.springframework.security:spring-security-crypto'
+
+    // session jdbc
+    implementation 'org.springframework.session:spring-session-jdbc'
 }
 
 tasks.named('test') {

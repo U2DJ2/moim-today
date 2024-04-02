@@ -53,6 +53,14 @@ public class ApiRestControllerAdvice {
         return ErrorResponse.of(e.getStatusCode(), e.getMessage());
     }
 
+    // 500
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(InternalServerException.class)
+    public ErrorResponse handleInternalServerError(final InternalServerException e) {
+        log.error("InternalServerException={}", e.getMessage());
+        return ErrorResponse.of(e.getStatusCode(), e.getMessage());
+    }
+
     /**
      * 스프링 예외 처리
      */
@@ -91,14 +99,5 @@ public class ApiRestControllerAdvice {
         log.error("HttpRequestMethodNotSupportedException={}", e.getMessage());
         MethodNotAllowedException exception = new MethodNotAllowedException(METHOD_NOT_ALLOWED.message());
         return ErrorResponse.of(exception.getStatusCode(), exception.getMessage());
-    }
-
-    // 500
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Exception.class)
-    public ErrorResponse handleInternalServerError(final Exception e) {
-        log.error("InternalServerException={}", e.getMessage());
-        InternalServerException exception = new InternalServerException(e.getMessage());
-        return ErrorResponse.of(exception.getStatusCode(), e.getMessage());
     }
 }

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ApiResponseTest {
+class CollectionResponseTest {
     
     @DisplayName("ApiResponse에 데이터가 올바르게 들어가는지 확인합니다.")
     @Test
@@ -14,12 +14,12 @@ class ApiResponseTest {
         Member member = new Member("testMember", 25);
 
         //when
-        ApiResponse<Member> memberApiResponse = ApiResponse.of(member);
+        CollectionResponse<Member> memberCollectionResponse = CollectionResponse.of(member);
 
         //then
-        assertThat(memberApiResponse.data()).isEqualTo(member);
-        assertThat(memberApiResponse.data().getName()).isEqualTo("testMember");
-        assertThat(memberApiResponse.data().getAge()).isEqualTo(25);
+        assertThat(memberCollectionResponse.data()).isEqualTo(member);
+        assertThat(memberCollectionResponse.data().getName()).isEqualTo("testMember");
+        assertThat(memberCollectionResponse.data().getAge()).isEqualTo(25);
     }
 
     static class Member{
