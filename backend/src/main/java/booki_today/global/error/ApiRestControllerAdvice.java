@@ -53,6 +53,14 @@ public class ApiRestControllerAdvice {
         return ErrorResponse.of(e.getStatusCode(), e.getMessage());
     }
 
+    // 500
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(InternalServerException.class)
+    public ErrorResponse handleInternalServerError(final InternalServerException e) {
+        log.error("InternalServerException={}", e.getMessage());
+        return ErrorResponse.of(e.getStatusCode(), e.getMessage());
+    }
+
     /**
      * 스프링 예외 처리
      */
