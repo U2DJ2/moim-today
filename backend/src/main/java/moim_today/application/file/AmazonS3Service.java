@@ -1,6 +1,6 @@
 package moim_today.application.file;
 
-import moim_today.dto.file.FileAddRequest;
+import moim_today.domain.member.MemberSession;
 import moim_today.dto.file.FileDeleteRequest;
 import moim_today.implement.file.FileRemover;
 import moim_today.implement.file.FileUploader;
@@ -19,8 +19,8 @@ public class AmazonS3Service implements FileService{
         this.fileRemover = fileRemover;
     }
 
-    public void uploadFile(final FileAddRequest fileAddRequest, final MultipartFile multipartFile){
-        fileUploader.uploadFile(fileAddRequest, multipartFile);
+    public void uploadFile(final MemberSession memberSession, final MultipartFile multipartFile){
+        fileUploader.uploadFile(memberSession, multipartFile);
     }
 
     public void deleteFile(final FileDeleteRequest fileDeleteRequest){
