@@ -18,20 +18,20 @@ public class InvitationLinkJpaEntity extends BaseTimeEntity {
     private long id;
 
     @Association
-    private long assembleId;
+    private long regularMoimId;
 
     private String invitationLink;
 
-    private LocalDateTime linkExpiredDateTime;
+    private LocalDateTime expiredDateTime;
 
     protected InvitationLinkJpaEntity() {
     }
 
     @Builder
-    private InvitationLinkJpaEntity(final long assembleId, final String invitationLink,
-                                    final LocalDateTime linkExpiredDateTime) {
-        this.assembleId = assembleId;
+    private InvitationLinkJpaEntity(final long regularMoimId, final String invitationLink,
+                                    final LocalDateTime expiredDateTime) {
+        this.regularMoimId = regularMoimId;
         this.invitationLink = invitationLink;
-        this.linkExpiredDateTime = linkExpiredDateTime;
+        this.expiredDateTime = expiredDateTime;
     }
 }

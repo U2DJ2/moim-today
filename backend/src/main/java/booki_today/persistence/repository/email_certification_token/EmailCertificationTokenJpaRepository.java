@@ -1,0 +1,7 @@
+package booki_today.persistence.repository.email_certification_token;
+
+import booki_today.persistence.entity.email_certification_token.EmailCertificationTokenJpaEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EmailCertificationTokenJpaRepository extends JpaRepository<EmailCertificationTokenJpaEntity, Long> {
+}
