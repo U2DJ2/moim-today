@@ -1,6 +1,6 @@
 package booki_today.persistence.entity.regular_moim.moim_record;
 
-import booki_today.domain.regular_moim.GoalStatus;
+import booki_today.domain.regular_moim.enums.GoalStatus;
 import booki_today.global.annotation.Association;
 import booki_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;

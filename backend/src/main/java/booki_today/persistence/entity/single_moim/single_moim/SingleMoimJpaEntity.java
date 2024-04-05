@@ -1,6 +1,6 @@
 package booki_today.persistence.entity.single_moim.single_moim;
 
-import booki_today.domain.single_moim.SingleMoimCategory;
+import booki_today.domain.single_moim.enums.SingleMoimCategory;
 import booki_today.global.annotation.Association;
 import booki_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;

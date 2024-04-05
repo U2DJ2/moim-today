@@ -1,6 +1,6 @@
 package booki_today.persistence.entity.time_table;
 
-import booki_today.domain.regular_moim.DayOfWeek;
+import booki_today.domain.regular_moim.enums.DayOfWeek;
 import booki_today.global.annotation.Association;
 import booki_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;

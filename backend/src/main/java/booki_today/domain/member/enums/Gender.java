@@ -1,4 +1,4 @@
-package booki_today.domain.member;
+package booki_today.domain.member.enums;
 
 public enum Gender {
 

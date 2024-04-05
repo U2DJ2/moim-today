@@ -1,4 +1,4 @@
-package booki_today.domain.regular_moim;
+package booki_today.domain.regular_moim.enums;
 
 public enum GoalStatus {
 
