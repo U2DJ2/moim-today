@@ -1,0 +1,8 @@
+package moim_today.application.mail;
+
+import moim_today.dto.mail.MailSendRequest;
+
+public interface MailService {
+
+    void send(final MailSendRequest mailSendRequest);
+}
