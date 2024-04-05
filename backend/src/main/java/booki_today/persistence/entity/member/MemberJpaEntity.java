@@ -2,7 +2,7 @@ package booki_today.persistence.entity.member;
 
 import booki_today.domain.member.Gender;
 import booki_today.global.annotation.Association;
-import booki_today.persistence.entity.BaseTimeEntity;
+import booki_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,0 +1,7 @@
+package booki_today.persistence.repository.chat.regular.participated_regular_chat_room;
+
+import booki_today.persistence.entity.chat.regular.participated_regular_chat_room.ParticipatedRegularChatRoomJpaEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ParticipatedRegularChatRoomJpaRepository extends JpaRepository<ParticipatedRegularChatRoomJpaEntity, Long> {
+}

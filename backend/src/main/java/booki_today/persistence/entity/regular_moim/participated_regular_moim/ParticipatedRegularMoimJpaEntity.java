@@ -1,7 +1,7 @@
 package booki_today.persistence.entity.regular_moim.participated_regular_moim;
 
 import booki_today.global.annotation.Association;
-import booki_today.persistence.entity.BaseTimeEntity;
+import booki_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 

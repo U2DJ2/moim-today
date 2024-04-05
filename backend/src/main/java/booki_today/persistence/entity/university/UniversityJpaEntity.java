@@ -1,6 +1,6 @@
 package booki_today.persistence.entity.university;
 
-import booki_today.persistence.entity.BaseTimeEntity;
+import booki_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package booki_today.persistence.entity.regular_moim.moim_meeting;
 
 import booki_today.domain.regular_moim.AttendanceStatus;
 import booki_today.global.annotation.Association;
-import booki_today.persistence.entity.BaseTimeEntity;
+import booki_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
