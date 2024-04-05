@@ -1,4 +1,4 @@
-package booki_today.persistence.entity.single_moim.participated_single_moim;
+package booki_today.persistence.entity.single_moim.joined_single_moim;
 
 import booki_today.global.annotation.Association;
 import booki_today.global.base_entity.BaseTimeEntity;
@@ -7,12 +7,12 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Table(name = "participated_single_moim")
+@Table(name = "joined_single_moim")
 @Entity
-public class ParticipatedSingleMoimJpaEntity extends BaseTimeEntity {
+public class JoinedSingleMoimJpaEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "participated_single_moim_id")
+    @Column(name = "joined_single_moim_id")
     private long id;
 
     @Association
@@ -21,11 +21,11 @@ public class ParticipatedSingleMoimJpaEntity extends BaseTimeEntity {
     @Association
     private long memberId;
 
-    protected ParticipatedSingleMoimJpaEntity() {
+    protected JoinedSingleMoimJpaEntity() {
     }
 
     @Builder
-    private ParticipatedSingleMoimJpaEntity(final long singleMoimId, final long memberId) {
+    private JoinedSingleMoimJpaEntity(final long singleMoimId, final long memberId) {
         this.singleMoimId = singleMoimId;
         this.memberId = memberId;
     }

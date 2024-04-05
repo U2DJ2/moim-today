@@ -1,4 +1,4 @@
-package booki_today.persistence.entity.chat.single.participated_single_chat_room;
+package booki_today.persistence.entity.chat.single.joined_single_chat_room;
 
 import booki_today.global.annotation.Association;
 import booki_today.global.base_entity.BaseTimeEntity;
@@ -7,12 +7,12 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Table(name = "participated_single_chat_room")
+@Table(name = "joined_single_chat_room")
 @Entity
-public class ParticipatedSingleChatRoomJpaEntity extends BaseTimeEntity {
+public class JoinedSingleChatRoomJpaEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "participated_single_chat_room_id")
+    @Column(name = "joined_single_chat_room_id")
     private long id;
 
     @Association
@@ -21,11 +21,11 @@ public class ParticipatedSingleChatRoomJpaEntity extends BaseTimeEntity {
     @Association
     private long memberId;
 
-    protected ParticipatedSingleChatRoomJpaEntity() {
+    protected JoinedSingleChatRoomJpaEntity() {
     }
 
     @Builder
-    private ParticipatedSingleChatRoomJpaEntity(final long singleChatRoomId, final long memberId) {
+    private JoinedSingleChatRoomJpaEntity(final long singleChatRoomId, final long memberId) {
         this.singleChatRoomId = singleChatRoomId;
         this.memberId = memberId;
     }
