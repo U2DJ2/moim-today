@@ -1,6 +1,7 @@
 package moim_today.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import moim_today.fake_class.FakeInterceptor;
 import moim_today.global.argumentresolver.MemberLoginArgumentResolver;
 import moim_today.global.error.ApiRestControllerAdvice;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,7 @@ public abstract class ControllerTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
                 .setControllerAdvice(apiRestControllerAdvice)
                 .setCustomArgumentResolvers(new MemberLoginArgumentResolver())
-                .addInterceptors(new booki_today.fake_class.FakeInterceptor(objectMapper))
+                .addInterceptors(new FakeInterceptor(objectMapper))
                 .apply(documentationConfiguration(provider))
                 .build();
     }

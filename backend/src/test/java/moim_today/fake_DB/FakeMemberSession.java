@@ -1,4 +1,4 @@
-package booki_today.fake_DB;
+package moim_today.fake_DB;
 
 import moim_today.domain.member.MemberSession;
 

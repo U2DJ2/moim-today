@@ -3,6 +3,7 @@ package moim_today.presentation.file;
 import moim_today.application.file.FileService;
 import moim_today.dto.file.FileDeleteRequest;
 import moim_today.fake_class.FakeFileService;
+import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
@@ -16,7 +17,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.partWith
 import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class FileControllerTest extends booki_today.util.ControllerTest {
+class FileControllerTest extends ControllerTest {
 
     private final FileService fileService = new FakeFileService();
 
