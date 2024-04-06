@@ -6,7 +6,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.extern.slf4j.Slf4j;
 import moim_today.domain.member.MemberSession;
-import moim_today.dto.file.FileAddRequest;
+import moim_today.dto.file.FileInfoResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.InternalServerException;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,8 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import static moim_today.global.constant.FileExceptionConstant.FILE_UPLOAD_ERROR;
 
@@ -32,9 +30,8 @@ public class FileUploader {
         this.amazonS3 = amazonS3;
     }
 
-    public void uploadFile(final MemberSession memberSession, final MultipartFile multipartFile) {
+    public FileInfoResponse uploadFile(final MemberSession memberSession, final MultipartFile multipartFile) {
         Long memberId = memberSession.id();
-        List<FileAddRequest> s3files = new ArrayList<>();
 
         String originalFileName = multipartFile.getOriginalFilename();
 
@@ -43,14 +40,12 @@ public class FileUploader {
         objectMetadata.setContentType(multipartFile.getContentType());
 
         try (InputStream inputStream = multipartFile.getInputStream()) {
-
             String keyName = memberId + "/" + originalFileName;
-
             amazonS3.putObject(
                     new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead));
 
-            String uploadFileUrl = amazonS3.getUrl(bucketName, keyName).toString();
+            return new FileInfoResponse(amazonS3.getUrl(bucketName, keyName).toString());
         } catch (IOException e) {
             log.error("Exception [Err_Location]: {}", e.getStackTrace()[0]);
             throw new InternalServerException(FILE_UPLOAD_ERROR.message());
