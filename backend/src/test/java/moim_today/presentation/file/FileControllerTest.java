@@ -36,9 +36,10 @@ class FileControllerTest extends booki_today.util.ControllerTest {
                         .file(file1)
                 )
                 .andExpect(status().isOk())
-                // ToDo: oas3 를 이용한 멀티파트 문서화
+                // ToDo: resdocs + oas3 를 이용한 멀티파트 문서화
                 .andDo(document("파일 업로드",
-                        requestParts(partWithName("file").description("업로드할 파일")
+                        requestParts(
+                                partWithName("file").description("업로드할 파일")
                 )));
     }
 
