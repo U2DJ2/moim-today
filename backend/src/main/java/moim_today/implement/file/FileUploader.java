@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.file.FileInfoResponse;
 import moim_today.global.annotation.Implement;
+import moim_today.global.error.BadRequestException;
 import moim_today.global.error.InternalServerException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
+import static moim_today.global.constant.FileExceptionConstant.FILE_EXTENSION_ERROR;
 import static moim_today.global.constant.FileExceptionConstant.FILE_UPLOAD_ERROR;
 
 @Slf4j
@@ -65,7 +67,7 @@ public class FileUploader {
         try{
             return fileName.substring(fileName.lastIndexOf("."));
         }catch(StringIndexOutOfBoundsException e) {
-            throw new IllegalArgumentException(String.format("잘못된 형식의 파일 (%s) 입니다.",fileName));
+            throw new BadRequestException(FILE_EXTENSION_ERROR.message());
         }
     }
 }

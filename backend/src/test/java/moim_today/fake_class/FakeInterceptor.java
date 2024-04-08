@@ -22,12 +22,11 @@ public class FakeInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(final HttpServletRequest request, HttpServletResponse response, final Object handler) throws JsonProcessingException {
+    public boolean preHandle(final HttpServletRequest request, HttpServletResponse response, final Object handler){
         MemberSession fakeMemberSession = FakeMemberSession.createMemberSession();
 
-        String memberSessionJson = objectMapper.writeValueAsString(fakeMemberSession);
-
         try {
+            String memberSessionJson = objectMapper.writeValueAsString(fakeMemberSession);
             MemberSession memberSession = objectMapper.readValue(memberSessionJson, MemberSession.class);
             request.setAttribute(MEMBER_SESSION.value(), memberSession);
         } catch (JsonProcessingException e) {

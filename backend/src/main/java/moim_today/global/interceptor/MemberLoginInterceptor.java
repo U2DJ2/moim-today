@@ -23,7 +23,7 @@ public class MemberLoginInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
+    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler){
         HttpSession session = request.getSession(false);
 
         if (session == null || session.getAttribute(MEMBER_SESSION.value()) == null) {
