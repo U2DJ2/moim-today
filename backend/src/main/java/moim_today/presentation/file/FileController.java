@@ -1,8 +1,10 @@
 package moim_today.presentation.file;
 
 import moim_today.application.file.FileService;
-import moim_today.dto.file.FileAddRequest;
+import moim_today.domain.member.MemberSession;
 import moim_today.dto.file.FileDeleteRequest;
+import moim_today.dto.file.FileInfoResponse;
+import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,14 +19,14 @@ public class FileController {
     }
 
     @PostMapping(value = "/files")
-    public void uploadFile(@RequestPart final FileAddRequest fileAddRequest,
-                            @RequestPart final MultipartFile file) {
-
-        fileService.uploadFile(fileAddRequest, file);
+    public FileInfoResponse uploadFile(@Login final MemberSession memberSession,
+                                       @RequestPart final MultipartFile file) {
+        return fileService.uploadFile(memberSession, file);
     }
 
     @DeleteMapping("/files")
-    public void deleteFile(@RequestBody final FileDeleteRequest fileDeleteRequest){
-        fileService.deleteFile(fileDeleteRequest);
+    public void deleteFile(@Login final MemberSession memberSession,
+                           @RequestBody final FileDeleteRequest fileDeleteRequest){
+        fileService.deleteFile(memberSession, fileDeleteRequest);
     }
 }

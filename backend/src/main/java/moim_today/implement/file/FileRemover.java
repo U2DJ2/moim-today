@@ -1,5 +1,6 @@
 package moim_today.implement.file;
 
+import moim_today.domain.member.MemberSession;
 import moim_today.dto.file.FileDeleteRequest;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.InternalServerException;
@@ -23,8 +24,9 @@ public class FileRemover {
         this.amazonS3 = amazonS3;
     }
 
-    public void deleteFile(final FileDeleteRequest fileDeleteRequest){
+    public void deleteFile(final MemberSession memberSession, final FileDeleteRequest fileDeleteRequest){
         try{
+            // TODO: memberSession 에서 대학 ID와 학번 ID 를 이용해 데이터베이스에서 업로드한 파일명 가져오기
             String uploadFilePath = fileDeleteRequest.uploadFilePath();
             String fileName = fileDeleteRequest.fileName();
             String key = uploadFilePath+"/"+fileName;

@@ -11,13 +11,13 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.nio.charset.StandardCharsets;
-
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
+import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class FileControllerTest extends ControllerTest{
+class FileControllerTest extends ControllerTest {
 
     private final FileService fileService = new FakeFileService();
 
@@ -31,16 +31,17 @@ class FileControllerTest extends ControllerTest{
     void uploadFileTest() throws Exception {
 
         MockMultipartFile file1 = new MockMultipartFile("file", "file1.txt", MediaType.TEXT_PLAIN_VALUE, "Test File 1".getBytes());
-        MockMultipartFile file2 = new MockMultipartFile("fileAddRequest", "", "application/json", "{\"uploadFilePath\":\"booki\"}".getBytes(StandardCharsets.UTF_8));
 
         mockMvc.perform(MockMvcRequestBuilders
                         .multipart(HttpMethod.POST, "/api/files")
                         .file(file1)
-                        .file(file2)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.MULTIPART_FORM_DATA)
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                // ToDo: resdocs + oas3 를 이용한 멀티파트 문서화
+                .andDo(document("파일 업로드",
+                        requestParts(
+                                partWithName("file").description("업로드할 파일")
+                )));
     }
 
     @DisplayName("파일 삭제 테스트")
