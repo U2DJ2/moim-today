@@ -5,6 +5,7 @@ import moim_today.persistence.entity.member.MemberJpaEntity;
 import org.springframework.stereotype.Repository;
 
 import static moim_today.global.constant.MemberExceptionConstant.EMAIL_PASSWORD_ERROR;
+import static moim_today.global.constant.MemberExceptionConstant.MEMBER_NOT_FOUND_ERROR;
 
 @Repository
 public class MemberRepositoryImpl implements MemberRepository {
@@ -24,5 +25,11 @@ public class MemberRepositoryImpl implements MemberRepository {
     public MemberJpaEntity getByEmail(final String email) {
         return memberJpaRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException(EMAIL_PASSWORD_ERROR.message()));
+    }
+
+    @Override
+    public MemberJpaEntity getById(final long memberId) {
+        return memberJpaRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND_ERROR.message()));
     }
 }
