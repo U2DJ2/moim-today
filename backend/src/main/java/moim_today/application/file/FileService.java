@@ -9,5 +9,5 @@ public interface FileService {
 
     FileInfoResponse uploadFile(final MemberSession memberSession, final MultipartFile multipartFile);
 
-    void deleteFile(final FileDeleteRequest fileDeleteRequest);
+    void deleteFile(final MemberSession memberSession, final FileDeleteRequest fileDeleteRequest);
 }

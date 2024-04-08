@@ -19,13 +19,14 @@ public class FileController {
     }
 
     @PostMapping(value = "/files")
-    public FileInfoResponse uploadFile(@Login MemberSession memberSession,
+    public FileInfoResponse uploadFile(@Login final MemberSession memberSession,
                                        @RequestPart final MultipartFile file) {
         return fileService.uploadFile(memberSession, file);
     }
 
     @DeleteMapping("/files")
-    public void deleteFile(@RequestBody final FileDeleteRequest fileDeleteRequest){
-        fileService.deleteFile(fileDeleteRequest);
+    public void deleteFile(@Login final MemberSession memberSession,
+                           @RequestBody final FileDeleteRequest fileDeleteRequest){
+        fileService.deleteFile(memberSession, fileDeleteRequest);
     }
 }

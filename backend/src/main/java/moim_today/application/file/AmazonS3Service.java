@@ -24,7 +24,7 @@ public class AmazonS3Service implements FileService{
         return fileUploader.uploadFile(memberSession, multipartFile);
     }
 
-    public void deleteFile(final FileDeleteRequest fileDeleteRequest){
-        fileRemover.deleteFile(fileDeleteRequest);
+    public void deleteFile(final MemberSession memberSession, final FileDeleteRequest fileDeleteRequest){
+        fileRemover.deleteFile(memberSession, fileDeleteRequest);
     }
 }

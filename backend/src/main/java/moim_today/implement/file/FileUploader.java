@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 import static moim_today.global.constant.FileExceptionConstant.FILE_UPLOAD_ERROR;
 
@@ -31,24 +32,40 @@ public class FileUploader {
     }
 
     public FileInfoResponse uploadFile(final MemberSession memberSession, final MultipartFile multipartFile) {
-        Long memberId = memberSession.id();
+        long memberId = memberSession.id();
+        long universityId = memberSession.universityId();
+        String uploadFolder = universityId+"/"+memberId;
 
         String originalFileName = multipartFile.getOriginalFilename();
+        String uploadFileName = createFileName(originalFileName);
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(multipartFile.getSize());
         objectMetadata.setContentType(multipartFile.getContentType());
 
         try (InputStream inputStream = multipartFile.getInputStream()) {
-            String keyName = memberId + "/" + originalFileName;
+            String keyName = uploadFolder + "/" + uploadFileName;
             amazonS3.putObject(
                     new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead));
-
+//            TODO: 데이터베이스에 대학 ID와 학번 ID를 key 값으로, uploadFileName 을 Value 값으로 저장하기
             return new FileInfoResponse(amazonS3.getUrl(bucketName, keyName).toString());
         } catch (IOException e) {
             log.error("Exception [Err_Location]: {}", e.getStackTrace()[0]);
             throw new InternalServerException(FILE_UPLOAD_ERROR.message());
+        }
+    }
+
+    // UUID 를 이용해 파일명 중복 회피
+    private String createFileName(final String originalFileName) {
+        return UUID.randomUUID().toString().concat(getFileExtension(originalFileName));
+    }
+
+    private String getFileExtension(final String fileName){
+        try{
+            return fileName.substring(fileName.lastIndexOf("."));
+        }catch(StringIndexOutOfBoundsException e) {
+            throw new IllegalArgumentException(String.format("잘못된 형식의 파일 (%s) 입니다.",fileName));
         }
     }
 }
