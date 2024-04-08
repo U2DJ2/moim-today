@@ -2,7 +2,7 @@ package moim_today.presentation.auth;
 
 import moim_today.application.auth.AuthService;
 import moim_today.dto.auth.MemberLoginRequest;
-import moim_today.fake_class.FakeAuthService;
+import moim_today.fake_class.auth.FakeAuthService;
 import moim_today.util.ControllerTest;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import org.junit.jupiter.api.DisplayName;

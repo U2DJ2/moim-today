@@ -1,4 +1,4 @@
-package moim_today.fake_class;
+package moim_today.fake_class.file;
 
 import moim_today.application.file.FileService;
 import moim_today.domain.member.MemberSession;

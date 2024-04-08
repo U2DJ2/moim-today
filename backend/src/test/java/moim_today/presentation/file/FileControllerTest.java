@@ -2,7 +2,7 @@ package moim_today.presentation.file;
 
 import moim_today.application.file.FileService;
 import moim_today.dto.file.FileDeleteRequest;
-import moim_today.fake_class.FakeFileService;
+import moim_today.fake_class.file.FakeFileService;
 import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

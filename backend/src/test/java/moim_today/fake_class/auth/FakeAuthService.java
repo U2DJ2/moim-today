@@ -1,4 +1,4 @@
-package moim_today.fake_class;
+package moim_today.fake_class.auth;
 
 import moim_today.application.auth.AuthService;
 import moim_today.dto.auth.MemberLoginRequest;

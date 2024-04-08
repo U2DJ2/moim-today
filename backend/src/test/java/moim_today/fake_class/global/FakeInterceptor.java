@@ -1,4 +1,4 @@
-package moim_today.fake_class;
+package moim_today.fake_class.global;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
