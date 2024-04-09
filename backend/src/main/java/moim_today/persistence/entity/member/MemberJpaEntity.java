@@ -6,6 +6,7 @@ import moim_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 
@@ -55,5 +56,9 @@ public class MemberJpaEntity extends BaseTimeEntity {
         this.birthDate = birthDate;
         this.gender = gender;
         this.memberProfileImageUrl = memberProfileImageUrl;
+    }
+
+    public void updatePassword(final PasswordEncoder passwordEncoder, final String newPassword) {
+        this.password = passwordEncoder.encode(newPassword);
     }
 }

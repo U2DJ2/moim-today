@@ -1,7 +1,7 @@
 package moim_today.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import moim_today.fake_class.FakeInterceptor;
+import moim_today.fake_class.global.FakeInterceptor;
 import moim_today.global.argumentresolver.MemberLoginArgumentResolver;
 import moim_today.global.error.ApiRestControllerAdvice;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,12 +18,11 @@ public abstract class ControllerTest {
 
     protected MockMvc mockMvc;
     protected final ObjectMapper objectMapper = new ObjectMapper();
-    private final ApiRestControllerAdvice apiRestControllerAdvice = new ApiRestControllerAdvice();
 
     @BeforeEach
     void setUp(final RestDocumentationContextProvider provider) {
         this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
-                .setControllerAdvice(apiRestControllerAdvice)
+                .setControllerAdvice(new ApiRestControllerAdvice())
                 .setCustomArgumentResolvers(new MemberLoginArgumentResolver())
                 .addInterceptors(new FakeInterceptor(objectMapper))
                 .apply(documentationConfiguration(provider))

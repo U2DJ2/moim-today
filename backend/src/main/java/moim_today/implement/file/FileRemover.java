@@ -9,7 +9,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 
-import static moim_today.global.constant.FileExceptionConstant.FILE_DELETE_ERROR;
+import static moim_today.global.constant.exception.FileExceptionConstant.FILE_DELETE_ERROR;
 
 @Slf4j
 @Implement

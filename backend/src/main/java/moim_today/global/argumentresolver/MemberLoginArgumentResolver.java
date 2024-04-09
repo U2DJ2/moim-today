@@ -11,7 +11,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
-import static moim_today.global.constant.SessionExceptionConstant.MEMBER_SESSION_GET_ATTRIBUTE_ERROR;
+import static moim_today.global.constant.exception.SessionExceptionConstant.MEMBER_SESSION_GET_ATTRIBUTE_ERROR;
 
 public class MemberLoginArgumentResolver implements HandlerMethodArgumentResolver {
 

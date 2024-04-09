@@ -1,5 +1,6 @@
 package moim_today.util;
 
+import moim_today.persistence.repository.certification_token.CertificationTokenRepository;
 import moim_today.persistence.repository.member.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public abstract class ImplementTest {
 
     @Autowired
     protected MemberRepository memberRepository;
+
+    @Autowired
+    protected CertificationTokenRepository certificationTokenRepository;
 
     @Autowired
     protected PasswordEncoder passwordEncoder;

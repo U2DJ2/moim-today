@@ -4,5 +4,5 @@ import moim_today.dto.mail.MailSendRequest;
 
 public interface MailService {
 
-    void send(final MailSendRequest mailSendRequest);
+    void sendPasswordFindMail(final MailSendRequest mailSendRequest, final String passwordToken);
 }
