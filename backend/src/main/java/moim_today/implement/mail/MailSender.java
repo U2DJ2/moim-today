@@ -14,7 +14,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
-import static moim_today.global.constant.MailExceptionConstant.MAIL_SEND_ERROR;
+import static moim_today.global.constant.MailConstant.*;
+import static moim_today.global.constant.exception.MailExceptionConstant.MAIL_SEND_ERROR;
 
 @Slf4j
 @Implement
@@ -35,13 +36,13 @@ public class MailSender {
         this.htmlTemplateEngine = htmlTemplateEngine;
     }
 
-    public void send(final MailSendRequest mailSendRequest) {
+    public void send(final MailSendRequest mailSendRequest, final String contentTemplate, final String data) {
         String subject = mailSendRequest.subject();
-        Map<String, Object> variables = Map.of("data", mailSendRequest.content());
+        Map<String, Object> variables = Map.of(DATA.value(), data);
         List<String> to = mailSendRequest.to();
 
         try{
-            String content = makeHtmlTemplate(variables);
+            String content = makeHtmlTemplate(variables, contentTemplate);
             SendEmailRequest sendEmailRequest = createSendEmailRequest(subject, content, to);
             amazonSimpleEmailService.sendEmail(sendEmailRequest);
         }catch (Exception e){
@@ -50,11 +51,11 @@ public class MailSender {
         }
     }
 
-    public String makeHtmlTemplate(Map<String, Object> variables){
-        return htmlTemplateEngine.process("authenticationMail.html", createContext(variables));
+    private String makeHtmlTemplate(final Map<String, Object> variables, final String contentTemplate){
+        return htmlTemplateEngine.process(contentTemplate, createContext(variables));
     }
 
-    private Context createContext(Map<String, Object> variables) {
+    private Context createContext(final Map<String, Object> variables) {
         Context context = new Context();
         context.setVariables(variables);
 
@@ -76,5 +77,4 @@ public class MailSender {
                 .withCharset(StandardCharsets.UTF_8.name())
                 .withData(text);
     }
-
 }

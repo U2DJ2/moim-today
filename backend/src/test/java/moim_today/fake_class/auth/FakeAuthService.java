@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-import static moim_today.global.constant.MemberExceptionConstant.EMAIL_PASSWORD_ERROR;
+import static moim_today.global.constant.exception.MemberExceptionConstant.EMAIL_PASSWORD_ERROR;
 import static moim_today.util.TestConstant.EMAIL;
 import static moim_today.util.TestConstant.PASSWORD;
 

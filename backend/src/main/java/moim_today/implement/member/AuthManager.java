@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import static moim_today.global.constant.MemberExceptionConstant.EMAIL_PASSWORD_ERROR;
+import static moim_today.global.constant.exception.MemberExceptionConstant.EMAIL_PASSWORD_ERROR;
 import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
 
 @Implement

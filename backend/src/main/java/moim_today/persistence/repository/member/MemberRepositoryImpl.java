@@ -4,8 +4,8 @@ import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import org.springframework.stereotype.Repository;
 
-import static moim_today.global.constant.MemberExceptionConstant.EMAIL_PASSWORD_ERROR;
-import static moim_today.global.constant.MemberExceptionConstant.MEMBER_NOT_FOUND_ERROR;
+import static moim_today.global.constant.exception.MemberExceptionConstant.EMAIL_PASSWORD_ERROR;
+import static moim_today.global.constant.exception.MemberExceptionConstant.MEMBER_NOT_FOUND_ERROR;
 
 @Repository
 public class MemberRepositoryImpl implements MemberRepository {

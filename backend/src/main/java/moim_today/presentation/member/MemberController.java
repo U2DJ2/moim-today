@@ -2,12 +2,10 @@ package moim_today.presentation.member;
 
 import moim_today.application.member.MemberService;
 import moim_today.domain.member.MemberSession;
+import moim_today.dto.member.PasswordRecoverRequest;
 import moim_today.dto.member.PasswordUpdateRequest;
 import moim_today.global.annotation.Login;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/members")
 @RestController
@@ -17,6 +15,11 @@ public class MemberController {
 
     public MemberController(final MemberService memberService) {
         this.memberService = memberService;
+    }
+
+    @PostMapping("/password-recovery")
+    public void recoverPassword(@RequestBody final PasswordRecoverRequest passwordRecoverRequest) {
+        memberService.recoverPassword(passwordRecoverRequest);
     }
 
     @PatchMapping("/password")

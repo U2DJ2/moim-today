@@ -1,4 +1,4 @@
-package moim_today.global.constant;
+package moim_today.global.constant.exception;
 
 public enum SpringExceptionConstant {
 

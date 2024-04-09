@@ -8,17 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/mails")
 public class MailController {
 
     private final AmazonSesService mailService;
 
     public MailController(final AmazonSesService mailService) {
         this.mailService = mailService;
-    }
-
-    @PostMapping("/mails/send")
-    public void sendMail(@RequestBody final MailSendRequest mailSendRequest){
-        mailService.send(mailSendRequest);
     }
 }

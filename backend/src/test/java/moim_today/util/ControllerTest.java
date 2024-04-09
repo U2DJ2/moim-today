@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import moim_today.fake_class.global.FakeInterceptor;
 import moim_today.global.argumentresolver.MemberLoginArgumentResolver;
 import moim_today.global.error.ApiRestControllerAdvice;
-import moim_today.global.interceptor.MemberLoginInterceptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.restdocs.RestDocumentationContextProvider;
@@ -23,8 +22,6 @@ public abstract class ControllerTest {
     @BeforeEach
     void setUp(final RestDocumentationContextProvider provider) {
         this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
-                .addInterceptors(new MemberLoginInterceptor(objectMapper))
-                .setCustomArgumentResolvers(new MemberLoginArgumentResolver())
                 .setControllerAdvice(new ApiRestControllerAdvice())
                 .setCustomArgumentResolvers(new MemberLoginArgumentResolver())
                 .addInterceptors(new FakeInterceptor(objectMapper))

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import static moim_today.global.constant.SpringExceptionConstant.*;
+import static moim_today.global.constant.exception.SpringExceptionConstant.*;
 
 @Slf4j
 @RestControllerAdvice

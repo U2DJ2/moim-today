@@ -17,8 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
-import static moim_today.global.constant.FileExceptionConstant.FILE_EXTENSION_ERROR;
-import static moim_today.global.constant.FileExceptionConstant.FILE_UPLOAD_ERROR;
+import static moim_today.global.constant.exception.FileExceptionConstant.FILE_EXTENSION_ERROR;
+import static moim_today.global.constant.exception.FileExceptionConstant.FILE_UPLOAD_ERROR;
 
 @Slf4j
 @Implement

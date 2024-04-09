@@ -10,7 +10,7 @@ import moim_today.global.error.InternalServerException;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
-import static moim_today.global.constant.SessionExceptionConstant.MEMBER_SESSION_JSON_PROCESSING_ERROR;
+import static moim_today.global.constant.exception.SessionExceptionConstant.MEMBER_SESSION_JSON_PROCESSING_ERROR;
 
 
 public class FakeInterceptor implements HandlerInterceptor {
