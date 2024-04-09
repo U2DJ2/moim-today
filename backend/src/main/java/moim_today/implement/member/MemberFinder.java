@@ -18,4 +18,9 @@ public class MemberFinder {
     public MemberJpaEntity getByEmail(final String email) {
         return memberRepository.getByEmail(email);
     }
+
+    @Transactional
+    public void validateEmailExists(final String email) {
+        memberRepository.validateEmailExists(email);
+    }
 }

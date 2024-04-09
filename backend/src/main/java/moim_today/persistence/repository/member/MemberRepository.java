@@ -8,5 +8,7 @@ public interface MemberRepository {
 
     MemberJpaEntity getByEmail(final String email);
 
+    void validateEmailExists(final String email);
+
     MemberJpaEntity getById(final long memberId);
 }

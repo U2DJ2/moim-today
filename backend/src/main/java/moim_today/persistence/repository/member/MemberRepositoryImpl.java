@@ -28,6 +28,12 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
+    public void validateEmailExists(final String email) {
+        memberJpaRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException(EMAIL_PASSWORD_ERROR.message()));
+    }
+
+    @Override
     public MemberJpaEntity getById(final long memberId) {
         return memberJpaRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException(MEMBER_NOT_FOUND_ERROR.message()));
