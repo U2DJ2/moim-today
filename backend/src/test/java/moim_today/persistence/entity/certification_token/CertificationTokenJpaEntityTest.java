@@ -15,7 +15,10 @@ class CertificationTokenJpaEntityTest {
     @Test
     void updateToken() {
         // given
-        CertificationTokenJpaEntity certificationTokenJpaEntity = CertificationTokenJpaEntity.toEntity(EMAIL.value());
+        CertificationTokenJpaEntity certificationTokenJpaEntity = CertificationTokenJpaEntity.builder()
+                .certificationToken(CERTIFICATION_TOKEN.value())
+                .build();
+
         String newToken = NEW_CERTIFICATION_TOKEN.value();
 
         // when

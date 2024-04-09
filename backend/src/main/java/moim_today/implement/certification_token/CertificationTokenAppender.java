@@ -23,12 +23,28 @@ public class CertificationTokenAppender {
     @Transactional
     public String createPasswordToken(final String email) {
         Optional<CertificationTokenJpaEntity> optionalEntity = certificationTokenRepository.findByEmail(email);
-        CertificationTokenJpaEntity certificationTokenJpaEntity
-                = optionalEntity.orElseGet(() -> CertificationTokenJpaEntity.toEntity(email));
+        String passwordToken = CertificationToken.createCertificationToken();
 
-        String randomToken = CertificationToken.createCertificationToken();
-        certificationTokenJpaEntity.updateToken(randomToken, CertificationType.PASSWORD, now().plusMinutes(10));
+        if (optionalEntity.isPresent()) {
+            updatePasswordToken(optionalEntity.get(), passwordToken);
+        } else {
+            createPasswordToken(email, passwordToken);
+        }
+
+        return passwordToken;
+    }
+
+    private void updatePasswordToken(final CertificationTokenJpaEntity certificationTokenJpaEntity,
+                                     final String passwordToken) {
+        certificationTokenJpaEntity.updateToken(passwordToken, CertificationType.PASSWORD, now().plusMinutes(10));
+    }
+
+    private void createPasswordToken(final String email, final String randomToken) {
+        CertificationTokenJpaEntity certificationTokenJpaEntity =
+                CertificationTokenJpaEntity.toEntity(
+                        email, randomToken, CertificationType.PASSWORD, now().plusMinutes(10)
+                );
+
         certificationTokenRepository.save(certificationTokenJpaEntity);
-        return randomToken;
     }
 }

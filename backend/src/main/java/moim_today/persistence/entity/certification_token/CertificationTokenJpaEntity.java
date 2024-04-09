@@ -38,9 +38,14 @@ public class CertificationTokenJpaEntity extends BaseTimeEntity {
         this.expiredDateTime = expiredDateTime;
     }
 
-    public static CertificationTokenJpaEntity toEntity(final String email) {
+    public static CertificationTokenJpaEntity toEntity(final String email, final String certificationToken,
+                                                       final CertificationType certificationType,
+                                                       final LocalDateTime expiredDateTime) {
         return CertificationTokenJpaEntity.builder()
                 .email(email)
+                .certificationToken(certificationToken)
+                .certificationType(certificationType)
+                .expiredDateTime(expiredDateTime)
                 .build();
     }
 
