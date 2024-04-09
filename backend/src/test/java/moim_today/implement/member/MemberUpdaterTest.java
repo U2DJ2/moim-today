@@ -100,7 +100,7 @@ class MemberUpdaterTest extends ImplementTest {
 
         // expected
         assertThatThrownBy(
-                () -> memberUpdater.recoverPassword("not match token", newPassword, expiredTime.minusMinutes(10))
+                () -> memberUpdater.recoverPassword(WRONG_CERTIFICATION_TOKEN.value(), newPassword, expiredTime.minusMinutes(10))
         )
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(MAIL_CERTIFICATION_TOKEN_NOT_FOUND_ERROR.message());
