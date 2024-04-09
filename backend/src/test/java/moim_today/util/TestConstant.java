@@ -1,10 +1,17 @@
 package moim_today.util;
 
 public enum TestConstant {
+
     EMAIL("email"),
-    PASSWORD("password"),
     WRONG_EMAIL("wrongEmail"),
-    WRONG_PASSWORD("wrongPassword");
+
+    PASSWORD("password"),
+    NEW_PASSWORD("newPassword"),
+    WRONG_PASSWORD("wrongPassword"),
+
+    CERTIFICATION_TOKEN("certificationToken"),
+    NEW_CERTIFICATION_TOKEN("newCertificationToken"),
+    WRONG_CERTIFICATION_TOKEN("wrongCertificationToken");
 
     private final String value;
 

@@ -28,7 +28,7 @@ class CertificationTokenControllerTest extends ControllerTest {
 
     @DisplayName("비밀번호 찾기 메일을 전송한다.")
     @Test
-    void updatePassword() throws Exception {
+    void sendPasswordFindMail() throws Exception {
         PasswordFindRequest passwordFindRequest = new PasswordFindRequest(EMAIL.value());
         String json = objectMapper.writeValueAsString(passwordFindRequest);
 
@@ -37,7 +37,29 @@ class CertificationTokenControllerTest extends ControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("비밀번호 찾기 메일 전송",
+                .andDo(document("비밀번호 찾기 메일 전송 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("인증 토큰")
+                                .summary("비밀번호 찾기 메일 전송")
+                                .requestFields(
+                                        fieldWithPath("email").type(STRING).description("이메일")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("메일이 존재하지 않으면 비밀번호 찾기 메일 전송에 실패한다.")
+    @Test
+    void sendPasswordFindMailFail() throws Exception {
+        PasswordFindRequest passwordFindRequest = new PasswordFindRequest(WRONG_EMAIL.value());
+        String json = objectMapper.writeValueAsString(passwordFindRequest);
+
+        mockMvc.perform(post("/api/certification-token/password")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isNotFound())
+                .andDo(document("메일이 존재하지 않으면 메일 전송 실패",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("인증 토큰")
                                 .summary("비밀번호 찾기 메일 전송")

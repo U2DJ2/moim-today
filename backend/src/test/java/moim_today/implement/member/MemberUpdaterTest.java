@@ -5,6 +5,7 @@ import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.certification_token.CertificationTokenJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.util.ImplementTest;
+import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ class MemberUpdaterTest extends ImplementTest {
         long memberId = memberJpaEntity.getId();
 
         // when
-        memberUpdater.updatePassword(memberId, "newPassword");
+        memberUpdater.updatePassword(memberId, NEW_PASSWORD.value());
 
         // then
         MemberJpaEntity findEntity = memberRepository.getById(memberId);
@@ -45,8 +46,8 @@ class MemberUpdaterTest extends ImplementTest {
     @Test
     void recoverPassword() {
         // given 1
-        String passwordToken = "passwordToken";
-        String newPassword = "newPassword";
+        String passwordToken = CERTIFICATION_TOKEN.value();
+        String newPassword = NEW_PASSWORD.value();
         LocalDateTime expiredTime = LocalDateTime.of(2024, 1, 1, 10, 00, 00);
 
         // given 2
@@ -77,8 +78,8 @@ class MemberUpdaterTest extends ImplementTest {
     @Test
     void recoverPasswordFailNotMatchToken() {
         // given 1
-        String passwordToken = "passwordToken";
-        String newPassword = "newPassword";
+        String passwordToken = CERTIFICATION_TOKEN.value();
+        String newPassword = NEW_PASSWORD.value();
         LocalDateTime expiredTime = LocalDateTime.of(2024, 1, 1, 10, 00, 00);
 
         // given 2
@@ -109,8 +110,8 @@ class MemberUpdaterTest extends ImplementTest {
     @Test
     void recoverPasswordFailExpiredToken() {
         // given 1
-        String passwordToken = "passwordToken";
-        String newPassword = "newPassword";
+        String passwordToken = CERTIFICATION_TOKEN.value();
+        String newPassword = NEW_PASSWORD.value();
         LocalDateTime expiredTime = LocalDateTime.of(2024, 1, 1, 10, 00, 00);
 
         // given 2

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.*;
 
 class CertificationTokenFinderTest extends ImplementTest {
@@ -17,7 +18,7 @@ class CertificationTokenFinderTest extends ImplementTest {
     @Test
     void getByCertificationToken() {
         // given
-        String certificationToken = "randomToken";
+        String certificationToken = CERTIFICATION_TOKEN.value();
         CertificationTokenJpaEntity certificationTokenJpaEntity = CertificationTokenJpaEntity.builder()
                 .certificationToken(certificationToken)
                 .build();

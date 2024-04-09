@@ -16,7 +16,7 @@ class CertificationTokenJpaEntityTest {
     void updateToken() {
         // given
         CertificationTokenJpaEntity certificationTokenJpaEntity = CertificationTokenJpaEntity.toEntity(EMAIL.value());
-        String newToken = "newToken";
+        String newToken = NEW_CERTIFICATION_TOKEN.value();
 
         // when
         certificationTokenJpaEntity.updateToken(newToken, CertificationType.PASSWORD, LocalDateTime.now());

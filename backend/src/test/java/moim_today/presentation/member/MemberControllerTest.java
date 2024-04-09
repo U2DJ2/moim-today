@@ -8,6 +8,7 @@ import moim_today.dto.member.PasswordUpdateRequest;
 import moim_today.fake_DB.FakeMemberSession;
 import moim_today.fake_class.member.FakeMemberService;
 import moim_today.util.ControllerTest;
+import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
@@ -15,6 +16,7 @@ import org.springframework.mock.web.MockHttpSession;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static moim_today.global.constant.MemberSessionConstant.*;
+import static moim_today.util.TestConstant.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -35,7 +37,8 @@ class MemberControllerTest extends ControllerTest {
     @DisplayName("인증 토큰을 기반으로 비밀번호를 수정한다.")
     @Test
     void recoverPassword() throws Exception {
-        PasswordRecoverRequest passwordRecoverRequest = new PasswordRecoverRequest("password token","newPassword");
+        PasswordRecoverRequest passwordRecoverRequest =
+                new PasswordRecoverRequest(CERTIFICATION_TOKEN.value(),NEW_PASSWORD.value());
         String json = objectMapper.writeValueAsString(passwordRecoverRequest);
 
         mockMvc.perform(post("/api/members/password-recovery")
@@ -58,7 +61,8 @@ class MemberControllerTest extends ControllerTest {
     @DisplayName("인증 토큰이 일치하지 않으면 비밀번호 수정에 실패한다")
     @Test
     void recoverPasswordFail() throws Exception {
-        PasswordRecoverRequest passwordRecoverRequest = new PasswordRecoverRequest("not match password token","newPassword");
+        PasswordRecoverRequest passwordRecoverRequest =
+                new PasswordRecoverRequest(WRONG_CERTIFICATION_TOKEN.value(),NEW_PASSWORD.value());
         String json = objectMapper.writeValueAsString(passwordRecoverRequest);
 
         mockMvc.perform(post("/api/members/password-recovery")
@@ -85,7 +89,7 @@ class MemberControllerTest extends ControllerTest {
     @DisplayName("비밀번호 수정에 성공한다.")
     @Test
     void updatePassword() throws Exception {
-        PasswordUpdateRequest passwordUpdateRequest = new PasswordUpdateRequest("newPassword");
+        PasswordUpdateRequest passwordUpdateRequest = new PasswordUpdateRequest(NEW_PASSWORD.value());
         String json = objectMapper.writeValueAsString(passwordUpdateRequest);
         MockHttpSession session = new MockHttpSession();
         MemberSession memberSession = FakeMemberSession.createMemberSession();

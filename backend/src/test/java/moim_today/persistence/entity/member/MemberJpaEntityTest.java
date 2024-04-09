@@ -22,10 +22,10 @@ class MemberJpaEntityTest {
                 .build();
 
         // when
-        memberJpaEntity.updatePassword(passwordEncoder, "newPassword");
+        memberJpaEntity.updatePassword(passwordEncoder, NEW_PASSWORD.value());
 
         // then
-        boolean isMatched = passwordEncoder.matches("newPassword", memberJpaEntity.getPassword());
+        boolean isMatched = passwordEncoder.matches(NEW_PASSWORD.value(), memberJpaEntity.getPassword());
         assertThat(isMatched).isTrue();
     }
 }
