@@ -28,7 +28,7 @@ public class CertificationTokenAppender {
 
         String randomToken = CertificationToken.createCertificationToken();
         certificationTokenJpaEntity.updateToken(randomToken, CertificationType.PASSWORD, now().plusMinutes(10));
-
+        certificationTokenRepository.save(certificationTokenJpaEntity);
         return randomToken;
     }
 }

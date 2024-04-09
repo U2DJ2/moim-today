@@ -33,18 +33,19 @@ public class MemberUpdater {
     }
 
     @Transactional
-    public void recoverPassword(final String passwordToken, final String newPassword) {
+    public void recoverPassword(final String passwordToken, final String newPassword, final LocalDateTime now) {
         CertificationTokenJpaEntity certificationTokenJpaEntity =
                 certificationTokenFinder.getByCertificationToken(passwordToken);
 
-        validateExpiredDateTime(certificationTokenJpaEntity);
+        validateExpiredDateTime(certificationTokenJpaEntity, now);
 
         MemberJpaEntity memberJpaEntity = memberRepository.getByEmail(certificationTokenJpaEntity.getEmail());
         memberJpaEntity.updatePassword(passwordEncoder, newPassword);
     }
 
-    private void validateExpiredDateTime(final CertificationTokenJpaEntity certificationTokenJpaEntity) {
+    private void validateExpiredDateTime(final CertificationTokenJpaEntity certificationTokenJpaEntity,
+                                         final LocalDateTime now) {
         CertificationToken certificationToken = CertificationToken.toDomain(certificationTokenJpaEntity);
-        certificationToken.validateExpiredDateTime(LocalDateTime.now());
+        certificationToken.validateExpiredDateTime(now);
     }
 }

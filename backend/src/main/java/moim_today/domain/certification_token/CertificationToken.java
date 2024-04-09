@@ -33,7 +33,7 @@ public record CertificationToken(
     }
 
     public void validateExpiredDateTime(final LocalDateTime now) {
-        if (expiredDateTime.isAfter(now)) {
+        if (expiredDateTime.isBefore(now)) {
             throw new BadRequestException(CERTIFICATION_EXPIRED_ERROR.message());
         }
     }

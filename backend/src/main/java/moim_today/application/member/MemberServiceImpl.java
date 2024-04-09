@@ -6,6 +6,8 @@ import moim_today.dto.member.PasswordUpdateRequest;
 import moim_today.implement.member.MemberUpdater;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class MemberServiceImpl implements MemberService {
 
@@ -22,6 +24,10 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void recoverPassword(final PasswordRecoverRequest passwordRecoverRequest) {
-        memberUpdater.recoverPassword(passwordRecoverRequest.passwordToken(), passwordRecoverRequest.newPassword());
+        memberUpdater.recoverPassword(
+                passwordRecoverRequest.passwordToken(),
+                passwordRecoverRequest.newPassword(),
+                LocalDateTime.now()
+        );
     }
 }
