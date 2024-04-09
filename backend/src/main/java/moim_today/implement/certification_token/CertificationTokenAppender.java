@@ -3,6 +3,7 @@ package moim_today.implement.certification_token;
 import moim_today.domain.certification_token.CertificationToken;
 import moim_today.domain.certification_token.CertificationType;
 import moim_today.global.annotation.Implement;
+import moim_today.global.constant.TimeConstant;
 import moim_today.persistence.entity.certification_token.CertificationTokenJpaEntity;
 import moim_today.persistence.repository.certification_token.CertificationTokenRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 import static java.time.LocalDateTime.*;
+import static moim_today.global.constant.TimeConstant.*;
 
 @Implement
 public class CertificationTokenAppender {
@@ -36,13 +38,15 @@ public class CertificationTokenAppender {
 
     private void updatePasswordToken(final CertificationTokenJpaEntity certificationTokenJpaEntity,
                                      final String passwordToken) {
-        certificationTokenJpaEntity.updateToken(passwordToken, CertificationType.PASSWORD, now().plusMinutes(10));
+        certificationTokenJpaEntity.updateToken(
+                passwordToken, CertificationType.PASSWORD, now().plusMinutes(TEN_MINUTES.time())
+        );
     }
 
     private void createPasswordToken(final String email, final String randomToken) {
         CertificationTokenJpaEntity certificationTokenJpaEntity =
                 CertificationTokenJpaEntity.toEntity(
-                        email, randomToken, CertificationType.PASSWORD, now().plusMinutes(10)
+                        email, randomToken, CertificationType.PASSWORD, now().plusMinutes(TEN_MINUTES.time())
                 );
 
         certificationTokenRepository.save(certificationTokenJpaEntity);
