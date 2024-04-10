@@ -1,8 +1,10 @@
 package moim_today.application.member;
 
 import moim_today.domain.member.MemberSession;
+import moim_today.dto.member.MemberProfileResponse;
 import moim_today.dto.member.PasswordRecoverRequest;
 import moim_today.dto.member.PasswordUpdateRequest;
+import moim_today.implement.member.MemberFinder;
 import moim_today.implement.member.MemberUpdater;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +15,12 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberUpdater memberUpdater;
 
-    public MemberServiceImpl(final MemberUpdater memberUpdater) {
+    private final MemberFinder memberFinder;
+
+    public MemberServiceImpl(final MemberUpdater memberUpdater,
+                             final MemberFinder memberFinder) {
         this.memberUpdater = memberUpdater;
+        this.memberFinder = memberFinder;
     }
 
     @Override
@@ -29,5 +35,10 @@ public class MemberServiceImpl implements MemberService {
                 passwordRecoverRequest.newPassword(),
                 LocalDateTime.now()
         );
+    }
+
+    @Override
+    public MemberProfileResponse getMemberProfile(final MemberSession memberSession) {
+        return memberFinder.getMemberProfile(memberSession.id());
     }
 }
