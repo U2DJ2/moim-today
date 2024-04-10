@@ -8,18 +8,17 @@ import moim_today.dto.member.PasswordUpdateRequest;
 import moim_today.fake_DB.FakeMemberSession;
 import moim_today.fake_class.member.FakeMemberService;
 import moim_today.util.ControllerTest;
-import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
-import static moim_today.global.constant.MemberSessionConstant.*;
+import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
 import static moim_today.util.TestConstant.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -107,6 +106,35 @@ class MemberControllerTest extends ControllerTest {
                                 .summary("비밀번호 수정")
                                 .requestFields(
                                         fieldWithPath("newPassword").type(STRING).description("수정 비밀번호")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("프로필을 조회에 성공한다.")
+    @Test
+    void getMemberProfile() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        MemberSession memberSession = FakeMemberSession.createMemberSession();
+        session.setAttribute(MEMBER_SESSION.value(), objectMapper.writeValueAsString(memberSession));
+
+        mockMvc.perform(get("/api/members/profile")
+                        .session(session)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("프로필 조회 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("회원")
+                                .summary("프로필 조회")
+                                .responseFields(
+                                        fieldWithPath("universityName").type(STRING).description("대학명"),
+                                        fieldWithPath("departmentName").type(STRING).description("주 전공"),
+                                        fieldWithPath("email").type(STRING).description("이메일"),
+                                        fieldWithPath("username").type(STRING).description("이름"),
+                                        fieldWithPath("studentId").type(STRING).description("학번"),
+                                        fieldWithPath("birthDate").type(ARRAY).description("생일"),
+                                        fieldWithPath("gender").type(STRING).description("성별"),
+                                        fieldWithPath("memberProfileImageUrl").type(STRING).description("프로필 이미지 url")
                                 )
                                 .build()
                         )));
