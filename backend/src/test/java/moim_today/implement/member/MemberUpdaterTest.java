@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 
 import static moim_today.global.constant.exception.CertificationConstant.CERTIFICATION_EXPIRED_ERROR;
+import static moim_today.global.constant.exception.DepartmentExceptionConstant.DEPARTMENT_NOT_MATCH_UNIVERSITY;
 import static moim_today.global.constant.exception.MailExceptionConstant.MAIL_CERTIFICATION_TOKEN_NOT_FOUND_ERROR;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -145,20 +146,20 @@ class MemberUpdaterTest extends ImplementTest {
     void updateProfile() {
         // given
         long universityId = 1L;
-        long departmentId = 2L;
 
         DepartmentJpaEntity departmentJpaEntity = DepartmentJpaEntity.builder()
                 .universityId(universityId)
                 .build();
 
+        departmentRepository.save(departmentJpaEntity);
+        long updateDepartmentId = departmentJpaEntity.getId();
+
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
                 .universityId(universityId)
-                .departmentId(departmentId)
+                .departmentId(updateDepartmentId)
                 .build();
 
-        departmentRepository.save(departmentJpaEntity);
         memberRepository.save(memberJpaEntity);
-        long updateDepartmentId = departmentJpaEntity.getId();
         long memberId = memberJpaEntity.getId();
         ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(updateDepartmentId);
 
