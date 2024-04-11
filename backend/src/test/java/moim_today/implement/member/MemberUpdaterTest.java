@@ -205,7 +205,7 @@ class MemberUpdaterTest extends ImplementTest {
     @Test
     void updateProfileUrl() {
         //given
-        String updateProfileUrl = "updateProfileUrl";
+        String updateProfileUrl = PROFILE_IMAGE_URL.value();
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
                 .build();
 

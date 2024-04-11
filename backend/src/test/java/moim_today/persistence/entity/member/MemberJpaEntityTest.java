@@ -52,7 +52,7 @@ class MemberJpaEntityTest {
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
                 .build();
 
-        String updateProfileUrl = "updateProfileUrl";
+        String updateProfileUrl = PROFILE_IMAGE_URL.value();
 
         // when
         memberJpaEntity.updateProfileImageUrl(updateProfileUrl);

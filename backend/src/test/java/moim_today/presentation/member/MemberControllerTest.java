@@ -153,17 +153,16 @@ class MemberControllerTest extends ControllerTest {
                                 )
                                 .build()
                         )));
-
     }
 
     @DisplayName("프로필 이미지를 수정하면 회원의 프로필 이미지 URL 정보가 변경된다.")
     @Test
     void updateProfileImage() throws Exception {
         MockMultipartFile file = new MockMultipartFile(
-                "file",
-                "filename.txt",
+                FILE_NAME.value(),
+                ORIGINAL_FILE_NAME.value(),
                 TEXT_PLAIN_VALUE,
-                "content".getBytes()
+                FILE_CONTENT.value().getBytes()
         );
 
         mockMvc.perform(MockMvcRequestBuilders

@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import static moim_today.global.constant.exception.MemberExceptionConstant.EMAIL_NOT_FOUND_ERROR;
 import static moim_today.global.constant.exception.MemberExceptionConstant.MEMBER_NOT_FOUND_ERROR;
-import static moim_today.util.TestConstant.EMAIL;
+import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.*;
 
 class MemberFinderTest extends ImplementTest {
@@ -52,7 +52,7 @@ class MemberFinderTest extends ImplementTest {
     void getProfileByMemberId() {
         // given1
         UniversityJpaEntity universityJpaEntity = UniversityJpaEntity.builder()
-                .universityName("universityName")
+                .universityName(UNIVERSITY_NAME.value())
                 .build();
 
         universityRepository.save(universityJpaEntity);
@@ -60,7 +60,7 @@ class MemberFinderTest extends ImplementTest {
 
         // given2
         DepartmentJpaEntity departmentJpaEntity = DepartmentJpaEntity.builder()
-                .departmentName("departmentName")
+                .departmentName(DEPARTMENT_NAME.value())
                 .universityId(universityId)
                 .build();
 
@@ -72,11 +72,11 @@ class MemberFinderTest extends ImplementTest {
                 .universityId(universityId)
                 .departmentId(departmentId)
                 .email(EMAIL.value())
-                .username("username")
-                .studentId("studentId")
+                .username(USERNAME.value())
+                .studentId(STUDENT_ID.value())
                 .birthDate(LocalDate.of(2000, 12, 18))
                 .gender(Gender.MALE)
-                .memberProfileImageUrl("testUrl")
+                .memberProfileImageUrl(PROFILE_IMAGE_URL.value())
                 .build();
 
         memberRepository.save(memberJpaEntity);
@@ -86,14 +86,14 @@ class MemberFinderTest extends ImplementTest {
         MemberProfileResponse memberProfileResponse = memberFinder.getMemberProfile(memberId);
 
         // then
-        assertThat(memberProfileResponse.universityName()).isEqualTo("universityName");
-        assertThat(memberProfileResponse.departmentName()).isEqualTo("departmentName");
+        assertThat(memberProfileResponse.universityName()).isEqualTo(UNIVERSITY_NAME.value());
+        assertThat(memberProfileResponse.departmentName()).isEqualTo(DEPARTMENT_NAME.value());
         assertThat(memberProfileResponse.email()).isEqualTo(EMAIL.value());
-        assertThat(memberProfileResponse.username()).isEqualTo("username");
-        assertThat(memberProfileResponse.studentId()).isEqualTo("studentId");
-        assertThat(memberProfileResponse.birthDate()).isEqualTo("2000-12-18");
+        assertThat(memberProfileResponse.username()).isEqualTo(USERNAME.value());
+        assertThat(memberProfileResponse.studentId()).isEqualTo(STUDENT_ID.value());
+        assertThat(memberProfileResponse.birthDate()).isEqualTo(LocalDate.of(2000,12,18));
         assertThat(memberProfileResponse.gender()).isEqualTo(Gender.MALE);
-        assertThat(memberProfileResponse.memberProfileImageUrl()).isEqualTo("testUrl");
+        assertThat(memberProfileResponse.memberProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL.value());
     }
 
     @DisplayName("memberId로 프로필 조회 실패시 프로필 예외가 발생한다.")
