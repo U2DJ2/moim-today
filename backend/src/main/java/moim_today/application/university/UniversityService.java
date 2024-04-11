@@ -8,5 +8,5 @@ public interface UniversityService {
 
     void putAllUniversity();
 
-    List<UniversityInfoResponse> getAllUniversity();
+    List<UniversityInfoResponse> getUniversities();
 }

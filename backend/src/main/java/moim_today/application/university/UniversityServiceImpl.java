@@ -24,7 +24,7 @@ public class UniversityServiceImpl implements UniversityService{
     }
 
     @Override
-    public List<UniversityInfoResponse> getAllUniversity() {
+    public List<UniversityInfoResponse> getUniversities() {
         return universityFinder.getAllUniversity();
     }
 }

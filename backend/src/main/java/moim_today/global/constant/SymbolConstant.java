@@ -5,6 +5,7 @@ public enum SymbolConstant {
     HYPHEN("-"),
     BLANK(""),
     WWW("www."),
+    CAPITAL_WWW("WWW."),
     SLASH("/"),
     EMAIL_EXTENSION("ac.kr");
 

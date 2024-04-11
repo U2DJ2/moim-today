@@ -21,24 +21,24 @@ public class UniversityController {
         this.departmentService = departmentService;
     }
 
-    @PutMapping("/university")
+    @PostMapping
     public void updateCollegeInfo(){
         universityService.putAllUniversity();
     }
 
-    @PutMapping("/department")
+    @PostMapping("/departments")
     public void updateDepartmentInfo(){
         departmentService.putAllDepartment();
     }
 
-    @GetMapping("/university")
-    public CollectionResponse<List<UniversityInfoResponse>> getUniversityInfo(){
-        return CollectionResponse.of(universityService.getAllUniversity());
+    @GetMapping
+    public CollectionResponse<List<UniversityInfoResponse>> getUniversity(){
+        return CollectionResponse.of(universityService.getUniversities());
     }
 
-    @GetMapping("/department")
-    public CollectionResponse<List<DepartmentInfoResponse>> getDepartmentInfoById(@RequestParam(defaultValue = "-1", required = false) long universityId,
-                                                                          @RequestParam(defaultValue = "", required = false) String universityName){
+    @GetMapping("/departments")
+    public CollectionResponse<List<DepartmentInfoResponse>> getDepartments(@RequestParam(defaultValue = "-1", required = false) long universityId,
+                                                                                  @RequestParam(defaultValue = "", required = false) String universityName){
         return CollectionResponse.of(departmentService.getAllDepartment(universityId, universityName));
     }
 }
