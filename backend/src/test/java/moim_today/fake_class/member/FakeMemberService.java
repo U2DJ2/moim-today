@@ -9,6 +9,7 @@ import moim_today.dto.member.PasswordUpdateRequest;
 import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.fake_DB.FakeMemberSession;
 import moim_today.global.error.NotFoundException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -51,6 +52,11 @@ public class FakeMemberService implements MemberService {
 
     @Override
     public void updateProfile(final long memberId, final long universityId, final ProfileUpdateRequest profileUpdateRequest) {
+
+    }
+
+    @Override
+    public void updateProfileImage(final long memberId, final MultipartFile file) {
 
     }
 }

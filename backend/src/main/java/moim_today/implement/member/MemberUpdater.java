@@ -62,4 +62,10 @@ public class MemberUpdater {
         departmentFinder.validateDepartmentId(universityId, profileUpdateRequest.departmentId());
         memberJpaEntity.updateProfile(profileUpdateRequest.departmentId());
     }
+
+    @Transactional
+    public void updateProfileImageUrl(final long memberId, final String profileImageUrl) {
+        MemberJpaEntity memberJpaEntity = memberRepository.getById(memberId);
+        memberJpaEntity.updateProfileImageUrl(profileImageUrl);
+    }
 }

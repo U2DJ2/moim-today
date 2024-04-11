@@ -8,6 +8,7 @@ import moim_today.dto.member.PasswordUpdateRequest;
 import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping("/api/members")
 @RestController
@@ -39,5 +40,11 @@ public class MemberController {
     public void updateProfile(@Login final MemberSession memberSession,
                               @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
         memberService.updateProfile(memberSession.id(), memberSession.universityId(), profileUpdateRequest);
+    }
+
+    @PatchMapping("/profile-image")
+    public void updateProfileImage(@Login final MemberSession memberSession,
+                                   @RequestPart final MultipartFile file) {
+        memberService.updateProfileImage(memberSession.id(), file);
     }
 }
