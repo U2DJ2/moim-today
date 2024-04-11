@@ -4,6 +4,7 @@ import moim_today.application.department.DepartmentService;
 import moim_today.application.university.UniversityService;
 import moim_today.dto.department.DepartmentInfoResponse;
 import moim_today.dto.university.UniversityInfoResponse;
+import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,13 +32,13 @@ public class UniversityController {
     }
 
     @GetMapping("/university")
-    public List<UniversityInfoResponse> getUniversityInfo(){
-        return universityService.getAllUniversity();
+    public CollectionResponse<List<UniversityInfoResponse>> getUniversityInfo(){
+        return CollectionResponse.of(universityService.getAllUniversity());
     }
 
     @GetMapping("/department")
-    public List<DepartmentInfoResponse> getDepartmentInfoById(@RequestParam(defaultValue = "-1", required = false) long universityId,
-                                                              @RequestParam(defaultValue = "", required = false) String universityName){
-        return departmentService.getAllDepartment(universityId, universityName);
+    public CollectionResponse<List<DepartmentInfoResponse>> getDepartmentInfoById(@RequestParam(defaultValue = "-1", required = false) long universityId,
+                                                                          @RequestParam(defaultValue = "", required = false) String universityName){
+        return CollectionResponse.of(departmentService.getAllDepartment(universityId, universityName));
     }
 }
