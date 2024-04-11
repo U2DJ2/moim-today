@@ -1,7 +1,17 @@
+import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
+
+buildscript {
+    ext {
+        restdocsApiSpecVersion = '0.17.1'
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.3'
     id 'io.spring.dependency-management' version '1.1.4'
+    id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
+    id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'u2dj2'
@@ -21,12 +31,38 @@ repositories {
     mavenCentral()
 }
 
+swaggerSources {
+    sample {
+        setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
+    }
+}
+
+openapi3 {
+    servers = [
+            { url = "http://localhost:8080" }
+    ]
+    title = "API 문서"
+    description = "U2DJ2 API Docs"
+    version = "0.0.1"
+    format = "yaml"
+}
+
+ext {
+    set('snippetsDir', file("build/generated-snippets"))
+}
+
 dependencies {
     // web
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     // spring data jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // Querydsl
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
     // h2
     runtimeOnly 'com.h2database:h2'
@@ -40,8 +76,60 @@ dependencies {
 
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // RestDocs
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+    // openAPI3
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:' + restdocsApiSpecVersion
+
+    // SwaggerUI
+    swaggerUI 'org.webjars:swagger-ui:4.11.1'
+
+    // Actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // prometheus
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
+    //thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    //mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'com.amazonaws:aws-java-sdk-ses:1.12.408'
+
+    //AWS S3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('test') {
+    outputs.dir snippetsDir
     useJUnitPlatform()
 }
+
+tasks.withType(GenerateSwaggerUI) {
+    dependsOn 'openapi3'
+    doFirst {
+        def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.yaml")
+
+        def securitySchemesContent =  "  securitySchemes:\n" +  \
+                                      "    APIKey:\n" +  \
+                                      "      type: apiKey\n" +  \
+                                      "      name: Authorization\n" +  \
+                                      "      in: header\n" + \
+                                      "security:\n" +
+                "  - APIKey: []  # Apply the security scheme here"
+
+        swaggerUIFile.append securitySchemesContent
+    }
+}
+
+bootJar {
+    dependsOn generateSwaggerUISample
+    from("${generateSwaggerUISample.outputDir}") {
+        into 'static/docs'
+    }
+}
+
+jar.enabled = false

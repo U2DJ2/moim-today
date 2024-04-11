@@ -1,0 +1,24 @@
+name: Deploy Backend Application
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add SSH key to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan ${{ secrets.BE_SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy Backend application
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.BE_SERVER_IP }} "bash /home/ubuntu/deploy/deploy.sh"
