@@ -56,7 +56,6 @@ public class DepartmentAppender {
             for(JsonNode item : content){
                 String majorSeq = item.get(MAJOR_SEQ.value()).asText();
                 allMajor.add(majorSeq);
-                System.out.println(majorSeq);
             }
 
             return allMajor;
@@ -67,7 +66,6 @@ public class DepartmentAppender {
 
     public void fetchUniversitiesByDepartment(final String majorSeq){
         String url = UNIVERSITY_API_URL.value()+apiKey+FETCH_ALL_UNIVERSITY_BY_DEPARTMENT_URL.value()+majorSeq;
-
         String response = restTemplate.getForObject(url, String.class);
 
         try {

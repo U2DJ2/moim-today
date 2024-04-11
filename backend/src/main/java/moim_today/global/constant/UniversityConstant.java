@@ -10,7 +10,7 @@ public enum UniversityConstant {
     LINK("link"),
     SCHOOL_NAME("schoolName"),
     SCHOOL_TYPE("schoolType"),
-    UNIVERSITY("UNIVERSITY"),
+    UNIVERSITY("university"),
     MAJOR_NAME("majorName"),
     UNIVERSITY_API_URL("http://www.career.go.kr/cnet/openapi/getOpenApi?apiKey="),
     FETCH_ALL_UNIVERSITY_URL("&contentType=json&svcType=api&svcCode=SCHOOL&gubun=univ_list&perPage=475"),
