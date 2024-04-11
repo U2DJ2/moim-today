@@ -4,6 +4,7 @@ import moim_today.domain.member.MemberSession;
 import moim_today.dto.member.MemberProfileResponse;
 import moim_today.dto.member.PasswordRecoverRequest;
 import moim_today.dto.member.PasswordUpdateRequest;
+import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.implement.member.MemberFinder;
 import moim_today.implement.member.MemberUpdater;
 import org.springframework.stereotype.Service;
@@ -40,5 +41,12 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberProfileResponse getMemberProfile(final MemberSession memberSession) {
         return memberFinder.getMemberProfile(memberSession.id());
+    }
+
+    @Override
+    public void updateProfile(final long memberId,
+                              final long universityId,
+                              final ProfileUpdateRequest profileUpdateRequest) {
+        memberUpdater.updateProfile(memberId, universityId, profileUpdateRequest);
     }
 }

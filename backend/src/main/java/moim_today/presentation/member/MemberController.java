@@ -5,6 +5,7 @@ import moim_today.domain.member.MemberSession;
 import moim_today.dto.member.MemberProfileResponse;
 import moim_today.dto.member.PasswordRecoverRequest;
 import moim_today.dto.member.PasswordUpdateRequest;
+import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,5 +33,11 @@ public class MemberController {
     @GetMapping("/profile")
     public MemberProfileResponse getMemberProfile(@Login final MemberSession memberSession) {
         return memberService.getMemberProfile(memberSession);
+    }
+
+    @PatchMapping("/profile")
+    public void updateProfile(@Login final MemberSession memberSession,
+                              @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
+        memberService.updateProfile(memberSession.id(), memberSession.universityId(), profileUpdateRequest);
     }
 }
