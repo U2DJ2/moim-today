@@ -6,6 +6,7 @@ import moim_today.domain.member.enums.Gender;
 import moim_today.dto.member.MemberProfileResponse;
 import moim_today.dto.member.PasswordRecoverRequest;
 import moim_today.dto.member.PasswordUpdateRequest;
+import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.fake_DB.FakeMemberSession;
 import moim_today.global.error.NotFoundException;
 
@@ -46,5 +47,10 @@ public class FakeMemberService implements MemberService {
                 .gender(Gender.MALE)
                 .memberProfileImageUrl("testUrl")
                 .build();
+    }
+
+    @Override
+    public void updateProfile(final long memberId, final long universityId, final ProfileUpdateRequest profileUpdateRequest) {
+
     }
 }

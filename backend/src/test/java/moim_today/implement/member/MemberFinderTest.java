@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static moim_today.global.constant.exception.MemberExceptionConstant.EMAIL_NOT_FOUND_ERROR;
 import static moim_today.global.constant.exception.MemberExceptionConstant.MEMBER_NOT_FOUND_ERROR;
 import static moim_today.util.TestConstant.EMAIL;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class MemberFinderTest extends ImplementTest {
 
@@ -50,19 +50,27 @@ class MemberFinderTest extends ImplementTest {
     @DisplayName("memberId로 프로필 조회 성공시 프로필 정보를 반환한다.")
     @Test
     void getProfileByMemberId() {
-        // given
+        // given1
         UniversityJpaEntity universityJpaEntity = UniversityJpaEntity.builder()
                 .universityName("universityName")
                 .build();
 
+        universityRepository.save(universityJpaEntity);
+        long universityId = universityJpaEntity.getId();
+
+        // given2
         DepartmentJpaEntity departmentJpaEntity = DepartmentJpaEntity.builder()
                 .departmentName("departmentName")
-                .universityId(1L)
+                .universityId(universityId)
                 .build();
 
+        departmentRepository.save(departmentJpaEntity);
+        long departmentId = departmentJpaEntity.getId();
+
+        // given3
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
-                .universityId(1L)
-                .departmentId(1L)
+                .universityId(universityId)
+                .departmentId(departmentId)
                 .email(EMAIL.value())
                 .username("username")
                 .studentId("studentId")
@@ -71,12 +79,11 @@ class MemberFinderTest extends ImplementTest {
                 .memberProfileImageUrl("testUrl")
                 .build();
 
-        universityRepository.save(universityJpaEntity);
-        departmentRepository.save(departmentJpaEntity);
         memberRepository.save(memberJpaEntity);
+        long memberId = memberJpaEntity.getId();
 
         // when
-        MemberProfileResponse memberProfileResponse = memberFinder.getMemberProfile(memberJpaEntity.getId());
+        MemberProfileResponse memberProfileResponse = memberFinder.getMemberProfile(memberId);
 
         // then
         assertThat(memberProfileResponse.universityName()).isEqualTo("universityName");

@@ -5,6 +5,7 @@ import moim_today.application.member.MemberService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.member.PasswordRecoverRequest;
 import moim_today.dto.member.PasswordUpdateRequest;
+import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.fake_DB.FakeMemberSession;
 import moim_today.fake_class.member.FakeMemberService;
 import moim_today.util.ControllerTest;
@@ -18,8 +19,7 @@ import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
 import static moim_today.util.TestConstant.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -138,5 +138,32 @@ class MemberControllerTest extends ControllerTest {
                                 )
                                 .build()
                         )));
+    }
+
+    @DisplayName("프로필을 정보를 수정한다.")
+    @Test
+    void updateProfile() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        MemberSession memberSession = FakeMemberSession.createMemberSession();
+        session.setAttribute(MEMBER_SESSION.value(), objectMapper.writeValueAsString(memberSession));
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(1L);
+        String json = objectMapper.writeValueAsString(profileUpdateRequest);
+
+        mockMvc.perform(patch("/api/members/profile")
+                        .session(session)
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("프로필 정보 수정 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("회원")
+                                .summary("프로필 정보 수정")
+                                .requestFields(
+                                        fieldWithPath("departmentId").type(NUMBER).description("주 전공 아이디")
+                                )
+                                .build()
+                        )));
+
     }
 }

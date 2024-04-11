@@ -1,11 +1,12 @@
 package moim_today.implement.member;
 
+import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.certification_token.CertificationTokenJpaEntity;
+import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.util.ImplementTest;
-import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,8 @@ import java.time.LocalDateTime;
 import static moim_today.global.constant.exception.CertificationConstant.CERTIFICATION_EXPIRED_ERROR;
 import static moim_today.global.constant.exception.MailExceptionConstant.MAIL_CERTIFICATION_TOKEN_NOT_FOUND_ERROR;
 import static moim_today.util.TestConstant.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MemberUpdaterTest extends ImplementTest {
 
@@ -136,5 +138,35 @@ class MemberUpdaterTest extends ImplementTest {
         )
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage(CERTIFICATION_EXPIRED_ERROR.message());
+    }
+
+    @DisplayName("사용자가 입력한 프로필 정보로 사용자 정보를 수정한다.")
+    @Test
+    void updateProfile() {
+        // given
+        long universityId = 1L;
+        long departmentId = 2L;
+
+        DepartmentJpaEntity departmentJpaEntity = DepartmentJpaEntity.builder()
+                .universityId(universityId)
+                .build();
+
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .universityId(universityId)
+                .departmentId(departmentId)
+                .build();
+
+        departmentRepository.save(departmentJpaEntity);
+        memberRepository.save(memberJpaEntity);
+        long updateDepartmentId = departmentJpaEntity.getId();
+        long memberId = memberJpaEntity.getId();
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(updateDepartmentId);
+
+        // when
+        memberUpdater.updateProfile(memberId, universityId, profileUpdateRequest);
+
+        // then
+        MemberJpaEntity findEntity = memberRepository.getById(memberId);
+        assertThat(findEntity.getDepartmentId()).isEqualTo(updateDepartmentId);
     }
 }
