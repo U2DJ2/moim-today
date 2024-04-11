@@ -171,6 +171,36 @@ class MemberUpdaterTest extends ImplementTest {
         assertThat(findEntity.getDepartmentId()).isEqualTo(updateDepartmentId);
     }
 
+    @DisplayName("사용자의 대학교에 수정 요청한 전공 ID가 없을 경우 예외를 발생시킨다.")
+    @Test
+    void updateProfileNotMatchUniversity() {
+        // given
+        long universityId_1 = 1L;
+        long universityId_2 = 2L;
+
+        DepartmentJpaEntity departmentJpaEntity = DepartmentJpaEntity.builder()
+                .universityId(universityId_1)
+                .build();
+
+        departmentRepository.save(departmentJpaEntity);
+        long updateDepartmentId = departmentJpaEntity.getId();
+
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .universityId(universityId_2)
+                .departmentId(updateDepartmentId)
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        long memberId = memberJpaEntity.getId();
+
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(updateDepartmentId);
+
+        // when & then
+        assertThatThrownBy(() -> memberUpdater.updateProfile(memberId, universityId_2, profileUpdateRequest))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(DEPARTMENT_NOT_MATCH_UNIVERSITY.message());
+    }
+
     @DisplayName("파일을 업로드하여 받아온 URL을 회원 프로필 URL에 업데이트 한다.")
     @Test
     void updateProfileUrl() {
