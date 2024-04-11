@@ -3,10 +3,7 @@ package moim_today.presentation.university;
 import moim_today.application.department.DepartmentService;
 import moim_today.application.university.UniversityService;
 import moim_today.dto.university.UniversityInfoResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,5 +32,11 @@ public class UniversityController {
     @GetMapping("/university")
     public List<UniversityInfoResponse> getUniversityInfo(){
         return universityService.getAllUniversity();
+    }
+
+    @GetMapping("/department")
+    public List<String> getDepartmentInfoById(@RequestParam(defaultValue = "-1", required = false) long universityId,
+                                              @RequestParam(defaultValue = "", required = false) String universityName){
+        return departmentService.getAllDepartment(universityId, universityName);
     }
 }
