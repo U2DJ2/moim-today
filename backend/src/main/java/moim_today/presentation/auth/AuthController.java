@@ -18,7 +18,7 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/auth")
+    @PostMapping("/login")
     public void login(@RequestBody final MemberLoginRequest memberLoginRequest,
                       final HttpServletRequest request) {
         authService.login(memberLoginRequest, request);
