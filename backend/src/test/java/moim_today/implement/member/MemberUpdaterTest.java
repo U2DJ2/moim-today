@@ -169,4 +169,23 @@ class MemberUpdaterTest extends ImplementTest {
         MemberJpaEntity findEntity = memberRepository.getById(memberId);
         assertThat(findEntity.getDepartmentId()).isEqualTo(updateDepartmentId);
     }
+
+    @DisplayName("파일을 업로드하여 받아온 URL을 회원 프로필 URL에 업데이트 한다.")
+    @Test
+    void updateProfileUrl() {
+        //given
+        String updateProfileUrl = "updateProfileUrl";
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        long memberId = memberJpaEntity.getId();
+
+        //when
+        memberUpdater.updateProfileImageUrl(memberId, updateProfileUrl);
+
+        //then
+        MemberJpaEntity entity = memberRepository.getById(memberId);
+        assertThat(entity.getMemberProfileImageUrl()).isEqualTo(updateProfileUrl);
+    }
 }

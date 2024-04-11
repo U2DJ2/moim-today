@@ -41,7 +41,8 @@ class FileControllerTest extends ControllerTest {
                 .andDo(document("파일 업로드",
                         requestParts(
                                 partWithName("file").description("업로드할 파일")
-                )));
+                        )
+                ));
     }
 
     @DisplayName("파일 삭제 테스트")
