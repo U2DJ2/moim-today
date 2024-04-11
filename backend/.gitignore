@@ -5,6 +5,10 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### Generated ###
+**/src/main/generated/
+
+### Properties ###
 application.yml
 application-dev.yml
 application-prod.yml
