@@ -43,6 +43,10 @@ jobs:
           echo "${{ secrets.TEST_APPLICATION_TEST_YML }}" > src/test/resources/application-test.yml
         working-directory: backend
 
+      - name: Grant execute permission for Gradlew
+        run: chmod +x ./gradlew
+        working-directory: backend
+
       - name: Build with Gradle
         run: ./gradlew build
         working-directory: backend
