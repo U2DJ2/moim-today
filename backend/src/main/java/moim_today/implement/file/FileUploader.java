@@ -33,10 +33,9 @@ public class FileUploader {
         this.amazonS3 = amazonS3;
     }
 
-    public FileInfoResponse uploadFile(final MemberSession memberSession, final MultipartFile multipartFile) {
-        long memberId = memberSession.id();
-        long universityId = memberSession.universityId();
-        String uploadFolder = universityId+"/"+memberId;
+    public FileInfoResponse uploadFile(final String fileType, final MultipartFile multipartFile) {
+
+        String uploadFolder = fileType;
 
         String originalFileName = multipartFile.getOriginalFilename();
         String uploadFileName = createFileName(originalFileName);

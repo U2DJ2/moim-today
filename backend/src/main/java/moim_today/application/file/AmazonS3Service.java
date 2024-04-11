@@ -20,8 +20,8 @@ public class AmazonS3Service implements FileService{
         this.fileRemover = fileRemover;
     }
 
-    public FileInfoResponse uploadFile(final MemberSession memberSession, final MultipartFile multipartFile){
-        return fileUploader.uploadFile(memberSession, multipartFile);
+    public FileInfoResponse uploadFile(final String fileType, final MultipartFile multipartFile){
+        return fileUploader.uploadFile(fileType, multipartFile);
     }
 
     public void deleteFile(final MemberSession memberSession, final FileDeleteRequest fileDeleteRequest){

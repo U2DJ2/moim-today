@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FakeFileService implements FileService {
 
     @Override
-    public FileInfoResponse uploadFile(final MemberSession memberSession, final MultipartFile multipartFile) {
+    public FileInfoResponse uploadFile(final String fileType, final MultipartFile multipartFile) {
         return new FileInfoResponse("testUploadFileUrl");
     }
 
