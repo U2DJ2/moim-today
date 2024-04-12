@@ -1,5 +1,6 @@
 package moim_today.persistence.repository.department;
 
+import moim_today.dto.department.DepartmentInfoResponse;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import org.springframework.stereotype.Repository;
@@ -23,11 +24,9 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
-    public List<String> findAllDepartmentOfUniversity(final long universityId) {
+    public List<DepartmentInfoResponse> findAllDepartmentOfUniversity(final long universityId) {
         return departmentJpaRepository.findAllByUniversityId(universityId).stream()
-                .map((DepartmentJpaEntity departmentJpaEntity) -> {
-                    return departmentJpaEntity.getDepartmentName();
-                })
+                .map(DepartmentInfoResponse::of)
                 .toList();
     }
 

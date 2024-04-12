@@ -2,6 +2,7 @@ package moim_today.presentation.university;
 
 import moim_today.application.department.DepartmentService;
 import moim_today.application.university.UniversityService;
+import moim_today.dto.department.DepartmentInfoResponse;
 import moim_today.dto.university.UniversityInfoResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +36,8 @@ public class UniversityController {
     }
 
     @GetMapping("/department")
-    public List<String> getDepartmentInfoById(@RequestParam(defaultValue = "-1", required = false) long universityId,
-                                              @RequestParam(defaultValue = "", required = false) String universityName){
+    public List<DepartmentInfoResponse> getDepartmentInfoById(@RequestParam(defaultValue = "-1", required = false) long universityId,
+                                                              @RequestParam(defaultValue = "", required = false) String universityName){
         return departmentService.getAllDepartment(universityId, universityName);
     }
 }

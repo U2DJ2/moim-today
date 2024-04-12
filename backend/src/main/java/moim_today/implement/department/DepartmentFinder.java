@@ -1,5 +1,6 @@
 package moim_today.implement.department;
 
+import moim_today.dto.department.DepartmentInfoResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
 import moim_today.persistence.repository.department.DepartmentRepository;
@@ -20,7 +21,7 @@ public class DepartmentFinder {
         this.universityRepository = universityRepository;
     }
 
-    public List<String> getAllDepartment(final long universityId, final String universityName){
+    public List<DepartmentInfoResponse> getAllDepartment(final long universityId, final String universityName){
         if(universityId != -1){
             return getAllDepartmentByUniversityId(universityId);
         }
@@ -30,11 +31,11 @@ public class DepartmentFinder {
         throw new BadRequestException(UNIVERSITY_SEARCH_CONDITIONS_INSUFFICIENT.message());
     }
 
-    private List<String> getAllDepartmentByUniversityId(final long universityId) {
+    private List<DepartmentInfoResponse> getAllDepartmentByUniversityId(final long universityId) {
         return departmentRepository.findAllDepartmentOfUniversity(universityId);
     }
 
-    private List<String> getAllDepartmentByUniversityName(final String universityName) {
+    private List<DepartmentInfoResponse> getAllDepartmentByUniversityName(final String universityName) {
         long universityId = universityRepository.getByName(universityName).getId();
         return departmentRepository.findAllDepartmentOfUniversity(universityId);
     }

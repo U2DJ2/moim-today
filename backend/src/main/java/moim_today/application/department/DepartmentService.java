@@ -1,10 +1,12 @@
 package moim_today.application.department;
 
+import moim_today.dto.department.DepartmentInfoResponse;
+
 import java.util.List;
 
 public interface DepartmentService {
 
     void putAllDepartment();
 
-    List<String> getAllDepartment(long universityId, String universityName);
+    List<DepartmentInfoResponse> getAllDepartment(long universityId, String universityName);
 }

@@ -5,15 +5,14 @@ import moim_today.persistence.entity.university.UniversityJpaEntity;
 
 @Builder
 public record UniversityInfoResponse (
-        long universityId,
-        String name,
-        String universityEmail
+    long universityId,
+    String universityName,
+    String universityEmail
 ){
-
-    public static UniversityInfoResponse of(UniversityJpaEntity universityJpaEntity){
+    public static UniversityInfoResponse of(final UniversityJpaEntity universityJpaEntity){
         return UniversityInfoResponse.builder()
                 .universityId(universityJpaEntity.getId())
-                .name(universityJpaEntity.getUniversityName())
+                .universityName(universityJpaEntity.getUniversityName())
                 .universityEmail(universityJpaEntity.getUniversityEmail())
                 .build();
     }
