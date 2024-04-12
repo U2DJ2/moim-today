@@ -2,7 +2,7 @@ package moim_today.global.constant;
 
 public enum FileTypeConstant {
 
-    PROFILE_IMAGE("/profile"),
+    PROFILE_IMAGE("profile"),
     MOIM_IMAGE("moim");
 
     private final String value;
