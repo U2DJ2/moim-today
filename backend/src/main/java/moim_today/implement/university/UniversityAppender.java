@@ -6,31 +6,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import moim_today.domain.university.ExtractUniversity;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.InternalServerException;
-import moim_today.persistence.entity.university.UniversityJpaEntity;
-import moim_today.persistence.repository.university.UniversityRepository;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.web.client.RestTemplate;
 
 import static moim_today.global.constant.UniversityConstant.*;
 import static moim_today.global.constant.exception.CrawlingExceptionConstant.CRAWLING_PARSE_ERROR;
 
-@Profile({"prod", "dev"})
 @Implement
 public class UniversityAppender {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-    private final UniversityRepository universityRepository;
+    private final UniversityUpdater universityUpdater;
 
     @Value("${university.api.key}")
     private String apiKey;
 
-    public UniversityAppender(final RestTemplate restTemplate, final ObjectMapper objectMapper,
-                              final UniversityRepository universityRepository) {
+    public UniversityAppender(final RestTemplate restTemplate, final ObjectMapper objectMapper, final UniversityUpdater universityUpdater) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
-        this.universityRepository = universityRepository;
+        this.universityUpdater = universityUpdater;
     }
 
     public void fetchAllUniversity(){
@@ -42,28 +37,16 @@ public class UniversityAppender {
             JsonNode content = root.path(DATA_SEARCH.value()).path(CONTENT.value());
 
             for (JsonNode item : content) {
-                ExtractUniversity extractUniversity = objectMapper.readValue(item.asText(), ExtractUniversity.class);
+                ExtractUniversity extractUniversity = objectMapper.readValue(item.toPrettyString(), ExtractUniversity.class);
                 if(!extractUniversity.checkUniversityType()){
                     continue;
                 }
                 extractUniversity.extractEmailExtension();
-                putUniversity(extractUniversity.toEntity());
+                universityUpdater.putUniversity(extractUniversity.toEntity());
             }
         } catch (JsonProcessingException e){
+            e.printStackTrace();
             throw new InternalServerException(CRAWLING_PARSE_ERROR.message());
-        }
-    }
-
-    public void putUniversity(UniversityJpaEntity universityJpaEntity){
-        UniversityJpaEntity findUniversity = universityRepository.findByName(universityJpaEntity.getUniversityName());
-
-        if(findUniversity == null){
-            universityRepository.save(universityJpaEntity);
-            return;
-        }
-        if(!universityJpaEntity.getUniversityEmail().isEmpty()){
-            findUniversity.updateEmail(universityJpaEntity.getUniversityEmail());
-            universityRepository.save(findUniversity);
         }
     }
 }

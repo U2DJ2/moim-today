@@ -1,6 +1,5 @@
 package moim_today.domain.university;
 
-import lombok.Builder;
 import lombok.Getter;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
 
@@ -12,22 +11,27 @@ import static moim_today.global.constant.UniversityConstant.ASSOCIATE_DEGREE;
 import static moim_today.global.constant.UniversityConstant.GRADUATE_DEGREE;
 
 @Getter
-@Builder
 public class ExtractUniversity {
 
     private String link;
     private final String schoolName;
     private final String schoolType;
 
+    public ExtractUniversity(final String link, final String schoolName, final String schoolType) {
+        this.link = link;
+        this.schoolName = schoolName;
+        this.schoolType = schoolType;
+    }
+
     public String extractEmailExtension() {
-       link = parseHttp(link);
-       link = extractSubstringAfter(WWW.value());
-       link = extractSubstringBefore(EMAIL_EXTENSION.value());
+        link = parseHttp(link);
+        link = extractSubstringAfter(WWW.value());
+        link = extractSubstringBefore(EMAIL_EXTENSION.value());
 
         return link;
     }
 
-    private String parseHttp(String link){
+    private String parseHttp(String link) {
         int slashCnt = 0;
         while (slashCnt < MAX_SLASH_CNT.value()) {
             int index = link.indexOf(SLASH.value());
@@ -40,7 +44,7 @@ public class ExtractUniversity {
         return link;
     }
 
-    private String extractSubstringAfter(final String startString){
+    private String extractSubstringAfter(final String startString) {
         int startStringIndex = link.indexOf(startString);
         if (startStringIndex != -1) {
             link = link.substring(startStringIndex + startString.length());
@@ -48,7 +52,7 @@ public class ExtractUniversity {
         return link;
     }
 
-    private String extractSubstringBefore(final String startString){
+    private String extractSubstringBefore(final String startString) {
         int startStringIndex = link.indexOf(startString);
         if (startStringIndex != -1) {
             link = link.substring(0, startStringIndex + startString.length());

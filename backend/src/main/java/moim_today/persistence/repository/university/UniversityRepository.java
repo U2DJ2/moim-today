@@ -8,8 +8,6 @@ public interface UniversityRepository {
 
     void save(final UniversityJpaEntity universityJpaEntity);
 
-    void put(final UniversityJpaEntity universityJpaEntity);
-
     UniversityJpaEntity getByName(final String name);
 
     UniversityJpaEntity findByName(final String name);

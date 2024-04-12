@@ -25,9 +25,12 @@ public abstract class ImplementTest {
     protected UniversityRepository universityRepository;
 
     @Autowired
+<<<<<<< HEAD
     protected DepartmentRepository departmentRepository;
 
     @Autowired
+=======
+>>>>>>> 29b17a6 ([BE] fix : json 파싱 에러 해결)
     protected PasswordEncoder passwordEncoder;
 
     @BeforeEach

@@ -23,20 +23,6 @@ public class UniversityRepositoryImpl implements UniversityRepository {
     }
 
     @Override
-    public void put(final UniversityJpaEntity universityJpaEntity) {
-        UniversityJpaEntity findUniversity = findByName(universityJpaEntity.getUniversityName());
-
-        if(findUniversity == null){
-            universityJpaRepository.save(universityJpaEntity);
-            return;
-        }
-        if(!universityJpaEntity.getUniversityEmail().isEmpty()){
-            findUniversity.updateEmail(universityJpaEntity.getUniversityEmail());
-            universityJpaRepository.save(findUniversity);
-        }
-    }
-
-    @Override
     public UniversityJpaEntity getByName(final String universityName) {
         return universityJpaRepository.findByUniversityName(universityName)
                 .orElseThrow(() -> new NotFoundException(universityName+UNIVERSITY_NOT_FOUND.message()));
