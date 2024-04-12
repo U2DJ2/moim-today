@@ -1,5 +1,6 @@
 package moim_today.implement.member;
 
+import moim_today.dto.member.MemberProfileResponse;
 import moim_today.persistence.repository.member.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,5 +17,10 @@ public class MemberFinder {
     @Transactional
     public void validateEmailExists(final String email) {
         memberRepository.validateEmailExists(email);
+    }
+
+    @Transactional(readOnly = true)
+    public MemberProfileResponse getMemberProfile(final long memberId) {
+        return memberRepository.getMemberProfile(memberId);
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
 
-    FileInfoResponse uploadFile(final MemberSession memberSession, final MultipartFile multipartFile);
+    FileInfoResponse uploadFile(final String fileType, final MultipartFile multipartFile);
 
     void deleteFile(final MemberSession memberSession, final FileDeleteRequest fileDeleteRequest);
 }

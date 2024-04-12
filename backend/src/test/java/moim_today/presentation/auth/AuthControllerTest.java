@@ -32,15 +32,15 @@ class AuthControllerTest extends ControllerTest {
         MemberLoginRequest memberLoginRequest = new MemberLoginRequest(EMAIL.value(), PASSWORD.value());
         String json = objectMapper.writeValueAsString(memberLoginRequest);
 
-        mockMvc.perform(post("/api/auth")
+        mockMvc.perform(post("/api/login")
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("로그인 성공 템플릿 API",
+                .andDo(document("로그인 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("로그인")
-                                .summary("로그인 성공 템플릿")
+                                .summary("로그인")
                                 .requestFields(
                                         fieldWithPath("email").type(STRING).description("이메일"),
                                         fieldWithPath("password").type(STRING).description("비밀번호")
@@ -55,15 +55,15 @@ class AuthControllerTest extends ControllerTest {
         MemberLoginRequest memberLoginRequest = new MemberLoginRequest(WRONG_EMAIL.value(), WRONG_PASSWORD.value());
         String json = objectMapper.writeValueAsString(memberLoginRequest);
 
-        mockMvc.perform(post("/api/auth")
+        mockMvc.perform(post("/api/login")
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )
                 .andExpect(status().isNotFound())
-                .andDo(document("로그인 실패 템플릿 API",
+                .andDo(document("로그인 실패",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("로그인")
-                                .summary("로그인 실패 템플릿")
+                                .summary("로그인")
                                 .requestFields(
                                         fieldWithPath("email").type(STRING).description("이메일"),
                                         fieldWithPath("password").type(STRING).description("비밀번호")

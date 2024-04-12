@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static moim_today.util.TestConstant.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
@@ -30,7 +31,12 @@ class FileControllerTest extends ControllerTest {
     @Test
     void uploadFileTest() throws Exception {
 
-        MockMultipartFile file1 = new MockMultipartFile("file", "file1.txt", MediaType.TEXT_PLAIN_VALUE, "Test File 1".getBytes());
+        MockMultipartFile file1 = new MockMultipartFile(
+                FILE_NAME.value(),
+                ORIGINAL_FILE_NAME.value(),
+                MediaType.TEXT_PLAIN_VALUE,
+                FILE_CONTENT.value().getBytes()
+        );
 
         mockMvc.perform(MockMvcRequestBuilders
                         .multipart(HttpMethod.POST, "/api/files")
@@ -41,7 +47,8 @@ class FileControllerTest extends ControllerTest {
                 .andDo(document("파일 업로드",
                         requestParts(
                                 partWithName("file").description("업로드할 파일")
-                )));
+                        )
+                ));
     }
 
     @DisplayName("파일 삭제 테스트")
