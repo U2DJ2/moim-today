@@ -1,11 +1,11 @@
 package moim_today.implement.certification_token;
 
+import moim_today.global.annotation.Implement;
 import moim_today.persistence.entity.certification_token.CertificationTokenJpaEntity;
 import moim_today.persistence.repository.certification_token.CertificationTokenRepository;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Implement
 public class CertificationTokenFinder {
 
     private final CertificationTokenRepository certificationTokenRepository;

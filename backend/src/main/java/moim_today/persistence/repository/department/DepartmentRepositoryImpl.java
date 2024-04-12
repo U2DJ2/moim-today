@@ -4,6 +4,8 @@ import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 import static moim_today.global.constant.exception.DepartmentExceptionConstant.DEPARTMENT_NOT_FOUND_ERROR;
 
 @Repository
@@ -18,6 +20,15 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     @Override
     public void save(final DepartmentJpaEntity departmentJpaEntity) {
         departmentJpaRepository.save(departmentJpaEntity);
+    }
+
+    @Override
+    public List<String> findAllDepartmentOfUniversity(final long universityId) {
+        return departmentJpaRepository.findAllByUniversityId(universityId).stream()
+                .map((DepartmentJpaEntity departmentJpaEntity) -> {
+                    return departmentJpaEntity.getDepartmentName();
+                })
+                .toList();
     }
 
     @Override
