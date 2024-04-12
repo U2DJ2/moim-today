@@ -153,10 +153,11 @@ class MemberUpdaterTest extends ImplementTest {
 
         departmentRepository.save(departmentJpaEntity);
         long updateDepartmentId = departmentJpaEntity.getId();
+        long departmentId = updateDepartmentId + 1L;
 
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
                 .universityId(universityId)
-                .departmentId(updateDepartmentId)
+                .departmentId(departmentId)
                 .build();
 
         memberRepository.save(memberJpaEntity);
