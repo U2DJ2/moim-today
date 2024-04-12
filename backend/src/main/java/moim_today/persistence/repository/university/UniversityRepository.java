@@ -13,6 +13,4 @@ public interface UniversityRepository {
     UniversityJpaEntity findByName(final String name);
 
     List<UniversityJpaEntity> findAll();
-
-    void save(final UniversityJpaEntity universityJpaEntity);
 }

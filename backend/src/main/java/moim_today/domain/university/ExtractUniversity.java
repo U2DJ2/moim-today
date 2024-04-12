@@ -1,5 +1,6 @@
 package moim_today.domain.university;
 
+import lombok.Builder;
 import lombok.Getter;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
 
@@ -17,6 +18,7 @@ public class ExtractUniversity {
     private final String schoolName;
     private final String schoolType;
 
+    @Builder
     public ExtractUniversity(final String link, final String schoolName, final String schoolType) {
         this.link = link;
         this.schoolName = schoolName;

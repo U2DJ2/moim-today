@@ -47,7 +47,7 @@ class UniversityUpdaterTest extends ImplementTest {
         // given
         UniversityJpaEntity universityJpaEntity = UniversityJpaEntity.builder()
                 .universityName(AJOU_UNIV_NAME)
-                .universityEmail("")
+                .universityEmail(AJOU_EMAIL)
                 .build();
 
         // when
