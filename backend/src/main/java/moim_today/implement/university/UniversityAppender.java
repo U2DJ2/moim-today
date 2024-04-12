@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.InternalServerException;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
-import moim_today.persistence.repository.department.DepartmentRepository;
 import moim_today.persistence.repository.university.UniversityRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
@@ -24,17 +23,15 @@ public class UniversityAppender {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     private final UniversityRepository universityRepository;
-    private final DepartmentRepository departmentRepository;
 
     @Value("${university.api.key}")
     private String apiKey;
 
     public UniversityAppender(final RestTemplate restTemplate, final ObjectMapper objectMapper,
-                              final UniversityRepository universityRepository, final DepartmentRepository departmentRepository) {
+                              final UniversityRepository universityRepository) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
         this.universityRepository = universityRepository;
-        this.departmentRepository = departmentRepository;
     }
 
     public void fetchAllUniversity(){
@@ -43,13 +40,13 @@ public class UniversityAppender {
 
         try{
             JsonNode root = objectMapper.readTree(response);
-            JsonNode content = root.path("dataSearch").path("content");
+            JsonNode content = root.path(DATA_SEARCH.value()).path(CONTENT.value());
             List<String> universityType = List.of(ASSOCIATE_DEGREE.value(),GRADUATE_DEGREE.value());
 
             for (JsonNode item : content) {
-                String link = item.get("link").asText();
-                String schoolName = item.get("schoolName").asText();
-                String schoolType = item.get("schoolType").asText();
+                String link = item.get(LINK.value()).asText();
+                String schoolName = item.get(SCHOOL_NAME.value()).asText();
+                String schoolType = item.get(SCHOOL_TYPE.value()).asText();
                 if(!universityType.contains(schoolType)){
                     continue;
                 }

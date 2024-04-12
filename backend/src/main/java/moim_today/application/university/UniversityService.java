@@ -8,9 +8,5 @@ public interface UniversityService {
 
     void putAllUniversity();
 
-    void putAllDepartment();
-
     List<UniversityInfoResponse> getAllUniversity();
-
-    List<String> getAllDepartment(long universityId, String universityName);
 }

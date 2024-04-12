@@ -2,6 +2,7 @@ package moim_today.application.university;
 
 import moim_today.dto.university.UniversityInfoResponse;
 import moim_today.implement.university.UniversityAppender;
+import moim_today.implement.university.UniversityFinder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +11,11 @@ import java.util.List;
 public class UniversityServiceImpl implements UniversityService{
 
     private final UniversityAppender universityAppender;
+    private final UniversityFinder universityFinder;
 
-    public UniversityServiceImpl(final UniversityAppender universityAppender) {
+    public UniversityServiceImpl(final UniversityAppender universityAppender, final UniversityFinder universityFinder) {
         this.universityAppender = universityAppender;
+        this.universityFinder = universityFinder;
     }
 
     @Override
@@ -21,17 +24,7 @@ public class UniversityServiceImpl implements UniversityService{
     }
 
     @Override
-    public void putAllDepartment() {
-
-    }
-
-    @Override
     public List<UniversityInfoResponse> getAllUniversity() {
-        return null;
-    }
-
-    @Override
-    public List<String> getAllDepartment(final long universityId, final String universityName) {
-        return null;
+        return universityFinder.getAllUniversity();
     }
 }
