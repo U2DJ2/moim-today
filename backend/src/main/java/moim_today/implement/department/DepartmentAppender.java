@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.InternalServerException;
+import moim_today.implement.university.UniversityFinder;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
 import moim_today.persistence.repository.department.DepartmentRepository;
-import moim_today.persistence.repository.university.UniversityRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,14 +23,14 @@ public class DepartmentAppender {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-    private final UniversityRepository universityRepository;
+    private final UniversityFinder universityFinder;
     private final DepartmentRepository departmentRepository;
 
     public DepartmentAppender(final RestTemplate restTemplate, final ObjectMapper objectMapper,
-                              final UniversityRepository universityRepository, final DepartmentRepository departmentRepository) {
+                              final UniversityFinder universityFinder, final DepartmentRepository departmentRepository) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
-        this.universityRepository = universityRepository;
+        this.universityFinder = universityFinder;
         this.departmentRepository = departmentRepository;
     }
 
@@ -78,7 +78,7 @@ public class DepartmentAppender {
                     String departmentName = university.path(MAJOR_NAME.value()).asText();
                     String schoolName = university.path(SCHOOL_NAME.value()).asText();
 
-                    UniversityJpaEntity universityJpaEntity = universityRepository.findByName(schoolName);
+                    UniversityJpaEntity universityJpaEntity = universityFinder.findByName(schoolName);
                     if(universityJpaEntity != null){
                         DepartmentJpaEntity saveDepartment = DepartmentJpaEntity.builder()
                                 .universityId(universityJpaEntity.getId())

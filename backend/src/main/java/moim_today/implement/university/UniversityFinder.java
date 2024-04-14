@@ -22,4 +22,8 @@ public class UniversityFinder {
                 .map(UniversityInfoResponse::of)
                 .toList();
     }
+
+    public UniversityJpaEntity findByName(String schoolName){
+        return universityRepository.findByName(schoolName);
+    }
 }
