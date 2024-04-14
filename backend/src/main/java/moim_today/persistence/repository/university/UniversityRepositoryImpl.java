@@ -5,6 +5,7 @@ import moim_today.persistence.entity.university.UniversityJpaEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static moim_today.global.constant.exception.UniversityExceptionConstant.UNIVERSITY_NOT_FOUND;
 
@@ -29,8 +30,8 @@ public class UniversityRepositoryImpl implements UniversityRepository {
     }
 
     @Override
-    public UniversityJpaEntity findByName(final String universityName) {
-        return universityJpaRepository.findByUniversityName(universityName).orElse(null);
+    public Optional<UniversityJpaEntity> findByName(final String universityName) {
+        return universityJpaRepository.findByUniversityName(universityName);
     }
 
     @Override

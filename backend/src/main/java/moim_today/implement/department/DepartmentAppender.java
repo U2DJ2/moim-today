@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static moim_today.global.constant.UniversityConstant.*;
 import static moim_today.global.constant.exception.CrawlingExceptionConstant.CRAWLING_PARSE_ERROR;
@@ -78,18 +79,22 @@ public class DepartmentAppender {
                     String departmentName = university.path(MAJOR_NAME.value()).asText();
                     String schoolName = university.path(SCHOOL_NAME.value()).asText();
 
-                    UniversityJpaEntity universityJpaEntity = universityFinder.findByName(schoolName);
-                    if(universityJpaEntity != null){
-                        DepartmentJpaEntity saveDepartment = DepartmentJpaEntity.builder()
-                                .universityId(universityJpaEntity.getId())
-                                .departmentName(departmentName)
-                                .build();
-                        departmentRepository.save(saveDepartment);
+                    Optional<UniversityJpaEntity> universityJpaEntity = universityFinder.findByName(schoolName);
+                    if(universityJpaEntity.isPresent()){
+                       saveDepartment(universityJpaEntity.get(), departmentName);
                     }
                 }
             }
         }catch (JsonProcessingException e){
             throw new InternalServerException(CRAWLING_PARSE_ERROR.message());
         }
+    }
+
+    public void saveDepartment(UniversityJpaEntity universityJpaEntity, String departmentName){
+        DepartmentJpaEntity saveDepartment = DepartmentJpaEntity.builder()
+                .universityId(universityJpaEntity.getId())
+                .departmentName(departmentName)
+                .build();
+        departmentRepository.save(saveDepartment);
     }
 }

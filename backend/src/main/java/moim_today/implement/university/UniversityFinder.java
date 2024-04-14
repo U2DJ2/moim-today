@@ -6,6 +6,7 @@ import moim_today.persistence.entity.university.UniversityJpaEntity;
 import moim_today.persistence.repository.university.UniversityRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Implement
 public class UniversityFinder {
@@ -23,7 +24,7 @@ public class UniversityFinder {
                 .toList();
     }
 
-    public UniversityJpaEntity findByName(String schoolName){
+    public Optional<UniversityJpaEntity> findByName(String schoolName){
         return universityRepository.findByName(schoolName);
     }
 }
