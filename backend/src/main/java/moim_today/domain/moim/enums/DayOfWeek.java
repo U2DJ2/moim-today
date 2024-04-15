@@ -1,4 +1,4 @@
-package moim_today.domain.regular_moim.enums;
+package moim_today.domain.moim.enums;
 
 public enum DayOfWeek {
 

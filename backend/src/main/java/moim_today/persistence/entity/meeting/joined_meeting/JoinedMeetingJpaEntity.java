@@ -1,4 +1,4 @@
-package moim_today.persistence.entity.moim.joined_meeting;
+package moim_today.persistence.entity.meeting.joined_meeting;
 
 import jakarta.persistence.*;
 import lombok.Builder;

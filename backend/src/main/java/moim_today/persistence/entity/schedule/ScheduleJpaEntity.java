@@ -1,6 +1,6 @@
 package moim_today.persistence.entity.schedule;
 
-import moim_today.domain.regular_moim.enums.DayOfWeek;
+import moim_today.domain.moim.enums.DayOfWeek;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;

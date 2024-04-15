@@ -1,4 +1,4 @@
-package moim_today.persistence.repository.moim.joined_meeting;
+package moim_today.persistence.repository.meeting.joined_meeting;
 
 import org.springframework.stereotype.Repository;
 

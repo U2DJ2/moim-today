@@ -1,6 +1,5 @@
-package moim_today.persistence.entity.moim.meeting;
+package moim_today.persistence.entity.meeting.meeting;
 
-import moim_today.domain.regular_moim.enums.AttendanceStatus;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;
