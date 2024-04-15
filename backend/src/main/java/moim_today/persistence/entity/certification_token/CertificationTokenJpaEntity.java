@@ -9,12 +9,12 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-@Table(name = "email_certification_token")
+@Table(name = "certification_token")
 @Entity
 public class CertificationTokenJpaEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "email_certification_token_id")
+    @Column(name = "certification_token_id")
     private long id;
 
     private String email;
