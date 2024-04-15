@@ -1,4 +1,4 @@
-package moim_today.persistence.entity.regular_moim.moim_meeting;
+package moim_today.persistence.entity.moim.meeting;
 
 import moim_today.domain.regular_moim.enums.AttendanceStatus;
 import moim_today.global.annotation.Association;
@@ -10,37 +10,36 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-@Table(name = "moim_meeting")
+@Table(name = "meeting")
 @Entity
-public class MoimMeetingJpaEntity extends BaseTimeEntity {
+public class MeetingJpaEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "moim_meeting_id")
+    @Column(name = "meeting_id")
     private long id;
 
     @Association
-    private long regularMoimId;
+    private long moimId;
 
     @Association
     private long memberId;
+
+    private String agenda;
 
     private LocalDateTime startDateTime;
 
     private LocalDateTime endDateTime;
 
-    @Enumerated(EnumType.STRING)
-    private AttendanceStatus attendanceStatus;
-
-    protected MoimMeetingJpaEntity() {
+    protected MeetingJpaEntity() {
     }
 
     @Builder
-    private MoimMeetingJpaEntity(final long regularMoimId, final long memberId, final LocalDateTime startDateTime,
-                                 final LocalDateTime endDateTime, final AttendanceStatus attendanceStatus) {
-        this.regularMoimId = regularMoimId;
+    private MeetingJpaEntity(final long moimId, final long memberId, final String agenda,
+                            final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
+        this.moimId = moimId;
         this.memberId = memberId;
+        this.agenda = agenda;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        this.attendanceStatus = attendanceStatus;
     }
 }

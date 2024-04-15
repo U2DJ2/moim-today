@@ -1,19 +1,21 @@
-package moim_today.persistence.entity.regular_moim.regular_moim;
+package moim_today.persistence.entity.moim.moim;
 
-import moim_today.domain.regular_moim.enums.RegularMoimCategory;
+import moim_today.domain.regular_moim.enums.MoimCategory;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
-@Table(name = "regular_moim")
+@Table(name = "moim")
 @Entity
-public class RegularMoimJpaEntity extends BaseTimeEntity {
+public class MoimJpaEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "regular_moim_id")
+    @Column(name = "moim_id")
     private long id;
 
     @Association
@@ -35,18 +37,22 @@ public class RegularMoimJpaEntity extends BaseTimeEntity {
     private String password;
 
     @Enumerated
-    private RegularMoimCategory regularMoimCategory;
+    private MoimCategory moimCategory;
 
     private int views;
 
-    protected RegularMoimJpaEntity() {
+    private LocalDateTime startDateTime;
+
+    private LocalDateTime endDateTime;
+
+    protected MoimJpaEntity() {
     }
 
     @Builder
-    private RegularMoimJpaEntity(final long universityId, final long memberId, final String title,
-                                 final String contents, final int capacity, final int currentCount,
-                                 final String imageUrl, final String password,
-                                 final RegularMoimCategory regularMoimCategory, final int views) {
+    private MoimJpaEntity(final long universityId, final long memberId, final String title,
+                         final String contents, final int capacity, final int currentCount,
+                         final String imageUrl, final String password, final MoimCategory moimCategory,
+                         final int views, final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         this.universityId = universityId;
         this.memberId = memberId;
         this.title = title;
@@ -55,7 +61,9 @@ public class RegularMoimJpaEntity extends BaseTimeEntity {
         this.currentCount = currentCount;
         this.imageUrl = imageUrl;
         this.password = password;
-        this.regularMoimCategory = regularMoimCategory;
+        this.moimCategory = moimCategory;
         this.views = views;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
     }
 }
