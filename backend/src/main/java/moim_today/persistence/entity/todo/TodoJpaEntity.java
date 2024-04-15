@@ -24,7 +24,7 @@ public class TodoJpaEntity extends BaseTimeEntity {
     @Association
     private long memberId;
 
-    private String comments;
+    private String contents;
 
     @Enumerated(EnumType.STRING)
     private TodoProgress todoProgress;
@@ -37,12 +37,12 @@ public class TodoJpaEntity extends BaseTimeEntity {
     }
 
     @Builder
-    private TodoJpaEntity(final long moimId, final long memberId, final String comments,
-                         final TodoProgress todoProgress, final LocalDateTime startDateTime,
-                         final LocalDateTime endDateTime) {
+    private TodoJpaEntity(final long moimId, final long memberId, final String contents,
+                          final TodoProgress todoProgress, final LocalDateTime startDateTime,
+                          final LocalDateTime endDateTime) {
         this.moimId = moimId;
         this.memberId = memberId;
-        this.comments = comments;
+        this.contents = contents;
         this.todoProgress = todoProgress;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;

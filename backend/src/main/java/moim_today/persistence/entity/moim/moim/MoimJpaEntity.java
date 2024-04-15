@@ -36,7 +36,7 @@ public class MoimJpaEntity extends BaseTimeEntity {
 
     private String password;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private MoimCategory moimCategory;
 
     private int views;
@@ -50,9 +50,9 @@ public class MoimJpaEntity extends BaseTimeEntity {
 
     @Builder
     private MoimJpaEntity(final long universityId, final long memberId, final String title,
-                         final String contents, final int capacity, final int currentCount,
-                         final String imageUrl, final String password, final MoimCategory moimCategory,
-                         final int views, final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
+                          final String contents, final int capacity, final int currentCount,
+                          final String imageUrl, final String password, final MoimCategory moimCategory,
+                          final int views, final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         this.universityId = universityId;
         this.memberId = memberId;
         this.title = title;
