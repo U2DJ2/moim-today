@@ -33,4 +33,9 @@ public class FakeAuthService implements AuthService {
 
         throw new NotFoundException(EMAIL_PASSWORD_ERROR.message());
     }
+
+    @Override
+    public void logout(final HttpServletRequest request) {
+
+    }
 }

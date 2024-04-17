@@ -44,4 +44,11 @@ public class AuthManager {
         }
         throw new NotFoundException(EMAIL_PASSWORD_ERROR.message());
     }
+
+    public void logout(final HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+    }
 }
