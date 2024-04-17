@@ -23,7 +23,7 @@ public abstract class ControllerTest {
     void setUp(final RestDocumentationContextProvider provider) {
         this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
                 .setControllerAdvice(new ApiRestControllerAdvice())
-                .setCustomArgumentResolvers(new MemberLoginArgumentResolver())
+                .setCustomArgumentResolvers(new MemberLoginArgumentResolver(objectMapper))
                 .addInterceptors(new FakeInterceptor(objectMapper))
                 .apply(documentationConfiguration(provider))
                 .build();
