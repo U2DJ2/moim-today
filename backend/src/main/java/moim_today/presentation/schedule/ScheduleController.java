@@ -21,8 +21,8 @@ public class ScheduleController {
     }
 
     @PostMapping("/timetable")
-    public void getTimeTable(@Login final MemberSession memberSession,
-                             @RequestBody final TimeTableRequest timeTableRequest) {
+    public void fetchTimeTable(@Login final MemberSession memberSession,
+                               @RequestBody final TimeTableRequest timeTableRequest) {
         scheduleService.fetchTimeTable(memberSession.id(), timeTableRequest);
     }
 }
