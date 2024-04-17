@@ -28,8 +28,8 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public void save(final MemberJpaEntity entity) {
-        memberJpaRepository.save(entity);
+    public MemberJpaEntity save(final MemberJpaEntity entity) {
+        return memberJpaRepository.save(entity);
     }
 
     @Override

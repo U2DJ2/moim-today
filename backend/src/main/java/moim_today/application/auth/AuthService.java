@@ -8,7 +8,7 @@ public interface AuthService {
 
     void login(final MemberLoginRequest memberLoginRequest, final HttpServletRequest request);
 
-    void register(MemberRegisterRequest memberRegisterRequest);
+    void register(final MemberRegisterRequest memberRegisterRequest, final HttpServletRequest request);
 
     void logout(final HttpServletRequest request);
 }

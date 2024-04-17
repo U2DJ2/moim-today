@@ -33,7 +33,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public void register(@RequestBody final MemberRegisterRequest memberRegisterRequest){
-        authService.register(memberRegisterRequest);
+    public void register(@RequestBody final MemberRegisterRequest memberRegisterRequest,
+                         final HttpServletRequest request){
+        authService.register(memberRegisterRequest, request);
     }
 }

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface MemberRepository {
 
-    void save(final MemberJpaEntity entity);
+    MemberJpaEntity save(final MemberJpaEntity entity);
 
     MemberJpaEntity getByEmail(final String email);
 
