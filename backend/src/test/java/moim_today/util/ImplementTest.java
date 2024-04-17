@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.session.jdbc.JdbcIndexedSessionRepository;
 
 @SpringBootTest
 public abstract class ImplementTest {
@@ -30,9 +29,6 @@ public abstract class ImplementTest {
 
     @Autowired
     protected PasswordEncoder passwordEncoder;
-
-    @Autowired
-    protected JdbcIndexedSessionRepository jdbcIndexedSessionRepository;
 
     @BeforeEach
     void setUpDatabase() {
