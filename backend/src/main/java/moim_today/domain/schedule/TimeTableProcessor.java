@@ -67,7 +67,7 @@ public record TimeTableProcessor(
         while (!nextDate.isAfter(endDate)) {
             LocalDateTime startDateTime = LocalDateTime.of(nextDate, startTime);
             LocalDateTime endDateTime = LocalDateTime.of(nextDate, endTime);
-            schedules.add(new Schedule(1, 0, name, startDateTime, endDateTime));
+            schedules.add(Schedule.toDomain(name, startDateTime, endDateTime));
             nextDate = nextDate.plusWeeks(1);
         }
     }

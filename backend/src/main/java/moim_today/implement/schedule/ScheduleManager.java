@@ -41,7 +41,8 @@ public class ScheduleManager {
         return response.getBody();
     }
 
-    public List<Schedule> processTimetable(final String timeTableXML, final TimeTableRequest timeTableRequest) {
+    public List<Schedule> processTimetable(final long memberId, final String timeTableXML,
+                                           final TimeTableRequest timeTableRequest) {
         TimeTableParser timeTableParser = TimeTableParser.toDomain(timeTableXML);
         NodeList subjects = timeTableParser.getSubjects();
 

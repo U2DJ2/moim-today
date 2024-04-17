@@ -1,14 +1,14 @@
 package moim_today.presentation.schedule;
 
 import moim_today.application.schedule.ScheduleService;
-import moim_today.domain.schedule.Schedule;
+import moim_today.domain.member.MemberSession;
 import moim_today.dto.schedule.TimeTableRequest;
+import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RequestMapping("/api/schedules")
 @RestController
@@ -21,7 +21,8 @@ public class ScheduleController {
     }
 
     @PostMapping("/timetable")
-    public List<Schedule> getTimeTable(@RequestBody final TimeTableRequest timeTableRequest) {
-        return scheduleService.fetchTimeTable(1L, timeTableRequest);
+    public void getTimeTable(@Login final MemberSession memberSession,
+                             @RequestBody final TimeTableRequest timeTableRequest) {
+        scheduleService.fetchTimeTable(memberSession.id(), timeTableRequest);
     }
 }
