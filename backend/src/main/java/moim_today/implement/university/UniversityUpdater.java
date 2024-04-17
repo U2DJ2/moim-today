@@ -4,6 +4,8 @@ import moim_today.global.annotation.Implement;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
 import moim_today.persistence.repository.university.UniversityRepository;
 
+import java.util.Optional;
+
 @Implement
 public class UniversityUpdater {
 
@@ -14,15 +16,16 @@ public class UniversityUpdater {
     }
 
     public void putUniversity(final UniversityJpaEntity universityJpaEntity) {
-        UniversityJpaEntity findUniversity = universityRepository.findByName(universityJpaEntity.getUniversityName());
+        Optional<UniversityJpaEntity> findUniversity = universityRepository.findByName(universityJpaEntity.getUniversityName());
 
-        if (findUniversity == null) {
+        if (findUniversity.isEmpty()) {
             universityRepository.save(universityJpaEntity);
             return;
         }
         if (!universityJpaEntity.getUniversityEmail().isEmpty()) {
-            findUniversity.updateEmail(universityJpaEntity.getUniversityEmail());
-            universityRepository.save(findUniversity);
+            UniversityJpaEntity getUniversity = findUniversity.get();
+            getUniversity.updateEmail(universityJpaEntity.getUniversityEmail());
+            universityRepository.save(getUniversity);
         }
     }
 }

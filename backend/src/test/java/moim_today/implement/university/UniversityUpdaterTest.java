@@ -35,7 +35,7 @@ class UniversityUpdaterTest extends ImplementTest {
 
         // when
         universityUpdater.putUniversity(updateUniversity);
-        UniversityJpaEntity findUniversity = universityRepository.findByName(AJOU_UNIV_NAME);
+        UniversityJpaEntity findUniversity = universityRepository.findByName(AJOU_UNIV_NAME).get();
 
         // then
         assertThat(findUniversity.getUniversityEmail()).isEqualTo(AJOU_EMAIL);
@@ -52,7 +52,7 @@ class UniversityUpdaterTest extends ImplementTest {
 
         // when
         universityUpdater.putUniversity(universityJpaEntity);
-        UniversityJpaEntity findUniversity = universityRepository.findByName(AJOU_UNIV_NAME);
+        UniversityJpaEntity findUniversity = universityRepository.findByName(AJOU_UNIV_NAME).get();
 
         // then
         assertThat(findUniversity.getUniversityEmail()).isEqualTo(AJOU_EMAIL);

@@ -26,7 +26,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     @Override
     public List<DepartmentInfoResponse> findAllDepartmentOfUniversity(final long universityId) {
         return departmentJpaRepository.findAllByUniversityId(universityId).stream()
-                .map(DepartmentInfoResponse::of)
+                .map(DepartmentInfoResponse::from)
                 .toList();
     }
 

@@ -8,7 +8,7 @@ public record DepartmentInfoResponse (
     long departmentId,
     String departmentName
 ){
-    public static DepartmentInfoResponse of(final DepartmentJpaEntity departmentJpaEntity){
+    public static DepartmentInfoResponse from(final DepartmentJpaEntity departmentJpaEntity){
         return DepartmentInfoResponse.builder()
                 .departmentId(departmentJpaEntity.getId())
                 .departmentName(departmentJpaEntity.getDepartmentName())
