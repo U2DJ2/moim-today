@@ -20,9 +20,12 @@ public enum EveryTimeConstant {
     EVERYTIME_VALUE("value"),
     EVERYTIME_DATA("data"),
     EVERYTIME_DAY("day"),
+    EVERYTIME_RESPONSE("response"),
 
     EVERYTIME_START_TIME("starttime"),
-    EVERYTIME_END_TIME("endtime");
+    EVERYTIME_END_TIME("endtime"),
+
+    RESPONSE_NOT_EXIST("-1");
 
     private final String value;
 

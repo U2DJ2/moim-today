@@ -1,6 +1,7 @@
 package moim_today.domain.schedule;
 
 import lombok.Builder;
+import moim_today.global.error.BadRequestException;
 import moim_today.global.error.InternalServerException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import static moim_today.global.constant.EveryTimeConstant.*;
+import static moim_today.global.constant.NumberConstant.EVERYTIME_ITEM_START_INDEX;
 import static moim_today.global.constant.exception.EveryTimeExceptionConstant.*;
 
 @Builder
@@ -39,9 +41,21 @@ public record TimeTableParser(
 
         try (StringReader reader = new StringReader(timeTableXML)) {
             Document doc = builder.parse(new InputSource(reader));
+            validateXML(doc);
             return doc.getElementsByTagName(EVERYTIME_SUBJECT.value());
+
         }  catch (SAXException | IOException e) {
             throw new InternalServerException(SAX_IO_ERROR.value());
+        }
+    }
+
+    private void validateXML(final Document doc) {
+        NodeList responses = doc.getElementsByTagName(EVERYTIME_RESPONSE.value());
+        if (responses.getLength() > 0) {
+            String responseValue = responses.item(EVERYTIME_ITEM_START_INDEX.value()).getTextContent();
+            if (RESPONSE_NOT_EXIST.value().equals(responseValue)) {
+                throw new BadRequestException(EVERY_TIME_URL_BAD_REQUEST_ERROR.value());
+            }
         }
     }
 }
