@@ -38,7 +38,7 @@ public class AuthManager {
         MemberJpaEntity memberJpaEntity = memberRepository.getByEmail(memberLoginRequest.email());
 
         if (passwordEncoder.matches(memberLoginRequest.password(), memberJpaEntity.getPassword())) {
-            setMemberToSession(memberJpaEntity, request);
+            setSessionByMemberSession(memberJpaEntity, request);
             return;
         }
         throw new NotFoundException(EMAIL_PASSWORD_ERROR.message());
@@ -55,10 +55,10 @@ public class AuthManager {
         String encodedPassword = passwordEncode(memberRegisterRequest.password());
         MemberRegisterInfo memberRegisterInfo = memberRegisterRequest.toDomain(encodedPassword);
         MemberJpaEntity saveMember = memberRepository.save(memberRegisterInfo.toEntity());
-        setMemberToSession(saveMember, request);
+        setSessionByMemberSession(saveMember, request);
     }
 
-    private void setMemberToSession(final MemberJpaEntity memberJpaEntity, final HttpServletRequest request){
+    private void setSessionByMemberSession(final MemberJpaEntity memberJpaEntity, final HttpServletRequest request){
         MemberSession memberSession = MemberSession.from(memberJpaEntity);
         String memberSessionJson = memberSession.toJson(objectMapper);
         HttpSession session = request.getSession(true);
