@@ -19,4 +19,9 @@ public class AuthServiceImpl implements AuthService{
                       final HttpServletRequest request) {
         authManager.login(memberLoginRequest, request);
     }
+
+    @Override
+    public void logout(final HttpServletRequest request) {
+        authManager.logout(request);
+    }
 }
