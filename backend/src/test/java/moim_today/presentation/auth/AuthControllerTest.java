@@ -46,7 +46,8 @@ class AuthControllerTest extends ControllerTest {
                                         fieldWithPath("password").type(STRING).description("비밀번호")
                                 )
                                 .build()
-                        )));
+                        )
+                ));
     }
 
     @DisplayName("로그인 테스트 실패")
@@ -73,6 +74,21 @@ class AuthControllerTest extends ControllerTest {
                                         fieldWithPath("message").type(STRING).description("메시지")
                                 )
                                 .build()
-                        )));
+                        )
+                ));
+    }
+
+    @DisplayName("로그아웃 테스트 성공")
+    @Test
+    void logoutTest() throws Exception {
+        mockMvc.perform(post("/api/logout"))
+                .andExpect(status().isOk())
+                .andDo(document("로그아웃 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("로그아웃")
+                                .summary("로그아웃")
+                                .build()
+                        )
+                ));
     }
 }

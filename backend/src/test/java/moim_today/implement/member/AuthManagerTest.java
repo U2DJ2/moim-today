@@ -1,6 +1,9 @@
 package moim_today.implement.member;
 
+import jakarta.servlet.http.HttpSession;
+import moim_today.domain.member.MemberSession;
 import moim_today.dto.auth.MemberLoginRequest;
+import moim_today.fake_DB.FakeMemberSession;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.util.ImplementTest;
@@ -54,5 +57,22 @@ class AuthManagerTest extends ImplementTest {
                 .isInstanceOf(NotFoundException.class);
 
         assertThat(mockHttpServletRequest.getSession(false)).isNull();
+    }
+
+    @DisplayName("로그아웃을 요청하면 session을 무효로 만든다.")
+    @Test
+    void logoutTest() {
+        //given
+        MemberSession memberSession = FakeMemberSession.createMemberSession();
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        HttpSession session = mockRequest.getSession(true);
+        assert session != null;
+        session.setAttribute(MEMBER_SESSION.value(), memberSession);
+
+        //when
+        authManager.logout(mockRequest);
+
+        //then
+        assertThat(mockRequest.getSession(false)).isNull();
     }
 }
