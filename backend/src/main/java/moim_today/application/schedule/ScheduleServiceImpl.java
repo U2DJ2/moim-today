@@ -23,7 +23,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void fetchTimeTable(final long memberId, final TimeTableRequest timeTableRequest) {
         String timeTableXML = scheduleManager.fetchTimetable(timeTableRequest.everytimeId());
-        List<Schedule> schedules = scheduleManager.processTimetable(memberId, timeTableXML, timeTableRequest);
+        List<Schedule> schedules = scheduleManager.processTimetable(timeTableXML, timeTableRequest);
         scheduleAppender.saveTimeTables(schedules, memberId);
     }
 }

@@ -8,7 +8,10 @@ public enum NumberConstant {
     SLASH_CNT_START(0),
     MAX_SLASH_CNT(2),
 
-    SCHEDULE_MEETING_ID(0);
+    SCHEDULE_MEETING_ID(0),
+
+    EVERYTIME_ITEM_START_INDEX(0),
+    EVERYTIME_NODE_START_INDEX(0);
 
     private final int value;
 

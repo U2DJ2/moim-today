@@ -1,12 +1,12 @@
 package moim_today.persistence.entity.schedule;
 
-import moim_today.domain.moim.enums.DayOfWeek;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 @Getter
@@ -38,8 +38,8 @@ public class ScheduleJpaEntity extends BaseTimeEntity {
 
     @Builder
     private ScheduleJpaEntity(final long memberId, final long meetingId, final String scheduleName,
-                             final DayOfWeek dayOfWeek, final LocalDateTime startDateTime,
-                             final LocalDateTime endDateTime) {
+                              final DayOfWeek dayOfWeek, final LocalDateTime startDateTime,
+                              final LocalDateTime endDateTime) {
         this.memberId = memberId;
         this.meetingId = meetingId;
         this.scheduleName = scheduleName;

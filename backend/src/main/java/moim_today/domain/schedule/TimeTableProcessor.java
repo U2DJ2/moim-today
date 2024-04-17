@@ -12,6 +12,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
+
+import static moim_today.global.constant.EveryTimeConstant.*;
+import static moim_today.global.constant.NumberConstant.EVERYTIME_ITEM_START_INDEX;
+import static moim_today.global.constant.NumberConstant.EVERYTIME_NODE_START_INDEX;
+import static moim_today.global.constant.TimeConstant.*;
 
 @Builder
 public record TimeTableProcessor(
@@ -29,7 +35,8 @@ public record TimeTableProcessor(
     }
 
     public void processTimeTable(final NodeList subjects) {
-        for (int i = 0; i < subjects.getLength(); i++) {
+        int subjectsLength = subjects.getLength();
+        for (int i = 0; i < subjectsLength; i++) {
             processNode(subjects.item(i));
         }
     }
@@ -42,21 +49,30 @@ public record TimeTableProcessor(
     }
 
     private void processElement(final Element element) {
-        String name = element.getElementsByTagName("name")
-                .item(0).getAttributes().getNamedItem("value")
+        String name = element.getElementsByTagName(EVERYTIME_NAME.value())
+                .item(EVERYTIME_ITEM_START_INDEX.value())
+                .getAttributes().getNamedItem(EVERYTIME_VALUE.value())
                 .getNodeValue();
 
-        NodeList times = element.getElementsByTagName("data");
-        for (int j = 0; j < times.getLength(); j++) {
-            processTimeElement(name, (Element) times.item(j));
-        }
+        NodeList times = element.getElementsByTagName(EVERYTIME_DATA.value());
+        int length = times.getLength();
+
+        IntStream.range(EVERYTIME_NODE_START_INDEX.value(), length)
+                .forEach(
+                        j -> processTimeElement(name, (Element) times.item(j))
+                );
     }
 
     private void processTimeElement(final String name, final Element timeElement) {
-        int day = Integer.parseInt(timeElement.getAttribute("day"));
-        DayOfWeek dayOfWeek = DayOfWeek.of((day % 7) + 1);
-        LocalTime startTime = LocalTime.ofSecondOfDay(Long.parseLong(timeElement.getAttribute("starttime")) * 300);
-        LocalTime endTime = LocalTime.ofSecondOfDay(Long.parseLong(timeElement.getAttribute("endtime")) * 300);
+        int day = Integer.parseInt(timeElement.getAttribute(EVERYTIME_DAY.value()));
+        DayOfWeek dayOfWeek = DayOfWeek.of((day % DAYS_PER_WEEK.time()) + WEEK_START_POINT.time());
+        LocalTime startTime = LocalTime.ofSecondOfDay(
+                Long.parseLong(timeElement.getAttribute(EVERYTIME_START_TIME.value())) * FIVE_MINUTES_IN_SECONDS.time()
+        );
+
+        LocalTime endTime = LocalTime.ofSecondOfDay(
+                Long.parseLong(timeElement.getAttribute(EVERYTIME_END_TIME.value())) * FIVE_MINUTES_IN_SECONDS.time()
+        );
         addSchedule(name, dayOfWeek, startTime, endTime);
     }
 
@@ -67,13 +83,14 @@ public record TimeTableProcessor(
         while (!nextDate.isAfter(endDate)) {
             LocalDateTime startDateTime = LocalDateTime.of(nextDate, startTime);
             LocalDateTime endDateTime = LocalDateTime.of(nextDate, endTime);
-            schedules.add(Schedule.toDomain(name, startDateTime, endDateTime));
-            nextDate = nextDate.plusWeeks(1);
+            schedules.add(Schedule.toDomain(name, dayOfWeek, startDateTime, endDateTime));
+            nextDate = nextDate.plusWeeks(ONE_WEEK.time());
         }
     }
 
     private LocalDate adjustStartDate(final LocalDate startDate, final DayOfWeek startDayOfWeek) {
-        int daysToAdd = (startDayOfWeek.getValue() - startDate.getDayOfWeek().getValue() + 7) % 7;
+        int daysToAdd = (startDayOfWeek.getValue() - startDate.getDayOfWeek().getValue() + DAYS_PER_WEEK.time())
+                % DAYS_PER_WEEK.time();
         return startDate.plusDays(daysToAdd);
     }
 }

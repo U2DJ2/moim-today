@@ -15,7 +15,14 @@ public enum EveryTimeConstant {
     EVERYTIME_ID("identifier="),
     EVERYTIME_FRIEND_INFO("&friendInfo=true"),
 
-    EVERYTIME_SUBJECT("subject");
+    EVERYTIME_SUBJECT("subject"),
+    EVERYTIME_NAME("name"),
+    EVERYTIME_VALUE("value"),
+    EVERYTIME_DATA("data"),
+    EVERYTIME_DAY("day"),
+
+    EVERYTIME_START_TIME("starttime"),
+    EVERYTIME_END_TIME("endtime");
 
     private final String value;
 
