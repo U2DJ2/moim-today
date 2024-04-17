@@ -27,4 +27,9 @@ public class UniversityFinder {
     public Optional<UniversityJpaEntity> findByName(String schoolName){
         return universityRepository.findByName(schoolName);
     }
+
+    public boolean validateUniversityId(final long universityId){
+        Optional<UniversityJpaEntity> findUniversity = universityRepository.findById(universityId);
+        return findUniversity.isPresent();
+    }
 }

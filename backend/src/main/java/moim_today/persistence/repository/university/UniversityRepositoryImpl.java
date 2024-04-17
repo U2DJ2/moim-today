@@ -38,4 +38,9 @@ public class UniversityRepositoryImpl implements UniversityRepository {
     public List<UniversityJpaEntity> findAll() {
         return universityJpaRepository.findAll();
     }
+
+    @Override
+    public Optional<UniversityJpaEntity> findById(final long id) {
+        return universityJpaRepository.findById(id);
+    }
 }

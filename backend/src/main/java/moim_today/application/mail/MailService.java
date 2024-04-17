@@ -8,4 +8,6 @@ public interface MailService {
     void sendPasswordFindMail(final MailSendRequest mailSendRequest, final String passwordToken);
 
     void sendValidateMail(final MailValidRequest mailValidRequest);
+
+
 }

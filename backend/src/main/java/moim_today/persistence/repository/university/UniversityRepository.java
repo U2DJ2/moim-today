@@ -13,5 +13,7 @@ public interface UniversityRepository {
 
     Optional<UniversityJpaEntity> findByName(final String name);
 
+    Optional<UniversityJpaEntity> findById(final long id);
+
     List<UniversityJpaEntity> findAll();
 }

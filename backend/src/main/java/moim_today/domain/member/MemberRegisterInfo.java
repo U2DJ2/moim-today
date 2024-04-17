@@ -16,20 +16,4 @@ public record MemberRegisterInfo (
         LocalDate birthDate,
         Gender gender
 ) {
-    private static final String NO_OBJECT = null;
-
-    public MemberRegisterInfo {
-    }
-
-    private void validatePassword(String password){
-
-    }
-
-    private void validateUsername(String username){
-
-    }
-
-    private boolean isNull(Object o){
-        return o == NO_OBJECT;
-    }
 }

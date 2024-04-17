@@ -7,7 +7,7 @@ import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 import static moim_today.global.constant.exception.MemberExceptionConstant.*;
 import static moim_today.persistence.entity.department.QDepartmentJpaEntity.departmentJpaEntity;
@@ -36,6 +36,11 @@ public class MemberRepositoryImpl implements MemberRepository {
     public MemberJpaEntity getByEmail(final String email) {
         return memberJpaRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException(EMAIL_PASSWORD_ERROR.message()));
+    }
+
+    @Override
+    public Optional<MemberJpaEntity> findByEmail(final String email) {
+        return memberJpaRepository.findByEmail(email);
     }
 
     @Override

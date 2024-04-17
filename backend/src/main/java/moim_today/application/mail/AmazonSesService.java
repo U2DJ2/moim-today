@@ -22,6 +22,7 @@ public class AmazonSesService implements MailService {
     }
 
 //    ToDo: 이메일 인증번호 날리는 로직 구현 미완성
+//          이미 가입한 이메일인지 검사하는 로직 AuthManager에 구현했는데, Util로 빼거나 도메인마다 구현하거나, Implement 새로 만들거나
     @Override
     public void sendValidateMail(final MailValidRequest mailValidRequest) {
         return;
