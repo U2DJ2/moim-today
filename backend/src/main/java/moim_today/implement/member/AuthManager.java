@@ -57,6 +57,7 @@ public class AuthManager {
     public void register(final MemberRegisterRequest memberRegisterRequest) {
         String encodedPassword = passwordEncode(memberRegisterRequest.password());
         MemberRegisterInfo memberRegisterInfo = memberRegisterRequest.toDomain(encodedPassword);
+        memberRepository.save(memberRegisterInfo.toEntity());
     }
 
     public String passwordEncode(final String password){
