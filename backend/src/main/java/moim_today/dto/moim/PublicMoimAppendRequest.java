@@ -25,8 +25,8 @@ public record PublicMoimAppendRequest(
     public MoimJpaEntity toEntity(final long memberId, final long universityId) {
 
         MoimJpaEntityBuilder moimJpaEntityBuilder = MoimJpaEntity.builder()
-                .memberId(memberId)
                 .universityId(universityId)
+                .memberId(memberId)
                 .title(title)
                 .contents(contents)
                 .capacity(capacity)

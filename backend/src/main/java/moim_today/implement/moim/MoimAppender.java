@@ -27,6 +27,7 @@ public class MoimAppender {
     @Transactional
     public void createPrivateMoim(final long memberId, final long universityId,
                                   final PrivateMoimAppendRequest privateMoimAppendRequest) {
-
+        MoimJpaEntity moimJpaEntity = privateMoimAppendRequest.toEntity(memberId, universityId);
+        moimRepository.save(moimJpaEntity);
     }
 }
