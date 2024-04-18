@@ -1,4 +1,3 @@
-import Calendar from "./components/Calendar";
 import LoginPage from "./pages/LoginPage/LoginPage";
 
 function App() {
