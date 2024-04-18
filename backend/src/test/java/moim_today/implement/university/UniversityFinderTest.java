@@ -52,6 +52,8 @@ class UniversityFinderTest extends ImplementTest {
                 .universityEmail(UNIVE_MAIL)
                 .build();
 
+        universityRepository.save(universityJpaEntity);
+
         // when
         Optional<UniversityJpaEntity> findUniversity = universityFinder.findByName(UNIVE_NAME);
 
