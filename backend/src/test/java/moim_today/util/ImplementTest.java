@@ -1,7 +1,6 @@
 package moim_today.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import moim_today.persistence.repository.certification_token.CertificationTokenRepository;
+import moim_today.persistence.repository.certification.password.PasswordCertificationRepository;
 import moim_today.persistence.repository.department.DepartmentRepository;
 import moim_today.persistence.repository.member.MemberRepository;
 import moim_today.persistence.repository.university.UniversityRepository;
@@ -14,16 +13,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public abstract class ImplementTest {
 
     @Autowired
-    protected ObjectMapper objectMapper;
-
-    @Autowired
     protected DatabaseCleaner databaseCleaner;
 
     @Autowired
     protected MemberRepository memberRepository;
 
     @Autowired
-    protected CertificationTokenRepository certificationTokenRepository;
+    protected PasswordCertificationRepository passwordCertificationRepository;
 
     @Autowired
     protected UniversityRepository universityRepository;

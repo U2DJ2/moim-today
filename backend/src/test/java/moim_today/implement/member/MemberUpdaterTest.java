@@ -3,7 +3,7 @@ package moim_today.implement.member;
 import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.NotFoundException;
-import moim_today.persistence.entity.certification_token.CertificationTokenJpaEntity;
+import moim_today.persistence.entity.certification.password.PasswordCertificationJpaEntity;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.util.ImplementTest;
@@ -54,13 +54,13 @@ class MemberUpdaterTest extends ImplementTest {
         LocalDateTime expiredTime = LocalDateTime.of(2024, 1, 1, 10, 00, 00);
 
         // given 2
-        CertificationTokenJpaEntity certificationTokenJpaEntity = CertificationTokenJpaEntity.builder()
+        PasswordCertificationJpaEntity passwordCertificationJpaEntity = PasswordCertificationJpaEntity.builder()
                 .email(EMAIL.value())
                 .certificationToken(passwordToken)
                 .expiredDateTime(expiredTime)
                 .build();
 
-        certificationTokenRepository.save(certificationTokenJpaEntity);
+        passwordCertificationRepository.save(passwordCertificationJpaEntity);
 
         // given 3
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
@@ -86,13 +86,13 @@ class MemberUpdaterTest extends ImplementTest {
         LocalDateTime expiredTime = LocalDateTime.of(2024, 1, 1, 10, 00, 00);
 
         // given 2
-        CertificationTokenJpaEntity certificationTokenJpaEntity = CertificationTokenJpaEntity.builder()
+        PasswordCertificationJpaEntity passwordCertificationJpaEntity = PasswordCertificationJpaEntity.builder()
                 .email(EMAIL.value())
                 .certificationToken(passwordToken)
                 .expiredDateTime(expiredTime)
                 .build();
 
-        certificationTokenRepository.save(certificationTokenJpaEntity);
+        passwordCertificationRepository.save(passwordCertificationJpaEntity);
 
         // given 3
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
@@ -118,13 +118,13 @@ class MemberUpdaterTest extends ImplementTest {
         LocalDateTime expiredTime = LocalDateTime.of(2024, 1, 1, 10, 00, 00);
 
         // given 2
-        CertificationTokenJpaEntity certificationTokenJpaEntity = CertificationTokenJpaEntity.builder()
+        PasswordCertificationJpaEntity passwordCertificationJpaEntity = PasswordCertificationJpaEntity.builder()
                 .email(EMAIL.value())
                 .certificationToken(passwordToken)
                 .expiredDateTime(expiredTime)
                 .build();
 
-        certificationTokenRepository.save(certificationTokenJpaEntity);
+        passwordCertificationRepository.save(passwordCertificationJpaEntity);
 
         // given 3
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()

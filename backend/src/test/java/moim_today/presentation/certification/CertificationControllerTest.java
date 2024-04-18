@@ -1,9 +1,9 @@
-package moim_today.presentation.certification_token;
+package moim_today.presentation.certification;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import moim_today.application.certification_token.CertificationTokenService;
+import moim_today.application.certification.CertificationService;
 import moim_today.dto.certification_token.PasswordFindRequest;
-import moim_today.fake_class.certification_token.FakeCertificationTokenService;
+import moim_today.fake_class.certification_token.FakeCertificationService;
 import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,13 +17,13 @@ import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class CertificationTokenControllerTest extends ControllerTest {
+class CertificationControllerTest extends ControllerTest {
 
-    private final CertificationTokenService certificationTokenService = new FakeCertificationTokenService();
+    private final CertificationService certificationService = new FakeCertificationService();
 
     @Override
     protected Object initController() {
-        return new CertificationTokenController(certificationTokenService);
+        return new CertificationController(certificationService);
     }
 
     @DisplayName("비밀번호 찾기 메일을 전송한다.")
@@ -32,7 +32,7 @@ class CertificationTokenControllerTest extends ControllerTest {
         PasswordFindRequest passwordFindRequest = new PasswordFindRequest(EMAIL.value());
         String json = objectMapper.writeValueAsString(passwordFindRequest);
 
-        mockMvc.perform(post("/api/certification-token/password")
+        mockMvc.perform(post("/api/certification/password")
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )

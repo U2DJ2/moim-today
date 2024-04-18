@@ -2,7 +2,7 @@ package moim_today.domain.certification_token;
 
 import lombok.Builder;
 import moim_today.global.error.BadRequestException;
-import moim_today.persistence.entity.certification_token.CertificationTokenJpaEntity;
+import moim_today.persistence.entity.certification.password.PasswordCertificationJpaEntity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -15,16 +15,14 @@ import static moim_today.global.constant.exception.CertificationConstant.CERTIFI
 public record CertificationToken(
         String email,
         String certificationToken,
-        CertificationType certificationType,
         LocalDateTime expiredDateTime
 ) {
 
-    public static CertificationToken toDomain(final CertificationTokenJpaEntity certificationTokenJpaEntity) {
+    public static CertificationToken toDomain(final PasswordCertificationJpaEntity passwordCertificationJpaEntity) {
         return CertificationToken.builder()
-                .email(certificationTokenJpaEntity.getEmail())
-                .certificationToken(certificationTokenJpaEntity.getCertificationToken())
-                .certificationType(certificationTokenJpaEntity.getCertificationType())
-                .expiredDateTime(certificationTokenJpaEntity.getExpiredDateTime())
+                .email(passwordCertificationJpaEntity.getEmail())
+                .certificationToken(passwordCertificationJpaEntity.getCertificationToken())
+                .expiredDateTime(passwordCertificationJpaEntity.getExpiredDateTime())
                 .build();
     }
 
