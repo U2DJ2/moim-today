@@ -1,4 +1,6 @@
 import React from "react";
+import AuthLeft from "../../components/AuthLeft";
+import AuthRight from "../../components/AuthRight";
 
 function LoginPage() {
   return (

@@ -35,6 +35,8 @@ export default function Calendar() {
   return (
     <div className="demo-app">
       <div className="demo-app-main">
+        <h1>개쩌는 캘린더</h1>
+
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{

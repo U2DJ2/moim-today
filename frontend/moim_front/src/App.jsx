@@ -1,10 +1,10 @@
 import Calendar from "./components/Calendar";
+import LoginPage from "./pages/LoginPage/LoginPage";
 
 function App() {
   return (
     <div className="App">
-      <h1>개쩌는 캘린더</h1>
-      <Calendar />
+      <LoginPage />
     </div>
   );
 }
