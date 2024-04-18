@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Table(name = "moim")
@@ -41,9 +41,9 @@ public class MoimJpaEntity extends BaseTimeEntity {
 
     private int views;
 
-    private LocalDateTime startDateTime;
+    private LocalDate startDateTime;
 
-    private LocalDateTime endDateTime;
+    private LocalDate endDateTime;
 
     protected MoimJpaEntity() {
     }
@@ -52,7 +52,7 @@ public class MoimJpaEntity extends BaseTimeEntity {
     private MoimJpaEntity(final long universityId, final long memberId, final String title,
                           final String contents, final int capacity, final int currentCount,
                           final String imageUrl, final String password, final MoimCategory moimCategory,
-                          final int views, final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
+                          final int views, final LocalDate startDateTime, final LocalDate endDateTime) {
         this.universityId = universityId;
         this.memberId = memberId;
         this.title = title;

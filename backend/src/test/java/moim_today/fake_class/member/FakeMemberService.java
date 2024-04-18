@@ -38,6 +38,7 @@ public class FakeMemberService implements MemberService {
         if (memberSession.id() != FakeMemberSession.createMemberSession().id()) {
             throw new NotFoundException(MEMBER_NOT_FOUND_ERROR.message());
         }
+
         return MemberProfileResponse.builder()
                 .universityName("universityName")
                 .departmentName("departmentName")
