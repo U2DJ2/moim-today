@@ -5,6 +5,7 @@ export default {
     extend: {},
     fontFamily: {
       Praise: ["Praise"],
+      Pretendard: ["Pretendard-Thin", "Pretendard-Semibold"],
     },
   },
   plugins: [],
