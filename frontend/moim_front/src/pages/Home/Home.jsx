@@ -3,7 +3,7 @@ export default function Home() {
     <div className="flex flex-col justify-between pb-20 bg-white">
       <div className="flex gap-5 justify-between px-9 py-6 w-full text-lg leading-7 text-center text-gray-500 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
         <div className="flex gap-5 justify-center my-auto font-semibold">
-          <div>대시보드</div>
+          <div className="text-lg">대시보드</div>
           <div>모임 생성</div>
         </div>
         <div className="flex gap-5 justify-center font-bold whitespace-nowrap">
@@ -16,7 +16,7 @@ export default function Home() {
         </div>
       </div>
       <div className="flex flex-col self-center px-5 mt-9 max-w-full whitespace-nowrap w-[700px]">
-        <div className="self-center text-9xl text-center text-rose-600 max-md:text-4xl">
+        <div className="self-center font-Praise text-9xl text-center text-rose-600 max-md:text-4xl">
           Moim
         </div>
         <div className="flex flex-col justify-center mt-2 text-zinc-700 text-opacity-60 max-md:max-w-full">

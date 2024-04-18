@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Praise";
+  src: url("./assets/font/Praise-Regular.ttf") format("truetype");
+  font-weight: 150;
+}
