@@ -10,7 +10,11 @@ function Header() {
       </nav>
       <div className="flex gap-5 justify-center font-bold whitespace-nowrap">
         <div className="justify-center my-auto">아주대학교</div>
-        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/c9e3048d2ecf88eda8221e80e1f3587f63212f6776bfaae61a153b6c70100a59?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&" alt="Profile" className="shrink-0 w-10 aspect-square" />
+        <img
+          src="https://cdn.builder.io/api/v1/image/assets/TEMP/c9e3048d2ecf88eda8221e80e1f3587f63212f6776bfaae61a153b6c70100a59?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&"
+          alt="Profile"
+          className="shrink-0 w-10 aspect-square"
+        />
       </div>
     </header>
   );
@@ -43,7 +47,11 @@ function FilterBar() {
     <div className="flex gap-2.5 justify-between px-24 py-4 mt-9 w-full text-base text-center whitespace-nowrap text-neutral-700 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
       <div className="flex gap-0 justify-center px-4 p-3 rounded-lg border border-gray-200 border-solid">
         <div>Views</div>
-        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/cb429ac32dd8c4cda3a1ab47fc76559f7394988000793bb7db4d615b978a0830?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&" alt="Views" className="shrink-0 w-5 aspect-" />
+        <img
+          src="https://cdn.builder.io/api/v1/image/assets/TEMP/cb429ac32dd8c4cda3a1ab47fc76559f7394988000793bb7db4d615b978a0830?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&"
+          alt="Views"
+          className="shrink-0 w-5 aspect-"
+        />
       </div>
       <div className="flex justify-center items-center self-start px-16 font-medium text-black max-md:px-5 max-md:max-w-full">
         <div className="flex gap-3">
