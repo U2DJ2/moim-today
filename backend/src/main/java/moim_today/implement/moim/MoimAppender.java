@@ -3,16 +3,16 @@ package moim_today.implement.moim;
 import moim_today.dto.moim.PrivateMoimAppendRequest;
 import moim_today.dto.moim.PublicMoimAppendRequest;
 import moim_today.global.annotation.Implement;
-import moim_today.persistence.repository.moim.moim.MoimJpaRepository;
+import moim_today.persistence.repository.moim.moim.MoimRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Implement
 public class MoimAppender {
 
-    private final MoimJpaRepository moimJpaRepository;
+    private final MoimRepository moimRepository;
 
-    public MoimAppender(final MoimJpaRepository moimJpaRepository) {
-        this.moimJpaRepository = moimJpaRepository;
+    public MoimAppender(final MoimRepository moimRepository) {
+        this.moimRepository = moimRepository;
     }
 
     @Transactional
