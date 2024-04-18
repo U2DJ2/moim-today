@@ -2,10 +2,9 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {
-      fontFamily: {
-        Pretendard: ["Pretendard-"],
-      },
+    extend: {},
+    fontFamily: {
+      Praise: ["Praise"],
     },
   },
   plugins: [],
