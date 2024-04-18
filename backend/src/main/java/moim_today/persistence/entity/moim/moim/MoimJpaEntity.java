@@ -3,6 +3,7 @@ package moim_today.persistence.entity.moim.moim;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
@@ -39,6 +40,9 @@ public class MoimJpaEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private MoimCategory moimCategory;
 
+    @Enumerated(EnumType.STRING)
+    private DisplayStatus displayStatus;
+
     private int views;
 
     private LocalDate startDate;
@@ -52,7 +56,8 @@ public class MoimJpaEntity extends BaseTimeEntity {
     private MoimJpaEntity(final long universityId, final long memberId, final String title,
                           final String contents, final int capacity, final int currentCount,
                           final String imageUrl, final String password, final MoimCategory moimCategory,
-                          final int views, final LocalDate startDate, final LocalDate endDate) {
+                          final DisplayStatus displayStatus, final int views,
+                          final LocalDate startDate, final LocalDate endDate) {
         this.universityId = universityId;
         this.memberId = memberId;
         this.title = title;
@@ -62,6 +67,7 @@ public class MoimJpaEntity extends BaseTimeEntity {
         this.imageUrl = imageUrl;
         this.password = password;
         this.moimCategory = moimCategory;
+        this.displayStatus = displayStatus;
         this.views = views;
         this.startDate = startDate;
         this.endDate = endDate;
