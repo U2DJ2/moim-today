@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface UniversityRepository {
 
-    void save(final UniversityJpaEntity universityJpaEntity);
+    UniversityJpaEntity save(final UniversityJpaEntity universityJpaEntity);
 
     UniversityJpaEntity getByName(final String name);
 

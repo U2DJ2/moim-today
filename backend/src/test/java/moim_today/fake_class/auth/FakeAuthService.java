@@ -36,7 +36,7 @@ public class FakeAuthService implements AuthService {
     }
 
     @Override
-    public void register(final MemberRegisterRequest memberRegisterRequest) {
+    public void register(final MemberRegisterRequest memberRegisterRequest, final HttpServletRequest request) {
 
     }
 

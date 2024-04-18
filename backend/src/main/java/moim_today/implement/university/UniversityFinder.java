@@ -24,11 +24,11 @@ public class UniversityFinder {
                 .toList();
     }
 
-    public Optional<UniversityJpaEntity> findByName(String schoolName){
+    public Optional<UniversityJpaEntity> findByName(final String schoolName){
         return universityRepository.findByName(schoolName);
     }
 
-    public boolean validateUniversityId(final long universityId){
+    public boolean checkUniversityIdIsPresent(final long universityId){
         Optional<UniversityJpaEntity> findUniversity = universityRepository.findById(universityId);
         return findUniversity.isPresent();
     }

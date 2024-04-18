@@ -19,8 +19,8 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
-    public void save(final DepartmentJpaEntity departmentJpaEntity) {
-        departmentJpaRepository.save(departmentJpaEntity);
+    public DepartmentJpaEntity save(final DepartmentJpaEntity departmentJpaEntity) {
+        return departmentJpaRepository.save(departmentJpaEntity);
     }
 
     @Override

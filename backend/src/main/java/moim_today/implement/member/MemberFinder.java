@@ -31,7 +31,7 @@ public class MemberFinder {
     }
 
     @Transactional(readOnly = true)
-    public void checkEmailAlreadyUsed(final String email){
+    public void validateEmailNotExists(final String email){
         Optional<MemberJpaEntity> findMember = memberRepository.findByEmail(email);
         if(findMember.isPresent()){
             throw new BadRequestException(EMAIL_ALREADY_USED_ERROR.message());

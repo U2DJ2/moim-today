@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static moim_today.global.constant.StaticSymbolConstant.BLANK;
+import static moim_today.global.constant.StaticSymbolConstant.NO_UNIVERSITY_ID;
+
 @RequestMapping("/api/universities")
 @RestController
 public class UniversityController {
@@ -37,8 +40,8 @@ public class UniversityController {
     }
 
     @GetMapping("/departments")
-    public CollectionResponse<List<DepartmentInfoResponse>> getDepartments(@RequestParam(defaultValue = "-1", required = false) long universityId,
-                                                                                  @RequestParam(defaultValue = "", required = false) String universityName){
+    public CollectionResponse<List<DepartmentInfoResponse>> getDepartments(@RequestParam(defaultValue = NO_UNIVERSITY_ID, required = false) long universityId,
+            @RequestParam(defaultValue = BLANK, required = false) String universityName) {
         return CollectionResponse.of(departmentService.getAllDepartment(universityId, universityName));
     }
 }

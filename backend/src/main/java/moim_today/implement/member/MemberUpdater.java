@@ -59,7 +59,7 @@ public class MemberUpdater {
                               final long universityId,
                               final ProfileUpdateRequest profileUpdateRequest) {
         MemberJpaEntity memberJpaEntity = memberRepository.getById(memberId);
-        departmentFinder.validateDepartmentId(universityId, profileUpdateRequest.departmentId());
+        departmentFinder.isDepartmentAssociatedWithUniversity(universityId, profileUpdateRequest.departmentId());
         memberJpaEntity.updateProfile(profileUpdateRequest.departmentId());
     }
 

@@ -41,9 +41,9 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public void register(final MemberRegisterRequest memberRegisterRequest,
                          final HttpServletRequest request) {
-        universityFinder.validateUniversityId(memberRegisterRequest.universityId());
-        departmentFinder.validateDepartmentId(memberRegisterRequest.universityId(), memberRegisterRequest.departmentId());
-        memberFinder.checkEmailAlreadyUsed(memberRegisterRequest.email());
+        universityFinder.checkUniversityIdIsPresent(memberRegisterRequest.universityId());
+        departmentFinder.isDepartmentAssociatedWithUniversity(memberRegisterRequest.universityId(), memberRegisterRequest.departmentId());
+        memberFinder.validateEmailNotExists(memberRegisterRequest.email());
         authManager.register(memberRegisterRequest, request);
     }
 }

@@ -75,4 +75,16 @@ class AuthManagerTest extends ImplementTest {
         //then
         assertThat(mockRequest.getSession(false)).isNull();
     }
+
+    @DisplayName("정상적으로 회원가입을 완료하면 멤버 데이터를 넣고 세션에 등록한다")
+    @Test
+    void register() {
+        // given
+        MemberJpaEntity entity = MemberJpaEntity.builder().email(EMAIL.value())
+                .password(passwordEncoder.encode(PASSWORD.value())).build();
+
+        // when
+
+        // then
+    }
 }

@@ -7,8 +7,9 @@ import java.util.List;
 
 public interface DepartmentRepository {
 
-    void save(final DepartmentJpaEntity departmentJpaEntity);
+    DepartmentJpaEntity save(final DepartmentJpaEntity departmentJpaEntity);
 
     DepartmentJpaEntity getById(final long departmentId);
+
     List<DepartmentInfoResponse> findAllDepartmentOfUniversity(final long universityId);
 }

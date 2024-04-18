@@ -19,8 +19,8 @@ public class UniversityRepositoryImpl implements UniversityRepository {
     }
 
     @Override
-    public void save(final UniversityJpaEntity universityJpaEntity) {
-        universityJpaRepository.save(universityJpaEntity);
+    public UniversityJpaEntity save(final UniversityJpaEntity universityJpaEntity) {
+        return universityJpaRepository.save(universityJpaEntity);
     }
 
     @Override
