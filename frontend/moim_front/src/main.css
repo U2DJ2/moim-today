@@ -43,3 +43,16 @@
   src: url("./assets/font/Pretendard-Black.woff") format("woff");
   font-weight: 700;
 }
+@font-face {
+  font-family: "Roboto";
+  src: url("./assets/font/Roboto-Bold.ttf") format("truetype");
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Roboto-Medium";
+  src: url("./assets/font/Roboto-Medium.ttf") format("truetype");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "";
+}

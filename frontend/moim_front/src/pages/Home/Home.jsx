@@ -1,7 +1,7 @@
 function Header() {
   return (
     <header className="flex gap-5 justify-between px-9 py-6 w-full text-lg leading-7 text-center text-gray-500 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-      <nav className="flex gap-5 justify-center my-auto font-semibold">
+      <nav className="flex gap-5 justify-center my-auto font-bold font-Pretendard">
         <a href="#">대시보드</a>
         <a href="#">모임 생성</a>
       </nav>
