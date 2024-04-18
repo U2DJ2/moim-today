@@ -6,7 +6,7 @@ import moim_today.persistence.entity.member.MemberJpaEntity;
 
 import java.time.LocalDate;
 
-import static moim_today.domain.member.enums.Profile.DEFAULT_PROFILE_URL;
+import static moim_today.global.constant.MemberConstant.DEFAULT_PROFILE_URL;
 
 @Builder
 public record MemberRegisterInfo (

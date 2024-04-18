@@ -1,12 +1,12 @@
-package moim_today.domain.member.enums;
+package moim_today.global.constant;
 
 
-public enum Profile {
+public enum MemberConstant {
     DEFAULT_PROFILE_URL("https://anak2.s3.ap-northeast-2.amazonaws.com/profile/default-profile.png");
 
     private final String value;
 
-    Profile(final String value) {
+    MemberConstant(final String value) {
         this.value = value;
     }
 

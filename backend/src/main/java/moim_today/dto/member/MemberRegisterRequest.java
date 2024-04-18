@@ -20,7 +20,7 @@ public record MemberRegisterRequest (
         @NotNull LocalDate birthDate,
         Gender gender
 ){
-    private static final String NO_PASSWORD= "패스워드가 없습니다.";
+    private static final String NO_PASSWORD = "패스워드가 없습니다.";
     private static final String NO_USERNAME = "사용자 이름이 없습니다.";
     private static final String NO_EMAIL = "이메일이 없습니다.";
     private static final String INVALID_EMAIL_FORMAT = "이메일 형식이 올바르지 않습니다.";

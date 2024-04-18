@@ -1,8 +1,12 @@
 package moim_today.implement.member;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
 import moim_today.domain.member.MemberSession;
+import moim_today.domain.member.enums.Gender;
 import moim_today.dto.auth.MemberLoginRequest;
+import moim_today.dto.member.MemberRegisterRequest;
 import moim_today.fake_DB.FakeMemberSession;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
@@ -12,6 +16,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import java.time.LocalDate;
+
 import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,8 +25,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AuthManagerTest extends ImplementTest {
 
+    private final long UNIV_ID = 194L;
+    private final long DEPARTMENT_ID = 9369L;
+    private final String STUDENT_ID = "200000000";
+    private final String USERNAME = "moimUser";
+
     @Autowired
     private AuthManager authManager;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @DisplayName("올바른 정보가 입력되면 로그인에 성공한다.")
     @Test
@@ -78,13 +92,31 @@ class AuthManagerTest extends ImplementTest {
 
     @DisplayName("정상적으로 회원가입을 완료하면 멤버 데이터를 넣고 세션에 등록한다")
     @Test
-    void register() {
+    void register() throws JsonProcessingException {
         // given
-        MemberJpaEntity entity = MemberJpaEntity.builder().email(EMAIL.value())
-                .password(passwordEncoder.encode(PASSWORD.value())).build();
+        LocalDate birthDate = LocalDate.now();
+        MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
+
+        MemberRegisterRequest memberRegisterRequest = MemberRegisterRequest.builder()
+                .email(EMAIL.value())
+                .password(PASSWORD.value())
+                .universityId(UNIV_ID)
+                .departmentId(DEPARTMENT_ID)
+                .studentId(STUDENT_ID)
+                .birthDate(birthDate)
+                .gender(Gender.MALE)
+                .username(USERNAME)
+                .build();
 
         // when
+        authManager.register(memberRegisterRequest, mockHttpServletRequest);
 
         // then
+        HttpSession session = mockHttpServletRequest.getSession(false);
+        assertThat(session).isNotNull();
+        String memberSessionObject = (String) mockHttpServletRequest.getSession().getAttribute(MEMBER_SESSION.value());
+        assertThat(memberSessionObject).isNotBlank();
+        MemberSession memberSession = objectMapper.readValue(memberSessionObject, MemberSession.class);
+        assertThat(memberSession.username()).isEqualTo(USERNAME);
     }
 }

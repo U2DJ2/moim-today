@@ -40,8 +40,9 @@ public class UniversityController {
     }
 
     @GetMapping("/departments")
-    public CollectionResponse<List<DepartmentInfoResponse>> getDepartments(@RequestParam(defaultValue = NO_UNIVERSITY_ID, required = false) long universityId,
-            @RequestParam(defaultValue = BLANK, required = false) String universityName) {
+    public CollectionResponse<List<DepartmentInfoResponse>> getDepartments(
+            @RequestParam(defaultValue = NO_UNIVERSITY_ID, required = false) final long universityId,
+            @RequestParam(defaultValue = BLANK, required = false) final String universityName) {
         return CollectionResponse.of(departmentService.getAllDepartment(universityId, universityName));
     }
 }
