@@ -7,3 +7,9 @@
   src: url("./assets/font/Praise-Regular.ttf") format("truetype");
   font-weight: 150;
 }
+
+@font-face {
+  font-family: "Pretendard-thin";
+  src: url("./assets/font/Pretendard-Thin.woff") format("truetype");
+  font-weight: 100;
+}
