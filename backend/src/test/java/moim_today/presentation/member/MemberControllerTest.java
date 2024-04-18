@@ -1,6 +1,9 @@
 package moim_today.presentation.member;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import moim_today.application.member.MemberService;
 import moim_today.dto.member.PasswordRecoverRequest;
 import moim_today.dto.member.PasswordUpdateRequest;
@@ -32,6 +35,8 @@ class MemberControllerTest extends ControllerTest {
 
     @Override
     protected Object initController() {
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         return new MemberController(memberService);
     }
 
@@ -71,7 +76,7 @@ class MemberControllerTest extends ControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isNotFound())
-                .andDo(document("인증 토큰 기반 비밀번호 수정 성공",
+                .andDo(document("인증 토큰 기반 비밀번호 수정 실패",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("회원")
                                 .summary("인증 토큰 기반 비밀번호 수정")
@@ -112,7 +117,6 @@ class MemberControllerTest extends ControllerTest {
     @DisplayName("프로필을 조회에 성공한다.")
     @Test
     void getMemberProfile() throws Exception {
-
         mockMvc.perform(get("/api/members/profile"))
                 .andExpect(status().isOk())
                 .andDo(document("프로필 조회 성공",
@@ -125,7 +129,7 @@ class MemberControllerTest extends ControllerTest {
                                         fieldWithPath("email").type(STRING).description("이메일"),
                                         fieldWithPath("username").type(STRING).description("이름"),
                                         fieldWithPath("studentId").type(STRING).description("학번"),
-                                        fieldWithPath("birthDate").type(ARRAY).description("생일"),
+                                        fieldWithPath("birthDate").type(STRING).description("생일"),
                                         fieldWithPath("gender").type(STRING).description("성별"),
                                         fieldWithPath("memberProfileImageUrl").type(STRING).description("프로필 이미지 url")
                                 )

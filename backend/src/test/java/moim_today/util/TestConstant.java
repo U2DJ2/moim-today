@@ -14,6 +14,9 @@ public enum TestConstant {
     NEW_PASSWORD("newPassword"),
     WRONG_PASSWORD("wrongPassword"),
 
+    EVERY_TIME_ID("everyTimeId"),
+    WRONG_EVERY_TIME_ID("wrong everyTimeId"),
+
     CERTIFICATION_TOKEN("certificationToken"),
     NEW_CERTIFICATION_TOKEN("newCertificationToken"),
     WRONG_CERTIFICATION_TOKEN("wrongCertificationToken"),
