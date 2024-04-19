@@ -7,6 +7,7 @@ import moim_today.domain.university.ExtractUniversity;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.InternalServerException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import static moim_today.global.constant.UniversityConstant.*;
@@ -28,6 +29,7 @@ public class UniversityAppender {
         this.universityUpdater = universityUpdater;
     }
 
+    @Transactional
     public void fetchAllUniversity(){
         String url = UNIVERSITY_API_URL.value()+apiKey+FETCH_ALL_UNIVERSITY_URL.value();
         String response = restTemplate.getForObject(url, String.class);

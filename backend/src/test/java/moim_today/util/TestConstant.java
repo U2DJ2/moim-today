@@ -1,13 +1,8 @@
 package moim_today.util;
 
-import moim_today.domain.member.enums.Gender;
-import moim_today.persistence.entity.member.MemberJpaEntity;
-
-import java.time.LocalDate;
-
 public enum TestConstant {
 
-    EMAIL("email"),
+    EMAIL("email@gmail.com"),
     WRONG_EMAIL("wrongEmail"),
 
     PASSWORD("password"),
@@ -30,9 +25,13 @@ public enum TestConstant {
     USERNAME("username"),
     STUDENT_ID("studentId"),
     PROFILE_IMAGE_URL("profileImageUrl"),
+    UNIV_ID("194"),
+    DEPARTMENT_ID("9369"),
 
     STATUS_CODE("200"),
-    MESSAGE("message");
+    MESSAGE("message"),
+
+    LOCAL_DATE_FORMAT("yyyy-MM-dd");
 
     private final String value;
 

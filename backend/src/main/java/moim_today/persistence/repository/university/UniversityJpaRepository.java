@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UniversityJpaRepository extends JpaRepository<UniversityJpaEntity, Long> {
+
     Optional<UniversityJpaEntity> findByUniversityName(final String universityName);
+
+    Optional<UniversityJpaEntity> findById(final long id);
 
     List<UniversityJpaEntity> findAll();
 }

@@ -2,6 +2,7 @@ package moim_today.implement.member;
 
 import moim_today.domain.member.enums.Gender;
 import moim_today.dto.member.MemberProfileResponse;
+import moim_today.global.error.BadRequestException;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
@@ -12,10 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
-import static moim_today.global.constant.exception.MemberExceptionConstant.EMAIL_NOT_FOUND_ERROR;
-import static moim_today.global.constant.exception.MemberExceptionConstant.MEMBER_NOT_FOUND_ERROR;
+import static moim_today.global.constant.exception.MemberExceptionConstant.*;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -103,5 +102,29 @@ class MemberFinderTest extends ImplementTest {
         assertThatThrownBy(() -> memberFinder.getMemberProfile(1L))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(MEMBER_NOT_FOUND_ERROR.message());
+    }
+
+    @DisplayName("이미 가입한 이메일일 경우 예외가 발생한다.")
+    @Test
+    void alreadyRegisteredEmailTest() {
+        // given
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .email(EMAIL.value())
+                .build();
+        memberRepository.save(memberJpaEntity);
+
+        // then
+        assertThatThrownBy(() -> memberFinder.validateEmailNotExists(EMAIL.value()))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(EMAIL_ALREADY_USED_ERROR.message());
+    }
+
+    @DisplayName("가입한 이메일이 없을 경우 예외가 발생하지 않는다.")
+    @Test
+    void notRegisteredEmailTest(){
+        // expected
+        assertThatCode(() -> {
+            memberFinder.validateEmailNotExists(EMAIL.value());
+        }).doesNotThrowAnyException();
     }
 }

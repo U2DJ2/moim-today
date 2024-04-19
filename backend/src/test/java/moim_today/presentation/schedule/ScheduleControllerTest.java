@@ -1,9 +1,6 @@
 package moim_today.presentation.schedule;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import moim_today.application.schedule.ScheduleService;
 import moim_today.dto.schedule.TimeTableRequest;
 import moim_today.fake_class.schedule.FakeScheduleService;
@@ -19,7 +16,7 @@ import static moim_today.util.TestConstant.EVERY_TIME_ID;
 import static moim_today.util.TestConstant.WRONG_EVERY_TIME_ID;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.payload.JsonFieldType.*;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,8 +39,6 @@ class ScheduleControllerTest extends ControllerTest {
                         EVERY_TIME_ID.value(), startDate, endDate
                 );
 
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         String json = objectMapper.writeValueAsString(timeTableRequest);
 
         mockMvc.perform(post("/api/schedules/timetable")
@@ -74,8 +69,6 @@ class ScheduleControllerTest extends ControllerTest {
                 WRONG_EVERY_TIME_ID.value(), startDate, endDate
         );
 
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         String json = objectMapper.writeValueAsString(timeTableRequest);
 
         mockMvc.perform(post("/api/schedules/timetable")
