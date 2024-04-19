@@ -1,10 +1,10 @@
-import AuthLeft from "../../components/AuthLeft";
 import AuthRight from "../../components/AuthRight";
+import AuthTitle from "../../components/AuthTitle";
 
 function LoginPage() {
   return (
     <div>
-      <AuthLeft />
+      <AuthTitle />
       <AuthRight />
     </div>
   );
