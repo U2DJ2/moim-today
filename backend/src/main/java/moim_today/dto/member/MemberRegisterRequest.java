@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import moim_today.domain.member.MemberRegisterInfo;
 import moim_today.domain.member.enums.Gender;
+import moim_today.global.annotation.ValidEnum;
 
 import java.time.LocalDate;
 
@@ -18,7 +19,7 @@ public record MemberRegisterRequest (
         @NotBlank(message = NO_USERNAME) String username,
         @NotBlank String studentId,
         @NotNull LocalDate birthDate,
-        Gender gender
+        @ValidEnum(enumClass = Gender.class) Gender gender
 ){
     private static final String NO_PASSWORD = "패스워드가 없습니다.";
     private static final String NO_USERNAME = "사용자 이름이 없습니다.";
