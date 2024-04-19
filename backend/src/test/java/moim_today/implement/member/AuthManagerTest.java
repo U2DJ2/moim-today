@@ -25,11 +25,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AuthManagerTest extends ImplementTest {
 
-    private final long UNIV_ID = 194L;
-    private final long DEPARTMENT_ID = 9369L;
-    private final String STUDENT_ID = "200000000";
-    private final String USERNAME = "moimUser";
-
     @Autowired
     private AuthManager authManager;
 
@@ -100,12 +95,12 @@ class AuthManagerTest extends ImplementTest {
         MemberRegisterRequest memberRegisterRequest = MemberRegisterRequest.builder()
                 .email(EMAIL.value())
                 .password(PASSWORD.value())
-                .universityId(UNIV_ID)
-                .departmentId(DEPARTMENT_ID)
-                .studentId(STUDENT_ID)
+                .universityId(Long.parseLong(UNIV_ID.value()))
+                .departmentId(Long.parseLong(DEPARTMENT_ID.value()))
+                .studentId(STUDENT_ID.value())
                 .birthDate(birthDate)
                 .gender(Gender.MALE)
-                .username(USERNAME)
+                .username(USERNAME.value())
                 .build();
 
         // when
@@ -117,6 +112,6 @@ class AuthManagerTest extends ImplementTest {
         String memberSessionObject = (String) mockHttpServletRequest.getSession().getAttribute(MEMBER_SESSION.value());
         assertThat(memberSessionObject).isNotBlank();
         MemberSession memberSession = objectMapper.readValue(memberSessionObject, MemberSession.class);
-        assertThat(memberSession.username()).isEqualTo(USERNAME);
+        assertThat(memberSession.username()).isEqualTo(USERNAME.value());
     }
 }
