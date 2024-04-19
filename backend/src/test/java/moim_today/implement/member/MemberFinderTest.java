@@ -106,7 +106,7 @@ class MemberFinderTest extends ImplementTest {
 
     @DisplayName("이미 가입한 이메일일 경우 예외가 발생한다.")
     @Test
-    void 가입한_이메일이_있으니_예외발생() {
+    void alreadyRegisteredEmailTest() {
         // given
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
                 .email(EMAIL.value())
@@ -121,7 +121,7 @@ class MemberFinderTest extends ImplementTest {
 
     @DisplayName("가입한 이메일이 없을 경우 예외가 발생하지 않는다.")
     @Test
-    void 가입한_이메일이_없으니_예외발생_없음(){
+    void notRegisteredEmailTest(){
         // expected
         assertThatCode(() -> {
             memberFinder.validateEmailNotExists(EMAIL.value());

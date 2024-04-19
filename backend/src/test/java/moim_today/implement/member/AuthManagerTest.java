@@ -1,7 +1,6 @@
 package moim_today.implement.member;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
 import moim_today.domain.member.MemberSession;
 import moim_today.domain.member.enums.Gender;
@@ -27,9 +26,6 @@ class AuthManagerTest extends ImplementTest {
 
     @Autowired
     private AuthManager authManager;
-
-    @Autowired
-    ObjectMapper objectMapper;
 
     @DisplayName("올바른 정보가 입력되면 로그인에 성공한다.")
     @Test
