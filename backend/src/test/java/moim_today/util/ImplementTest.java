@@ -1,5 +1,6 @@
 package moim_today.util;
 
+import moim_today.persistence.repository.certification.email.EmailCertificationRepository;
 import moim_today.persistence.repository.certification.password.PasswordCertificationRepository;
 import moim_today.persistence.repository.department.DepartmentRepository;
 import moim_today.persistence.repository.member.MemberRepository;
@@ -20,6 +21,9 @@ public abstract class ImplementTest {
 
     @Autowired
     protected PasswordCertificationRepository passwordCertificationRepository;
+
+    @Autowired
+    protected EmailCertificationRepository emailCertificationRepository;
 
     @Autowired
     protected UniversityRepository universityRepository;

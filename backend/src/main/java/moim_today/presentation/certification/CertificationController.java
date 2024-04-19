@@ -24,7 +24,7 @@ public class CertificationController {
 
     @ResponseBody
     @PostMapping("/password")
-    public void createPasswordToken(@RequestBody final PasswordFindRequest passwordFindRequest) {
+    public void sendPasswordToken(@RequestBody final PasswordFindRequest passwordFindRequest) {
         passwordCertificationService.sendPasswordToken(passwordFindRequest.email());
     }
 

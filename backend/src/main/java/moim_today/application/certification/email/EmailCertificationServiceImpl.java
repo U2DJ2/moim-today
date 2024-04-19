@@ -30,9 +30,9 @@ public class EmailCertificationServiceImpl implements EmailCertificationService 
 
     @Override
     public void sendCertificationEmail(final String email) {
-        String certificationToken = emailCertificationAppender.save(email, now().plusMinutes(TEN_MINUTES.time()));
+        String emailToken = emailCertificationAppender.createEmailToken(email, now().plusMinutes(TEN_MINUTES.time()));
         MailSendRequest mailSendRequest = MailSendRequest.of(EMAIL_CERTIFICATION_SUBJECT.value(), List.of(email));
-        mailService.sendEmailCertificationMail(mailSendRequest, certificationToken);
+        mailService.sendEmailCertificationMail(mailSendRequest, emailToken);
     }
 
     @Override

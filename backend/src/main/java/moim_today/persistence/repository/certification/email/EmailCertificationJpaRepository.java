@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface EmailCertificationJpaRepository extends JpaRepository<EmailCertificationJpaEntity, Long> {
 
     Optional<EmailCertificationJpaEntity> findByCertificationToken(final String certificationToken);
+
+    Optional<EmailCertificationJpaEntity> findByEmail(final String email);
 }

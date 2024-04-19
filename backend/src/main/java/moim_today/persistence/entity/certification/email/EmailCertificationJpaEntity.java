@@ -49,4 +49,9 @@ public class EmailCertificationJpaEntity extends BaseTimeEntity {
     public void updateCertificationStatus(final boolean certificationStatus) {
         this.certificationStatus = certificationStatus;
     }
+
+    public void updateToken(final String certificationToken, final LocalDateTime expiredDateTime) {
+        this.certificationToken = certificationToken;
+        this.expiredDateTime = expiredDateTime;
+    }
 }

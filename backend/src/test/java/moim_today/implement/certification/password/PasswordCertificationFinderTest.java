@@ -1,6 +1,5 @@
-package moim_today.implement.certification;
+package moim_today.implement.certification.password;
 
-import moim_today.implement.certification.password.PasswordCertificationFinder;
 import moim_today.persistence.entity.certification.password.PasswordCertificationJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;

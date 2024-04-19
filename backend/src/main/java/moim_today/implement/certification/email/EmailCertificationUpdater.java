@@ -1,6 +1,6 @@
 package moim_today.implement.certification.email;
 
-import moim_today.domain.certification_token.Certification;
+import moim_today.domain.certification.Certification;
 import moim_today.global.annotation.Implement;
 import moim_today.persistence.entity.certification.email.EmailCertificationJpaEntity;
 import moim_today.persistence.repository.certification.email.EmailCertificationRepository;

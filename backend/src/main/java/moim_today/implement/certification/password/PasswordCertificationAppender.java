@@ -1,6 +1,6 @@
 package moim_today.implement.certification.password;
 
-import moim_today.domain.certification_token.Certification;
+import moim_today.domain.certification.Certification;
 import moim_today.global.annotation.Implement;
 import moim_today.persistence.entity.certification.password.PasswordCertificationJpaEntity;
 import moim_today.persistence.repository.certification.password.PasswordCertificationRepository;
@@ -28,7 +28,7 @@ public class PasswordCertificationAppender {
         if (optionalEntity.isPresent()) {
             updatePasswordToken(optionalEntity.get(), passwordToken);
         } else {
-            createPasswordToken(email, passwordToken);
+            saveNewPasswordToken(email, passwordToken);
         }
 
         return passwordToken;
@@ -41,10 +41,10 @@ public class PasswordCertificationAppender {
         );
     }
 
-    private void createPasswordToken(final String email, final String randomToken) {
+    private void saveNewPasswordToken(final String email, final String passwordToken) {
         PasswordCertificationJpaEntity passwordCertificationJpaEntity =
                 PasswordCertificationJpaEntity.toEntity(
-                        email, randomToken, now().plusMinutes(TEN_MINUTES.time())
+                        email, passwordToken, now().plusMinutes(TEN_MINUTES.time())
                 );
 
         passwordCertificationRepository.save(passwordCertificationJpaEntity);

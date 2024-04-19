@@ -1,4 +1,4 @@
-package moim_today.domain.certification_token;
+package moim_today.domain.certification;
 
 import moim_today.global.error.BadRequestException;
 import org.junit.jupiter.api.DisplayName;

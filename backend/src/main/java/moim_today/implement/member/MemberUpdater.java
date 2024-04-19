@@ -1,6 +1,6 @@
 package moim_today.implement.member;
 
-import moim_today.domain.certification_token.Certification;
+import moim_today.domain.certification.Certification;
 import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.certification.password.PasswordCertificationFinder;
