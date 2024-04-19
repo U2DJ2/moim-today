@@ -1,7 +1,7 @@
 package moim_today.application.auth;
 
 import moim_today.dto.auth.MemberLoginRequest;
-import moim_today.dto.member.MemberRegisterRequest;
+import moim_today.dto.auth.MemberRegisterRequest;
 import moim_today.implement.department.DepartmentFinder;
 import moim_today.implement.member.AuthManager;
 import jakarta.servlet.http.HttpServletRequest;

@@ -2,7 +2,7 @@ package moim_today.fake_class.auth;
 
 import moim_today.application.auth.AuthService;
 import moim_today.dto.auth.MemberLoginRequest;
-import moim_today.dto.member.MemberRegisterRequest;
+import moim_today.dto.auth.MemberRegisterRequest;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import jakarta.servlet.http.HttpServletRequest;

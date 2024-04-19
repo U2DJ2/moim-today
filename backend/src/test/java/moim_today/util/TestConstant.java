@@ -2,7 +2,7 @@ package moim_today.util;
 
 public enum TestConstant {
 
-    EMAIL("email"),
+    EMAIL("email@gmail.com"),
     WRONG_EMAIL("wrongEmail"),
 
     PASSWORD("password"),

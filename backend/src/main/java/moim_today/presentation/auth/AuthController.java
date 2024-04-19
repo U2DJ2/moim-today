@@ -1,10 +1,11 @@
 package moim_today.presentation.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import moim_today.application.auth.AuthService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.auth.MemberLoginRequest;
-import moim_today.dto.member.MemberRegisterRequest;
+import moim_today.dto.auth.MemberRegisterRequest;
 import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public void register(@RequestBody final MemberRegisterRequest memberRegisterRequest,
+    public void register(@Valid @RequestBody final MemberRegisterRequest memberRegisterRequest,
                          final HttpServletRequest request){
         authService.register(memberRegisterRequest, request);
     }

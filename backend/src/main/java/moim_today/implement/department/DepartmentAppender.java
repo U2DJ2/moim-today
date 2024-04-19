@@ -10,6 +10,7 @@ import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
 import moim_today.persistence.repository.department.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class DepartmentAppender {
     @Value("${university.api.key}")
     private String apiKey;
 
+    @Transactional
     public void putAllDepartment(){
         List<String> allDepartment = fetchAllDepartment();
         for(String eachDepartment : allDepartment){
@@ -45,6 +47,7 @@ public class DepartmentAppender {
         }
     }
 
+    @Transactional
     public List<String> fetchAllDepartment(){
         String url = UNIVERSITY_API_URL.value()+apiKey+FETCH_ALL_DEPARTMENT_URL.value();
         String response = restTemplate.getForObject(url, String.class);
@@ -65,6 +68,7 @@ public class DepartmentAppender {
         }
     }
 
+    @Transactional
     public void fetchUniversitiesByDepartment(final String majorSeq){
         String url = UNIVERSITY_API_URL.value()+apiKey+FETCH_ALL_UNIVERSITY_BY_DEPARTMENT_URL.value()+majorSeq;
         String response = restTemplate.getForObject(url, String.class);
@@ -90,6 +94,7 @@ public class DepartmentAppender {
         }
     }
 
+    @Transactional
     public void saveDepartment(UniversityJpaEntity universityJpaEntity, String departmentName){
         DepartmentJpaEntity saveDepartment = DepartmentJpaEntity.builder()
                 .universityId(universityJpaEntity.getId())

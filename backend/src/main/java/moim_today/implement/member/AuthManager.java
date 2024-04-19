@@ -3,10 +3,9 @@ package moim_today.implement.member;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import moim_today.domain.member.MemberRegisterInfo;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.auth.MemberLoginRequest;
-import moim_today.dto.member.MemberRegisterRequest;
+import moim_today.dto.auth.MemberRegisterRequest;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
@@ -53,8 +52,7 @@ public class AuthManager {
 
     public void register(final MemberRegisterRequest memberRegisterRequest, final HttpServletRequest request) {
         String encodedPassword = passwordEncode(memberRegisterRequest.password());
-        MemberRegisterInfo memberRegisterInfo = memberRegisterRequest.toDomain(encodedPassword);
-        MemberJpaEntity saveMember = memberRepository.save(memberRegisterInfo.toEntity());
+        MemberJpaEntity saveMember = memberRepository.save(memberRegisterRequest.toEntity(encodedPassword));
         setSessionByMemberSession(saveMember, request);
     }
 
