@@ -2,8 +2,10 @@ package moim_today.presentation.certification;
 
 import moim_today.application.certification.email.EmailCertificationService;
 import moim_today.application.certification.password.PasswordCertificationService;
-import moim_today.dto.certification_token.EmailCertificationRequest;
-import moim_today.dto.certification_token.PasswordFindRequest;
+import moim_today.dto.certification.CompleteEmailCertificationRequest;
+import moim_today.dto.certification.CompleteEmailCertificationResponse;
+import moim_today.dto.certification.EmailCertificationRequest;
+import moim_today.dto.certification.PasswordFindRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +34,13 @@ public class CertificationController {
     @PostMapping("/email")
     public void sendCertificationEmail(@RequestBody final EmailCertificationRequest emailCertificationRequest) {
         emailCertificationService.sendCertificationEmail(emailCertificationRequest.email());
+    }
+
+    @ResponseBody
+    @PostMapping("/email/complete")
+    public CompleteEmailCertificationResponse emailCertificationComplete(
+            @RequestBody final CompleteEmailCertificationRequest completeEmailCertificationRequest) {
+        return emailCertificationService.completeCertification(completeEmailCertificationRequest.email());
     }
 
     @GetMapping("/email/{certificationToken}")

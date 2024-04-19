@@ -1,6 +1,7 @@
-package moim_today.fake_class.certification_token;
+package moim_today.fake_class.certification;
 
 import moim_today.application.certification.email.EmailCertificationService;
+import moim_today.dto.certification.CompleteEmailCertificationResponse;
 import moim_today.global.error.BadRequestException;
 import moim_today.util.TestConstant;
 
@@ -19,5 +20,10 @@ public class FakeEmailCertificationService implements EmailCertificationService 
     @Override
     public void certifyEmail(final String certificationToken) {
 
+    }
+
+    @Override
+    public CompleteEmailCertificationResponse completeCertification(final String email) {
+        return new CompleteEmailCertificationResponse(1, "아주대학교");
     }
 }

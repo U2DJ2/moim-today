@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import moim_today.global.base_entity.BaseTimeEntity;
+import moim_today.global.error.BadRequestException;
 
 import java.time.LocalDateTime;
+
+import static moim_today.global.constant.exception.CertificationConstant.EMAIL_NOT_YET_CERTIFICATION_ERROR;
 
 @Getter
 @Table(name = "email_certification")
@@ -53,5 +56,11 @@ public class EmailCertificationJpaEntity extends BaseTimeEntity {
     public void updateToken(final String certificationToken, final LocalDateTime expiredDateTime) {
         this.certificationToken = certificationToken;
         this.expiredDateTime = expiredDateTime;
+    }
+
+    public void validateCertificationStatus() {
+        if (!certificationStatus) {
+            throw new BadRequestException(EMAIL_NOT_YET_CERTIFICATION_ERROR.message());
+        }
     }
 }

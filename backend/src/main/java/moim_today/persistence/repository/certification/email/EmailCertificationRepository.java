@@ -12,6 +12,8 @@ public interface EmailCertificationRepository {
 
     EmailCertificationJpaEntity getByCertificationToken(final String certificationToken);
 
+    EmailCertificationJpaEntity getByEmail(final String email);
+
     Optional<EmailCertificationJpaEntity> findByEmail(final String email);
 
     long count();

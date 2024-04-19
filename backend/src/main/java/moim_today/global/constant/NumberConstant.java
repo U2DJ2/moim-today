@@ -11,7 +11,9 @@ public enum NumberConstant {
     SCHEDULE_MEETING_ID(0),
 
     EVERYTIME_ITEM_START_INDEX(0),
-    EVERYTIME_NODE_START_INDEX(0);
+    EVERYTIME_NODE_START_INDEX(0),
+
+    NOT_EXIST_IDX(-1);
 
     private final int value;
 

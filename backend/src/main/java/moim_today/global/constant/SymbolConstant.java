@@ -7,6 +7,7 @@ public enum SymbolConstant {
     WWW("www."),
     CAPITAL_WWW("WWW."),
     SLASH("/"),
+    AT("@"),
     EMAIL_EXTENSION("ac.kr");
 
     private final String value;

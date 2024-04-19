@@ -1,4 +1,4 @@
-package moim_today.fake_class.certification_token;
+package moim_today.fake_class.certification;
 
 import moim_today.application.certification.password.PasswordCertificationService;
 import moim_today.global.error.NotFoundException;

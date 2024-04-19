@@ -32,6 +32,11 @@ public class UniversityFinder {
     }
 
     @Transactional(readOnly = true)
+    public UniversityJpaEntity getByUniversityEmail(final String email) {
+        return universityRepository.getByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
     public boolean checkUniversityIdIsPresent(final long universityId){
         Optional<UniversityJpaEntity> findUniversity = universityRepository.findById(universityId);
         return findUniversity.isPresent();

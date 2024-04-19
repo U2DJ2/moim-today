@@ -35,6 +35,12 @@ public class EmailCertificationRepositoryImpl implements EmailCertificationRepos
     }
 
     @Override
+    public EmailCertificationJpaEntity getByEmail(final String email) {
+        return emailCertificationJpaRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException(CERTIFICATION_EMAIL_NOT_FOUND_ERROR.message()));
+    }
+
+    @Override
     public Optional<EmailCertificationJpaEntity> findByEmail(final String email) {
         return emailCertificationJpaRepository.findByEmail(email);
     }

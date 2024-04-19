@@ -11,6 +11,7 @@ import java.util.UUID;
 import static moim_today.global.constant.NumberConstant.*;
 import static moim_today.global.constant.SymbolConstant.*;
 import static moim_today.global.constant.exception.CertificationConstant.CERTIFICATION_EXPIRED_ERROR;
+import static moim_today.global.constant.exception.MailExceptionConstant.WRONG_EMAIL_FROM_ERROR;
 
 @Builder
 public record Certification(
@@ -45,5 +46,17 @@ public record Certification(
         if (expiredDateTime.isBefore(now)) {
             throw new BadRequestException(CERTIFICATION_EXPIRED_ERROR.message());
         }
+    }
+
+    public String parseEmailDomain() {
+        int atIndex = email.indexOf(AT.value());
+        int lastIndex = email.length() - 1;
+        int nextAtIndex = atIndex + 1;
+
+        if (atIndex == NOT_EXIST_IDX.value() || atIndex == lastIndex) {
+            throw new BadRequestException(WRONG_EMAIL_FROM_ERROR.message());
+        }
+
+        return email.substring(nextAtIndex);
     }
 }
