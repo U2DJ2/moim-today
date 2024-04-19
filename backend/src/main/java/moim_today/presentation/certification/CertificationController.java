@@ -7,6 +7,8 @@ import moim_today.dto.certification_token.PasswordFindRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import static moim_today.global.constant.MailConstant.EMAIL_CERTIFICATION_COMPLETE;
+
 @RequestMapping("/api/certification")
 @Controller
 public class CertificationController {
@@ -35,6 +37,6 @@ public class CertificationController {
     @GetMapping("/email/{certificationToken}")
     public String certifyEmail(@PathVariable final String certificationToken) {
         emailCertificationService.certifyEmail(certificationToken);
-        return "emailCertificationComplete";
+        return EMAIL_CERTIFICATION_COMPLETE.value();
     }
 }

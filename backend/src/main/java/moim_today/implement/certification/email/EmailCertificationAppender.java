@@ -1,6 +1,6 @@
 package moim_today.implement.certification.email;
 
-import moim_today.domain.certification_token.CertificationToken;
+import moim_today.domain.certification_token.Certification;
 import moim_today.persistence.entity.certification.email.EmailCertificationJpaEntity;
 import moim_today.persistence.repository.certification.email.EmailCertificationRepository;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class EmailCertificationAppender {
 
     @Transactional
     public String save(final String email, final LocalDateTime expiredDateTime) {
-        String certificationToken = CertificationToken.createCertificationToken();
+        String certificationToken = Certification.createCertificationToken();
         EmailCertificationJpaEntity emailCertificationJpaEntity
                 = EmailCertificationJpaEntity.toEntity(email, certificationToken, expiredDateTime);
         emailCertificationRepository.save(emailCertificationJpaEntity);

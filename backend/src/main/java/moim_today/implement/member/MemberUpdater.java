@@ -1,6 +1,6 @@
 package moim_today.implement.member;
 
-import moim_today.domain.certification_token.CertificationToken;
+import moim_today.domain.certification_token.Certification;
 import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.certification.password.PasswordCertificationFinder;
@@ -50,8 +50,8 @@ public class MemberUpdater {
 
     private void validateExpiredDateTime(final PasswordCertificationJpaEntity passwordCertificationJpaEntity,
                                          final LocalDateTime now) {
-        CertificationToken certificationToken = CertificationToken.toDomain(passwordCertificationJpaEntity);
-        certificationToken.validateExpiredDateTime(now);
+        Certification certification = Certification.toDomain(passwordCertificationJpaEntity);
+        certification.validateExpiredDateTime(now);
     }
 
     @Transactional

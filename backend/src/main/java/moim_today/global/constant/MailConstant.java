@@ -6,6 +6,7 @@ public enum MailConstant {
     AUTHENTICATION_MAIL("authenticationMail.html"),
     PASSWORD_FIND_MAIL("passwordFindMail.html"),
     EMAIL_CERTIFICATION_MAIL("emailCertificationMail.html"),
+    EMAIL_CERTIFICATION_COMPLETE("emailCertificationComplete"),
 
     PASSWORD_FIND_SUBJECT("[Moim-Today] 비밀번호 찾기"),
     EMAIL_CERTIFICATION_SUBJECT("[Moim-Today] 회원가입 이메일 인증");

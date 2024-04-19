@@ -6,6 +6,7 @@ import moim_today.implement.certification.email.EmailCertificationAppender;
 import moim_today.implement.certification.email.EmailCertificationUpdater;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.time.LocalDateTime.now;
@@ -36,6 +37,6 @@ public class EmailCertificationServiceImpl implements EmailCertificationService 
 
     @Override
     public void certifyEmail(final String certificationToken) {
-        emailCertificationUpdater.certifyEmail(certificationToken);
+        emailCertificationUpdater.certifyEmail(certificationToken, LocalDateTime.now());
     }
 }
