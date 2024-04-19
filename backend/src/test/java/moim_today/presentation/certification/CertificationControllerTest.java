@@ -3,6 +3,7 @@ package moim_today.presentation.certification;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.certification.email.EmailCertificationService;
 import moim_today.application.certification.password.PasswordCertificationService;
+import moim_today.dto.certification.CompleteEmailCertificationRequest;
 import moim_today.dto.certification.EmailCertificationRequest;
 import moim_today.dto.certification.PasswordFindRequest;
 import moim_today.fake_class.certification.FakeEmailCertificationService;
@@ -16,6 +17,7 @@ import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static moim_today.util.TestConstant.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -115,6 +117,60 @@ class CertificationControllerTest extends ControllerTest {
                         resource(ResourceSnippetParameters.builder()
                                 .tag("인증 토큰")
                                 .summary("이메일 인증 메일 전송")
+                                .requestFields(
+                                        fieldWithPath("email").type(STRING).description("이메일")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("이메일 인증이 완료되었으면 학교 정보를 반환한다.")
+    @Test
+    void completeCertification() throws Exception {
+        CompleteEmailCertificationRequest completeEmailCertificationRequest =
+                new CompleteEmailCertificationRequest(AJOU_EMAIL.value());
+        String json = objectMapper.writeValueAsString(completeEmailCertificationRequest);
+
+        mockMvc.perform(post("/api/certification/email/complete")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("이메일 인증 완료, 학교 정보 반환",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("인증 토큰")
+                                .summary("이메일 인증 완료 여부 확인")
+                                .requestFields(
+                                        fieldWithPath("email").type(STRING).description("이메일")
+                                )
+                                .responseFields(
+                                        fieldWithPath("universityId").type(NUMBER).description("대학교 id"),
+                                        fieldWithPath("universityName").type(STRING).description("대학교명")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("이메일 인증이 완료되지 않았으면 예외가 발생한다.")
+    @Test
+    void completeCertificationFail() throws Exception {
+        CompleteEmailCertificationRequest completeEmailCertificationRequest =
+                new CompleteEmailCertificationRequest(WRONG_EMAIL.value());
+        String json = objectMapper.writeValueAsString(completeEmailCertificationRequest);
+
+        mockMvc.perform(post("/api/certification/email/complete")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("이메일 인증 완료되지 않음",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("인증 토큰")
+                                .summary("이메일 인증 완료 여부 확인")
                                 .requestFields(
                                         fieldWithPath("email").type(STRING).description("이메일")
                                 )

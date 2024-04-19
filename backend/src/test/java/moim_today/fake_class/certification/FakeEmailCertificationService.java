@@ -5,7 +5,9 @@ import moim_today.dto.certification.CompleteEmailCertificationResponse;
 import moim_today.global.error.BadRequestException;
 import moim_today.util.TestConstant;
 
+import static moim_today.global.constant.exception.CertificationConstant.EMAIL_NOT_YET_CERTIFICATION_ERROR;
 import static moim_today.global.constant.exception.MemberExceptionConstant.ALREADY_EXIST_EMAIL_ERROR;
+import static moim_today.util.TestConstant.AJOU_EMAIL;
 
 public class FakeEmailCertificationService implements EmailCertificationService {
 
@@ -17,6 +19,7 @@ public class FakeEmailCertificationService implements EmailCertificationService 
         }
     }
 
+    // 백엔드 내부 API 문서화 X
     @Override
     public void certifyEmail(final String certificationToken) {
 
@@ -24,6 +27,10 @@ public class FakeEmailCertificationService implements EmailCertificationService 
 
     @Override
     public CompleteEmailCertificationResponse completeCertification(final String email) {
+        if (!email.equals(AJOU_EMAIL.value())) {
+            throw new BadRequestException(EMAIL_NOT_YET_CERTIFICATION_ERROR.message());
+        }
+
         return new CompleteEmailCertificationResponse(1, "아주대학교");
     }
 }

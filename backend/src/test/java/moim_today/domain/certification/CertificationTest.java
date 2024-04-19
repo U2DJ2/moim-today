@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 import static moim_today.global.constant.exception.CertificationConstant.CERTIFICATION_EXPIRED_ERROR;
+import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.*;
 
 class CertificationTest {
@@ -53,5 +54,19 @@ class CertificationTest {
         assertThatThrownBy(() -> certification.validateExpiredDateTime(expiredTime.plusMinutes(11)))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage(CERTIFICATION_EXPIRED_ERROR.message());
+    }
+
+    @DisplayName("특정 이메일을 파싱하여 @ 뒷부분인 학교 이메일 확장자만 반환한다.")
+    @Test
+    void parseEmailDomain() {
+        // given
+        LocalDateTime expiredTime = LocalDateTime.of(2024, 1, 1, 10, 00, 00);
+        Certification certification = new Certification("email@ajou.ac.kr", CERTIFICATION_TOKEN.value(), expiredTime);
+
+        // when
+        String emailDomain = certification.parseEmailDomain();
+
+        // then
+        assertThat(emailDomain).isEqualTo("ajou.ac.kr");
     }
 }

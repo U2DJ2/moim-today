@@ -1,7 +1,14 @@
 package moim_today.util;
 
+import moim_today.domain.member.enums.Gender;
+import moim_today.persistence.entity.member.MemberJpaEntity;
+
+import java.time.LocalDate;
+
 public enum TestConstant {
 
+    EMAIL("email"),
+    AJOU_EMAIL("test@ajou.ac.kr"),
     EMAIL("email@gmail.com"),
     WRONG_EMAIL("wrongEmail"),
 

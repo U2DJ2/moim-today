@@ -38,11 +38,13 @@ public class CertificationController {
 
     @ResponseBody
     @PostMapping("/email/complete")
-    public CompleteEmailCertificationResponse emailCertificationComplete(
-            @RequestBody final CompleteEmailCertificationRequest completeEmailCertificationRequest) {
+    public CompleteEmailCertificationResponse completeCertification(
+            @RequestBody final CompleteEmailCertificationRequest completeEmailCertificationRequest
+    ) {
         return emailCertificationService.completeCertification(completeEmailCertificationRequest.email());
     }
 
+    // 백엔드 내부 API
     @GetMapping("/email/{certificationToken}")
     public String certifyEmail(@PathVariable final String certificationToken) {
         emailCertificationService.certifyEmail(certificationToken);
