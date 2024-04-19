@@ -20,6 +20,8 @@ public class EmailCertificationJpaEntity extends BaseTimeEntity {
 
     private boolean certificationStatus;
 
+    private String certificationToken;
+
     private LocalDateTime expiredDateTime;
 
     protected EmailCertificationJpaEntity() {
@@ -27,17 +29,24 @@ public class EmailCertificationJpaEntity extends BaseTimeEntity {
 
     @Builder
     private EmailCertificationJpaEntity(final String email, final boolean certificationStatus,
-                                       final LocalDateTime expiredDateTime) {
+                                        final String certificationToken, final LocalDateTime expiredDateTime) {
         this.email = email;
         this.certificationStatus = certificationStatus;
+        this.certificationToken = certificationToken;
         this.expiredDateTime = expiredDateTime;
     }
 
-    public static EmailCertificationJpaEntity toEntity(final String email, final LocalDateTime expiredDateTime) {
+    public static EmailCertificationJpaEntity toEntity(final String email, final String certificationToken,
+                                                       final LocalDateTime expiredDateTime) {
         return EmailCertificationJpaEntity.builder()
                 .email(email)
                 .certificationStatus(false)
+                .certificationToken(certificationToken)
                 .expiredDateTime(expiredDateTime)
                 .build();
+    }
+
+    public void updateCertificationStatus(final boolean certificationStatus) {
+        this.certificationStatus = certificationStatus;
     }
 }

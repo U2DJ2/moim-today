@@ -6,5 +6,5 @@ public interface MailService {
 
     void sendPasswordFindMail(final MailSendRequest mailSendRequest, final String passwordToken);
 
-    void sendEmailCertificationMail(final MailSendRequest mailSendRequest);
+    void sendEmailCertificationMail(final MailSendRequest mailSendRequest, final String certificationToken);
 }

@@ -22,7 +22,7 @@ public class AmazonSesService implements MailService {
     }
 
     @Override
-    public void sendEmailCertificationMail(final MailSendRequest mailSendRequest) {
-        mailSender.send(mailSendRequest, EMAIL_CERTIFICATION_MAIL.value(), mailSendRequest.to().get(0));
+    public void sendEmailCertificationMail(final MailSendRequest mailSendRequest, final String certificationToken) {
+        mailSender.send(mailSendRequest, EMAIL_CERTIFICATION_MAIL.value(), certificationToken);
     }
 }

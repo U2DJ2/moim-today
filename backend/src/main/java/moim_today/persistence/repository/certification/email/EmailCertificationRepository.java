@@ -5,4 +5,6 @@ import moim_today.persistence.entity.certification.email.EmailCertificationJpaEn
 public interface EmailCertificationRepository {
 
     void save(final EmailCertificationJpaEntity emailCertificationJpaEntity);
+
+    EmailCertificationJpaEntity getByCertificationToken(final String certificationToken);
 }

@@ -9,10 +9,15 @@ import static moim_today.util.TestConstant.*;
 public class FakeCertificationService implements CertificationService {
 
     @Override
-    public void createPasswordToken(final String email) {
+    public void sendPasswordToken(final String email) {
         if (!email.equals(EMAIL.value())) {
             throw new NotFoundException(EMAIL_NOT_FOUND_ERROR.message());
         }
+    }
+
+    @Override
+    public void sendCertificationEmail(final String email) {
+
     }
 
     @Override

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import static moim_today.global.constant.exception.CertificationConstant.CERTIFICATION_NOT_FOUND_ERROR;
+import static moim_today.global.constant.exception.CertificationConstant.CERTIFICATION_TOKEN_NOT_FOUND_ERROR;
 import static moim_today.global.constant.exception.MailExceptionConstant.MAIL_CERTIFICATION_TOKEN_NOT_FOUND_ERROR;
 
 @Repository
@@ -26,7 +26,7 @@ public class PasswordCertificationRepositoryImpl implements PasswordCertificatio
     @Override
     public PasswordCertificationJpaEntity getByEmail(final String email) {
         return passwordCertificationJpaRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException(CERTIFICATION_NOT_FOUND_ERROR.message()));
+                .orElseThrow(() -> new NotFoundException(CERTIFICATION_TOKEN_NOT_FOUND_ERROR.message()));
     }
 
     @Override
