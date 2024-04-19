@@ -4,7 +4,11 @@ import AuthTitle from "../../components/AuthTitle";
 function LoginPage() {
   return (
     <div>
-      <AuthTitle />
+      <AuthTitle
+        title={"Log In"}
+        firstContent={"Welcome back! "}
+        secondContent={"Please login to your account."}
+      />
       <AuthRight />
     </div>
   );
