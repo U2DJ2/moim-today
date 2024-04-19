@@ -128,7 +128,7 @@ class AuthControllerTest extends ControllerTest {
                                         fieldWithPath("departmentId").type(NUMBER).description("학과 ID"),
                                         fieldWithPath("studentId").type(STRING).description("학번"),
                                         fieldWithPath("birthDate").type(STRING).description("생년월일 (yyyy-MM-dd)"),
-                                        fieldWithPath("gender").type(VARIES).description("성별 (남자, 여자, UNKNOWN)"),
+                                        fieldWithPath("gender").type(VARIES).description("성별 (MALE, FEMALE, UNKNOWN)"),
                                         fieldWithPath("username").type(STRING).description("이름")
                                 )
                                 .build())
