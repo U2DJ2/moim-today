@@ -6,10 +6,9 @@ import moim_today.persistence.entity.certification.password.PasswordCertificatio
 import moim_today.persistence.repository.certification.password.PasswordCertificationRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static java.time.LocalDateTime.*;
-import static moim_today.global.constant.TimeConstant.*;
 
 @Implement
 public class PasswordCertificationAppender {
@@ -21,31 +20,28 @@ public class PasswordCertificationAppender {
     }
 
     @Transactional
-    public String createPasswordToken(final String email) {
+    public String createPasswordToken(final String email, final LocalDateTime expiredDateTime) {
         Optional<PasswordCertificationJpaEntity> optionalEntity = passwordCertificationRepository.findByEmail(email);
         String passwordToken = Certification.createCertificationToken();
 
         if (optionalEntity.isPresent()) {
-            updatePasswordToken(optionalEntity.get(), passwordToken);
+            updatePasswordToken(optionalEntity.get(), passwordToken, expiredDateTime);
         } else {
-            saveNewPasswordToken(email, passwordToken);
+            saveNewPasswordToken(email, passwordToken, expiredDateTime);
         }
 
         return passwordToken;
     }
 
     private void updatePasswordToken(final PasswordCertificationJpaEntity passwordCertificationJpaEntity,
-                                     final String passwordToken) {
-        passwordCertificationJpaEntity.updateToken(
-                passwordToken, now().plusMinutes(TEN_MINUTES.time())
-        );
+                                     final String passwordToken, final LocalDateTime expiredDateTime) {
+        passwordCertificationJpaEntity.updateToken(passwordToken, expiredDateTime);
     }
 
-    private void saveNewPasswordToken(final String email, final String passwordToken) {
+    private void saveNewPasswordToken(final String email, final String passwordToken,
+                                      final LocalDateTime expiredDateTime) {
         PasswordCertificationJpaEntity passwordCertificationJpaEntity =
-                PasswordCertificationJpaEntity.toEntity(
-                        email, passwordToken, now().plusMinutes(TEN_MINUTES.time())
-                );
+                PasswordCertificationJpaEntity.toEntity(email, passwordToken, expiredDateTime);
 
         passwordCertificationRepository.save(passwordCertificationJpaEntity);
     }

@@ -3,6 +3,7 @@ package moim_today.persistence.repository.member;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.dto.member.MemberProfileResponse;
 import moim_today.dto.member.QMemberProfileResponse;
+import moim_today.global.error.BadRequestException;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import org.springframework.stereotype.Repository;
@@ -47,6 +48,13 @@ public class MemberRepositoryImpl implements MemberRepository {
     public void validateEmailExists(final String email) {
         memberJpaRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException(EMAIL_NOT_FOUND_ERROR.message()));
+    }
+
+    @Override
+    public void validateAlreadyExists(final String email) {
+        if (memberJpaRepository.existsByEmail(email)) {
+            throw new BadRequestException(ALREADY_EXIST_EMAIL_ERROR.message());
+        }
     }
 
     @Override

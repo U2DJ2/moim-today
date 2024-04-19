@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static java.time.LocalDateTime.now;
-import static moim_today.global.constant.TimeConstant.TEN_MINUTES;
 
 @Service
 public class EmailCertificationAppender {
@@ -27,30 +25,22 @@ public class EmailCertificationAppender {
         String emailToken = Certification.createCertificationToken();
 
         if (optionalEntity.isPresent()) {
-            updateEmailToken(optionalEntity.get(), emailToken);
+            updateEmailToken(optionalEntity.get(), emailToken, expiredDateTime);
         } else {
-            saveNewEmailToken(email, emailToken);
+            saveNewEmailToken(email, emailToken, expiredDateTime);
         }
-
-        EmailCertificationJpaEntity emailCertificationJpaEntity
-                = EmailCertificationJpaEntity.toEntity(email, emailToken, expiredDateTime);
-        emailCertificationRepository.save(emailCertificationJpaEntity);
 
         return emailToken;
     }
 
     private void updateEmailToken(final EmailCertificationJpaEntity emailCertificationJpaEntity,
-                                  final String passwordToken) {
-        emailCertificationJpaEntity.updateToken(
-                passwordToken, now().plusMinutes(TEN_MINUTES.time())
-        );
+                                  final String passwordToken, final LocalDateTime expiredDateTime) {
+        emailCertificationJpaEntity.updateToken(passwordToken, expiredDateTime);
     }
 
-    private void saveNewEmailToken(final String email, final String emailToken) {
+    private void saveNewEmailToken(final String email, final String emailToken, final LocalDateTime expiredDateTime) {
         EmailCertificationJpaEntity emailCertificationJpaEntity =
-                EmailCertificationJpaEntity.toEntity(
-                        email, emailToken, now().plusMinutes(TEN_MINUTES.time())
-                );
+                EmailCertificationJpaEntity.toEntity(email, emailToken, expiredDateTime);
 
         emailCertificationRepository.save(emailCertificationJpaEntity);
     }

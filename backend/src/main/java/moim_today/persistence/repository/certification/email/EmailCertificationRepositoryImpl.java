@@ -18,6 +18,12 @@ public class EmailCertificationRepositoryImpl implements EmailCertificationRepos
     }
 
     @Override
+    public EmailCertificationJpaEntity getById(final long emailCertificationId) {
+        return emailCertificationJpaRepository.findById(emailCertificationId)
+                .orElseThrow(() -> new NotFoundException(CERTIFICATION_TOKEN_NOT_FOUND_ERROR.message()));
+    }
+
+    @Override
     public void save(final EmailCertificationJpaEntity emailCertificationJpaEntity) {
         emailCertificationJpaRepository.save(emailCertificationJpaEntity);
     }

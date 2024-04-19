@@ -3,6 +3,7 @@ package moim_today.presentation.certification;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.certification.email.EmailCertificationService;
 import moim_today.application.certification.password.PasswordCertificationService;
+import moim_today.dto.certification_token.EmailCertificationRequest;
 import moim_today.dto.certification_token.PasswordFindRequest;
 import moim_today.fake_class.certification_token.FakeEmailCertificationService;
 import moim_today.fake_class.certification_token.FakePasswordCertificationService;
@@ -57,7 +58,7 @@ class CertificationControllerTest extends ControllerTest {
         PasswordFindRequest passwordFindRequest = new PasswordFindRequest(WRONG_EMAIL.value());
         String json = objectMapper.writeValueAsString(passwordFindRequest);
 
-        mockMvc.perform(post("/api/certification-token/password")
+        mockMvc.perform(post("/api/certification/password")
                         .contentType(APPLICATION_JSON)
                         .content(json)
                 )
@@ -68,6 +69,58 @@ class CertificationControllerTest extends ControllerTest {
                                 .summary("비밀번호 찾기 메일 전송")
                                 .requestFields(
                                         fieldWithPath("email").type(STRING).description("이메일")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("이메일 인증 메일을 전송한다.")
+    @Test
+    void sendCertificationEmail() throws Exception {
+        EmailCertificationRequest emailCertificationRequest = new EmailCertificationRequest(EMAIL.value());
+        String json = objectMapper.writeValueAsString(emailCertificationRequest);
+
+        mockMvc.perform(post("/api/certification/email")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("이메일 인증 메일 전송 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("인증 토큰")
+                                .summary("이메일 인증 메일 전송")
+                                .requestFields(
+                                        fieldWithPath("email").type(STRING).description("이메일")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("이미 존재하는 이메일로 인증을 시도하면 예외가 발생한다")
+    @Test
+    void sendCertificationEmailFail() throws Exception {
+        EmailCertificationRequest emailCertificationRequest = new EmailCertificationRequest(WRONG_EMAIL.value());
+        String json = objectMapper.writeValueAsString(emailCertificationRequest);
+
+        mockMvc.perform(post("/api/certification/email")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("이미 가입된 메일이 존재하면 메일 전송 실패",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("인증 토큰")
+                                .summary("이메일 인증 메일 전송")
+                                .requestFields(
+                                        fieldWithPath("email").type(STRING).description("이메일")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
                                 )
                                 .build()
                         )));

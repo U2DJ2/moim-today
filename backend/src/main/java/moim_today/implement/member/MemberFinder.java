@@ -20,9 +20,14 @@ public class MemberFinder {
         this.memberRepository = memberRepository;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public void validateEmailExists(final String email) {
         memberRepository.validateEmailExists(email);
+    }
+
+    @Transactional(readOnly = true)
+    public void validateAlreadyExists(final String email) {
+        memberRepository.validateAlreadyExists(email);
     }
 
     @Transactional(readOnly = true)

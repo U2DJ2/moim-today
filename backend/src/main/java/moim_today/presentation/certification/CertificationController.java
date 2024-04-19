@@ -30,7 +30,7 @@ public class CertificationController {
 
     @ResponseBody
     @PostMapping("/email")
-    public void createCertificationEmail(@RequestBody final EmailCertificationRequest emailCertificationRequest) {
+    public void sendCertificationEmail(@RequestBody final EmailCertificationRequest emailCertificationRequest) {
         emailCertificationService.sendCertificationEmail(emailCertificationRequest.email());
     }
 

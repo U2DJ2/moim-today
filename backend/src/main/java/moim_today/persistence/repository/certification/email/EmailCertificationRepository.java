@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface EmailCertificationRepository {
 
+    EmailCertificationJpaEntity getById(final long emailCertificationId);
+
     void save(final EmailCertificationJpaEntity emailCertificationJpaEntity);
 
     EmailCertificationJpaEntity getByCertificationToken(final String certificationToken);
