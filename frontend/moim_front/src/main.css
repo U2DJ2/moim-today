@@ -44,7 +44,7 @@
   font-weight: 700;
 }
 @font-face {
-  font-family: "Roboto";
+  font-family: "Roboto-Bold";
   src: url("./assets/font/Roboto-Bold.ttf") format("truetype");
   font-weight: 700;
 }
@@ -54,5 +54,6 @@
   font-weight: 500;
 }
 @font-face {
-  font-family: "";
+  font-family: "RobotoFlex-Regular";
+  src: url("./assets/font/RobotoFlex-Regular.ttf") format("truetype");
 }
