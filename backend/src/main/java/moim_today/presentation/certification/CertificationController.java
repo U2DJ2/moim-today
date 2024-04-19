@@ -1,6 +1,7 @@
 package moim_today.presentation.certification;
 
-import moim_today.application.certification.CertificationService;
+import moim_today.application.certification.email.EmailCertificationService;
+import moim_today.application.certification.password.PasswordCertificationService;
 import moim_today.dto.certification_token.EmailCertificationRequest;
 import moim_today.dto.certification_token.PasswordFindRequest;
 import org.springframework.stereotype.Controller;
@@ -10,27 +11,30 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class CertificationController {
 
-    private final CertificationService certificationService;
+    private final PasswordCertificationService passwordCertificationService;
+    private final EmailCertificationService emailCertificationService;
 
-    public CertificationController(final CertificationService certificationService) {
-        this.certificationService = certificationService;
+    public CertificationController(final PasswordCertificationService passwordCertificationService,
+                                   final EmailCertificationService emailCertificationService) {
+        this.passwordCertificationService = passwordCertificationService;
+        this.emailCertificationService = emailCertificationService;
     }
 
     @ResponseBody
     @PostMapping("/password")
     public void createPasswordToken(@RequestBody final PasswordFindRequest passwordFindRequest) {
-        certificationService.sendPasswordToken(passwordFindRequest.email());
+        passwordCertificationService.sendPasswordToken(passwordFindRequest.email());
     }
 
     @ResponseBody
     @PostMapping("/email")
     public void createCertificationEmail(@RequestBody final EmailCertificationRequest emailCertificationRequest) {
-        certificationService.sendCertificationEmail(emailCertificationRequest.email());
+        emailCertificationService.sendCertificationEmail(emailCertificationRequest.email());
     }
 
     @GetMapping("/email/{certificationToken}")
     public String certifyEmail(@PathVariable final String certificationToken) {
-        certificationService.certifyEmail(certificationToken);
+        emailCertificationService.certifyEmail(certificationToken);
         return "emailCertificationComplete";
     }
 }

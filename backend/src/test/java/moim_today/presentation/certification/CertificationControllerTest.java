@@ -1,9 +1,11 @@
 package moim_today.presentation.certification;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import moim_today.application.certification.CertificationService;
+import moim_today.application.certification.email.EmailCertificationService;
+import moim_today.application.certification.password.PasswordCertificationService;
 import moim_today.dto.certification_token.PasswordFindRequest;
-import moim_today.fake_class.certification_token.FakeCertificationService;
+import moim_today.fake_class.certification_token.FakeEmailCertificationService;
+import moim_today.fake_class.certification_token.FakePasswordCertificationService;
 import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,11 +21,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class CertificationControllerTest extends ControllerTest {
 
-    private final CertificationService certificationService = new FakeCertificationService();
+    private final PasswordCertificationService passwordCertificationService = new FakePasswordCertificationService();
+    private final EmailCertificationService emailCertificationService = new FakeEmailCertificationService();
 
     @Override
     protected Object initController() {
-        return new CertificationController(certificationService);
+        return new CertificationController(passwordCertificationService, emailCertificationService);
     }
 
     @DisplayName("비밀번호 찾기 메일을 전송한다.")
