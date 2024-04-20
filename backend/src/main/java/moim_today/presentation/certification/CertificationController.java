@@ -7,9 +7,12 @@ import moim_today.dto.certification.CompleteEmailCertificationResponse;
 import moim_today.dto.certification.EmailCertificationRequest;
 import moim_today.dto.certification.PasswordFindRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import static moim_today.global.constant.MailConstant.*;
 import static moim_today.global.constant.MailConstant.EMAIL_CERTIFICATION_COMPLETE;
+import static moim_today.global.constant.exception.CertificationConstant.CERTIFICATION_MESSAGE;
 
 @RequestMapping("/api/certification")
 @Controller
@@ -46,8 +49,9 @@ public class CertificationController {
 
     // 백엔드 내부 API
     @GetMapping("/email/{certificationToken}")
-    public String certifyEmail(@PathVariable final String certificationToken) {
+    public String certifyEmail(@PathVariable final String certificationToken, final Model model) {
         emailCertificationService.certifyEmail(certificationToken);
-        return EMAIL_CERTIFICATION_COMPLETE.value();
+        model.addAttribute(CERTIFICATION_MESSAGE.message(), EMAIL_CERTIFICATION_COMPLETE.value());
+        return CERTIFICATION_PAGE.value();
     }
 }

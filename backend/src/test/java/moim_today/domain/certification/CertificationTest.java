@@ -1,12 +1,11 @@
 package moim_today.domain.certification;
 
-import moim_today.global.error.BadRequestException;
+import moim_today.global.error.HandleExceptionPage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static moim_today.global.constant.exception.CertificationConstant.CERTIFICATION_EXPIRED_ERROR;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -35,7 +34,7 @@ class CertificationTest {
                 .build();
 
         // when && then
-        certification.validateExpiredDateTime(expiredTime.minusMinutes(9));
+        certification.validateExpiredDateTime(expiredTime.minusMinutes(9), MESSAGE.value());
     }
 
     @DisplayName("만료일자가 지나면 예외가 발생한다.")
@@ -51,9 +50,8 @@ class CertificationTest {
                 .build();
 
         // when && then
-        assertThatThrownBy(() -> certification.validateExpiredDateTime(expiredTime.plusMinutes(11)))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage(CERTIFICATION_EXPIRED_ERROR.message());
+        assertThatThrownBy(() -> certification.validateExpiredDateTime(expiredTime.plusMinutes(11), MESSAGE.value()))
+                .isInstanceOf(HandleExceptionPage.class);
     }
 
     @DisplayName("특정 이메일을 파싱하여 @ 뒷부분인 학교 이메일 확장자만 반환한다.")

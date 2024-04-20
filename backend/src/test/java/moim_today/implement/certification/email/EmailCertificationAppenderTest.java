@@ -1,14 +1,16 @@
 package moim_today.implement.certification.email;
 
 import moim_today.persistence.entity.certification.email.EmailCertificationJpaEntity;
+import moim_today.persistence.entity.university.UniversityJpaEntity;
+import moim_today.persistence.repository.university.UniversityRepository;
 import moim_today.util.ImplementTest;
-import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
+import static moim_today.util.TestConstant.*;
 import static moim_today.util.TestConstant.EMAIL;
 import static org.assertj.core.api.Assertions.*;
 
@@ -22,9 +24,14 @@ class EmailCertificationAppenderTest extends ImplementTest {
     void saveNewEmailToken() {
         // given
         LocalDateTime expiredDateTime = LocalDateTime.of(2024, 1, 1, 10, 00, 00);
+        UniversityJpaEntity universityJpaEntity = UniversityJpaEntity.builder()
+                .universityEmail("ajou.ac.kr")
+                .build();
+
+        universityRepository.save(universityJpaEntity);
 
         // when
-        String certificationToken = emailCertificationAppender.createEmailToken(TestConstant.EMAIL.value(), expiredDateTime);
+        String certificationToken = emailCertificationAppender.createEmailToken(AJOU_EMAIL.value(), expiredDateTime);
 
         // then
         EmailCertificationJpaEntity findEntity = emailCertificationRepository.getByCertificationToken(certificationToken);
@@ -46,7 +53,7 @@ class EmailCertificationAppenderTest extends ImplementTest {
         LocalDateTime expiredDateTime = LocalDateTime.of(2024, 1, 1, 10, 00, 00);
 
         // when
-        String certificationToken = emailCertificationAppender.createEmailToken(TestConstant.EMAIL.value(), expiredDateTime);
+        String certificationToken = emailCertificationAppender.createEmailToken(EMAIL.value(), expiredDateTime);
 
         // then
         EmailCertificationJpaEntity findEntity = emailCertificationRepository.getByCertificationToken(certificationToken);

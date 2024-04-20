@@ -83,7 +83,7 @@ class CertificationControllerTest extends ControllerTest {
     @DisplayName("이메일 인증 메일을 전송한다.")
     @Test
     void sendCertificationEmail() throws Exception {
-        EmailCertificationRequest emailCertificationRequest = new EmailCertificationRequest(EMAIL.value());
+        EmailCertificationRequest emailCertificationRequest = new EmailCertificationRequest(AJOU_EMAIL.value());
         String json = objectMapper.writeValueAsString(emailCertificationRequest);
 
         mockMvc.perform(post("/api/certification/email")
@@ -102,10 +102,10 @@ class CertificationControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("이미 존재하는 이메일로 인증을 시도하면 예외가 발생한다")
+    @DisplayName("이미 존재하는 이메일로 인증을 시도하면 예외가 발생한다.")
     @Test
     void sendCertificationEmailFail() throws Exception {
-        EmailCertificationRequest emailCertificationRequest = new EmailCertificationRequest(WRONG_EMAIL.value());
+        EmailCertificationRequest emailCertificationRequest = new EmailCertificationRequest(ALREADY_EXIST_EMAIL.value());
         String json = objectMapper.writeValueAsString(emailCertificationRequest);
 
         mockMvc.perform(post("/api/certification/email")
@@ -114,6 +114,32 @@ class CertificationControllerTest extends ControllerTest {
                 )
                 .andExpect(status().isBadRequest())
                 .andDo(document("이미 가입된 메일이 존재하면 메일 전송 실패",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("인증 토큰")
+                                .summary("이메일 인증 메일 전송")
+                                .requestFields(
+                                        fieldWithPath("email").type(STRING).description("이메일")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("존재하지 않는 대학 이메일로 인증을 시도하면 예외가 발생한다.")
+    @Test
+    void sendCertificationEmailNotExistDomain() throws Exception {
+        EmailCertificationRequest emailCertificationRequest = new EmailCertificationRequest(WRONG_EMAIL.value());
+        String json = objectMapper.writeValueAsString(emailCertificationRequest);
+
+        mockMvc.perform(post("/api/certification/email")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isNotFound())
+                .andDo(document("존재하지 않는 대학 이메일로 인증을 시도하면 메일 전송 실패",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("인증 토큰")
                                 .summary("이메일 인증 메일 전송")

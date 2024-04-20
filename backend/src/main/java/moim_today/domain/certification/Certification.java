@@ -2,6 +2,7 @@ package moim_today.domain.certification;
 
 import lombok.Builder;
 import moim_today.global.error.BadRequestException;
+import moim_today.global.error.HandleExceptionPage;
 import moim_today.persistence.entity.certification.email.EmailCertificationJpaEntity;
 import moim_today.persistence.entity.certification.password.PasswordCertificationJpaEntity;
 
@@ -42,9 +43,9 @@ public record Certification(
         return token.substring(CERTIFICATION_TOKEN_START_POINT.value(), CERTIFICATION_TOKEN_LENGTH.value());
     }
 
-    public void validateExpiredDateTime(final LocalDateTime now) {
+    public void validateExpiredDateTime(final LocalDateTime now, final String exceptionPage) {
         if (expiredDateTime.isBefore(now)) {
-            throw new BadRequestException(CERTIFICATION_EXPIRED_ERROR.message());
+            throw new HandleExceptionPage(exceptionPage);
         }
     }
 

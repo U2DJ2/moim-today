@@ -2,12 +2,15 @@ package moim_today.implement.university;
 
 import moim_today.dto.university.UniversityInfoResponse;
 import moim_today.global.annotation.Implement;
+import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
 import moim_today.persistence.repository.university.UniversityRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static moim_today.global.constant.exception.UniversityExceptionConstant.UNIVERSITY_EMAIL_NOT_FOUND;
 
 @Implement
 public class UniversityFinder {
@@ -32,8 +35,15 @@ public class UniversityFinder {
     }
 
     @Transactional(readOnly = true)
-    public UniversityJpaEntity getByUniversityEmail(final String email) {
-        return universityRepository.getByEmail(email);
+    public UniversityJpaEntity getByUniversityEmail(final String emailDomain) {
+        return universityRepository.getByEmail(emailDomain);
+    }
+
+    @Transactional(readOnly = true)
+    public void validateExists(final String emailDomain) {
+        if (!universityRepository.existsByUniversityEmail(emailDomain)) {
+            throw new NotFoundException(UNIVERSITY_EMAIL_NOT_FOUND.message());
+        }
     }
 
     @Transactional(readOnly = true)

@@ -1,6 +1,7 @@
 package moim_today.implement.certification.email;
 
 import moim_today.global.error.BadRequestException;
+import moim_today.global.error.HandleExceptionPage;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.certification.email.EmailCertificationJpaEntity;
 import moim_today.util.ImplementTest;
@@ -51,8 +52,7 @@ class EmailCertificationUpdaterTest extends ImplementTest {
 
         // when && then
         assertThatThrownBy(() -> emailCertificationUpdater.certifyEmail(CERTIFICATION_TOKEN.value(), certificationTime))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage(CERTIFICATION_EXPIRED_ERROR.message());
+                .isInstanceOf(HandleExceptionPage.class);
     }
 
     @DisplayName("만료기간이 지나지 않았으면 인증 여부를 true로 업데이트한다.")

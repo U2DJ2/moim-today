@@ -100,7 +100,7 @@ class AuthControllerTest extends ControllerTest {
     @Test
     void registerTest() throws Exception {
         MemberRegisterRequest memberRegisterRequest = MemberRegisterRequest.builder()
-                .email(EMAIL.value())
+                .email(AJOU_EMAIL.value())
                 .password(PASSWORD.value())
                 .universityId(Long.parseLong(UNIV_ID.value()))
                 .departmentId(Long.parseLong(DEPARTMENT_ID.value()))

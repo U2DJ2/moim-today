@@ -3,6 +3,7 @@ package moim_today.implement.member;
 import moim_today.domain.certification.Certification;
 import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.global.annotation.Implement;
+import moim_today.global.constant.MailConstant;
 import moim_today.implement.certification.password.PasswordCertificationFinder;
 import moim_today.implement.department.DepartmentFinder;
 import moim_today.persistence.entity.certification.password.PasswordCertificationJpaEntity;
@@ -12,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+
+import static moim_today.global.constant.MailConstant.*;
 
 @Implement
 public class MemberUpdater {
@@ -51,7 +54,7 @@ public class MemberUpdater {
     private void validateExpiredDateTime(final PasswordCertificationJpaEntity passwordCertificationJpaEntity,
                                          final LocalDateTime now) {
         Certification certification = Certification.toDomain(passwordCertificationJpaEntity);
-        certification.validateExpiredDateTime(now);
+        certification.validateExpiredDateTime(now, PASSWORD_CERTIFICATION_FAIL.value());
     }
 
     @Transactional

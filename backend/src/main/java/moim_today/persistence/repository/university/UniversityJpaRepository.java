@@ -12,6 +12,8 @@ public interface UniversityJpaRepository extends JpaRepository<UniversityJpaEnti
 
     Optional<UniversityJpaEntity> findByUniversityEmail(final String universityEmail);
 
+    boolean existsByUniversityEmail(final String universityEmail);
+
     Optional<UniversityJpaEntity> findById(final long id);
 
     List<UniversityJpaEntity> findAll();

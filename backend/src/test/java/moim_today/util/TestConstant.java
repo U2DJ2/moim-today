@@ -9,8 +9,8 @@ public enum TestConstant {
 
     EMAIL("email"),
     AJOU_EMAIL("test@ajou.ac.kr"),
-    EMAIL("email@gmail.com"),
     WRONG_EMAIL("wrongEmail"),
+    ALREADY_EXIST_EMAIL("alreayExist@ajou.ac.kr"),
 
     PASSWORD("password"),
     NEW_PASSWORD("newPassword"),

@@ -2,6 +2,7 @@ package moim_today.implement.member;
 
 import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.global.error.BadRequestException;
+import moim_today.global.error.HandleExceptionPage;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.certification.password.PasswordCertificationJpaEntity;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
@@ -137,8 +138,7 @@ class MemberUpdaterTest extends ImplementTest {
         assertThatThrownBy(
                 () -> memberUpdater.recoverPassword(passwordToken, newPassword, expiredTime.plusMinutes(11))
         )
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage(CERTIFICATION_EXPIRED_ERROR.message());
+                .isInstanceOf(HandleExceptionPage.class);
     }
 
     @DisplayName("사용자가 입력한 프로필 정보로 사용자 정보를 수정한다.")

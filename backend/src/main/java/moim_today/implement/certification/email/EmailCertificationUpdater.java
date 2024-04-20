@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+import static moim_today.global.constant.MailConstant.*;
+
 @Implement
 public class EmailCertificationUpdater {
 
@@ -23,7 +25,7 @@ public class EmailCertificationUpdater {
                 = emailCertificationRepository.getByCertificationToken(certificationToken);
 
         Certification certification = Certification.toDomain(emailCertificationJpaEntity);
-        certification.validateExpiredDateTime(now);
+        certification.validateExpiredDateTime(now, EMAIL_CERTIFICATION_FAIL.value());
         emailCertificationJpaEntity.updateCertificationStatus(true);
     }
 }
