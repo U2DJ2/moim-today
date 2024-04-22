@@ -59,12 +59,12 @@ class CertificationTest {
     void parseEmailDomain() {
         // given
         LocalDateTime expiredTime = LocalDateTime.of(2024, 1, 1, 10, 00, 00);
-        Certification certification = new Certification("email@ajou.ac.kr", CERTIFICATION_TOKEN.value(), expiredTime);
+        Certification certification = new Certification(AJOU_EMAIL.value(), CERTIFICATION_TOKEN.value(), expiredTime);
 
         // when
         String emailDomain = certification.parseEmailDomain();
 
         // then
-        assertThat(emailDomain).isEqualTo("ajou.ac.kr");
+        assertThat(emailDomain).isEqualTo(AJOU_EMAIL_DOMAIN.value());
     }
 }

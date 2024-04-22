@@ -1,16 +1,15 @@
 package moim_today.domain.certification;
 
 import moim_today.global.error.BadRequestException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
 import static moim_today.global.constant.exception.CertificationConstant.EMAIL_NOT_YET_CERTIFICATION_ERROR;
-import static moim_today.util.TestConstant.AJOU_EMAIL;
-import static moim_today.util.TestConstant.CERTIFICATION_TOKEN;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static moim_today.util.TestConstant.*;
+import static org.assertj.core.api.Assertions.*;
 
 class EmailCertificationTest {
 
@@ -37,7 +36,9 @@ class EmailCertificationTest {
         EmailCertification emailCertification = EmailCertification.toDomain(certification, true);
 
         // when && then
-        emailCertification.validateCertificationStatus();
+        assertThatCode(emailCertification::validateCertificationStatus)
+                .doesNotThrowAnyException();
+
     }
 
     @DisplayName("특정 이메일을 파싱하여 @ 뒷부분인 학교 이메일 확장자만 반환한다.")
@@ -52,6 +53,6 @@ class EmailCertificationTest {
         String emailDomain = emailCertification.parseEmailDomain();
 
         // then
-        assertThat(emailDomain).isEqualTo("ajou.ac.kr");
+        assertThat(emailDomain).isEqualTo(AJOU_EMAIL_DOMAIN.value());
     }
 }
