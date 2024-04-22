@@ -1,11 +1,12 @@
 package moim_today.implement.member;
 
-import moim_today.domain.certification_token.CertificationToken;
+import moim_today.domain.certification.Certification;
 import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.global.annotation.Implement;
-import moim_today.implement.certification_token.CertificationTokenFinder;
+import moim_today.global.constant.MailConstant;
+import moim_today.implement.certification.password.PasswordCertificationFinder;
 import moim_today.implement.department.DepartmentFinder;
-import moim_today.persistence.entity.certification_token.CertificationTokenJpaEntity;
+import moim_today.persistence.entity.certification.password.PasswordCertificationJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.persistence.repository.member.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,20 +14,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+import static moim_today.global.constant.MailConstant.*;
+
 @Implement
 public class MemberUpdater {
 
     private final MemberRepository memberRepository;
-    private final CertificationTokenFinder certificationTokenFinder;
+    private final PasswordCertificationFinder passwordCertificationFinder;
     private final DepartmentFinder departmentFinder;
     private final PasswordEncoder passwordEncoder;
 
     public MemberUpdater(final MemberRepository memberRepository,
-                         final CertificationTokenFinder certificationTokenFinder,
+                         final PasswordCertificationFinder passwordCertificationFinder,
                          final DepartmentFinder departmentFinder,
                          final PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
-        this.certificationTokenFinder = certificationTokenFinder;
+        this.passwordCertificationFinder = passwordCertificationFinder;
         this.departmentFinder = departmentFinder;
         this.passwordEncoder = passwordEncoder;
     }
@@ -39,19 +42,19 @@ public class MemberUpdater {
 
     @Transactional
     public void recoverPassword(final String passwordToken, final String newPassword, final LocalDateTime now) {
-        CertificationTokenJpaEntity certificationTokenJpaEntity =
-                certificationTokenFinder.getByCertificationToken(passwordToken);
+        PasswordCertificationJpaEntity passwordCertificationJpaEntity =
+                passwordCertificationFinder.getByCertificationToken(passwordToken);
 
-        validateExpiredDateTime(certificationTokenJpaEntity, now);
+        validateExpiredDateTime(passwordCertificationJpaEntity, now);
 
-        MemberJpaEntity memberJpaEntity = memberRepository.getByEmail(certificationTokenJpaEntity.getEmail());
+        MemberJpaEntity memberJpaEntity = memberRepository.getByEmail(passwordCertificationJpaEntity.getEmail());
         memberJpaEntity.updatePassword(passwordEncoder, newPassword);
     }
 
-    private void validateExpiredDateTime(final CertificationTokenJpaEntity certificationTokenJpaEntity,
+    private void validateExpiredDateTime(final PasswordCertificationJpaEntity passwordCertificationJpaEntity,
                                          final LocalDateTime now) {
-        CertificationToken certificationToken = CertificationToken.toDomain(certificationTokenJpaEntity);
-        certificationToken.validateExpiredDateTime(now);
+        Certification certification = Certification.toDomain(passwordCertificationJpaEntity);
+        certification.validateExpiredDateTime(now, PASSWORD_CERTIFICATION_FAIL.value());
     }
 
     @Transactional

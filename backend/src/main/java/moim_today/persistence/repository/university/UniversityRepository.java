@@ -11,6 +11,10 @@ public interface UniversityRepository {
 
     UniversityJpaEntity getByName(final String name);
 
+    UniversityJpaEntity getByEmail(final String email);
+
+    boolean existsByUniversityEmail(final String universityEmail);
+
     Optional<UniversityJpaEntity> findByName(final String name);
 
     Optional<UniversityJpaEntity> findById(final long id);

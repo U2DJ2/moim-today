@@ -1,9 +1,13 @@
 package moim_today.util;
 
+
 public enum TestConstant {
 
-    EMAIL("email@gmail.com"),
+    EMAIL("email"),
+    AJOU_EMAIL("test@ajou.ac.kr"),
+    AJOU_EMAIL_DOMAIN("ajou.ac.kr"),
     WRONG_EMAIL("wrongEmail"),
+    ALREADY_EXIST_EMAIL("alreayExist@ajou.ac.kr"),
 
     PASSWORD("password"),
     NEW_PASSWORD("newPassword"),

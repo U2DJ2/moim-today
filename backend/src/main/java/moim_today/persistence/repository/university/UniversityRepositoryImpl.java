@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import static moim_today.global.constant.exception.UniversityExceptionConstant.UNIVERSITY_EMAIL_NOT_FOUND;
 import static moim_today.global.constant.exception.UniversityExceptionConstant.UNIVERSITY_NOT_FOUND;
 
 @Repository
@@ -27,6 +28,17 @@ public class UniversityRepositoryImpl implements UniversityRepository {
     public UniversityJpaEntity getByName(final String universityName) {
         return universityJpaRepository.findByUniversityName(universityName)
                 .orElseThrow(() -> new NotFoundException(universityName+UNIVERSITY_NOT_FOUND.message()));
+    }
+
+    @Override
+    public UniversityJpaEntity getByEmail(final String email) {
+        return universityJpaRepository.findByUniversityEmail(email)
+                .orElseThrow(() -> new NotFoundException(UNIVERSITY_EMAIL_NOT_FOUND.message()));
+    }
+
+    @Override
+    public boolean existsByUniversityEmail(final String universityEmail) {
+        return universityJpaRepository.existsByUniversityEmail(universityEmail);
     }
 
     @Override

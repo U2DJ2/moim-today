@@ -15,6 +15,8 @@ public interface MemberRepository {
 
     void validateEmailExists(final String email);
 
+    void validateAlreadyExists(final String email);
+
     MemberJpaEntity getById(final long memberId);
 
     MemberProfileResponse getMemberProfile(final long memberId);
