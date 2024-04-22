@@ -1,10 +1,9 @@
 import React from "react";
 
-function AuthRight(props) {
-  const url = props;
+function AuthRight() {
   return (
-    <div>
-      <img src={url} />
+    <div className="w-full">
+      <div className=" bg-black w-full h-full"></div>
     </div>
   );
 }

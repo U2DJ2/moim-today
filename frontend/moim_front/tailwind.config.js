@@ -8,6 +8,9 @@ export default {
       Pretendard_Black: ["Pretendard-Black"],
       Pretendard_Normal: ["Pretendard-Normal"],
     },
+    colors: {
+      scarlet: "##FF2440",
+    },
   },
   plugins: [],
 };
