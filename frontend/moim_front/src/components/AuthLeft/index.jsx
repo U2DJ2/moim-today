@@ -5,7 +5,7 @@ function AuthLeft() {
   const passwordHandler = (e) => setPassword(e.target.value);
 
   return (
-    <div className="flex flex-col pl-28 items-start justify-center overflow-hidden self-stretch">
+    <div className="flex-1 flex flex-col pl-28 items-start justify-center">
       <AuthTitle
         title={"Log In"}
         firstContent={"Welcome back! "}

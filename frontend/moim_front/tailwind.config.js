@@ -9,7 +9,11 @@ export default {
       Pretendard_Normal: ["Pretendard-Normal"],
     },
     colors: {
-      scarlet: "##FF2440",
+      scarlet: "#FF2440",
+      white: "#ffffff",
+    },
+    rotate: {
+      18: "18deg",
     },
   },
   plugins: [],
