@@ -4,25 +4,36 @@ import moim_today.domain.schedule.Schedule;
 import moim_today.domain.schedule.TimeTableParser;
 import moim_today.domain.schedule.TimeTableProcessor;
 import moim_today.dto.schedule.TimeTableRequest;
+import moim_today.dto.schedule.TimeTableSchedulingTask;
 import moim_today.global.annotation.Implement;
+import moim_today.global.error.InternalServerException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.NodeList;
 
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static moim_today.global.constant.EveryTimeConstant.*;
+import static moim_today.global.constant.NumberConstant.TIME_TABLE_SCHEDULING_COUNT;
+import static moim_today.global.constant.exception.EveryTimeExceptionConstant.TIME_TABLE_SCHEDULING_ERROR;
 
 @Implement
 public class ScheduleManager {
 
     private final RestTemplate restTemplate;
+    private final ScheduleAppender scheduleAppender;
+    private final Queue<TimeTableSchedulingTask> schedulingTaskQueue = new ConcurrentLinkedQueue<>();
 
-    public ScheduleManager(final RestTemplate restTemplate) {
+    public ScheduleManager(final RestTemplate restTemplate, final ScheduleAppender scheduleAppender) {
         this.restTemplate = restTemplate;
+        this.scheduleAppender = scheduleAppender;
     }
 
     public String fetchTimetable(final String everytimeId) {
@@ -50,5 +61,31 @@ public class ScheduleManager {
         timeTableProcessor.processTimeTable(subjects);
 
         return timeTableProcessor.schedules();
+    }
+
+    public void addTimeTables(final List<Schedule> schedules, final long memberId) {
+        TimeTableSchedulingTask timeTableSchedulingTask = TimeTableSchedulingTask.of(schedules, memberId);
+        schedulingTaskQueue.add(timeTableSchedulingTask);
+    }
+
+    // 0.1초에 한번씩 실행
+    @Scheduled(fixedRate = 100)
+    public void processSchedulingTasks() {
+        for (int i = 0; i < TIME_TABLE_SCHEDULING_COUNT.value() && !schedulingTaskQueue.isEmpty(); i++) {
+            TimeTableSchedulingTask timeTableSchedulingTask = schedulingTaskQueue.peek();
+            boolean success = false;
+
+            try {
+                scheduleAppender.batchUpdateSchedules(timeTableSchedulingTask);
+                success = true;
+            } catch (DataAccessException e) {
+                throw new InternalServerException(TIME_TABLE_SCHEDULING_ERROR.value());
+
+            } finally {
+                if (success) {
+                    schedulingTaskQueue.poll();
+                }
+            }
+        }
     }
 }
