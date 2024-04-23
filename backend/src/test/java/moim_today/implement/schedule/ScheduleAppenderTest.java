@@ -1,9 +1,7 @@
 package moim_today.implement.schedule;
 
 import moim_today.domain.schedule.Schedule;
-import moim_today.dto.schedule.TimeTableSchedulingTask;
 import moim_today.util.ImplementTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +46,9 @@ class ScheduleAppenderTest extends ImplementTest {
 
         // given 2
         List<Schedule> schedules = List.of(schedule1, schedule2, schedule3);
-        TimeTableSchedulingTask timeTableSchedulingTask = new TimeTableSchedulingTask(schedules, memberId);
 
         // when
-        scheduleAppender.batchUpdateSchedules(timeTableSchedulingTask);
+        scheduleAppender.batchUpdateSchedules(schedules, memberId);
 
         // then
         assertThat(scheduleRepository.count()).isEqualTo(3);
