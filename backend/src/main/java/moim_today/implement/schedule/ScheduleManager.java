@@ -17,8 +17,6 @@ import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.NodeList;
 
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static moim_today.global.constant.EveryTimeConstant.*;
 import static moim_today.global.constant.NumberConstant.TIME_TABLE_SCHEDULING_COUNT;
@@ -29,11 +27,13 @@ public class ScheduleManager {
 
     private final RestTemplate restTemplate;
     private final ScheduleAppender scheduleAppender;
-    private final Queue<TimeTableSchedulingTask> schedulingTaskQueue = new ConcurrentLinkedQueue<>();
+    private final SchedulingTaskQueue schedulingTaskQueue;
 
-    public ScheduleManager(final RestTemplate restTemplate, final ScheduleAppender scheduleAppender) {
+    public ScheduleManager(final RestTemplate restTemplate, final ScheduleAppender scheduleAppender,
+                           final SchedulingTaskQueue schedulingTaskQueue) {
         this.restTemplate = restTemplate;
         this.scheduleAppender = scheduleAppender;
+        this.schedulingTaskQueue = schedulingTaskQueue;
     }
 
     public String fetchTimetable(final String everytimeId) {
@@ -61,11 +61,6 @@ public class ScheduleManager {
         timeTableProcessor.processTimeTable(subjects);
 
         return timeTableProcessor.schedules();
-    }
-
-    public void addTimeTables(final List<Schedule> schedules, final long memberId) {
-        TimeTableSchedulingTask timeTableSchedulingTask = TimeTableSchedulingTask.of(schedules, memberId);
-        schedulingTaskQueue.add(timeTableSchedulingTask);
     }
 
     // 0.1초에 한번씩 실행

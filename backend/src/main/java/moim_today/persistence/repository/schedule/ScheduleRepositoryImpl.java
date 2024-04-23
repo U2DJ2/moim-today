@@ -63,4 +63,9 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             }
         });
     }
+
+    @Override
+    public long count() {
+        return scheduleJpaRepository.count();
+    }
 }

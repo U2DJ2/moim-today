@@ -8,4 +8,6 @@ public interface ScheduleRepository {
     void save(final ScheduleJpaEntity scheduleJpaEntity);
 
     void batchUpdate(final TimeTableSchedulingTask timeTableSchedulingTask);
+
+    long count();
 }
