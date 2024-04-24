@@ -1,5 +1,6 @@
 package moim_today.dto.moim;
 
+import lombok.Builder;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
@@ -11,6 +12,7 @@ import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
 import static moim_today.global.constant.NumberConstant.DEFAULT_MOIM_CURRENT_COUNT;
 import static moim_today.global.constant.NumberConstant.DEFAULT_MOIM_VIEWS;
 
+@Builder
 public record PrivateMoimAppendRequest(
         String title,
         String contents,
@@ -33,12 +35,12 @@ public record PrivateMoimAppendRequest(
                 .currentCount(DEFAULT_MOIM_CURRENT_COUNT.value())
                 .password(password)
                 .moimCategory(moimCategory)
-                .displayStatus(DisplayStatus.PRIAVE)
+                .displayStatus(DisplayStatus.PRIVATE)
                 .views(DEFAULT_MOIM_VIEWS.value())
                 .startDate(startDate)
                 .endDate(endDate);
 
-        if (imageUrl.isEmpty()) {
+        if (imageUrl == null) {
             return buildMoimByImageUrl(moimJpaEntityBuilder, DEFAULT_MOIM_IMAGE_URL.value());
         } else{
             return buildMoimByImageUrl(moimJpaEntityBuilder, imageUrl);

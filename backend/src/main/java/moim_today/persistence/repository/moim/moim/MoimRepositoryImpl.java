@@ -16,4 +16,9 @@ public class MoimRepositoryImpl implements MoimRepository {
     public MoimJpaEntity save(final MoimJpaEntity moimJpaEntity) {
         return moimJpaRepository.save(moimJpaEntity);
     }
+
+    @Override
+    public long count() {
+        return moimJpaRepository.count();
+    }
 }
