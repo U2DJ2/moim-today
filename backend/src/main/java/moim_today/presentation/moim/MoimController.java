@@ -21,7 +21,7 @@ public class MoimController {
         this.moimService = moimService;
     }
 
-    @PostMapping("/pubilc")
+    @PostMapping("/public")
     public void createPubicMoim(@Login final MemberSession memberSession,
                                 @RequestBody final PublicMoimAppendRequest publicMoimAppendRequest) {
         moimService.createPublicMoim(memberSession.id(), memberSession.universityId(), publicMoimAppendRequest);
