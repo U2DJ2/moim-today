@@ -13,7 +13,7 @@ public class MoimRepositoryImpl implements MoimRepository {
     }
 
     @Override
-    public void save(final MoimJpaEntity moimJpaEntity) {
-        moimJpaRepository.save(moimJpaEntity);
+    public MoimJpaEntity save(final MoimJpaEntity moimJpaEntity) {
+        return moimJpaRepository.save(moimJpaEntity);
     }
 }

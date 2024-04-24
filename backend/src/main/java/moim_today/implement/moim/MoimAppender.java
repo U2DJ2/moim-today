@@ -17,17 +17,17 @@ public class MoimAppender {
     }
 
     @Transactional
-    public void createPublicMoim(final long memberId, final long universityId,
+    public MoimJpaEntity createPublicMoim(final long memberId, final long universityId,
                                  final PublicMoimAppendRequest publicMoimAppendRequest) {
 
         MoimJpaEntity moimJpaEntity = publicMoimAppendRequest.toEntity(memberId, universityId);
-        moimRepository.save(moimJpaEntity);
+        return moimRepository.save(moimJpaEntity);
     }
 
     @Transactional
-    public void createPrivateMoim(final long memberId, final long universityId,
+    public MoimJpaEntity createPrivateMoim(final long memberId, final long universityId,
                                   final PrivateMoimAppendRequest privateMoimAppendRequest) {
         MoimJpaEntity moimJpaEntity = privateMoimAppendRequest.toEntity(memberId, universityId);
-        moimRepository.save(moimJpaEntity);
+        return moimRepository.save(moimJpaEntity);
     }
 }
