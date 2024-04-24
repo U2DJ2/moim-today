@@ -8,7 +8,10 @@ import moim_today.fake_class.moim.FakeMoimService;
 import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 
@@ -18,6 +21,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class MoimControllerTest extends ControllerTest {
@@ -105,5 +110,28 @@ class MoimControllerTest extends ControllerTest {
                                 )
                                 .build()
                         )));
+    }
+
+    @DisplayName("모임 사진 업로드 테스트 성공")
+    @Test
+    void uploadMoimImageTest() throws Exception {
+
+        MockMultipartFile file = new MockMultipartFile(
+                FILE_NAME.value(),
+                ORIGINAL_FILE_NAME.value(),
+                MediaType.TEXT_PLAIN_VALUE,
+                FILE_CONTENT.value().getBytes()
+        );
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .multipart(HttpMethod.POST, "/api/moims/image")
+                        .file(file)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("모임 사진 업로드",
+                        requestParts(
+                                partWithName("file").description("모임 사진 파일")
+                        )
+                ));
     }
 }
