@@ -1,6 +1,7 @@
 package moim_today.presentation.moim;
 
 import moim_today.application.moim.MoimService;
+import moim_today.application.moim.MoimServiceImpl;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.moim.PrivateMoimAppendRequest;
 import moim_today.dto.moim.PublicMoimAppendRequest;
