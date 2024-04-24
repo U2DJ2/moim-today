@@ -5,6 +5,7 @@ import moim_today.persistence.repository.certification.email.EmailCertificationR
 import moim_today.persistence.repository.certification.password.PasswordCertificationRepository;
 import moim_today.persistence.repository.department.DepartmentRepository;
 import moim_today.persistence.repository.member.MemberRepository;
+import moim_today.persistence.repository.schedule.ScheduleRepository;
 import moim_today.persistence.repository.university.UniversityRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public abstract class ImplementTest {
 
     @Autowired
     protected DepartmentRepository departmentRepository;
+
+    @Autowired
+    protected ScheduleRepository scheduleRepository;
 
     @Autowired
     protected PasswordEncoder passwordEncoder;

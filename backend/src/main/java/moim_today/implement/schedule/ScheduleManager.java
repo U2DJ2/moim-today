@@ -5,6 +5,7 @@ import moim_today.domain.schedule.TimeTableParser;
 import moim_today.domain.schedule.TimeTableProcessor;
 import moim_today.dto.schedule.TimeTableRequest;
 import moim_today.global.annotation.Implement;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -15,6 +16,7 @@ import org.w3c.dom.NodeList;
 import java.util.List;
 
 import static moim_today.global.constant.EveryTimeConstant.*;
+
 
 @Implement
 public class ScheduleManager {

@@ -14,8 +14,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleManager scheduleManager;
     private final ScheduleAppender scheduleAppender;
 
-    public ScheduleServiceImpl(final ScheduleManager scheduleManager,
-                               final ScheduleAppender scheduleAppender) {
+    public ScheduleServiceImpl(final ScheduleManager scheduleManager, final ScheduleAppender scheduleAppender) {
         this.scheduleManager = scheduleManager;
         this.scheduleAppender = scheduleAppender;
     }
@@ -24,6 +23,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     public void fetchTimeTable(final long memberId, final TimeTableRequest timeTableRequest) {
         String timeTableXML = scheduleManager.fetchTimetable(timeTableRequest.everytimeId());
         List<Schedule> schedules = scheduleManager.processTimetable(timeTableXML, timeTableRequest);
-        scheduleAppender.saveTimeTables(schedules, memberId);
+        scheduleAppender.batchUpdateSchedules(schedules, memberId);
     }
 }
