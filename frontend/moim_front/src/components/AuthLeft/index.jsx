@@ -1,5 +1,7 @@
 import AuthTitle from "../Authentification/AuthTitle";
 import { useState } from "react";
+import checked from "../../assets/svg/checked.svg";
+import unchecked from "../../assets/svg/unchecked.svg";
 function AuthLeft() {
   const [password, setPassword] = useState("");
   const passwordHandler = (e) => setPassword(e.target.value);
@@ -37,7 +39,10 @@ function AuthLeft() {
           onChange={passwordHandler}
         />
       </div>
-      <p>로그인 정보 기억하기</p>
+      <div className="flex gap-1 items-center font-Pretendard_Normal">
+        <img src={unchecked} />
+        <p>로그인 정보 기억하기</p>
+      </div>
     </div>
   );
 }
