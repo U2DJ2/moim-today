@@ -8,6 +8,8 @@ import moim_today.implement.file.FileUploader;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+
 @Service
 public class AmazonS3Service implements FileService{
 
@@ -21,7 +23,8 @@ public class AmazonS3Service implements FileService{
     }
 
     public FileInfoResponse uploadFile(final String fileType, final MultipartFile multipartFile){
-        return fileUploader.uploadFile(fileType, multipartFile);
+        String imageUrl = fileUploader.uploadFile(fileType, multipartFile);
+        return new FileInfoResponse(imageUrl);
     }
 
     public void deleteFile(final MemberSession memberSession, final FileDeleteRequest fileDeleteRequest){
