@@ -1,7 +1,16 @@
-import SearchIcon from "@mui/icons-material/Search";
+// React
 import { useState } from "react";
+
+// Components
 import Header from "../../components/Header";
 
+// Icons
+import SearchIcon from "@mui/icons-material/Search";
+
+/**
+ * SearchBar Component
+ * @returns {JSX.Element}
+ */
 function SearchBar() {
   return (
     <div className="flex flex-col justify-center mt-2 text-zinc-950 text-opacity-70 max-md:max-w-full">
@@ -11,8 +20,7 @@ function SearchBar() {
         </label>
         <button
           type="submit"
-          className="justify-center px-1.5 py-1.5 text-lg font-medium text-center leading-[8px]"
-        >
+          className="justify-center px-1.5 py-1.5 text-lg font-medium text-center leading-[8px]">
           <SearchIcon />
         </button>
         <input
@@ -43,27 +51,21 @@ function FilterBar() {
       <div className="flex justify-center items-center self-start px-16 font-medium text-black max-md:px-5 max-md:max-w-full">
         <div className="flex gap-3">
           <button
-            className={`justify-center px-9 py-3 rounded-[64px] max-md:px-5 ${
-              selected === "전체" ? "bg-gray-200" : ""
-            }`}
-            onClick={() => setSelected("전체")}
-          >
+            className={`justify-center px-9 py-3 rounded-[64px] max-md:px-5 ${selected === "전체" ? "bg-gray-200" : ""
+              }`}
+            onClick={() => setSelected("전체")}>
             전체
           </button>
           <button
-            className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 ${
-              selected === "추천순" ? "bg-gray-200" : ""
-            }`}
-            onClick={() => setSelected("추천순")}
-          >
+            className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 ${selected === "추천순" ? "bg-gray-200" : ""
+              }`}
+            onClick={() => setSelected("추천순")}>
             추천순
           </button>
           <button
-            className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 ${
-              selected === "최신순" ? "bg-gray-200" : ""
-            }`}
-            onClick={() => setSelected("최신순")}
-          >
+            className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 ${selected === "최신순" ? "bg-gray-200" : ""
+              }`}
+            onClick={() => setSelected("최신순")}>
             최신순
           </button>
         </div>
