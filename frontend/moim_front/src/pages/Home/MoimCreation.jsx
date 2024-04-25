@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 function CategorySelector() {
     return (
-        <div className="flex gap-0 justify-between px-4 py-2.5 mt-2 text-sm font-semibold leading- rounded-xl bg-neutral-50 text-zinc-400 max-md:flex-wrap">
+        <div className="flex gap-0 justify-between px-4 py-2.5 mt-2 text-sm font-semibold leading-7 rounded-xl bg-neutral-50 text-zinc-400 max-md:flex-wrap">
             <div className="flex-1 max-md:max-w-full">어디까지 올라가는거에요??</div>
             <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/95da3276034397a5966cf1c2c5fefc4519307760c7e98daff957792b9dc250d0?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&" className="shrink-0 my-auto w-6 aspect-square" />
         </div>

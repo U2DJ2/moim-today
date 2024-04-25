@@ -87,7 +87,7 @@ function Home() {
     <div className="flex flex-col justify-between pb-20 bg-white">
       <Header />
       <main className="flex flex-col self-center px-5 mt-9 max-w-full whitespace-nowrap w-[700px]">
-        <h1 className="self-center text-9xl text-center text-rose-600 max-md:text-4xl font-Praise">
+        <h1 className="self-center text-9xl text-center text-rose-600 max-md:text-9xl font-Praise sm:text-9xl md:text-9xl lg:text-9xl xl:text-9xl">
           Moim
         </h1>
         <SearchBar />
