@@ -17,6 +17,8 @@
     "@fullcalendar/interaction": "^6.1.11",
     "@fullcalendar/react": "^6.1.11",
     "@fullcalendar/timegrid": "^6.1.11",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/lab": "^4.0.0-alpha.61",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
     "react": "^18.2.0",

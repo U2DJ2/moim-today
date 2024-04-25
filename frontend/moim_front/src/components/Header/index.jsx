@@ -25,11 +25,13 @@ function Header() {
       </nav>
       <div className="flex gap-5 justify-center font-bold whitespace-nowrap">
         <div className="justify-center my-auto">아주대학교</div>
+        <a href="/profile">
         <img
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/c9e3048d2ecf88eda8221e80e1f3587f63212f6776bfaae61a153b6c70100a59?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&"
           alt="Profile"
           className="shrink-0 w-10 aspect-square"
         />
+        </a>
       </div>
     </header>
   );
