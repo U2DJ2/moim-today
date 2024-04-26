@@ -49,7 +49,9 @@ function AuthLeft() {
         <img src={unchecked} />
         <p>로그인 정보 기억하기</p>
       </div>
-      <Button name={"로그인"} />
+      <div className="pt-7">
+        <Button name={"로그인"} />
+      </div>
     </div>
   );
 }
