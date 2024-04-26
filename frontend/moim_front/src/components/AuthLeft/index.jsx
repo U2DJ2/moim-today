@@ -2,8 +2,12 @@ import AuthTitle from "../Authentification/AuthTitle";
 import { useState } from "react";
 import checked from "../../assets/svg/checked.svg";
 import unchecked from "../../assets/svg/unchecked.svg";
+import Button from "../Button";
 function AuthLeft() {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const emailHandler = (e) => setEmail(e.target.value);
   const passwordHandler = (e) => setPassword(e.target.value);
 
   return (
@@ -14,25 +18,27 @@ function AuthLeft() {
         secondContent={"Please login to your account."}
       />
       <div className="pt-16 pb-12">
-        <p className=" font-Pretendard_Normal block">Email</p>
+        <p className=" font-Pretendard_Normal block text-xl text-[#575757]">
+          Email
+        </p>
         <input
           type="email"
           name="email"
-          placeholder="이메일을 입력해주세요."
-          className={`border-b border-[#D9D9D9] text-black text-sm pt-2 pb-2 rounded-lg focus:outline-none w-full block ${
-            password && "font-mono"
-          }`}
-          value={password}
-          onChange={passwordHandler}
+          placeholder="enter your email"
+          className={`border-b border-[#575757] text-black text-xl pt-2 pb-2 focus:outline-none w-full block ${password}`}
+          value={email}
+          onChange={emailHandler}
         />
       </div>
       <div>
-        <p className=" font-Pretendard_Normal">Password</p>
+        <p className=" font-Pretendard_Normal text-xl text-[#575757]">
+          Password
+        </p>
         <input
           type="password"
           name="password"
-          placeholder="비밀번호를 입력해주세요."
-          className={`border-b border-[#D9D9D9] text-black text-sm pt-2 pb-2 rounded-lg focus:outline-none w-full block mb-12 ${
+          placeholder="enter your password"
+          className={`border-b border-[#575757] text-black text-xl pt-2 pb-2 focus:outline-none w-full block mb-12 ${
             password && "font-mono"
           }`}
           value={password}
@@ -43,6 +49,7 @@ function AuthLeft() {
         <img src={unchecked} />
         <p>로그인 정보 기억하기</p>
       </div>
+      <Button name={"로그인"} />
     </div>
   );
 }

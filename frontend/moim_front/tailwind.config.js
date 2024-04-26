@@ -7,6 +7,7 @@ export default {
       Praise: ["Praise"],
       Pretendard_Black: ["Pretendard-Black"],
       Pretendard_Normal: ["Pretendard-Normal"],
+      Pretendard_Light: ["Pretendard-Light"],
     },
     colors: {
       scarlet: "#FF2440",
