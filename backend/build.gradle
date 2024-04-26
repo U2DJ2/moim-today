@@ -107,6 +107,9 @@ dependencies {
 
     // session jdbc
     implementation 'org.springframework.session:spring-session-jdbc'
+
+    // Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {

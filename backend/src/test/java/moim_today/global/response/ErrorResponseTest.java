@@ -3,6 +3,8 @@ package moim_today.global.response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static moim_today.util.TestConstant.MESSAGE;
+import static moim_today.util.TestConstant.STATUS_CODE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ErrorResponseTest {
@@ -11,8 +13,8 @@ class ErrorResponseTest {
     @Test
     void ErrorResponse_테스트(){
         //given
-        String statusCode = "200";
-        String message = "SUCCESS";
+        String statusCode = STATUS_CODE.value();
+        String message = MESSAGE.value();
 
         //when
         ErrorResponse errorResponse = ErrorResponse.of(statusCode, message);

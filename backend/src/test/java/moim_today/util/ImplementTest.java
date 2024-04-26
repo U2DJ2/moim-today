@@ -1,7 +1,12 @@
 package moim_today.util;
 
-import moim_today.persistence.repository.certification_token.CertificationTokenRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import moim_today.persistence.repository.certification.email.EmailCertificationRepository;
+import moim_today.persistence.repository.certification.password.PasswordCertificationRepository;
+import moim_today.persistence.repository.department.DepartmentRepository;
 import moim_today.persistence.repository.member.MemberRepository;
+import moim_today.persistence.repository.schedule.ScheduleRepository;
+import moim_today.persistence.repository.university.UniversityRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,10 +19,25 @@ public abstract class ImplementTest {
     protected DatabaseCleaner databaseCleaner;
 
     @Autowired
+    protected ObjectMapper objectMapper;
+
+    @Autowired
     protected MemberRepository memberRepository;
 
     @Autowired
-    protected CertificationTokenRepository certificationTokenRepository;
+    protected PasswordCertificationRepository passwordCertificationRepository;
+
+    @Autowired
+    protected EmailCertificationRepository emailCertificationRepository;
+
+    @Autowired
+    protected UniversityRepository universityRepository;
+
+    @Autowired
+    protected DepartmentRepository departmentRepository;
+
+    @Autowired
+    protected ScheduleRepository scheduleRepository;
 
     @Autowired
     protected PasswordEncoder passwordEncoder;

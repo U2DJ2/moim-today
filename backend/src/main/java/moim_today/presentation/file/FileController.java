@@ -8,6 +8,8 @@ import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import static moim_today.global.constant.FileTypeConstant.PROFILE_IMAGE;
+
 @RestController
 @RequestMapping("/api")
 public class FileController {
@@ -21,7 +23,7 @@ public class FileController {
     @PostMapping(value = "/files")
     public FileInfoResponse uploadFile(@Login final MemberSession memberSession,
                                        @RequestPart final MultipartFile file) {
-        return fileService.uploadFile(memberSession, file);
+        return fileService.uploadFile(PROFILE_IMAGE.value(), file);
     }
 
     @DeleteMapping("/files")

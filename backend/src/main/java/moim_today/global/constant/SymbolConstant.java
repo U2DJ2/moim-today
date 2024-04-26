@@ -2,7 +2,13 @@ package moim_today.global.constant;
 
 public enum SymbolConstant {
 
-    HYPHEN("-"), BLANK("");
+    HYPHEN("-"),
+    BLANK(""),
+    WWW("www."),
+    CAPITAL_WWW("WWW."),
+    SLASH("/"),
+    AT("@"),
+    EMAIL_EXTENSION("ac.kr");
 
     private final String value;
 

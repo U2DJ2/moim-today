@@ -1,8 +1,10 @@
 package moim_today.global.error;
 
-import moim_today.global.response.ErrorResponse;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import moim_today.global.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import static moim_today.global.constant.StatusCodeConstant.BAD_REQUEST;
 import static moim_today.global.constant.exception.SpringExceptionConstant.*;
 
 @Slf4j
@@ -59,6 +62,23 @@ public class ApiRestControllerAdvice {
     public ErrorResponse handleInternalServerError(final InternalServerException e) {
         log.error("InternalServerException={}", e.getMessage());
         return ErrorResponse.of(e.getStatusCode(), e.getMessage());
+    }
+
+    // 400
+    // description : Valid Annotation Custom Error Message
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ErrorResponse handleConstraintViolationException(final ConstraintViolationException e) {
+        log.error("ConstraintViolationException={}", e.getMessage());
+        return ErrorResponse.of(BAD_REQUEST.statusCode(), e.getMessage());
+    }
+
+    // 400
+    // description : Enum class JSON Parse Error
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ErrorResponse handleIncorrectData(final HttpMessageNotReadableException e){
+        return ErrorResponse.of(BAD_REQUEST.statusCode(), e.getMessage());
     }
 
     /**

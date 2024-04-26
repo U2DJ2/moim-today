@@ -21,14 +21,14 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
-        registry.addInterceptor(new MemberLoginInterceptor(objectMapper))
+        registry.addInterceptor(new MemberLoginInterceptor())
                 .order(1)
-                .addPathPatterns("*")
-                .excludePathPatterns("/api/login");
+                .addPathPatterns("/api/**")
+                .excludePathPatterns("/api/login", "/api/certification/**");
     }
 
     @Override
     public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new MemberLoginArgumentResolver());
+        resolvers.add(new MemberLoginArgumentResolver(objectMapper));
     }
 }

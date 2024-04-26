@@ -27,12 +27,10 @@ public class FakeInterceptor implements HandlerInterceptor {
 
         try {
             String memberSessionJson = objectMapper.writeValueAsString(fakeMemberSession);
-            MemberSession memberSession = objectMapper.readValue(memberSessionJson, MemberSession.class);
-            request.setAttribute(MEMBER_SESSION.value(), memberSession);
+            request.setAttribute(MEMBER_SESSION.value(), memberSessionJson);
         } catch (JsonProcessingException e) {
             throw new InternalServerException(MEMBER_SESSION_JSON_PROCESSING_ERROR.message());
         }
-
         return true;
     }
 }

@@ -5,7 +5,6 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.extern.slf4j.Slf4j;
-import moim_today.domain.member.MemberSession;
 import moim_today.dto.file.FileInfoResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
@@ -33,10 +32,9 @@ public class FileUploader {
         this.amazonS3 = amazonS3;
     }
 
-    public FileInfoResponse uploadFile(final MemberSession memberSession, final MultipartFile multipartFile) {
-        long memberId = memberSession.id();
-        long universityId = memberSession.universityId();
-        String uploadFolder = universityId+"/"+memberId;
+    public FileInfoResponse uploadFile(final String fileType, final MultipartFile multipartFile) {
+
+        String uploadFolder = fileType;
 
         String originalFileName = multipartFile.getOriginalFilename();
         String uploadFileName = createFileName(originalFileName);

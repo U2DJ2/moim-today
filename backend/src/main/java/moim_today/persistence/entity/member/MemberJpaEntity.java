@@ -61,4 +61,12 @@ public class MemberJpaEntity extends BaseTimeEntity {
     public void updatePassword(final PasswordEncoder passwordEncoder, final String newPassword) {
         this.password = passwordEncoder.encode(newPassword);
     }
+
+    public void updateProfile(final long departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public void updateProfileImageUrl(final String profileImageUrl) {
+        this.memberProfileImageUrl = profileImageUrl;
+    }
 }

@@ -1,11 +1,13 @@
 package moim_today.implement.member;
 
+import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.global.error.BadRequestException;
+import moim_today.global.error.HandleExceptionPage;
 import moim_today.global.error.NotFoundException;
-import moim_today.persistence.entity.certification_token.CertificationTokenJpaEntity;
+import moim_today.persistence.entity.certification.password.PasswordCertificationJpaEntity;
+import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.util.ImplementTest;
-import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 
 import static moim_today.global.constant.exception.CertificationConstant.CERTIFICATION_EXPIRED_ERROR;
+import static moim_today.global.constant.exception.DepartmentExceptionConstant.DEPARTMENT_NOT_MATCH_UNIVERSITY;
 import static moim_today.global.constant.exception.MailExceptionConstant.MAIL_CERTIFICATION_TOKEN_NOT_FOUND_ERROR;
 import static moim_today.util.TestConstant.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MemberUpdaterTest extends ImplementTest {
 
@@ -51,13 +55,13 @@ class MemberUpdaterTest extends ImplementTest {
         LocalDateTime expiredTime = LocalDateTime.of(2024, 1, 1, 10, 00, 00);
 
         // given 2
-        CertificationTokenJpaEntity certificationTokenJpaEntity = CertificationTokenJpaEntity.builder()
+        PasswordCertificationJpaEntity passwordCertificationJpaEntity = PasswordCertificationJpaEntity.builder()
                 .email(EMAIL.value())
                 .certificationToken(passwordToken)
                 .expiredDateTime(expiredTime)
                 .build();
 
-        certificationTokenRepository.save(certificationTokenJpaEntity);
+        passwordCertificationRepository.save(passwordCertificationJpaEntity);
 
         // given 3
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
@@ -83,13 +87,13 @@ class MemberUpdaterTest extends ImplementTest {
         LocalDateTime expiredTime = LocalDateTime.of(2024, 1, 1, 10, 00, 00);
 
         // given 2
-        CertificationTokenJpaEntity certificationTokenJpaEntity = CertificationTokenJpaEntity.builder()
+        PasswordCertificationJpaEntity passwordCertificationJpaEntity = PasswordCertificationJpaEntity.builder()
                 .email(EMAIL.value())
                 .certificationToken(passwordToken)
                 .expiredDateTime(expiredTime)
                 .build();
 
-        certificationTokenRepository.save(certificationTokenJpaEntity);
+        passwordCertificationRepository.save(passwordCertificationJpaEntity);
 
         // given 3
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
@@ -115,13 +119,13 @@ class MemberUpdaterTest extends ImplementTest {
         LocalDateTime expiredTime = LocalDateTime.of(2024, 1, 1, 10, 00, 00);
 
         // given 2
-        CertificationTokenJpaEntity certificationTokenJpaEntity = CertificationTokenJpaEntity.builder()
+        PasswordCertificationJpaEntity passwordCertificationJpaEntity = PasswordCertificationJpaEntity.builder()
                 .email(EMAIL.value())
                 .certificationToken(passwordToken)
                 .expiredDateTime(expiredTime)
                 .build();
 
-        certificationTokenRepository.save(certificationTokenJpaEntity);
+        passwordCertificationRepository.save(passwordCertificationJpaEntity);
 
         // given 3
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
@@ -134,7 +138,86 @@ class MemberUpdaterTest extends ImplementTest {
         assertThatThrownBy(
                 () -> memberUpdater.recoverPassword(passwordToken, newPassword, expiredTime.plusMinutes(11))
         )
+                .isInstanceOf(HandleExceptionPage.class);
+    }
+
+    @DisplayName("사용자가 입력한 프로필 정보로 사용자 정보를 수정한다.")
+    @Test
+    void updateProfile() {
+        // given
+        long universityId = 1L;
+
+        DepartmentJpaEntity departmentJpaEntity = DepartmentJpaEntity.builder()
+                .universityId(universityId)
+                .build();
+
+        departmentRepository.save(departmentJpaEntity);
+        long updateDepartmentId = departmentJpaEntity.getId();
+        long departmentId = updateDepartmentId + 1L;
+
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .universityId(universityId)
+                .departmentId(departmentId)
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        long memberId = memberJpaEntity.getId();
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(updateDepartmentId);
+
+        // when
+        memberUpdater.updateProfile(memberId, universityId, profileUpdateRequest);
+
+        // then
+        MemberJpaEntity findEntity = memberRepository.getById(memberId);
+        assertThat(findEntity.getDepartmentId()).isEqualTo(updateDepartmentId);
+    }
+
+    @DisplayName("사용자의 대학교에 수정 요청한 전공 ID가 없을 경우 예외를 발생시킨다.")
+    @Test
+    void updateProfileNotMatchUniversity() {
+        // given
+        long universityId_1 = 1L;
+        long universityId_2 = 2L;
+
+        DepartmentJpaEntity departmentJpaEntity = DepartmentJpaEntity.builder()
+                .universityId(universityId_1)
+                .build();
+
+        departmentRepository.save(departmentJpaEntity);
+        long updateDepartmentId = departmentJpaEntity.getId();
+
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .universityId(universityId_2)
+                .departmentId(updateDepartmentId)
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        long memberId = memberJpaEntity.getId();
+
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(updateDepartmentId);
+
+        // when & then
+        assertThatThrownBy(() -> memberUpdater.updateProfile(memberId, universityId_2, profileUpdateRequest))
                 .isInstanceOf(BadRequestException.class)
-                .hasMessage(CERTIFICATION_EXPIRED_ERROR.message());
+                .hasMessage(DEPARTMENT_NOT_MATCH_UNIVERSITY.message());
+    }
+
+    @DisplayName("파일을 업로드하여 받아온 URL을 회원 프로필 URL에 업데이트 한다.")
+    @Test
+    void updateProfileUrl() {
+        //given
+        String updateProfileUrl = PROFILE_IMAGE_URL.value();
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        long memberId = memberJpaEntity.getId();
+
+        //when
+        memberUpdater.updateProfileImageUrl(memberId, updateProfileUrl);
+
+        //then
+        MemberJpaEntity entity = memberRepository.getById(memberId);
+        assertThat(entity.getMemberProfileImageUrl()).isEqualTo(updateProfileUrl);
     }
 }

@@ -3,23 +3,28 @@ package moim_today.global.response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
+import static moim_today.util.TestConstant.USERNAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CollectionResponseTest {
     
-    @DisplayName("ApiResponse에 데이터가 올바르게 들어가는지 확인합니다.")
+    @DisplayName("CollectionResponse에 데이터가 올바르게 들어가는지 확인합니다.")
     @Test
     void ApiResponse_테스트(){
         //given
-        Member member = new Member("testMember", 25);
+        ArrayList<Member> members = new ArrayList<>();
+        Member memberA = new Member(USERNAME.value(), 25);
+        Member memberB = new Member(USERNAME.value(), 30);
+        members.add(memberA);
+        members.add(memberB);
 
         //when
-        CollectionResponse<Member> memberCollectionResponse = CollectionResponse.of(member);
+        CollectionResponse<ArrayList<Member>> arrayListCollectionResponse = CollectionResponse.of(members);
 
         //then
-        assertThat(memberCollectionResponse.data()).isEqualTo(member);
-        assertThat(memberCollectionResponse.data().getName()).isEqualTo("testMember");
-        assertThat(memberCollectionResponse.data().getAge()).isEqualTo(25);
+        assertThat(arrayListCollectionResponse.data()).contains(memberA, memberB);
     }
 
     static class Member{
@@ -29,14 +34,6 @@ class CollectionResponseTest {
         public Member(final String name, final int age) {
             this.name = name;
             this.age = age;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public int getAge() {
-            return age;
         }
     }
 }
