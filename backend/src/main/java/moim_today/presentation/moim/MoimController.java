@@ -2,10 +2,7 @@ package moim_today.presentation.moim;
 
 import moim_today.application.moim.MoimService;
 import moim_today.domain.member.MemberSession;
-import moim_today.dto.moim.MoimDetailResponse;
-import moim_today.dto.moim.PrivateMoimAppendRequest;
-import moim_today.dto.moim.PublicMoimAppendRequest;
-import moim_today.dto.moim.UploadMoimImageResponse;
+import moim_today.dto.moim.*;
 import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +36,7 @@ public class MoimController {
     }
 
     @GetMapping("/detail")
-    public MoimDetailResponse getMoimDetail(@RequestBody final long moimId) {
-        return moimService.getMoimDetail(moimId);
+    public MoimDetailResponse getMoimDetail(@RequestBody final MoimDetailRequest moimDetailRequest) {
+        return moimService.getMoimDetail(moimDetailRequest.moimId());
     }
 }

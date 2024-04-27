@@ -1,13 +1,17 @@
 package moim_today.fake_class.moim;
 
 import moim_today.application.moim.MoimService;
+import moim_today.domain.moim.DisplayStatus;
+import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.MoimDetailResponse;
 import moim_today.dto.moim.PrivateMoimAppendRequest;
 import moim_today.dto.moim.PublicMoimAppendRequest;
 import moim_today.dto.moim.UploadMoimImageResponse;
 import org.springframework.web.multipart.MultipartFile;
 
-import static moim_today.util.TestConstant.MOIM_IMAGE_URL;
+import java.time.LocalDate;
+
+import static moim_today.util.TestConstant.*;
 
 public class FakeMoimService implements MoimService {
 
@@ -28,6 +32,17 @@ public class FakeMoimService implements MoimService {
 
     @Override
     public MoimDetailResponse getMoimDetail(final long moimId) {
-        return null;
+        return MoimDetailResponse.builder()
+                .title(TITLE.value())
+                .contents(CONTENTS.value())
+                .capacity(Integer.parseInt((CAPACITY.value())))
+                .currentCount(Integer.parseInt(CURRENT_COUNT.value()))
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PUBLIC)
+                .views(Integer.parseInt(VIEWS.value()))
+                .startDate(LocalDate.of(2024,3,1))
+                .endDate(LocalDate.of(2024,6,30))
+                .build();
     }
 }

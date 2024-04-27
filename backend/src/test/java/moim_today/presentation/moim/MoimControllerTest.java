@@ -2,6 +2,7 @@ package moim_today.presentation.moim;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.domain.moim.enums.MoimCategory;
+import moim_today.dto.moim.MoimDetailRequest;
 import moim_today.dto.moim.PrivateMoimAppendRequest;
 import moim_today.dto.moim.PublicMoimAppendRequest;
 import moim_today.fake_class.moim.FakeMoimService;
@@ -16,12 +17,10 @@ import java.time.LocalDate;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static moim_today.util.TestConstant.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class MoimControllerTest extends ControllerTest {
@@ -70,7 +69,7 @@ class MoimControllerTest extends ControllerTest {
                                 .build()
                         )));
     }
-    
+
     @DisplayName("비공개 모임 생성 테스트")
     @Test
     void createPrivateMoimApiTest() throws Exception {
@@ -135,6 +134,39 @@ class MoimControllerTest extends ControllerTest {
                                 .summary("모임 사진 업로드 성공 테스트 입니다.")
                                 .responseFields(
                                         fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임 상제 정보 조회 테스트")
+    @Test
+    void getMoimDetailTest() throws Exception {
+        MoimDetailRequest moimDetailRequest = new MoimDetailRequest(1L);
+
+        mockMvc.perform(get("/api/moims/detail")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(moimDetailRequest))
+                )
+                .andExpect(status().isOk())
+                .andDo(document("모임 상세 정보 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("모임 상세 정보 조회 API")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("모임 ID")
+                                )
+                                .responseFields(
+                                        fieldWithPath("title").type(STRING).description("모임명"),
+                                        fieldWithPath("contents").type(STRING).description("내용"),
+                                        fieldWithPath("capacity").type(NUMBER).description("모집 인원"),
+                                        fieldWithPath("currentCount").type(NUMBER).description("현재 인원"),
+                                        fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL"),
+                                        fieldWithPath("moimCategory").type(VARIES).description("카테고리"),
+                                        fieldWithPath("displayStatus").type(VARIES).description("공개여부"),
+                                        fieldWithPath("views").type(NUMBER).description("조회수"),
+                                        fieldWithPath("startDate").type(STRING).description("시작 일자"),
+                                        fieldWithPath("endDate").type(STRING).description("종료 일자")
                                 )
                                 .build()
                         )));

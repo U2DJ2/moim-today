@@ -1,5 +1,6 @@
 package moim_today.dto.moim;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
@@ -17,7 +18,9 @@ public record MoimDetailResponse(
         MoimCategory moimCategory,
         DisplayStatus displayStatus,
         int views,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate startDate,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate endDate
 
 ) {
