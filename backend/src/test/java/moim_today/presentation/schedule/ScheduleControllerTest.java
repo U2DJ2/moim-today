@@ -3,11 +3,11 @@ package moim_today.presentation.schedule;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.schedule.ScheduleService;
 import moim_today.dto.schedule.ScheduleCreateRequest;
+import moim_today.dto.schedule.ScheduleDeleteRequest;
 import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableRequest;
 import moim_today.fake_class.schedule.FakeScheduleService;
 import moim_today.util.ControllerTest;
-import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,8 +21,7 @@ import static moim_today.util.TestConstant.*;
 import static moim_today.util.TestConstant.EVERY_TIME_ID;
 import static moim_today.util.TestConstant.WRONG_EVERY_TIME_ID;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -112,7 +111,6 @@ class ScheduleControllerTest extends ControllerTest {
                 .build();
 
         String json = objectMapper.writeValueAsString(scheduleCreateRequest);
-        System.out.println(json);
 
         mockMvc.perform(post("/api/schedules")
                         .contentType(APPLICATION_JSON)
@@ -144,7 +142,6 @@ class ScheduleControllerTest extends ControllerTest {
                 .build();
 
         String json = objectMapper.writeValueAsString(scheduleCreateRequest);
-        System.out.println(json);
 
         mockMvc.perform(post("/api/schedules")
                         .contentType(APPLICATION_JSON)
@@ -181,7 +178,6 @@ class ScheduleControllerTest extends ControllerTest {
                 .build();
 
         String json = objectMapper.writeValueAsString(scheduleUpdateRequest);
-        System.out.println(json);
 
         mockMvc.perform(patch("/api/schedules")
                         .contentType(APPLICATION_JSON)
@@ -215,7 +211,6 @@ class ScheduleControllerTest extends ControllerTest {
                 .build();
 
         String json = objectMapper.writeValueAsString(scheduleUpdateRequest);
-        System.out.println(json);
 
         mockMvc.perform(patch("/api/schedules")
                         .contentType(APPLICATION_JSON)
@@ -253,7 +248,6 @@ class ScheduleControllerTest extends ControllerTest {
                 .build();
 
         String json = objectMapper.writeValueAsString(scheduleUpdateRequest);
-        System.out.println(json);
 
         mockMvc.perform(patch("/api/schedules")
                         .contentType(APPLICATION_JSON)
@@ -270,6 +264,83 @@ class ScheduleControllerTest extends ControllerTest {
                                         fieldWithPath("dayOfWeek").type(STRING).description("요일"),
                                         fieldWithPath("startDateTime").type(STRING).description("시작 시간"),
                                         fieldWithPath("endDateTime").type(STRING).description("종료 시간")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("개인 일정을 삭제한다.")
+    @Test
+    void deleteSchedule() throws Exception {
+        ScheduleDeleteRequest scheduleDeleteRequest = new ScheduleDeleteRequest(1L);
+
+        String json = objectMapper.writeValueAsString(scheduleDeleteRequest);
+
+        mockMvc.perform(delete("/api/schedules")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("개인 일정 삭제 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("스케줄")
+                                .summary("개인 일정 삭제")
+                                .requestFields(
+                                        fieldWithPath("scheduleId").type(NUMBER).description("스케줄 id")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("회원의 스케줄이 아니면 삭제에 실패한다.")
+    @Test
+    void deleteScheduleForbidden() throws Exception {
+        ScheduleDeleteRequest scheduleDeleteRequest = new ScheduleDeleteRequest(Long.parseLong(FORBIDDEN_SCHEDULE_ID.value()));
+
+        String json = objectMapper.writeValueAsString(scheduleDeleteRequest);
+
+        mockMvc.perform(delete("/api/schedules")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isForbidden())
+                .andDo(document("개인 일정 삭제 실패 - 회원의 스케줄이 아님",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("스케줄")
+                                .summary("개인 일정 삭제")
+                                .requestFields(
+                                        fieldWithPath("scheduleId").type(NUMBER).description("스케줄 id")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("스케줄 정보를 찾을 수 없으면 삭제에 실패한다.")
+    @Test
+    void deleteScheduleNotFound() throws Exception {
+        ScheduleDeleteRequest scheduleDeleteRequest = new ScheduleDeleteRequest(Long.parseLong(NOTFOUND_SCHEDULE_ID.value()));
+
+        String json = objectMapper.writeValueAsString(scheduleDeleteRequest);
+
+        mockMvc.perform(delete("/api/schedules")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isNotFound())
+                .andDo(document("개인 일정 삭제 실패 - 일정을 찾을 수 없음",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("스케줄")
+                                .summary("개인 일정 삭제")
+                                .requestFields(
+                                        fieldWithPath("scheduleId").type(NUMBER).description("스케줄 id")
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),

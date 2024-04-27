@@ -55,6 +55,7 @@ public enum TestConstant {
     SCHEDULE_NAME("scheduleName"),
     NEW_SCHEDULE_NAME("new scheduleName"),
     FORBIDDEN_SCHEDULE_ID("9999"),
+    NOTFOUND_SCHEDULE_ID("0"),
 
     STATUS_CODE("200"),
     MESSAGE("message"),

@@ -6,6 +6,7 @@ import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableRequest;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
+import moim_today.global.error.NotFoundException;
 
 import java.time.LocalDateTime;
 
@@ -42,6 +43,12 @@ public class FakeScheduleService implements ScheduleService {
 
     @Override
     public void deleteSchedule(final long memberId, final long scheduleId) {
+        if (scheduleId == Long.parseLong(NOTFOUND_SCHEDULE_ID.value())) {
+            throw new NotFoundException(SCHEDULE_NOT_FOUND.message());
+        }
 
+        if (scheduleId == Long.parseLong(FORBIDDEN_SCHEDULE_ID.value())) {
+            throw new ForbiddenException(SCHEDULE_FORBIDDEN.message());
+        }
     }
 }
