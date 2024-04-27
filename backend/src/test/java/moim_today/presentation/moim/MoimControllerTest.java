@@ -58,7 +58,7 @@ class MoimControllerTest extends ControllerTest {
                 .andDo(document("공개 모임 생성 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
-                                .summary("모임 생성")
+                                .summary("공개 모임 생성")
                                 .requestFields(
                                         fieldWithPath("title").type(STRING).description("모임명"),
                                         fieldWithPath("contents").type(STRING).description("내용"),
@@ -97,7 +97,7 @@ class MoimControllerTest extends ControllerTest {
                 .andDo(document("비공개 모임 생성 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
-                                .summary("모임 생성")
+                                .summary("비공개 모임 생성")
                                 .requestFields(
                                         fieldWithPath("title").type(STRING).description("모임명"),
                                         fieldWithPath("contents").type(STRING).description("내용"),

@@ -2,7 +2,6 @@ package moim_today.dto.moim;
 
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +9,7 @@ import java.time.LocalDate;
 
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
 import static moim_today.util.TestConstant.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class PrivateMoimAppendRequestTest {
 
@@ -38,7 +38,7 @@ class PrivateMoimAppendRequestTest {
         MoimJpaEntity entity = privateMoimAppendRequest.toEntity(memberId, universityId);
 
         //then
-        Assertions.assertThat((entity.getImageUrl())).isEqualTo(DEFAULT_MOIM_IMAGE_URL.value());
+        assertThat((entity.getImageUrl())).isEqualTo(DEFAULT_MOIM_IMAGE_URL.value());
     }
 
     @DisplayName("Request에 ImageUrl 값이 있다면 엔티티에 정상적으로 들어간다.")
@@ -67,6 +67,6 @@ class PrivateMoimAppendRequestTest {
         MoimJpaEntity entity = privateMoimAppendRequest.toEntity(memberId, universityId);
 
         //then
-        Assertions.assertThat((entity.getImageUrl())).isEqualTo(MOIM_IMAGE_URL.value());
+        assertThat((entity.getImageUrl())).isEqualTo(MOIM_IMAGE_URL.value());
     }
 }
