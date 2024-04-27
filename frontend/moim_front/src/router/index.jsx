@@ -11,6 +11,7 @@ import LoginPage from "../pages/Authentication/Login";
 // Page : Manage
 import Manage from "../pages/Manage/Manage";
 
+import RegisterPage from "../pages/RegisterPage";
 /**
  * Basic Router
  * @returns
@@ -20,6 +21,7 @@ function Router() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
       <Route path="/creation" element={<MoimCreationPage />} />
       <Route path="/profile" element={<Manage />} />
     </Routes>

@@ -1,6 +1,6 @@
 function PageContainer({ children }) {
   return (
-    <div className="max-w-screen-xl min-h-[800px] mx-auto px-2 md:px-5 mb-24">
+    <div className="flex min-h-screen w-full py-0 overflow-hidden relative gap-1 pl-28 bg-scarlet">
       <div>{children}</div>
     </div>
   );

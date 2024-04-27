@@ -1,10 +1,14 @@
 import React from "react";
 import landingImg from "../../assets/svg/landingImg.svg";
-function AuthRight() {
+function AuthRight({ cardColor, textColor }) {
   return (
     <div className="flex-1 w-full relative">
-      <div className="flex bg-scarlet w-[120%] h-[110%] absolute left-0 -rotate-18 rounded-[64px]"></div>
-      <div className="text-white text-[150px] relative font-Praise top-1/4 left-1/3 justify-center">
+      <div
+        className={`flex w-[120%] h-[110%] absolute left-0 -rotate-18 rounded-[64px] bg-${cardColor}`}
+      ></div>
+      <div
+        className={`text-[150px] relative font-Praise top-1/4 left-1/3 justify-center text-${textColor}`}
+      >
         Moim
       </div>
       <img
