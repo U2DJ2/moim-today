@@ -1,7 +1,6 @@
 package moim_today.implement.schedule;
 
 import moim_today.domain.schedule.Schedule;
-import moim_today.dto.schedule.ScheduleCreateRequest;
 import moim_today.dto.schedule.TimeTableSchedulingTask;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
@@ -30,8 +29,7 @@ public class ScheduleAppender {
     }
 
     @Transactional
-    public void createSchedule(final long memberId, final ScheduleCreateRequest scheduleCreateRequest) {
-        ScheduleJpaEntity scheduleJpaEntity = scheduleCreateRequest.toEntity(memberId);
+    public void createSchedule(final ScheduleJpaEntity scheduleJpaEntity) {
         validateAlreadyExist(scheduleJpaEntity);
         scheduleRepository.save(scheduleJpaEntity);
     }

@@ -3,6 +3,8 @@ package moim_today.persistence.repository.schedule;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.domain.schedule.Schedule;
 import moim_today.dto.schedule.TimeTableSchedulingTask;
+import moim_today.global.constant.exception.ScheduleExceptionConstant;
+import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.schedule.QScheduleJpaEntity;
 import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static moim_today.global.constant.NumberConstant.SCHEDULE_MEETING_ID;
+import static moim_today.global.constant.exception.ScheduleExceptionConstant.*;
 
 
 @Repository
@@ -31,6 +34,12 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         this.scheduleJpaRepository = scheduleJpaRepository;
         this.queryFactory = queryFactory;
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public ScheduleJpaEntity getById(final long scheduleId) {
+        return scheduleJpaRepository.findById(scheduleId)
+                .orElseThrow(() -> new NotFoundException(SCHEDULE_NOT_FOUND.message()));
     }
 
     @Override

@@ -5,6 +5,8 @@ import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
 
 public interface ScheduleRepository {
 
+    ScheduleJpaEntity getById(final long scheduleId);
+
     void save(final ScheduleJpaEntity scheduleJpaEntity);
 
     void batchUpdate(final TimeTableSchedulingTask timeTableSchedulingTask);

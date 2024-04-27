@@ -2,13 +2,17 @@ package moim_today.presentation.schedule;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.schedule.ScheduleService;
+import moim_today.dto.schedule.ScheduleCreateRequest;
 import moim_today.dto.schedule.TimeTableRequest;
 import moim_today.fake_class.schedule.FakeScheduleService;
 import moim_today.util.ControllerTest;
+import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
@@ -84,6 +88,74 @@ class ScheduleControllerTest extends ControllerTest {
                                         fieldWithPath("everytimeId").type(STRING).description("에브리타임 id"),
                                         fieldWithPath("startDate").type(STRING).description("시작 기간"),
                                         fieldWithPath("endDate").type(STRING).description("종료 기간")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("개인 일정을 생성한다.")
+    @Test
+    void createSchedule() throws Exception {
+        ScheduleCreateRequest scheduleCreateRequest = ScheduleCreateRequest.builder()
+                .scheduleName(TestConstant.SCHEDULE_NAME.value())
+                .dayOfWeek(DayOfWeek.MONDAY)
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
+                .build();
+
+        String json = objectMapper.writeValueAsString(scheduleCreateRequest);
+        System.out.println(json);
+
+        mockMvc.perform(post("/api/schedules")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("개인 일정 등록 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("스케줄")
+                                .summary("개인 일정 등록")
+                                .requestFields(
+                                        fieldWithPath("scheduleName").type(STRING).description("스케줄명"),
+                                        fieldWithPath("dayOfWeek").type(STRING).description("요일"),
+                                        fieldWithPath("startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("endDateTime").type(STRING).description("종료 시간")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("이미 존재하는 시간대에 개인 일정을 등록하면 예외가 발생한다.")
+    @Test
+    void createScheduleFail() throws Exception {
+        ScheduleCreateRequest scheduleCreateRequest = ScheduleCreateRequest.builder()
+                .scheduleName(TestConstant.SCHEDULE_NAME.value())
+                .dayOfWeek(DayOfWeek.MONDAY)
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 0, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
+                .build();
+
+        String json = objectMapper.writeValueAsString(scheduleCreateRequest);
+        System.out.println(json);
+
+        mockMvc.perform(post("/api/schedules")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isBadRequest())
+                .andDo(document("개인 일정 등록 실패 - 이미 존재하는 시간대의 스케줄",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("스케줄")
+                                .summary("개인 일정 등록")
+                                .requestFields(
+                                        fieldWithPath("scheduleName").type(STRING).description("스케줄명"),
+                                        fieldWithPath("dayOfWeek").type(STRING).description("요일"),
+                                        fieldWithPath("startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("endDateTime").type(STRING).description("종료 시간")
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),
