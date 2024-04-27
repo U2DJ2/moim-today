@@ -1,6 +1,7 @@
 package moim_today.fake_class.moim;
 
 import moim_today.application.moim.MoimService;
+import moim_today.dto.moim.MoimDetailResponse;
 import moim_today.dto.moim.PrivateMoimAppendRequest;
 import moim_today.dto.moim.PublicMoimAppendRequest;
 import moim_today.dto.moim.UploadMoimImageResponse;
@@ -23,5 +24,10 @@ public class FakeMoimService implements MoimService {
     @Override
     public UploadMoimImageResponse uploadMoimImage(final MultipartFile file) {
         return UploadMoimImageResponse.from(MOIM_IMAGE_URL.value());
+    }
+
+    @Override
+    public MoimDetailResponse getMoimDetail(final long moimId) {
+        return null;
     }
 }

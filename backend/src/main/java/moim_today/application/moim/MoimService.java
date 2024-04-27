@@ -1,5 +1,6 @@
 package moim_today.application.moim;
 
+import moim_today.dto.moim.MoimDetailResponse;
 import moim_today.dto.moim.PrivateMoimAppendRequest;
 import moim_today.dto.moim.PublicMoimAppendRequest;
 import moim_today.dto.moim.UploadMoimImageResponse;
@@ -14,4 +15,6 @@ public interface MoimService {
                            final PrivateMoimAppendRequest privateMoimAppendRequest);
 
     UploadMoimImageResponse uploadMoimImage(final MultipartFile file);
+
+    MoimDetailResponse getMoimDetail(long moimId);
 }

@@ -4,7 +4,9 @@ import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 
 public interface MoimRepository {
 
-    MoimJpaEntity save(MoimJpaEntity moimJpaEntity);
+    MoimJpaEntity save(final MoimJpaEntity moimJpaEntity);
 
     long count();
+
+    MoimJpaEntity getById(final long moimId);
 }
