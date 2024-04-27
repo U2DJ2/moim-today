@@ -9,5 +9,7 @@ public interface ScheduleRepository {
 
     void batchUpdate(final TimeTableSchedulingTask timeTableSchedulingTask);
 
+    boolean exists(final ScheduleJpaEntity scheduleJpaEntity);
+
     long count();
 }

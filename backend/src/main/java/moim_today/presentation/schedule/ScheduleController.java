@@ -2,6 +2,7 @@ package moim_today.presentation.schedule;
 
 import moim_today.application.schedule.ScheduleService;
 import moim_today.domain.member.MemberSession;
+import moim_today.dto.schedule.ScheduleCreateRequest;
 import moim_today.dto.schedule.TimeTableRequest;
 import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,5 +25,11 @@ public class ScheduleController {
     public void fetchTimeTable(@Login final MemberSession memberSession,
                                @RequestBody final TimeTableRequest timeTableRequest) {
         scheduleService.fetchTimeTable(memberSession.id(), timeTableRequest);
+    }
+
+    @PostMapping
+    public void createSchedule(@Login final MemberSession memberSession,
+                               @RequestBody final ScheduleCreateRequest scheduleCreateRequest) {
+        scheduleService.createSchedule(memberSession.id(), scheduleCreateRequest);
     }
 }

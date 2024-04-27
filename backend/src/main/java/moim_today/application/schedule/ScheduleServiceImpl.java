@@ -1,6 +1,7 @@
 package moim_today.application.schedule;
 
 import moim_today.domain.schedule.Schedule;
+import moim_today.dto.schedule.ScheduleCreateRequest;
 import moim_today.dto.schedule.TimeTableRequest;
 import moim_today.implement.schedule.ScheduleAppender;
 import moim_today.implement.schedule.ScheduleManager;
@@ -24,5 +25,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         String timeTableXML = scheduleManager.fetchTimetable(timeTableRequest.everytimeId());
         List<Schedule> schedules = scheduleManager.processTimetable(timeTableXML, timeTableRequest);
         scheduleAppender.batchUpdateSchedules(schedules, memberId);
+    }
+
+    @Override
+    public void createSchedule(final long memberId, final ScheduleCreateRequest scheduleCreateRequest) {
+        scheduleAppender.createSchedule(memberId, scheduleCreateRequest);
     }
 }

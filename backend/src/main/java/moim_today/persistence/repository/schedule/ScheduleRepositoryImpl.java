@@ -1,7 +1,9 @@
 package moim_today.persistence.repository.schedule;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.domain.schedule.Schedule;
 import moim_today.dto.schedule.TimeTableSchedulingTask;
+import moim_today.persistence.entity.schedule.QScheduleJpaEntity;
 import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,15 +17,19 @@ import java.util.List;
 
 import static moim_today.global.constant.NumberConstant.SCHEDULE_MEETING_ID;
 
+
 @Repository
 public class ScheduleRepositoryImpl implements ScheduleRepository {
 
     private final ScheduleJpaRepository scheduleJpaRepository;
+    private final JPAQueryFactory queryFactory;
     private final JdbcTemplate jdbcTemplate;
 
     public ScheduleRepositoryImpl(final ScheduleJpaRepository scheduleJpaRepository,
+                                  final JPAQueryFactory queryFactory,
                                   final JdbcTemplate jdbcTemplate) {
         this.scheduleJpaRepository = scheduleJpaRepository;
+        this.queryFactory = queryFactory;
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -62,6 +68,16 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                 return schedules.size();
             }
         });
+    }
+
+    @Override
+    public boolean exists(final ScheduleJpaEntity scheduleJpaEntity) {
+        return queryFactory.selectFrom(QScheduleJpaEntity.scheduleJpaEntity)
+                .where(
+                        QScheduleJpaEntity.scheduleJpaEntity.startDateTime.before(scheduleJpaEntity.getEndDateTime())
+                                .and(QScheduleJpaEntity.scheduleJpaEntity.endDateTime.after(scheduleJpaEntity.getStartDateTime()))
+                )
+                .fetchFirst() != null;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package moim_today.fake_class.schedule;
 
 import moim_today.application.schedule.ScheduleService;
+import moim_today.dto.schedule.ScheduleCreateRequest;
 import moim_today.dto.schedule.TimeTableRequest;
 import moim_today.global.error.BadRequestException;
 
@@ -14,5 +15,10 @@ public class FakeScheduleService implements ScheduleService {
         if (!timeTableRequest.everytimeId().equals(EVERY_TIME_ID.value())) {
             throw new BadRequestException(TIME_INPUT_ERROR.value());
         }
+    }
+
+    @Override
+    public void createSchedule(final long memberId, final ScheduleCreateRequest scheduleCreateRequest) {
+
     }
 }
