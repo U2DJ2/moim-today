@@ -6,7 +6,7 @@ import Button from "../Button";
 import RegisterLabel from "../../assets/svg/Register_Label.svg";
 import EmailBtn from "../../assets/svg/EmailBtn.svg";
 import { useNavigate } from "react-router";
-function AuthLeft() {
+function AuthLeft({ title, firstContent, secondContent, white }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [memory, setMemory] = useState(true);
@@ -19,10 +19,10 @@ function AuthLeft() {
     <div className="flex-1 flex flex-col items-start justify-center">
       <div className="w-96">
         <AuthTitle
-          title={"Log In"}
-          firstContent={"Welcome back! "}
-          secondContent={"Please login to your account."}
-          white={false}
+          title={title}
+          firstContent={firstContent}
+          secondContent={secondContent}
+          white={white}
         />
         <div className="pt-16 pb-12 w-full">
           <p className=" font-Pretendard_Normal block text-xl text-[#575757]">

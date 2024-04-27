@@ -5,8 +5,14 @@ import AuthTitle from "../../components/Authentification/AuthTitle";
 import AuthRight from "../../components/AuthRight";
 function RegisterPage() {
   return (
-    <div className="flex min-h-screen w-full py-0 overflow-hidden relative gap-1 pl-28 ">
-      <AuthLeft className="flex flex-col w-full" />
+    <div className="flex min-h-screen w-full py-0 overflow-hidden relative gap-1 pl-28 bg-scarlet">
+      <AuthLeft
+        className="flex flex-col w-full"
+        title={"Register"}
+        firstContent={"모임 투데이에 온 것을 환영합니다!"}
+        secondContent={"이메일과 비밀번호를 입력해주세요."}
+        white={true}
+      />
       <AuthRight textColor={"black"} cardColor={"white"} />
     </div>
   );
