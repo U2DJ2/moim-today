@@ -2,6 +2,7 @@ package moim_today.fake_class.schedule;
 
 import moim_today.application.schedule.ScheduleService;
 import moim_today.dto.schedule.ScheduleCreateRequest;
+import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableRequest;
 import moim_today.global.error.BadRequestException;
 
@@ -25,5 +26,10 @@ public class FakeScheduleService implements ScheduleService {
         if (scheduleCreateRequest.startDateTime().equals(LocalDateTime.of(2024, 1, 1, 0, 0, 0))) {
             throw new BadRequestException(SCHEDULE_ALREADY_EXIST.message());
         }
+    }
+
+    @Override
+    public void updateSchedule(final long memberId, final ScheduleUpdateRequest scheduleUpdateRequest) {
+
     }
 }

@@ -3,12 +3,10 @@ package moim_today.presentation.schedule;
 import moim_today.application.schedule.ScheduleService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.schedule.ScheduleCreateRequest;
+import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableRequest;
 import moim_today.global.annotation.Login;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RequestMapping("/api/schedules")
@@ -31,5 +29,11 @@ public class ScheduleController {
     public void createSchedule(@Login final MemberSession memberSession,
                                @RequestBody final ScheduleCreateRequest scheduleCreateRequest) {
         scheduleService.createSchedule(memberSession.id(), scheduleCreateRequest);
+    }
+
+    @PatchMapping
+    public void updateSchedule(@Login final MemberSession memberSession,
+                               @RequestBody final ScheduleUpdateRequest scheduleUpdateRequest) {
+        scheduleService.updateSchedule(memberSession.id(), scheduleUpdateRequest);
     }
 }
