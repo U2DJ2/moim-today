@@ -32,7 +32,7 @@ public class FileUploader {
         this.amazonS3 = amazonS3;
     }
 
-    public FileInfoResponse uploadFile(final String fileType, final MultipartFile multipartFile) {
+    public String uploadFile(final String fileType, final MultipartFile multipartFile) {
 
         String uploadFolder = fileType;
 
@@ -49,7 +49,7 @@ public class FileUploader {
                     new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead));
 //            TODO: 데이터베이스에 대학 ID와 학번 ID를 key 값으로, uploadFileName 을 Value 값으로 저장하기
-            return new FileInfoResponse(amazonS3.getUrl(bucketName, keyName).toString());
+            return amazonS3.getUrl(bucketName, keyName).toString();
         } catch (IOException e) {
             log.error("Exception [Err_Location]: {}", e.getStackTrace()[0]);
             throw new InternalServerException(FILE_UPLOAD_ERROR.message());

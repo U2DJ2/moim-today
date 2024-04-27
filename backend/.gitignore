@@ -8,6 +8,9 @@ build/
 ### Generated ###
 **/src/main/generated/
 
+### initDB ###
+**/src/main/java/moim_today/global/init/**
+
 ### Properties ###
 application.yml
 application-dev.yml
