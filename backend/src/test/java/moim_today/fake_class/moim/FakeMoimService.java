@@ -6,6 +6,8 @@ import moim_today.dto.moim.PublicMoimAppendRequest;
 import moim_today.dto.moim.UploadMoimImageResponse;
 import org.springframework.web.multipart.MultipartFile;
 
+import static moim_today.util.TestConstant.MOIM_IMAGE_URL;
+
 public class FakeMoimService implements MoimService {
 
     @Override
@@ -20,6 +22,6 @@ public class FakeMoimService implements MoimService {
 
     @Override
     public UploadMoimImageResponse uploadMoimImage(final MultipartFile file) {
-        return null;
+        return UploadMoimImageResponse.from(MOIM_IMAGE_URL.value());
     }
 }

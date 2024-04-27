@@ -8,16 +8,15 @@ import moim_today.fake_class.moim.FakeMoimService;
 import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static moim_today.util.TestConstant.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -119,19 +118,25 @@ class MoimControllerTest extends ControllerTest {
         MockMultipartFile file = new MockMultipartFile(
                 FILE_NAME.value(),
                 ORIGINAL_FILE_NAME.value(),
-                MediaType.TEXT_PLAIN_VALUE,
+                MediaType.MULTIPART_FORM_DATA_VALUE,
                 FILE_CONTENT.value().getBytes()
         );
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .multipart(HttpMethod.POST, "/api/moims/image")
+        mockMvc.perform(multipart("/api/moims/image")
                         .file(file)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("모임 사진 업로드",
+                .andDo(document("모임 사진 업로드 테스트",
                         requestParts(
                                 partWithName("file").description("모임 사진 파일")
-                        )
-                ));
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("모임 사진 업로드 성공 테스트 입니다.")
+                                .responseFields(
+                                        fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL")
+                                )
+                                .build()
+                        )));
     }
 }
