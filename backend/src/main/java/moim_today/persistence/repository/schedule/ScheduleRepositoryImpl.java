@@ -2,8 +2,8 @@ package moim_today.persistence.repository.schedule;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.domain.schedule.Schedule;
+import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableSchedulingTask;
-import moim_today.global.constant.exception.ScheduleExceptionConstant;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.schedule.QScheduleJpaEntity;
 import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
@@ -85,6 +85,18 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                 .where(
                         QScheduleJpaEntity.scheduleJpaEntity.startDateTime.before(scheduleJpaEntity.getEndDateTime())
                                 .and(QScheduleJpaEntity.scheduleJpaEntity.endDateTime.after(scheduleJpaEntity.getStartDateTime()))
+                )
+                .fetchFirst() != null;
+    }
+
+    @Override
+    public boolean existsExcludeEntity(final long scheduleId, final ScheduleUpdateRequest scheduleUpdateRequest) {
+        return queryFactory
+                .selectFrom(QScheduleJpaEntity.scheduleJpaEntity)
+                .where(
+                        QScheduleJpaEntity.scheduleJpaEntity.id.ne(scheduleId)
+                                .and(QScheduleJpaEntity.scheduleJpaEntity.startDateTime.before(scheduleUpdateRequest.endDateTime())
+                                        .and(QScheduleJpaEntity.scheduleJpaEntity.endDateTime.after(scheduleUpdateRequest.startDateTime())))
                 )
                 .fetchFirst() != null;
     }

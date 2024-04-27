@@ -5,6 +5,7 @@ import moim_today.dto.schedule.ScheduleCreateRequest;
 import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableRequest;
 import moim_today.global.error.BadRequestException;
+import moim_today.global.error.ForbiddenException;
 
 import java.time.LocalDateTime;
 
@@ -30,6 +31,12 @@ public class FakeScheduleService implements ScheduleService {
 
     @Override
     public void updateSchedule(final long memberId, final ScheduleUpdateRequest scheduleUpdateRequest) {
+        if (scheduleUpdateRequest.scheduleId() == Long.parseLong(FORBIDDEN_SCHEDULE_ID.value())) {
+            throw new ForbiddenException(SCHEDULE_FORBIDDEN.message());
+        }
 
+        if(scheduleUpdateRequest.startDateTime().equals(LocalDateTime.of(2024, 1, 1, 0, 0, 0))) {
+            throw new BadRequestException(SCHEDULE_ALREADY_EXIST.message());
+        }
     }
 }
