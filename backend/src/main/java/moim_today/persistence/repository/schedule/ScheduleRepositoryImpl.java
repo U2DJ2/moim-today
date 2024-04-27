@@ -102,6 +102,11 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     }
 
     @Override
+    public void delete(final ScheduleJpaEntity scheduleJpaEntity) {
+        scheduleJpaRepository.delete(scheduleJpaEntity);
+    }
+
+    @Override
     public long count() {
         return scheduleJpaRepository.count();
     }

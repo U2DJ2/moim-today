@@ -39,4 +39,9 @@ public class FakeScheduleService implements ScheduleService {
             throw new BadRequestException(SCHEDULE_ALREADY_EXIST.message());
         }
     }
+
+    @Override
+    public void deleteSchedule(final long memberId, final long scheduleId) {
+
+    }
 }
