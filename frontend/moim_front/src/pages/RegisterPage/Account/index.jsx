@@ -24,6 +24,7 @@ function Account() {
           <input
             type="email"
             name="email"
+            autoComplete="off"
             placeholder="enter your email"
             className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white`}
             {...register("email", { required: true, pattern: emailPattern })}
@@ -36,6 +37,7 @@ function Account() {
           <input
             type="password"
             name="password"
+            autoComplete="off"
             placeholder="enter your password"
             className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block mb-12 placeholder:text-white `}
             {...register("password", {

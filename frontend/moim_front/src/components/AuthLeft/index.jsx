@@ -32,6 +32,7 @@ function AuthLeft({ title, firstContent, secondContent, white }) {
             type="email"
             name="email"
             placeholder="enter your email"
+            autoComplete="off"
             className={`border-b border-[#575757] font-Pretendard_Light text-black text-xl pt-2 pb-2 focus:outline-none w-full block ${password}`}
             value={email}
             onChange={emailHandler}
@@ -45,6 +46,7 @@ function AuthLeft({ title, firstContent, secondContent, white }) {
             type="password"
             name="password"
             placeholder="enter your password"
+            autoComplete="off"
             className={`border-b border-[#575757] font-Pretendard_Light text-black text-xl pt-2 pb-2 focus:outline-none w-full block mb-12 ${
               password && "font-mono"
             }`}
