@@ -1,7 +1,11 @@
 package moim_today.persistence.repository.schedule;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.domain.schedule.Schedule;
+import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableSchedulingTask;
+import moim_today.global.error.NotFoundException;
+import moim_today.persistence.entity.schedule.QScheduleJpaEntity;
 import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,17 +18,29 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static moim_today.global.constant.NumberConstant.SCHEDULE_MEETING_ID;
+import static moim_today.global.constant.exception.ScheduleExceptionConstant.*;
+import static moim_today.persistence.entity.schedule.QScheduleJpaEntity.*;
+
 
 @Repository
 public class ScheduleRepositoryImpl implements ScheduleRepository {
 
     private final ScheduleJpaRepository scheduleJpaRepository;
+    private final JPAQueryFactory queryFactory;
     private final JdbcTemplate jdbcTemplate;
 
     public ScheduleRepositoryImpl(final ScheduleJpaRepository scheduleJpaRepository,
+                                  final JPAQueryFactory queryFactory,
                                   final JdbcTemplate jdbcTemplate) {
         this.scheduleJpaRepository = scheduleJpaRepository;
+        this.queryFactory = queryFactory;
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public ScheduleJpaEntity getById(final long scheduleId) {
+        return scheduleJpaRepository.findById(scheduleId)
+                .orElseThrow(() -> new NotFoundException(SCHEDULE_NOT_FOUND.message()));
     }
 
     @Override
@@ -62,6 +78,35 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                 return schedules.size();
             }
         });
+    }
+
+    @Override
+    public boolean exists(final ScheduleJpaEntity entity) {
+        return queryFactory.selectFrom(scheduleJpaEntity)
+                .where(
+                        scheduleJpaEntity.memberId.eq(entity.getMemberId())
+                                .and(scheduleJpaEntity.startDateTime.before(entity.getEndDateTime()))
+                                .and(scheduleJpaEntity.endDateTime.after(entity.getStartDateTime()))
+                )
+                .fetchFirst() != null;
+    }
+
+    @Override
+    public boolean existsExcludeEntity(final long scheduleId, final long memberId, final ScheduleUpdateRequest scheduleUpdateRequest) {
+        return queryFactory
+                .selectFrom(scheduleJpaEntity)
+                .where(
+                        scheduleJpaEntity.memberId.eq(memberId)
+                                .and(scheduleJpaEntity.id.ne(scheduleId))
+                                .and(scheduleJpaEntity.startDateTime.before(scheduleUpdateRequest.endDateTime())
+                                        .and(scheduleJpaEntity.endDateTime.after(scheduleUpdateRequest.startDateTime())))
+                )
+                .fetchFirst() != null;
+    }
+
+    @Override
+    public void delete(final ScheduleJpaEntity scheduleJpaEntity) {
+        scheduleJpaRepository.delete(scheduleJpaEntity);
     }
 
     @Override

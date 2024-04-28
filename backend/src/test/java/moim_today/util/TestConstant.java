@@ -52,10 +52,16 @@ public enum TestConstant {
     MOIM_IMAGE_URL("moimImageUrl"),
 
 
+    SCHEDULE_NAME("scheduleName"),
+    NEW_SCHEDULE_NAME("new scheduleName"),
+    FORBIDDEN_SCHEDULE_ID("9999"),
+    NOTFOUND_SCHEDULE_ID("0"),
+
     STATUS_CODE("200"),
     MESSAGE("message"),
 
-    LOCAL_DATE_FORMAT("yyyy-MM-dd");
+    LOCAL_DATE_FORMAT("yyyy-MM-dd"),
+    LOCAL_DATE_TIME_FORMAT("yyyy-MM-dd HH:mm:ss");
 
     private final String value;
 

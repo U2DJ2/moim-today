@@ -1,13 +1,17 @@
 package moim_today.persistence.entity.schedule;
 
+import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import moim_today.global.error.ForbiddenException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+
+import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCHEDULE_FORBIDDEN;
 
 @Getter
 @Table(name = "schedule")
@@ -46,5 +50,18 @@ public class ScheduleJpaEntity extends BaseTimeEntity {
         this.dayOfWeek = dayOfWeek;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+    }
+
+    public void updateSchedule(final ScheduleUpdateRequest scheduleUpdateRequest) {
+        this.scheduleName = scheduleUpdateRequest.scheduleName();
+        this.dayOfWeek = scheduleUpdateRequest.dayOfWeek();
+        this.startDateTime = scheduleUpdateRequest.startDateTime();
+        this.endDateTime = scheduleUpdateRequest.endDateTime();
+    }
+
+    public void validateMember(final long memberId) {
+        if (this.memberId != memberId) {
+            throw new ForbiddenException(SCHEDULE_FORBIDDEN.message());
+        }
     }
 }
