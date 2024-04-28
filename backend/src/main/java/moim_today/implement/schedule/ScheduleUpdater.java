@@ -23,13 +23,13 @@ public class ScheduleUpdater {
     public void updateSchedule(final long memberId, final ScheduleUpdateRequest scheduleUpdateRequest) {
         ScheduleJpaEntity scheduleJpaEntity = scheduleRepository.getById(scheduleUpdateRequest.scheduleId());
         scheduleJpaEntity.validateMember(memberId);
-        validateAlreadyExist(scheduleJpaEntity.getId(), scheduleUpdateRequest);
+        validateAlreadyExist(scheduleJpaEntity.getId(), memberId, scheduleUpdateRequest);
 
         scheduleJpaEntity.updateSchedule(scheduleUpdateRequest);
     }
 
-    private void validateAlreadyExist(final long scheduleId, final ScheduleUpdateRequest scheduleUpdateRequest) {
-        if (scheduleRepository.existsExcludeEntity(scheduleId, scheduleUpdateRequest)) {
+    private void validateAlreadyExist(final long scheduleId, final long memberId, final ScheduleUpdateRequest scheduleUpdateRequest) {
+        if (scheduleRepository.existsExcludeEntity(scheduleId, memberId, scheduleUpdateRequest)) {
             throw new BadRequestException(SCHEDULE_ALREADY_EXIST.message());
         }
     }

@@ -19,6 +19,7 @@ import java.util.List;
 
 import static moim_today.global.constant.NumberConstant.SCHEDULE_MEETING_ID;
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.*;
+import static moim_today.persistence.entity.schedule.QScheduleJpaEntity.*;
 
 
 @Repository
@@ -80,23 +81,25 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     }
 
     @Override
-    public boolean exists(final ScheduleJpaEntity scheduleJpaEntity) {
-        return queryFactory.selectFrom(QScheduleJpaEntity.scheduleJpaEntity)
+    public boolean exists(final ScheduleJpaEntity entity) {
+        return queryFactory.selectFrom(scheduleJpaEntity)
                 .where(
-                        QScheduleJpaEntity.scheduleJpaEntity.startDateTime.before(scheduleJpaEntity.getEndDateTime())
-                                .and(QScheduleJpaEntity.scheduleJpaEntity.endDateTime.after(scheduleJpaEntity.getStartDateTime()))
+                        scheduleJpaEntity.memberId.eq(entity.getMemberId())
+                                .and(scheduleJpaEntity.startDateTime.before(entity.getEndDateTime()))
+                                .and(scheduleJpaEntity.endDateTime.after(entity.getStartDateTime()))
                 )
                 .fetchFirst() != null;
     }
 
     @Override
-    public boolean existsExcludeEntity(final long scheduleId, final ScheduleUpdateRequest scheduleUpdateRequest) {
+    public boolean existsExcludeEntity(final long scheduleId, final long memberId, final ScheduleUpdateRequest scheduleUpdateRequest) {
         return queryFactory
-                .selectFrom(QScheduleJpaEntity.scheduleJpaEntity)
+                .selectFrom(scheduleJpaEntity)
                 .where(
-                        QScheduleJpaEntity.scheduleJpaEntity.id.ne(scheduleId)
-                                .and(QScheduleJpaEntity.scheduleJpaEntity.startDateTime.before(scheduleUpdateRequest.endDateTime())
-                                        .and(QScheduleJpaEntity.scheduleJpaEntity.endDateTime.after(scheduleUpdateRequest.startDateTime())))
+                        scheduleJpaEntity.memberId.eq(memberId)
+                                .and(scheduleJpaEntity.id.ne(scheduleId))
+                                .and(scheduleJpaEntity.startDateTime.before(scheduleUpdateRequest.endDateTime())
+                                        .and(scheduleJpaEntity.endDateTime.after(scheduleUpdateRequest.startDateTime())))
                 )
                 .fetchFirst() != null;
     }

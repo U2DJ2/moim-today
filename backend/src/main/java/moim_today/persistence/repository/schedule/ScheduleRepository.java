@@ -15,7 +15,7 @@ public interface ScheduleRepository {
 
     boolean exists(final ScheduleJpaEntity scheduleJpaEntity);
 
-    boolean existsExcludeEntity(final long scheduleId, final ScheduleUpdateRequest scheduleUpdateRequest);
+    boolean existsExcludeEntity(final long scheduleId, final long memberId, final ScheduleUpdateRequest scheduleUpdateRequest);
 
     void delete(final ScheduleJpaEntity scheduleJpaEntity);
 

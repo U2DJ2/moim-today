@@ -89,6 +89,50 @@ class ScheduleAppenderTest extends ImplementTest {
         assertThat(findEntity.getEndDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 12, 0, 0));
     }
 
+    @DisplayName("다른 사용자의 스케줄은 영향을 주지 않는다.")
+    @Test
+    void notEffectOtherMemberSchedule() {
+        // given 1
+        long memberId = 1L;
+        long anotherMemberId = 9999L;
+        long meetingId = 2L;
+
+        ScheduleJpaEntity otherScheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(anotherMemberId)
+                .meetingId(meetingId)
+                .scheduleName(SCHEDULE_NAME.value())
+                .dayOfWeek(DayOfWeek.MONDAY)
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
+                .build();
+
+        scheduleRepository.save(otherScheduleJpaEntity);
+
+        // given 2
+        ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingId)
+                .scheduleName(SCHEDULE_NAME.value())
+                .dayOfWeek(DayOfWeek.MONDAY)
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
+                .build();
+
+        // when
+        scheduleAppender.createSchedule(scheduleJpaEntity);
+
+        // then
+        ScheduleJpaEntity findEntity = scheduleRepository.getById(scheduleJpaEntity.getId());
+
+        assertThat(scheduleRepository.count()).isEqualTo(2);
+        assertThat(findEntity.getMemberId()).isEqualTo(memberId);
+        assertThat(findEntity.getMeetingId()).isEqualTo(meetingId);
+        assertThat(findEntity.getScheduleName()).isEqualTo(SCHEDULE_NAME.value());
+        assertThat(findEntity.getDayOfWeek()).isEqualTo(DayOfWeek.MONDAY);
+        assertThat(findEntity.getStartDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 10, 0, 0));
+        assertThat(findEntity.getEndDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 12, 0, 0));
+    }
+
     @DisplayName("다른 스케줄 사이에 있는 일정을 등록한다.")
     @Test
     void createScheduleBetweenOtherSchedules() {

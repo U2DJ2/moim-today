@@ -5,8 +5,6 @@ import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
 import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
 import moim_today.util.ImplementTest;
-import moim_today.util.TestConstant;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +68,10 @@ class ScheduleUpdaterTest extends ImplementTest {
     @Test
     void updateScheduleFailAlreadyExistBeforeSchedule() {
         // given 1
+        long memberId = 1L;
+
         ScheduleJpaEntity BeforeScheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(memberId)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
@@ -78,7 +79,6 @@ class ScheduleUpdaterTest extends ImplementTest {
         scheduleRepository.save(BeforeScheduleJpaEntity);
 
         // given 2
-        long memberId = 1L;
         ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
                 .memberId(memberId)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
@@ -104,11 +104,13 @@ class ScheduleUpdaterTest extends ImplementTest {
         assertThat(scheduleRepository.count()).isEqualTo(2);
     }
 
-    @DisplayName("해당 시간대 앞에 스케줄이 존재하면 예외가 발생한다.")
+    @DisplayName("해당 시간대 뒤에 스케줄이 존재하면 예외가 발생한다.")
     @Test
     void updateScheduleFailAlreadyExistAfterSchedule() {
         // given 1
+        long memberId = 1L;
         ScheduleJpaEntity afterScheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(memberId)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 14, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 16, 0, 0))
                 .build();
@@ -116,7 +118,6 @@ class ScheduleUpdaterTest extends ImplementTest {
         scheduleRepository.save(afterScheduleJpaEntity);
 
         // given 2
-        long memberId = 1L;
         ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
                 .memberId(memberId)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
@@ -172,5 +173,60 @@ class ScheduleUpdaterTest extends ImplementTest {
                 .hasMessage(SCHEDULE_FORBIDDEN.message());
 
         assertThat(scheduleRepository.count()).isEqualTo(1);
+    }
+
+    @DisplayName("다른 사용자의 스케줄은 영향을 주지 않는다.")
+    @Test
+    void notEffectOtherMemberSchedule() {
+        // given 1
+        long memberId = 1L;
+        long anotherMemberId = 9999L;
+        long meetingId = 2L;
+
+        ScheduleJpaEntity otherScheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(anotherMemberId)
+                .meetingId(meetingId)
+                .scheduleName(SCHEDULE_NAME.value())
+                .dayOfWeek(DayOfWeek.MONDAY)
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
+                .build();
+
+        scheduleRepository.save(otherScheduleJpaEntity);
+
+        // given 2
+        ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingId)
+                .scheduleName(SCHEDULE_NAME.value())
+                .dayOfWeek(DayOfWeek.MONDAY)
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity);
+
+        // given 2
+        ScheduleUpdateRequest scheduleUpdateRequest = ScheduleUpdateRequest.builder()
+                .scheduleId(scheduleJpaEntity.getId())
+                .scheduleName(NEW_SCHEDULE_NAME.value())
+                .dayOfWeek(DayOfWeek.SATURDAY)
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 11, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 13, 0, 0))
+                .build();
+
+        // when
+        scheduleUpdater.updateSchedule(memberId, scheduleUpdateRequest);
+
+        // then
+        ScheduleJpaEntity findEntity = scheduleRepository.getById(scheduleJpaEntity.getId());
+
+        assertThat(scheduleRepository.count()).isEqualTo(2);
+        assertThat(findEntity.getMemberId()).isEqualTo(memberId);
+        assertThat(findEntity.getMeetingId()).isEqualTo(meetingId);
+        assertThat(findEntity.getScheduleName()).isEqualTo(NEW_SCHEDULE_NAME.value());
+        assertThat(findEntity.getDayOfWeek()).isEqualTo(DayOfWeek.SATURDAY);
+        assertThat(findEntity.getStartDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 11, 0, 0));
+        assertThat(findEntity.getEndDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 13, 0, 0));
     }
 }
