@@ -2,6 +2,7 @@ import React from "react";
 import AuthLeft from "../../../components/AuthLeft";
 import AuthTitle from "../../../components/Authentification/AuthTitle";
 import { useForm } from "react-hook-form";
+import Button from "../../../components/Button";
 function Account() {
   const { register, handleSubmit, errors, formState, setValue } = useForm();
   const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -41,6 +42,10 @@ function Account() {
               required: true,
             })}
           />
+        </div>
+        <div className="flex gap-8">
+          <Button name={"취소"} textColor={"gray"} bgColor={"white"} />
+          <Button name={"다음"} textColor={"[#646464]"} bgColor={"white"} />
         </div>
       </div>
     </div>

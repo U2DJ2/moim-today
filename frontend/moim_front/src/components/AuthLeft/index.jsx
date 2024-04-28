@@ -22,7 +22,7 @@ function AuthLeft({ title, firstContent, secondContent, white }) {
           title={title}
           firstContent={firstContent}
           secondContent={secondContent}
-          white={white}
+          white={false}
         />
         <div className="pt-16 pb-12 w-full">
           <p className=" font-Pretendard_Normal block text-xl text-[#575757]">
@@ -62,7 +62,7 @@ function AuthLeft({ title, firstContent, secondContent, white }) {
           <p>로그인 정보 기억하기</p>
         </div>
         <div className="pt-7">
-          <Button name={"로그인"} />
+          <Button name={"로그인"} textColor={"white"} bgColor={"scarlet"} />
         </div>
         <div className="self-center items-center flex gap-3 flex-col pt-12">
           <img src={RegisterLabel} />
