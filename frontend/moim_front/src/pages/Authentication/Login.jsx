@@ -10,6 +10,8 @@ function LoginPage() {
         title={"Login"}
         firstContent={"Welcome back!"}
         secondContent={"Please login to your account."}
+        titleColor={"black"}
+        contentColor={"black"}
       />
       <AuthRight textColor={"white"} cardColor={"scarlet"} />
     </div>

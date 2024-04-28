@@ -16,7 +16,7 @@ function RegisterPage() {
         <AuthCheck register={register} errors={errors} setValue={setValue} />
       ) : null}
 
-      <AuthRight textColor={"black"} cardColor={"white"} />
+      <AuthRight textColor={"scarlet"} cardColor={"white"} />
     </div>
   );
 }

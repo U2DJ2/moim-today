@@ -6,14 +6,20 @@ import Button from "../Button";
 import RegisterLabel from "../../assets/svg/Register_Label.svg";
 import EmailBtn from "../../assets/svg/EmailBtn.svg";
 import { useNavigate } from "react-router";
-function AuthLeft({ title, firstContent, secondContent, white }) {
+function AuthLeft({
+  title,
+  firstContent,
+  secondContent,
+  titleColor,
+  contentColor,
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [memory, setMemory] = useState(true);
 
   const emailHandler = (e) => setEmail(e.target.value);
   const passwordHandler = (e) => setPassword(e.target.value);
-  const memoryHandler = (e) => setMemory(false);
+  const memoryHandler = (e) => !setMemory;
   const navigation = useNavigate();
   return (
     <div className="flex-1 flex flex-col items-start justify-center">
@@ -22,7 +28,8 @@ function AuthLeft({ title, firstContent, secondContent, white }) {
           title={title}
           firstContent={firstContent}
           secondContent={secondContent}
-          white={false}
+          titleColor={titleColor}
+          contentColor={contentColor}
         />
         <div className="pt-16 pb-12 w-full">
           <p className=" font-Pretendard_Normal block text-xl text-[#575757]">
@@ -60,7 +67,7 @@ function AuthLeft({ title, firstContent, secondContent, white }) {
             memoryHandler;
           }}
         >
-          <img src={checked} className="hover:" />
+          {memory === true ? <img src={checked} /> : <img src={unchecked} />}
           <p>로그인 정보 기억하기</p>
         </div>
         <div className="pt-7">
