@@ -1,12 +1,10 @@
 package moim_today.application.moim;
 
-import moim_today.dto.moim.MoimDetailResponse;
-import moim_today.dto.moim.PrivateMoimAppendRequest;
-import moim_today.dto.moim.PublicMoimAppendRequest;
-import moim_today.dto.moim.UploadMoimImageResponse;
+import moim_today.dto.moim.*;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.moim.MoimAppender;
 import moim_today.implement.moim.MoimFinder;
+import moim_today.implement.moim.MoimUpdater;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,13 +17,16 @@ public class MoimServiceImpl implements MoimService{
     private final MoimAppender moimAppender;
     private final FileUploader fileUploader;
     private final MoimFinder moimFinder;
+    private final MoimUpdater moimUpdater;
 
     public MoimServiceImpl(final MoimAppender moimAppender,
                            final FileUploader fileUploader,
-                           final MoimFinder moimFinder) {
+                           final MoimFinder moimFinder,
+                           final MoimUpdater moimUpdater) {
         this.moimAppender = moimAppender;
         this.fileUploader = fileUploader;
         this.moimFinder = moimFinder;
+        this.moimUpdater = moimUpdater;
     }
 
     @Override
@@ -50,5 +51,10 @@ public class MoimServiceImpl implements MoimService{
     public MoimDetailResponse getMoimDetail(final long moimId) {
         MoimJpaEntity moimJpaEntity =  moimFinder.getById(moimId);
         return MoimDetailResponse.from(moimJpaEntity);
+    }
+
+    @Override
+    public void updateMoim(final long memberId, final MoimUpdateRequest moimUpdateRequest) {
+        moimUpdater.updateMoim(memberId, moimUpdateRequest);
     }
 }

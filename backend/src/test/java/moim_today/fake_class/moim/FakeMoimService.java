@@ -3,10 +3,7 @@ package moim_today.fake_class.moim;
 import moim_today.application.moim.MoimService;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.MoimDetailResponse;
-import moim_today.dto.moim.PrivateMoimAppendRequest;
-import moim_today.dto.moim.PublicMoimAppendRequest;
-import moim_today.dto.moim.UploadMoimImageResponse;
+import moim_today.dto.moim.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -44,5 +41,10 @@ public class FakeMoimService implements MoimService {
                 .startDate(LocalDate.of(2024,3,1))
                 .endDate(LocalDate.of(2024,6,30))
                 .build();
+    }
+
+    @Override
+    public void updateMoim(final long memberId, final MoimUpdateRequest moimUpdateRequest) {
+
     }
 }

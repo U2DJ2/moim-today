@@ -39,4 +39,10 @@ public class MoimController {
     public MoimDetailResponse getMoimDetail(@RequestBody final MoimDetailRequest moimDetailRequest) {
         return moimService.getMoimDetail(moimDetailRequest.moimId());
     }
+
+    @PatchMapping
+    public void updateMoim(@Login final MemberSession memberSession,
+                           @RequestBody final MoimUpdateRequest moimUpdateRequest) {
+        moimService.updateMoim(memberSession.id(), moimUpdateRequest);
+    }
 }

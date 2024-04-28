@@ -1,9 +1,6 @@
 package moim_today.application.moim;
 
-import moim_today.dto.moim.MoimDetailResponse;
-import moim_today.dto.moim.PrivateMoimAppendRequest;
-import moim_today.dto.moim.PublicMoimAppendRequest;
-import moim_today.dto.moim.UploadMoimImageResponse;
+import moim_today.dto.moim.*;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MoimService {
@@ -16,5 +13,7 @@ public interface MoimService {
 
     UploadMoimImageResponse uploadMoimImage(final MultipartFile file);
 
-    MoimDetailResponse getMoimDetail(long moimId);
+    MoimDetailResponse getMoimDetail(final long moimId);
+
+    void updateMoim(final long memberId, final MoimUpdateRequest moimUpdateRequest);
 }
