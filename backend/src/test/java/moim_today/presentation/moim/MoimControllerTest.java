@@ -1,8 +1,12 @@
 package moim_today.presentation.moim;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.MoimDetailRequest;
+import moim_today.dto.moim.MoimUpdateRequest;
 import moim_today.dto.moim.PrivateMoimAppendRequest;
 import moim_today.dto.moim.PublicMoimAppendRequest;
 import moim_today.fake_class.moim.FakeMoimService;
@@ -169,6 +173,45 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("endDate").type(STRING).description("종료 일자")
                                 )
                                 .build()
+                        )));
+    }
+
+    @DisplayName("모임 정보 업데이트 테스트")
+    @Test
+    void updateMoimTest() throws Exception {
+        MoimUpdateRequest moimUpdateRequest = MoimUpdateRequest.builder()
+                .moimId(Long.parseLong(MOIM_ID.value()))
+                .title(TITLE.value())
+                .contents(CONTENTS.value())
+                .capacity(Integer.parseInt(CAPACITY.value()))
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .password(PASSWORD.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PRIVATE)
+                .startDate(LocalDate.of(2024,3,1))
+                .endDate(LocalDate.of(2024,6,30))
+                .build();
+
+        mockMvc.perform(patch("/api/moims")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimUpdateRequest)))
+                .andExpect(status().isOk())
+                .andDo(document("모임 정보 업데이트 테스트",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("모임 정보를 업데이트(수정)하는 테스트 입니다.")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("수정할 모임의 ID"),
+                                        fieldWithPath("title").type(STRING).description("수정한 모임명"),
+                                        fieldWithPath("contents").type(STRING).description("수정한 내용"),
+                                        fieldWithPath("capacity").type(NUMBER).description("수정한 모집 인원"),
+                                        fieldWithPath("imageUrl").type(STRING).description("수정한 모임 사진 URL"),
+                                        fieldWithPath("password").type(STRING).description("수정한 비밀번호"),
+                                        fieldWithPath("moimCategory").type(VARIES).description("수정한 카테고리"),
+                                        fieldWithPath("displayStatus").type(VARIES).description("수정한 공개여부"),
+                                        fieldWithPath("startDate").type(STRING).description("수정한 시작일자"),
+                                        fieldWithPath("endDate").type(STRING).description("수정한 종료일자")
+                                ).build()
                         )));
     }
 }
