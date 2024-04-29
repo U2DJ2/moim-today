@@ -3,6 +3,8 @@ import { useState } from "react";
 
 // Components
 import Header from "../../components/Header";
+import Dropdown from "../../components/Dropdown/Simple";
+import Filter from "../../components/Dropdown/Filter";
 
 // Icons
 import SearchIcon from "@mui/icons-material/Search";
@@ -39,14 +41,20 @@ function SearchBar() {
 function FilterBar() {
   const [selected, setSelected] = useState("전체");
 
+  const handleDropdown = (option) => {
+    console.log(option);
+  }
+
+  const handleFilter = (option) => {
+    console.log(option);
+  }
+
   return (
     <div className="flex gap-2.5 justify-between px-24 py-4 mt-9 w-full text-base text-center whitespace-nowrap text-neutral-700 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-      <div className="flex gap-0 justify-center px-4 p-3 rounded-lg border border-gray-200 border-solid">
-        <div>Views</div>
-        <img
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/cb429ac32dd8c4cda3a1ab47fc76559f7394988000793bb7db4d615b978a0830?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&"
-          alt="Views"
-          className="shrink-0 w-5 aspect-"
+      <div className="flex gap-0 justify-center items-center">
+        <Dropdown
+          options={["Latest", "Views"]} // 드롭다운에 표시할 옵션들을 배열로 전달
+          onSelect={handleDropdown} // 옵션 선택시 실행할 함수 전달
         />
       </div>
       <div className="flex justify-center items-center self-start px-16 font-medium text-black max-md:px-5 max-md:max-w-full">
@@ -77,13 +85,11 @@ function FilterBar() {
           </button>
         </div>
       </div>
-      <button className="flex gap-0 justify-center px-6 py-3 border border-gray-200 border-solid rounded-[30px]">
-        <img
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/07307db312450381256c74bc0bff6eb04c6f1539fc1874e0b249832c26cf2bcb?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&"
-          alt="Filters"
-          className="shrink-0 w-5 aspect-square"
+      <button className="flex gap-0 justify-center items-center">
+        <Filter
+          options={["Time", "Distance"]}
+          onSelect={handleFilter}
         />
-        <div>Filters</div>
       </button>
     </div>
   );

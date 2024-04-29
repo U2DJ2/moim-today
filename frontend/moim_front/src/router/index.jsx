@@ -6,12 +6,15 @@ import HomePage from "../pages/Home/Home";
 import MoimCreationPage from "../pages/Home/MoimCreation";
 
 // Pages : Authentication
-import LoginPage from "../pages/Authentication/Login";
+import LoginPage from "../pages/Login";
 
 // Page : Manage
 import Manage from "../pages/Manage/Manage";
 
 import RegisterPage from "../pages/RegisterPage";
+// Components
+import Calendar from "../components/Calendar";
+
 /**
  * Basic Router
  * @returns
@@ -24,6 +27,7 @@ function Router() {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/creation" element={<MoimCreationPage />} />
       <Route path="/profile" element={<Manage />} />
+      <Route path="/calendar" element={<Calendar />} />
     </Routes>
   );
 }
