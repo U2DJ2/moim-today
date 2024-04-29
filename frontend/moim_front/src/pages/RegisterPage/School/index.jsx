@@ -1,55 +1,59 @@
-import React, { useState } from "react";
-import AuthLeft from "../../../components/AuthLeft";
+import React from "react";
 import AuthTitle from "../../../components/Authentification/AuthTitle";
-import { set, useForm } from "react-hook-form";
-import Button from "../../../components/Button";
-import { useNavigate } from "react-router";
-function Account({ setActiveNext }) {
+import { useForm } from "react-hook-form";
+
+function School() {
   const { register, handleSubmit, errors, formState, setValue, data } =
     useForm();
-  const [clicked, setClicked] = useState(false);
-  const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  const navigate = useNavigate();
-
-  const cancelBtnHandler = () => {
-    return navigate(-1);
-  };
-  const nextClick = () => {};
   return (
-    <div className="flex flex-col w-96 gap-16">
+    <div className="flex flex-col gap-18">
       <AuthTitle
-        className="flex flex-col w-full"
-        title={"Register"}
-        firstContent={"모임 투데이에 온 것을 환영합니다!"}
-        secondContent={"회원가입을 위해 이메일과 비밀번호를 입력해주세요."}
+        title={"School"}
+        firstContent={"이제 두번째 단계입니다."}
+        secondContent={"학교 관련 정보를 입력해주세요."}
         titleColor={"white"}
         contentColor={"white"}
       />
       <div className="flex flex-col gap-12">
         <div className="gap-1">
           <p className=" font-Pretendard_Black block text-xl text-white">
-            Email
+            학교명
           </p>
           <input
-            type="email"
-            name="email"
+            type="text"
+            name="universityName"
             autoComplete="off"
             placeholder="enter your email"
             className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white`}
-            {...register("email", { required: true, pattern: emailPattern })}
+            {...register("universityName", { required: true })}
           />
         </div>
         <div className="gap-1">
           <p className=" font-Pretendard_Black block text-xl text-white">
-            Password
+            학과
           </p>
           <input
-            type="password"
-            name="password"
+            type="text"
+            name="departmentId"
             autoComplete="off"
             placeholder="enter your password"
             className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block mb-12 placeholder:text-white `}
-            {...register("password", {
+            {...register("departmentId", {
+              required: true,
+            })}
+          />
+        </div>
+        <div className="gap-1">
+          <p className=" font-Pretendard_Black block text-xl text-white">
+            학번
+          </p>
+          <input
+            type="number"
+            name="studentId"
+            autoComplete="off"
+            placeholder="enter your password"
+            className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block mb-12 placeholder:text-white `}
+            {...register("studentId", {
               required: true,
             })}
           />
@@ -59,4 +63,4 @@ function Account({ setActiveNext }) {
   );
 }
 
-export default Account;
+export default School;
