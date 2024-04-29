@@ -112,7 +112,7 @@ class AuthControllerTest extends ControllerTest {
 
         String json = objectMapper.writeValueAsString(memberRegisterRequest);
 
-        mockMvc.perform(post("/api/register")
+        mockMvc.perform(post("/api/sign-up")
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .content(json))

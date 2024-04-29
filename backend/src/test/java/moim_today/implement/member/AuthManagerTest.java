@@ -100,7 +100,7 @@ class AuthManagerTest extends ImplementTest {
                 .build();
 
         // when
-        authManager.register(memberRegisterRequest, mockHttpServletRequest);
+        authManager.signUp(memberRegisterRequest, mockHttpServletRequest);
 
         // then
         HttpSession session = mockHttpServletRequest.getSession(false);
