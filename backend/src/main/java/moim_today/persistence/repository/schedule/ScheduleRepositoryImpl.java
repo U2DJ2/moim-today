@@ -46,6 +46,11 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     }
 
     @Override
+    public List<ScheduleJpaEntity> findAllByMemberId(final long memberId) {
+        return scheduleJpaRepository.findAllByMemberId(memberId);
+    }
+
+    @Override
     public List<ScheduleResponse> findAllByMonthly(final long memberId, final LocalDateTime startDateTime,
                                                    final LocalDateTime endDateTime) {
         return queryFactory.select(

@@ -35,18 +35,63 @@ class ScheduleAppenderTest extends ImplementTest {
         Schedule schedule2 = Schedule.builder()
                 .scheduleName("스케줄 2")
                 .dayOfWeek(DayOfWeek.THURSDAY)
-                .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
+                .startDateTime(LocalDateTime.of(2024, 1, 2, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 2, 12, 0, 0))
                 .build();
 
         Schedule schedule3 = Schedule.builder()
                 .scheduleName("스케줄 3")
                 .dayOfWeek(DayOfWeek.WEDNESDAY)
+                .startDateTime(LocalDateTime.of(2024, 1, 3, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 3, 12, 0, 0))
+                .build();
+
+        long memberId = 1L;
+
+        // given 2
+        List<Schedule> schedules = List.of(schedule1, schedule2, schedule3);
+
+        // when
+        scheduleAppender.batchUpdateSchedules(schedules, memberId);
+
+        // then
+        assertThat(scheduleRepository.count()).isEqualTo(3);
+    }
+
+    @DisplayName("시간표 정보로 스케줄 정보를 저장할 때 이미 해당 시간에 스케줄이 존재하면 새롭게 저장하지 않는다.")
+    @Test
+    void batchUpdateSchedulesAlreadyExist() {
+        // given 1
+        Schedule schedule1 = Schedule.builder()
+                .scheduleName("스케줄 1")
+                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
 
+        Schedule schedule2 = Schedule.builder()
+                .scheduleName("스케줄 2")
+                .dayOfWeek(DayOfWeek.THURSDAY)
+                .startDateTime(LocalDateTime.of(2024, 1, 2, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 2, 12, 0, 0))
+                .build();
+
+        Schedule schedule3 = Schedule.builder()
+                .scheduleName("스케줄 3")
+                .dayOfWeek(DayOfWeek.WEDNESDAY)
+                .startDateTime(LocalDateTime.of(2024, 1, 3, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 3, 12, 0, 0))
+                .build();
+
         long memberId = 1L;
+
+        // given 2
+        ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 11, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity);
 
         // given 2
         List<Schedule> schedules = List.of(schedule1, schedule2, schedule3);

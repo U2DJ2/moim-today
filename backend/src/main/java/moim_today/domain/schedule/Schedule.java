@@ -36,4 +36,9 @@ public record Schedule(
                 .endDateTime(endDateTime)
                 .build();
     }
+
+    public boolean isExist(final ScheduleJpaEntity scheduleJpaEntity) {
+        return startDateTime.isAfter(scheduleJpaEntity.getEndDateTime()) &&
+                endDateTime.isBefore(scheduleJpaEntity.getStartDateTime());
+    }
 }
