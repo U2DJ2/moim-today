@@ -1,3 +1,3 @@
 export default {
-  baseURL: "http://api.moim.today",
+  baseURL: "https://api.moim.today",
 };
