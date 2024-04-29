@@ -46,11 +46,13 @@ public enum TestConstant {
 
 
     // 모임
+    MOIM_ID("1"),
     TITLE("title"),
     CONTENTS("contents"),
     CAPACITY("5"),
     MOIM_IMAGE_URL("moimImageUrl"),
-
+    CURRENT_COUNT("0"),
+    VIEWS("10"),
 
     SCHEDULE_NAME("scheduleName"),
     NEW_SCHEDULE_NAME("new scheduleName"),

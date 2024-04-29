@@ -50,7 +50,7 @@ public class AuthManager {
         }
     }
 
-    public void register(final MemberRegisterRequest memberRegisterRequest, final HttpServletRequest request) {
+    public void signUp(final MemberRegisterRequest memberRegisterRequest, final HttpServletRequest request) {
         String encodedPassword = passwordEncode(memberRegisterRequest.password());
         MemberJpaEntity saveMember = memberRepository.save(memberRegisterRequest.toEntity(encodedPassword));
         setSessionByMemberSession(saveMember, request);

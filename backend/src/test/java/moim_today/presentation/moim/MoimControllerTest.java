@@ -1,7 +1,9 @@
 package moim_today.presentation.moim;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
+import moim_today.dto.moim.MoimUpdateRequest;
 import moim_today.dto.moim.PrivateMoimAppendRequest;
 import moim_today.dto.moim.PublicMoimAppendRequest;
 import moim_today.fake_class.moim.FakeMoimService;
@@ -16,12 +18,10 @@ import java.time.LocalDate;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static moim_today.util.TestConstant.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class MoimControllerTest extends ControllerTest {
@@ -70,7 +70,7 @@ class MoimControllerTest extends ControllerTest {
                                 .build()
                         )));
     }
-    
+
     @DisplayName("비공개 모임 생성 테스트")
     @Test
     void createPrivateMoimApiTest() throws Exception {
@@ -137,6 +137,76 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL")
                                 )
                                 .build()
+                        )));
+    }
+
+    @DisplayName("모임 상제 정보 조회 테스트")
+    @Test
+    void getMoimDetailTest() throws Exception {
+
+        mockMvc.perform(get("/api/moims/detail")
+                        .param("moimId", "1")
+                )
+                .andExpect(status().isOk())
+                .andDo(document("모임 상세 정보 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("모임 상세 정보 조회 API")
+                                .queryParameters(
+                                        parameterWithName("moimId").description("모임 ID")
+                                )
+                                .responseFields(
+                                        fieldWithPath("title").type(STRING).description("모임명"),
+                                        fieldWithPath("contents").type(STRING).description("내용"),
+                                        fieldWithPath("capacity").type(NUMBER).description("모집 인원"),
+                                        fieldWithPath("currentCount").type(NUMBER).description("현재 인원"),
+                                        fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL"),
+                                        fieldWithPath("moimCategory").type(VARIES).description("카테고리"),
+                                        fieldWithPath("displayStatus").type(VARIES).description("공개여부"),
+                                        fieldWithPath("views").type(NUMBER).description("조회수"),
+                                        fieldWithPath("startDate").type(STRING).description("시작 일자"),
+                                        fieldWithPath("endDate").type(STRING).description("종료 일자")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임 정보 업데이트 테스트")
+    @Test
+    void updateMoimTest() throws Exception {
+        MoimUpdateRequest moimUpdateRequest = MoimUpdateRequest.builder()
+                .moimId(Long.parseLong(MOIM_ID.value()))
+                .title(TITLE.value())
+                .contents(CONTENTS.value())
+                .capacity(Integer.parseInt(CAPACITY.value()))
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .password(PASSWORD.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PRIVATE)
+                .startDate(LocalDate.of(2024,3,1))
+                .endDate(LocalDate.of(2024,6,30))
+                .build();
+
+        mockMvc.perform(patch("/api/moims")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimUpdateRequest)))
+                .andExpect(status().isOk())
+                .andDo(document("모임 정보 업데이트 테스트",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("모임 정보를 업데이트(수정)하는 테스트 입니다.")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("수정할 모임의 ID"),
+                                        fieldWithPath("title").type(STRING).description("수정한 모임명"),
+                                        fieldWithPath("contents").type(STRING).description("수정한 내용"),
+                                        fieldWithPath("capacity").type(NUMBER).description("수정한 모집 인원"),
+                                        fieldWithPath("imageUrl").type(STRING).description("수정한 모임 사진 URL"),
+                                        fieldWithPath("password").type(STRING).description("수정한 비밀번호"),
+                                        fieldWithPath("moimCategory").type(VARIES).description("수정한 카테고리"),
+                                        fieldWithPath("displayStatus").type(VARIES).description("수정한 공개여부"),
+                                        fieldWithPath("startDate").type(STRING).description("수정한 시작일자"),
+                                        fieldWithPath("endDate").type(STRING).description("수정한 종료일자")
+                                ).build()
                         )));
     }
 }
