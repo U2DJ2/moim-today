@@ -6,7 +6,7 @@ function School() {
   const { register, handleSubmit, errors, formState, setValue, data } =
     useForm();
   return (
-    <div className="flex flex-col gap-18">
+    <div className="flex flex-col gap-16">
       <AuthTitle
         title={"School"}
         firstContent={"이제 두번째 단계입니다."}
@@ -23,7 +23,7 @@ function School() {
             type="text"
             name="universityName"
             autoComplete="off"
-            placeholder="enter your email"
+            placeholder="학교명을 입력해주세요."
             className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white`}
             {...register("universityName", { required: true })}
           />
@@ -36,8 +36,8 @@ function School() {
             type="text"
             name="departmentId"
             autoComplete="off"
-            placeholder="enter your password"
-            className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block mb-12 placeholder:text-white `}
+            placeholder="학과명을 입력해주세요."
+            className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white `}
             {...register("departmentId", {
               required: true,
             })}
@@ -51,8 +51,8 @@ function School() {
             type="number"
             name="studentId"
             autoComplete="off"
-            placeholder="enter your password"
-            className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block mb-12 placeholder:text-white `}
+            placeholder="학번을 입력해주세요."
+            className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white `}
             {...register("studentId", {
               required: true,
             })}

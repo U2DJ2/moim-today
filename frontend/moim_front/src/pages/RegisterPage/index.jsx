@@ -8,6 +8,7 @@ import Button from "../../components/Button";
 import { checkEmailValid } from "../../api/users";
 import { useNavigate } from "react-router";
 import School from "./School";
+import Personal from "./Personal";
 function RegisterPage() {
   const [step, setStep] = useState(0);
   const [activeNext, setActiveNext] = useState(false);
@@ -30,7 +31,9 @@ function RegisterPage() {
         ) : step === 1 ? (
           <AuthCheck register={register} errors={errors} setValue={setValue} />
         ) : step === 2 ? (
-          <School register={register} erros={errors} setValue={setValue} />
+          <School register={register} errors={errors} setValue={setValue} />
+        ) : step === 3 ? (
+          <Personal register={register} errors={errors} setValue={setValue} />
         ) : null}
         {step !== 4 && (
           <div className="flex justify-center mt-16">
@@ -54,7 +57,7 @@ function RegisterPage() {
         )}
       </div>
 
-      <AuthRight textColor={"scarlet"} cardColor={"white"} />
+      <AuthRight cardColor={"white"} textColor={"scarlet"} />
     </div>
   );
 }
