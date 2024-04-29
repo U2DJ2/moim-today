@@ -1,7 +1,14 @@
 package moim_today.presentation.moim;
 
+import moim_today.application.moim.MoimService;
+import moim_today.application.moim.MoimServiceImpl;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.domain.member.MemberSession;
+import moim_today.dto.moim.*;
+import moim_today.dto.moim.MoimMembersResponse;
+import moim_today.dto.moim.PrivateMoimAppendRequest;
+import moim_today.dto.moim.PublicMoimAppendRequest;
+import moim_today.dto.moim.UploadMoimImageResponse;
 import moim_today.dto.moim.moim.*;
 import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +45,12 @@ public class MoimController {
     public void updateMoim(@Login final MemberSession memberSession,
                            @RequestBody final MoimUpdateRequest moimUpdateRequest) {
         moimService.updateMoim(memberSession.id(), moimUpdateRequest);
+    }
+
+    @GetMapping("/members")
+    public MoimMembersResponse findMoimMembers(@Login final MemberSession memberSession,
+                                               @RequestParam final long moimId){
+        return moimService.findMoimMembers(memberSession.id(), moimId);
     }
 
     @DeleteMapping

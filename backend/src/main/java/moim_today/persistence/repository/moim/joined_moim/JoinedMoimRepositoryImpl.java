@@ -3,6 +3,8 @@ package moim_today.persistence.repository.moim.joined_moim;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
 
@@ -25,5 +27,10 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
     @Override
     public long count() {
         return joinedMoimJpaRepository.count();
+    }
+
+    @Override
+    public List<JoinedMoimJpaEntity> findMembersByMoimId(final long moimId) {
+        return joinedMoimJpaRepository.findMembersByMoimId(moimId);
     }
 }
