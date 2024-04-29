@@ -22,8 +22,8 @@ function AuthLeft({
   const memoryHandler = (e) => !setMemory;
   const navigation = useNavigate();
   return (
-    <div className="flex-1 flex flex-col items-start ">
-      <div className="w-96 flex-1">
+    <div className="flex-1 flex flex-col justify-center justify-items-center">
+      <div className="w-96 ">
         <AuthTitle
           title={title}
           firstContent={firstContent}

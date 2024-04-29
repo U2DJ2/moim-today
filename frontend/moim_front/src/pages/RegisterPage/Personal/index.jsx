@@ -22,19 +22,19 @@ function Personal() {
           <div className="flex gap-4 ">
             <input
               type="number"
-              className="border text-wrapper border-white bg-scarlet placeholder:text-white placeholder:justify-items-center
+              className="border text-wrapper border-white text-white bg-scarlet placeholder:text-white placeholder:justify-items-center justify-items-center
             text-xl rounded-lg px-4 py-1 focus:outline-none w-20"
               placeholder="YYYY"
             />
             <input
               type="number"
-              className="border text-wrapper border-white bg-scarlet placeholder:text-white 
-         text-xl rounded-lg px-4 py-1 w-20 focus:outline-none placeholder:text-center"
+              className="border text-wrapper border-white text-white bg-scarlet placeholder:text-white 
+         text-xl rounded-lg px-4 py-1 w-20 focus:outline-none placeholder:text-center justify-items-center"
               placeholder="MM"
             />
             <input
               type="number"
-              className="border text-wrapper border-white bg-scarlet placeholder:text-white 
+              className="border text-wrapper border-white text-white bg-scarlet placeholder:text-white 
         text-xl rounded-lg px-4 py-1 w-20 focus:outline-none placeholder:text-center"
               placeholder="DD"
             />

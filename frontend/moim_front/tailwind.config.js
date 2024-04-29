@@ -12,6 +12,7 @@ export default {
     colors: {
       scarlet: "#FF2440",
       white: "#ffffff",
+      black: "#000000",
     },
     rotate: {
       18: "18deg",
