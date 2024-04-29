@@ -15,7 +15,7 @@ public interface ScheduleRepository {
 
     List<ScheduleJpaEntity> findAllByMemberId(final long memberId);
 
-    List<ScheduleResponse> findAllByMonthly(final long memberId, final LocalDateTime startDateTime, final LocalDateTime endDateTime);
+    List<ScheduleResponse> findAllByDateTime(final long memberId, final LocalDateTime startDateTime, final LocalDateTime endDateTime);
 
     void save(final ScheduleJpaEntity scheduleJpaEntity);
 

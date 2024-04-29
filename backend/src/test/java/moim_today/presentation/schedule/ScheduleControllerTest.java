@@ -40,7 +40,7 @@ class ScheduleControllerTest extends ControllerTest {
     @DisplayName("캘린더에 나타낼 한 달 스케줄을 조회한다.")
     @Test
     void findAllByMonthly() throws Exception {
-        mockMvc.perform(get("/api/schedules")
+        mockMvc.perform(get("/api/schedules-monthly")
                         .param("yearMonth", "2024-03")
                 )
                 .andExpect(status().isOk())

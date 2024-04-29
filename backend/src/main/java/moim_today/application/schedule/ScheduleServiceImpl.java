@@ -9,6 +9,7 @@ import moim_today.implement.schedule.*;
 import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -29,6 +30,11 @@ public class ScheduleServiceImpl implements ScheduleService {
         this.scheduleAppender = scheduleAppender;
         this.scheduleUpdater = scheduleUpdater;
         this.scheduleDeleter = scheduleDeleter;
+    }
+
+    @Override
+    public List<ScheduleResponse> findAllByWeekly(final long memberId, final LocalDate startDate) {
+        return scheduleFinder.findAllByWeekly(memberId, startDate);
     }
 
     @Override

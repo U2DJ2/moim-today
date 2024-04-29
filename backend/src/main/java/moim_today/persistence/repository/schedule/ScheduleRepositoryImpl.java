@@ -51,8 +51,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     }
 
     @Override
-    public List<ScheduleResponse> findAllByMonthly(final long memberId, final LocalDateTime startDateTime,
-                                                   final LocalDateTime endDateTime) {
+    public List<ScheduleResponse> findAllByDateTime(final long memberId, final LocalDateTime startDateTime,
+                                                    final LocalDateTime endDateTime) {
         return queryFactory.select(
                         new QScheduleResponse(
                                 scheduleJpaEntity.id,

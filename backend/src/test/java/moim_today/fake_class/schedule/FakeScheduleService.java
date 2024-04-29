@@ -9,9 +9,7 @@ import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
 import moim_today.global.error.NotFoundException;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.YearMonth;
+import java.time.*;
 import java.util.List;
 
 import static moim_today.global.constant.exception.EveryTimeExceptionConstant.TIME_INPUT_ERROR;
@@ -19,6 +17,11 @@ import static moim_today.global.constant.exception.ScheduleExceptionConstant.*;
 import static moim_today.util.TestConstant.*;
 
 public class FakeScheduleService implements ScheduleService {
+
+    @Override
+    public List<ScheduleResponse> findAllByWeekly(final long memberId, final LocalDate localDate) {
+        return List.of();
+    }
 
     @Override
     public List<ScheduleResponse> findAllByMonthly(final long memberId, final YearMonth yearMonth) {
