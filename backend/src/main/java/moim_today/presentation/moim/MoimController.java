@@ -36,8 +36,8 @@ public class MoimController {
     }
 
     @GetMapping("/detail")
-    public MoimDetailResponse getMoimDetail(@RequestBody final MoimDetailRequest moimDetailRequest) {
-        return moimService.getMoimDetail(moimDetailRequest.moimId());
+    public MoimDetailResponse getMoimDetail(@RequestParam final long moimId) {
+        return moimService.getMoimDetail(moimId);
     }
 
     @PatchMapping

@@ -1,11 +1,8 @@
 package moim_today.presentation.moim;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.MoimDetailRequest;
 import moim_today.dto.moim.MoimUpdateRequest;
 import moim_today.dto.moim.PrivateMoimAppendRequest;
 import moim_today.dto.moim.PublicMoimAppendRequest;
@@ -146,19 +143,17 @@ class MoimControllerTest extends ControllerTest {
     @DisplayName("모임 상제 정보 조회 테스트")
     @Test
     void getMoimDetailTest() throws Exception {
-        MoimDetailRequest moimDetailRequest = new MoimDetailRequest(1L);
 
         mockMvc.perform(get("/api/moims/detail")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(moimDetailRequest))
+                        .param("moimId", "1")
                 )
                 .andExpect(status().isOk())
                 .andDo(document("모임 상세 정보 조회",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
                                 .summary("모임 상세 정보 조회 API")
-                                .requestFields(
-                                        fieldWithPath("moimId").type(NUMBER).description("모임 ID")
+                                .queryParameters(
+                                        parameterWithName("moimId").description("모임 ID")
                                 )
                                 .responseFields(
                                         fieldWithPath("title").type(STRING).description("모임명"),
