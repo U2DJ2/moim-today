@@ -20,7 +20,34 @@ public class FakeScheduleService implements ScheduleService {
 
     @Override
     public List<ScheduleResponse> findAllByWeekly(final long memberId, final LocalDate localDate) {
-        return List.of();
+        ScheduleResponse scheduleResponse1 = ScheduleResponse.builder()
+                .scheduleId(1L)
+                .meetingId(0L)
+                .scheduleName("스케줄명 1")
+                .dayOfWeek(DayOfWeek.MONDAY)
+                .startDateTime(LocalDateTime.of(2024, 03, 04, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 03, 04, 12, 0, 0))
+                .build();
+
+        ScheduleResponse scheduleResponse2 = ScheduleResponse.builder()
+                .scheduleId(2L)
+                .meetingId(0L)
+                .scheduleName("스케줄명 2")
+                .dayOfWeek(DayOfWeek.TUESDAY)
+                .startDateTime(LocalDateTime.of(2024, 03, 05, 12, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 03, 05, 13, 15, 0))
+                .build();
+
+        ScheduleResponse scheduleResponse3 = ScheduleResponse.builder()
+                .scheduleId(3L)
+                .meetingId(1L)
+                .scheduleName("스케줄명 3")
+                .dayOfWeek(DayOfWeek.WEDNESDAY)
+                .startDateTime(LocalDateTime.of(2024, 03, 06, 12, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 03, 06, 13, 15, 0))
+                .build();
+
+        return List.of(scheduleResponse1, scheduleResponse2, scheduleResponse3);
     }
 
     @Override

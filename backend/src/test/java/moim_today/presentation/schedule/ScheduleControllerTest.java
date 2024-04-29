@@ -37,17 +37,43 @@ class ScheduleControllerTest extends ControllerTest {
         return new ScheduleController(scheduleService);
     }
 
-    @DisplayName("캘린더에 나타낼 한 달 스케줄을 조회한다.")
+    @DisplayName("캘린더에 나타낼 Weekly 스케줄을 조회한다.")
+    @Test
+    void findAllByWeekly() throws Exception {
+        mockMvc.perform(get("/api/schedules-weekly")
+                        .param("startDate", "2024-03-04")
+                )
+                .andExpect(status().isOk())
+                .andDo(document("캘린더에 나타낼 Weekly 스케줄 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("스케줄")
+                                .summary("Weekly 스케줄 조회")
+                                .queryParameters(
+                                        parameterWithName("startDate").description("연도 - 월 - 일 정보, ex) 2024-03-04")
+                                )
+                                .responseFields(
+                                        fieldWithPath("data[0].scheduleId").type(NUMBER).description("스케줄 id"),
+                                        fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
+                                        fieldWithPath("data[0].scheduleName").type(STRING).description("스케줄명"),
+                                        fieldWithPath("data[0].dayOfWeek").type(STRING).description("요일"),
+                                        fieldWithPath("data[0].startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("data[0].endDateTime").type(STRING).description("종료 시간")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("캘린더에 나타낼 Monthly 스케줄을 조회한다.")
     @Test
     void findAllByMonthly() throws Exception {
         mockMvc.perform(get("/api/schedules-monthly")
                         .param("yearMonth", "2024-03")
                 )
                 .andExpect(status().isOk())
-                .andDo(document("캘린더에 나타낼 한 달 스케줄 조회",
+                .andDo(document("캘린더에 나타낼 Monthly 스케줄 조회",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("스케줄")
-                                .summary("스케줄 조회")
+                                .summary("Monthly 스케줄 조회")
                                 .queryParameters(
                                         parameterWithName("yearMonth").description("연도 - 월 정보, ex) 2024-03")
                                 )

@@ -26,7 +26,7 @@ public class ScheduleFinder {
         // 시작 날짜의 자정
         LocalDateTime startDateTime = startDate.atStartOfDay();
 
-        // 시작 날짜로부터 7일 후의 자정 전
+        // 시작 날짜로부터 8일 후의 자정 전
         LocalDateTime endDateTime
                 = startDate.plusDays(SIX_DAY.time())
                 .atTime(23, 59, 59, 999999999);
