@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static moim_today.util.TestConstant.*;
 import static moim_today.util.TestConstant.EVERY_TIME_ID;
@@ -34,6 +35,32 @@ class ScheduleControllerTest extends ControllerTest {
     @Override
     protected Object initController() {
         return new ScheduleController(scheduleService);
+    }
+
+    @DisplayName("캘린더에 나타낼 한 달 스케줄을 조회한다.")
+    @Test
+    void findAllByMonthly() throws Exception {
+        mockMvc.perform(get("/api/schedules")
+                        .param("yearMonth", "2024-03")
+                )
+                .andExpect(status().isOk())
+                .andDo(document("캘린더에 나타낼 한 달 스케줄 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("스케줄")
+                                .summary("스케줄 조회")
+                                .queryParameters(
+                                        parameterWithName("yearMonth").description("연도 - 월 정보, ex) 2024-03")
+                                )
+                                .responseFields(
+                                        fieldWithPath("data[0].scheduleId").type(NUMBER).description("스케줄 id"),
+                                        fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
+                                        fieldWithPath("data[0].scheduleName").type(STRING).description("스케줄명"),
+                                        fieldWithPath("data[0].dayOfWeek").type(STRING).description("요일"),
+                                        fieldWithPath("data[0].startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("data[0].endDateTime").type(STRING).description("종료 시간")
+                                )
+                                .build()
+                        )));
     }
 
     @DisplayName("요청 URL로 시간표 정보를 스케줄로 등록한다.")

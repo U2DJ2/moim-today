@@ -60,10 +60,10 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                 .from(scheduleJpaEntity)
                 .where(
                         scheduleJpaEntity.memberId.eq(memberId)
-                                .and(scheduleJpaEntity.startDateTime.after(startDateTime))
-                                .and(scheduleJpaEntity.startDateTime.before(endDateTime))
-                                .and(scheduleJpaEntity.endDateTime.after(startDateTime))
-                                .and(scheduleJpaEntity.endDateTime.before(endDateTime))
+                                .and(scheduleJpaEntity.startDateTime.goe(startDateTime))
+                                .and(scheduleJpaEntity.startDateTime.loe(endDateTime))
+                                .and(scheduleJpaEntity.endDateTime.goe(startDateTime))
+                                .and(scheduleJpaEntity.endDateTime.loe(endDateTime))
                 )
                 .fetch();
     }

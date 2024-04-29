@@ -143,8 +143,8 @@ class ScheduleAppenderTest extends ImplementTest {
                 .build();
 
         ScheduleJpaEntity afterScheduleJpaEntity = ScheduleJpaEntity.builder()
-                .startDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 1, 1, 14, 0, 0))
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 14, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 16, 0, 0))
                 .build();
 
         scheduleRepository.save(BeforeScheduleJpaEntity);
@@ -152,8 +152,8 @@ class ScheduleAppenderTest extends ImplementTest {
 
         // given 2
         ScheduleJpaEntity newScheduleJpaEntity = ScheduleJpaEntity.builder()
-                .startDateTime(LocalDateTime.of(2024, 1, 1, 14, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 1, 1, 16, 0, 0))
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 14, 0, 0))
                 .build();
 
         // then
