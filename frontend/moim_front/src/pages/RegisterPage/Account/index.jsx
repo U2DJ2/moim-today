@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import AuthLeft from "../../../components/AuthLeft";
 import AuthTitle from "../../../components/Authentification/AuthTitle";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import Button from "../../../components/Button";
 import { useNavigate } from "react-router";
 function Account() {
   const { register, handleSubmit, errors, formState, setValue } = useForm();
+  const [clicked, setClicked] = useState(false);
   const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
+  const cancelBtnHandler = () => {
+    return navigate(-1);
+  };
   return (
     <div className="flex-1 flex flex-col items-start justify-center w-96 gap-16">
       <AuthTitle
@@ -53,9 +57,16 @@ function Account() {
             name={"취소"}
             textColor={"gray"}
             bgColor={"white"}
-            onClick={console.log("first")}
+            btnType={"cancel"}
+            onClick={cancelBtnHandler}
           />
-          <Button name={"다음"} textColor={"[#646464]"} bgColor={"white"} />
+          <Button
+            name={"다음"}
+            textColor={"[#646464]"}
+            bgColor={"white"}
+            btnType={"next"}
+            onClick={() => console.log("first")}
+          />
         </div>
       </div>
     </div>
