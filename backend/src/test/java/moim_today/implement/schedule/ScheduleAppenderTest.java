@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.*;
@@ -49,7 +50,10 @@ class ScheduleAppenderTest extends ImplementTest {
         long memberId = 1L;
 
         // given 2
-        List<Schedule> schedules = List.of(schedule1, schedule2, schedule3);
+        List<Schedule> schedules = new ArrayList<>();
+        schedules.add(schedule1);
+        schedules.add(schedule2);
+        schedules.add(schedule3);
 
         // when
         scheduleAppender.batchUpdateSchedules(schedules, memberId);
@@ -62,6 +66,17 @@ class ScheduleAppenderTest extends ImplementTest {
     @Test
     void batchUpdateSchedulesAlreadyExist() {
         // given 1
+        long memberId = 1L;
+
+        ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(memberId)
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 11, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity);
+
+        // given 2
         Schedule schedule1 = Schedule.builder()
                 .scheduleName("스케줄 1")
                 .dayOfWeek(DayOfWeek.MONDAY)
@@ -83,18 +98,11 @@ class ScheduleAppenderTest extends ImplementTest {
                 .endDateTime(LocalDateTime.of(2024, 1, 3, 12, 0, 0))
                 .build();
 
-        long memberId = 1L;
-
-        // given 2
-        ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
-                .startDateTime(LocalDateTime.of(2024, 1, 1, 11, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
-                .build();
-
-        scheduleRepository.save(scheduleJpaEntity);
-
-        // given 2
-        List<Schedule> schedules = List.of(schedule1, schedule2, schedule3);
+        // given 3
+        List<Schedule> schedules = new ArrayList<>();
+        schedules.add(schedule1);
+        schedules.add(schedule2);
+        schedules.add(schedule3);
 
         // when
         scheduleAppender.batchUpdateSchedules(schedules, memberId);
