@@ -2,6 +2,8 @@ package moim_today.persistence.repository.schedule;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.domain.schedule.Schedule;
+import moim_today.dto.schedule.QScheduleResponse;
+import moim_today.dto.schedule.ScheduleResponse;
 import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableSchedulingTask;
 import moim_today.global.error.NotFoundException;
@@ -41,6 +43,29 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     public ScheduleJpaEntity getById(final long scheduleId) {
         return scheduleJpaRepository.findById(scheduleId)
                 .orElseThrow(() -> new NotFoundException(SCHEDULE_NOT_FOUND.message()));
+    }
+
+    @Override
+    public List<ScheduleResponse> findAllByMonthly(final long memberId, final LocalDateTime startDateTime,
+                                                   final LocalDateTime endDateTime) {
+        return queryFactory.select(
+                        new QScheduleResponse(
+                                scheduleJpaEntity.id,
+                                scheduleJpaEntity.meetingId,
+                                scheduleJpaEntity.scheduleName,
+                                scheduleJpaEntity.dayOfWeek,
+                                scheduleJpaEntity.startDateTime,
+                                scheduleJpaEntity.endDateTime
+                        ))
+                .from(scheduleJpaEntity)
+                .where(
+                        scheduleJpaEntity.memberId.eq(memberId)
+                                .and(scheduleJpaEntity.startDateTime.after(startDateTime))
+                                .and(scheduleJpaEntity.startDateTime.before(endDateTime))
+                                .and(scheduleJpaEntity.endDateTime.after(startDateTime))
+                                .and(scheduleJpaEntity.endDateTime.before(endDateTime))
+                )
+                .fetch();
     }
 
     @Override

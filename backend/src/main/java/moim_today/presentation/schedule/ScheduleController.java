@@ -2,12 +2,13 @@ package moim_today.presentation.schedule;
 
 import moim_today.application.schedule.ScheduleService;
 import moim_today.domain.member.MemberSession;
-import moim_today.dto.schedule.ScheduleCreateRequest;
-import moim_today.dto.schedule.ScheduleDeleteRequest;
-import moim_today.dto.schedule.ScheduleUpdateRequest;
-import moim_today.dto.schedule.TimeTableRequest;
+import moim_today.dto.schedule.*;
 import moim_today.global.annotation.Login;
+import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.YearMonth;
+import java.util.List;
 
 
 @RequestMapping("/api/schedules")
@@ -18,6 +19,13 @@ public class ScheduleController {
 
     public ScheduleController(final ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
+    }
+
+    @GetMapping
+    public CollectionResponse<List<ScheduleResponse>> findAllByMonthly(@Login final MemberSession memberSession,
+                                                                       @RequestParam final YearMonth yearMonth) {
+        List<ScheduleResponse> scheduleResponses = scheduleService.findAllByMonthly(memberSession.id(), yearMonth);
+        return CollectionResponse.of(scheduleResponses);
     }
 
     @PostMapping("/timetable")

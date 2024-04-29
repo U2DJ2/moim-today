@@ -1,13 +1,19 @@
 package moim_today.persistence.repository.schedule;
 
+import moim_today.dto.schedule.ScheduleResponse;
 import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableSchedulingTask;
 import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 public interface ScheduleRepository {
 
     ScheduleJpaEntity getById(final long scheduleId);
+
+    List<ScheduleResponse> findAllByMonthly(final long memberId, final LocalDateTime startDateTime, final LocalDateTime endDateTime);
 
     void save(final ScheduleJpaEntity scheduleJpaEntity);
 

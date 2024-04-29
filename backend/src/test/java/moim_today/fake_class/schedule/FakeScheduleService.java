@@ -2,6 +2,7 @@ package moim_today.fake_class.schedule;
 
 import moim_today.application.schedule.ScheduleService;
 import moim_today.dto.schedule.ScheduleCreateRequest;
+import moim_today.dto.schedule.ScheduleResponse;
 import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableRequest;
 import moim_today.global.error.BadRequestException;
@@ -9,12 +10,19 @@ import moim_today.global.error.ForbiddenException;
 import moim_today.global.error.NotFoundException;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.List;
 
 import static moim_today.global.constant.exception.EveryTimeExceptionConstant.TIME_INPUT_ERROR;
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.*;
 import static moim_today.util.TestConstant.*;
 
 public class FakeScheduleService implements ScheduleService {
+
+    @Override
+    public List<ScheduleResponse> findAllByMonthly(final long memberId, final YearMonth yearMonth) {
+        return List.of();
+    }
 
     @Override
     public void fetchTimeTable(final long memberId, final TimeTableRequest timeTableRequest) {
