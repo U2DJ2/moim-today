@@ -6,10 +6,13 @@ import HomePage from "../pages/Home/Home";
 import MoimCreationPage from "../pages/Home/MoimCreation";
 
 // Pages : Authentication
-import LoginPage from "../pages/Authentication/Login";
+import LoginPage from "../pages/Login";
 
 // Page : Manage
 import Manage from "../pages/Manage/Manage";
+
+// Components
+import Calendar from "../components/Calendar";
 
 
 /**
@@ -23,6 +26,7 @@ function Router() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/creation" element={<MoimCreationPage />} />
       <Route path="/profile" element={<Manage />} />
+      <Route path="/calendar" element={<Calendar />} />
     </Routes>
   );
 }
