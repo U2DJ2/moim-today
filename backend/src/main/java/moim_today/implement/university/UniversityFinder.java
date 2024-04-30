@@ -52,6 +52,7 @@ public class UniversityFinder {
         return findUniversity.isPresent();
     }
 
+    @Transactional(readOnly = true)
     public List<UniversityJpaEntity> findUniversitiesByName(final List<String> universityNames) {
         return universityRepository.findExistingUniversities(universityNames);
     }
