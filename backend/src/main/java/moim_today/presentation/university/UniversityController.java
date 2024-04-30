@@ -25,13 +25,13 @@ public class UniversityController {
     }
 
     @PostMapping
-    public void updateCollegeInfo(){
-        universityService.putAllUniversity();
+    public void updateUniversityInfo(){
+        universityService.patchAllUniversity();
     }
 
     @PostMapping("/departments")
     public void updateDepartmentInfo(){
-        departmentService.putAllDepartment();
+        departmentService.patchAllDepartment();
     }
 
     @GetMapping

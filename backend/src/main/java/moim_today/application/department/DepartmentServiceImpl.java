@@ -19,7 +19,7 @@ public class DepartmentServiceImpl implements DepartmentService{
     }
 
     @Override
-    public void putAllDepartment() {
+    public void patchAllDepartment() {
         departmentAppender.putAllDepartment();
     }
 
