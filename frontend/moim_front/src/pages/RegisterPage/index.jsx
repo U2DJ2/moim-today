@@ -43,7 +43,8 @@ function RegisterPage() {
     // }
   };
   const previousClick = () => {
-    setStep(step - 1);
+    if (step === 0) navigate(-1);
+    else setStep(step - 1);
   };
   return (
     <div className="flex min-h-screen w-full py-0 overflow-hidden relative gap-1 pl-52 bg-scarlet">
