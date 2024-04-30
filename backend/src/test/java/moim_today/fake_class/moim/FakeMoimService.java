@@ -47,9 +47,4 @@ public class FakeMoimService implements MoimService {
     public void updateMoim(final long memberId, final MoimUpdateRequest moimUpdateRequest) {
 
     }
-
-    @Override
-    public MoimMembersResponse findMoimMembers(final long memberId, final long moimId) {
-        return null;
-    }
 }

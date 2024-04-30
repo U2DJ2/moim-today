@@ -2,6 +2,9 @@ package moim_today.global.constant;
 
 public enum UniversityConstant {
 
+    UNIVERSITY_NAME("university_name"),
+    UNIVERSITY_EMAIL("university_email"),
+
     ASSOCIATE_DEGREE("전문대학"),
     GRADUATE_DEGREE("대학교"),
     DATA_SEARCH("dataSearch"),

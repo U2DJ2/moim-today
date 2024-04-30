@@ -20,4 +20,6 @@ public interface UniversityRepository {
     Optional<UniversityJpaEntity> findById(final long id);
 
     List<UniversityJpaEntity> findAll();
+
+    List<UniversityJpaEntity> findExistingUniversities(List<String> universityNames);
 }

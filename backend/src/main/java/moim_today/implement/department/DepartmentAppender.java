@@ -71,6 +71,7 @@ public class DepartmentAppender {
     public List<DepartmentJpaEntity> queryUniversitiesByDepartment(final String majorSeq){
         String url = UNIVERSITY_API_URL.value()+apiKey+FETCH_ALL_UNIVERSITY_BY_DEPARTMENT_URL.value()+majorSeq;
         String response = restTemplate.getForObject(url, String.class);
+
         List<DepartmentJpaEntity> returnDepartmentJpaEntity = new ArrayList<>();
 
         try {
@@ -81,9 +82,9 @@ public class DepartmentAppender {
                 JsonNode universities = item.path(UNIVERSITY.value());
                 for (JsonNode university : universities) {
                     String departmentName = university.path(MAJOR_NAME.value()).asText();
-                    String schoolName = university.path(SCHOOL_NAME.value()).asText();
+                    String universityName = university.path(SCHOOL_NAME.value()).asText();
 
-                    Optional<UniversityJpaEntity> universityJpaEntity = universityFinder.findByName(schoolName);
+                    Optional<UniversityJpaEntity> universityJpaEntity = universityFinder.findByName(universityName);
                     if(universityJpaEntity.isPresent()){
                        saveDepartment(universityJpaEntity.get(), departmentName);
                     }
@@ -94,6 +95,11 @@ public class DepartmentAppender {
         }
 
         return returnDepartmentJpaEntity;
+    }
+
+    @Transactional
+    public List<UniversityJpaEntity> findUniversitiesByName(final List<String> universityName){
+        return universityFinder.findUniversitiesByName(universityName);
     }
 
     @Transactional
