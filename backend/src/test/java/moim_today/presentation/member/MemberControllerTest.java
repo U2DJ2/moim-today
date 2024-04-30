@@ -11,7 +11,6 @@ import moim_today.fake_class.member.FakeMemberService;
 import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
@@ -139,7 +138,12 @@ class MemberControllerTest extends ControllerTest {
     @DisplayName("프로필 정보를 수정한다.")
     @Test
     void updateProfile() throws Exception {
-        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(1L);
+
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(
+                Long.parseLong(DEPARTMENT_ID.value()),
+                PROFILE_IMAGE_URL.value()
+        );
+
         String json = objectMapper.writeValueAsString(profileUpdateRequest);
 
         mockMvc.perform(patch("/api/members/profile")
@@ -152,13 +156,14 @@ class MemberControllerTest extends ControllerTest {
                                 .tag("회원")
                                 .summary("프로필 정보 수정")
                                 .requestFields(
-                                        fieldWithPath("departmentId").type(NUMBER).description("주 전공 아이디")
+                                        fieldWithPath("departmentId").type(NUMBER).description("주 전공 아이디"),
+                                        fieldWithPath("imageUrl").type(STRING).description("프로필 이미지 URL")
                                 )
                                 .build()
                         )));
     }
 
-    @DisplayName("프로필 이미지를 수정하면 회원의 프로필 이미지 URL 정보가 변경된다.")
+    @DisplayName("프로필 이미지를 업로드/수정하면 업로드/수정된 파일의 URL울 반환한다.")
     @Test
     void updateProfileImage() throws Exception {
         MockMultipartFile file = new MockMultipartFile(
@@ -179,6 +184,9 @@ class MemberControllerTest extends ControllerTest {
                         ,resource(ResourceSnippetParameters.builder()
                                 .tag("회원")
                                 .summary("프로필 이미지 업로드/수정")
+                                .responseFields(
+                                        fieldWithPath("imageUrl").type(STRING).description("업로드된 프로필 이미지 URL")
+                                )
                                 .build()
                         )
                 ));

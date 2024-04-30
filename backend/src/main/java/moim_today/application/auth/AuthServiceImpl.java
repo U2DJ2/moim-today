@@ -42,7 +42,7 @@ public class AuthServiceImpl implements AuthService{
     public void signUp(final MemberRegisterRequest memberRegisterRequest,
                        final HttpServletRequest request) {
         universityFinder.checkUniversityIdIsPresent(memberRegisterRequest.universityId());
-        departmentFinder.isDepartmentAssociatedWithUniversity(memberRegisterRequest.universityId(), memberRegisterRequest.departmentId());
+        departmentFinder.validateBelongToUniversity(memberRegisterRequest.universityId(), memberRegisterRequest.departmentId());
         memberFinder.validateEmailNotExists(memberRegisterRequest.email());
         authManager.signUp(memberRegisterRequest, request);
     }

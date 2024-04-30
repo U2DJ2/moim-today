@@ -3,7 +3,6 @@ package moim_today.implement.member;
 import moim_today.domain.certification.Certification;
 import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.global.annotation.Implement;
-import moim_today.global.constant.MailConstant;
 import moim_today.implement.certification.password.PasswordCertificationFinder;
 import moim_today.implement.department.DepartmentFinder;
 import moim_today.persistence.entity.certification.password.PasswordCertificationJpaEntity;
@@ -62,13 +61,7 @@ public class MemberUpdater {
                               final long universityId,
                               final ProfileUpdateRequest profileUpdateRequest) {
         MemberJpaEntity memberJpaEntity = memberRepository.getById(memberId);
-        departmentFinder.isDepartmentAssociatedWithUniversity(universityId, profileUpdateRequest.departmentId());
-        memberJpaEntity.updateProfile(profileUpdateRequest.departmentId());
-    }
-
-    @Transactional
-    public void updateProfileImageUrl(final long memberId, final String profileImageUrl) {
-        MemberJpaEntity memberJpaEntity = memberRepository.getById(memberId);
-        memberJpaEntity.updateProfileImageUrl(profileImageUrl);
+        departmentFinder.validateBelongToUniversity(universityId, profileUpdateRequest.departmentId());
+        memberJpaEntity.updateProfile(profileUpdateRequest);
     }
 }

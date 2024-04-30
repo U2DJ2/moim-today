@@ -74,7 +74,7 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("모임 사진을 업로드/수정 한다.")
+    @DisplayName("모임 사진을 업로드/수정하면 업로드/수정된 파일의 URL을 반환한다. ")
     @Test
     void uploadMoimImageTest() throws Exception {
 
