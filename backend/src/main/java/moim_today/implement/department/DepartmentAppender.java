@@ -3,6 +3,7 @@ package moim_today.implement.department;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import moim_today.domain.department.Department;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.InternalServerException;
 import moim_today.implement.university.UniversityFinder;
@@ -13,9 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static moim_today.global.constant.UniversityConstant.*;
 import static moim_today.global.constant.exception.CrawlingExceptionConstant.CRAWLING_PARSE_ERROR;
@@ -39,40 +38,57 @@ public class DepartmentAppender {
     @Value("${university.api.key}")
     private String apiKey;
 
-    @Transactional
-    public void putAllDepartment(){
-        List<String> allDepartment = fetchAllDepartment();
-        for(String eachDepartment : allDepartment){
-            queryUniversitiesByDepartment(eachDepartment);
+    public void putAllDepartment() {
+        List<String> allMajor = findAllMajor();
+        for (String eachMajor : allMajor) {
+            updateDepartments(eachMajor);
         }
     }
 
-    public List<String> fetchAllDepartment(){
-        String url = UNIVERSITY_API_URL.value()+apiKey+FETCH_ALL_DEPARTMENT_URL.value();
+    @Transactional
+    public void batchUpdate(final List<DepartmentJpaEntity> departmentJpaEntities) {
+        departmentRepository.batchUpdate(departmentJpaEntities);
+    }
+
+    private void updateDepartments(final String eachMajor) {
+        Map<String, Set<String>> universityAndDepartments = getDepartmentsOfUniversity(eachMajor);
+        Map<Long, Set<String>> universityIdAndDepartments = filterExistingUniversity(universityAndDepartments);
+        List<DepartmentJpaEntity> departmentJpaEntities = Department.toEntities(universityIdAndDepartments);
+        batchUpdate(departmentJpaEntities);
+    }
+
+    private Map<Long, Set<String>> filterExistingUniversity(final Map<String, Set<String>> universityAndDepartments) {
+        List<UniversityJpaEntity> universityJpaEntities = universityFinder
+                .findUniversitiesByName(universityAndDepartments.keySet().stream().toList());
+
+        return Department.convertToUnivIdAndDepartments(universityAndDepartments, universityJpaEntities);
+    }
+
+    private List<String> findAllMajor() {
+        String url = UNIVERSITY_API_URL.value() + apiKey + FETCH_ALL_DEPARTMENT_URL.value();
         String response = restTemplate.getForObject(url, String.class);
 
         List<String> allMajor = new ArrayList<>();
-        try{
+        try {
             JsonNode root = objectMapper.readTree(response);
             JsonNode content = root.path(DATA_SEARCH.value()).path(CONTENT.value());
 
-            for(JsonNode item : content){
+            for (JsonNode item : content) {
                 String majorSeq = item.get(MAJOR_SEQ.value()).asText();
                 allMajor.add(majorSeq);
             }
 
             return allMajor;
-        }catch(JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             throw new InternalServerException(CRAWLING_PARSE_ERROR.message());
         }
     }
 
-    @Transactional
-    public List<DepartmentJpaEntity> queryUniversitiesByDepartment(final String majorSeq){
-        String url = UNIVERSITY_API_URL.value()+apiKey+FETCH_ALL_UNIVERSITY_BY_DEPARTMENT_URL.value()+majorSeq;
+    private Map<String, Set<String>> getDepartmentsOfUniversity(final String majorSeq) {
+        String url = UNIVERSITY_API_URL.value() + apiKey + FETCH_ALL_UNIVERSITY_BY_DEPARTMENT_URL.value() + majorSeq;
         String response = restTemplate.getForObject(url, String.class);
 
-        List<DepartmentJpaEntity> returnDepartmentJpaEntity = new ArrayList<>();
+        Map<String, Set<String>> universityAndDepartments = new HashMap<>();
 
         try {
             JsonNode root = objectMapper.readTree(response);
@@ -84,35 +100,19 @@ public class DepartmentAppender {
                     String departmentName = university.path(MAJOR_NAME.value()).asText();
                     String universityName = university.path(SCHOOL_NAME.value()).asText();
 
-                    Optional<UniversityJpaEntity> universityJpaEntity = universityFinder.findByName(universityName);
-                    if(universityJpaEntity.isPresent()){
-                       saveDepartment(universityJpaEntity.get(), departmentName);
-                    }
+                    patchMap(universityAndDepartments, universityName, departmentName);
                 }
             }
-        }catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             throw new InternalServerException(CRAWLING_PARSE_ERROR.message());
         }
 
-        return returnDepartmentJpaEntity;
+        return universityAndDepartments;
     }
 
-    @Transactional
-    public List<UniversityJpaEntity> findUniversitiesByName(final List<String> universityName){
-        return universityFinder.findUniversitiesByName(universityName);
-    }
-
-    @Transactional
-    public void batchUpdate(List<DepartmentJpaEntity> departmentJpaEntities){
-        departmentRepository.batchUpdate(departmentJpaEntities);
-    }
-
-    @Transactional
-    public void saveDepartment(UniversityJpaEntity universityJpaEntity, String departmentName){
-        DepartmentJpaEntity saveDepartment = DepartmentJpaEntity.builder()
-                .universityId(universityJpaEntity.getId())
-                .departmentName(departmentName)
-                .build();
-        departmentRepository.save(saveDepartment);
+    private void patchMap(final Map<String, Set<String>> universityAndDepartments, final String universityName, final String departmentName) {
+        Set<String> departments = universityAndDepartments
+                .computeIfAbsent(universityName, k -> new HashSet<>());
+        departments.add(departmentName);
     }
 }

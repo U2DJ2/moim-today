@@ -28,6 +28,4 @@ public class DepartmentJpaEntity extends BaseTimeEntity {
         this.universityId = universityId;
         this.departmentName = departmentName;
     }
-
-
 }
