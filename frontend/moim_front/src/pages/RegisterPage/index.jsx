@@ -15,11 +15,24 @@ import Congrats from "./Congrats";
 function RegisterPage() {
   const [step, setStep] = useState(0);
   const [activeNext, setActiveNext] = useState(false);
-  const { register, handleSubmit, errors, formState, setValue } = useForm();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const nextBtnHandler = (data) => {
+    console.log(data);
+  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm();
   const navigate = useNavigate();
-  const nextClick = () => {
+  const nextClick = (data) => {
     setStep(step + 1);
     setActiveNext(false);
+
+    console.log(data);
     // if (step === 1) {
     //   //check email validity
     //   // checkEmailValid(data.email).then(() => {
@@ -28,6 +41,9 @@ function RegisterPage() {
     //   setStep(step + 1);
     //   setActiveNext(false);
     // }
+  };
+  const previousClick = () => {
+    setStep(step - 1);
   };
   return (
     <div className="flex min-h-screen w-full py-0 overflow-hidden relative gap-1 pl-52 bg-scarlet">
@@ -38,6 +54,7 @@ function RegisterPage() {
             errors={errors}
             setValue={setValue}
             setActiveNext={setActiveNext}
+            onSubmit={handleSubmit(nextClick)}
           />
         ) : step === 1 ? (
           <AuthCheck register={register} errors={errors} setValue={setValue} />
@@ -59,14 +76,14 @@ function RegisterPage() {
                 textColor={"gray"}
                 bgColor={"white"}
                 btnType={"cancel"}
-                onClick={() => navigate(-1)}
+                onClick={previousClick}
               />
               <Button
                 name={"다음"}
                 textColor={"[#646464]"}
                 bgColor={"white"}
                 btnType={"next"}
-                onClick={() => nextClick()}
+                onClick={nextClick}
               />
             </div>
           </div>
