@@ -33,7 +33,7 @@ class MoimControllerTest extends ControllerTest {
         return new MoimController(fakeMoimService);
     }
 
-    @DisplayName("공개 모임 생성 테스트")
+    @DisplayName("공개 모임을 생성한다.")
     @Test
     void createPublicMoimApiTest() throws Exception {
         LocalDate startDate = LocalDate.of(2024, 03, 01);
@@ -71,7 +71,7 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("비공개 모임 생성 테스트")
+    @DisplayName("비공개 모임을 생성한다.")
     @Test
     void createPrivateMoimApiTest() throws Exception {
         LocalDate startDate = LocalDate.of(2024, 03, 01);
@@ -111,7 +111,7 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("모임 사진 업로드 테스트 성공")
+    @DisplayName("모임 사진을 업로드/수정 한다.")
     @Test
     void uploadMoimImageTest() throws Exception {
 
@@ -140,7 +140,7 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("모임 상제 정보 조회 테스트")
+    @DisplayName("모임 정보를 조회한다.")
     @Test
     void getMoimDetailTest() throws Exception {
 
@@ -171,7 +171,7 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("모임 정보 업데이트 테스트")
+    @DisplayName("모임 정보를 수정한다.")
     @Test
     void updateMoimTest() throws Exception {
         MoimUpdateRequest moimUpdateRequest = MoimUpdateRequest.builder()

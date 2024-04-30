@@ -30,7 +30,7 @@ class AuthControllerTest extends ControllerTest {
         return new AuthController(authService);
     }
 
-    @DisplayName("로그인 테스트")
+    @DisplayName("로그인에 성공한다.")
     @Test
     void loginTest() throws Exception {
         MemberLoginRequest memberLoginRequest = new MemberLoginRequest(EMAIL.value(), PASSWORD.value());
@@ -54,7 +54,7 @@ class AuthControllerTest extends ControllerTest {
                 ));
     }
 
-    @DisplayName("로그인 테스트 실패")
+    @DisplayName("이메일/비밀번호가 틀리면 예오가 발생한다.")
     @Test
     void loginTestFail() throws Exception {
         MemberLoginRequest memberLoginRequest = new MemberLoginRequest(WRONG_EMAIL.value(), WRONG_PASSWORD.value());
@@ -82,7 +82,7 @@ class AuthControllerTest extends ControllerTest {
                 ));
     }
 
-    @DisplayName("로그아웃 테스트 성공")
+    @DisplayName("로그아웃에 성공한다.")
     @Test
     void logoutTest() throws Exception {
         mockMvc.perform(post("/api/logout"))
@@ -96,7 +96,7 @@ class AuthControllerTest extends ControllerTest {
                 ));
     }
 
-    @DisplayName("회원가입 성공")
+    @DisplayName("회원가입에 성공한다.")
     @Test
     void registerTest() throws Exception {
         MemberRegisterRequest memberRegisterRequest = MemberRegisterRequest.builder()

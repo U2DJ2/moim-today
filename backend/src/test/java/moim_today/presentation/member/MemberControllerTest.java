@@ -114,7 +114,7 @@ class MemberControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("프로필을 조회에 성공한다.")
+    @DisplayName("프로필을 조회한다.")
     @Test
     void getMemberProfile() throws Exception {
         mockMvc.perform(get("/api/members/profile"))
@@ -137,7 +137,7 @@ class MemberControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("프로필을 정보를 수정한다.")
+    @DisplayName("프로필 정보를 수정한다.")
     @Test
     void updateProfile() throws Exception {
         ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(1L);
