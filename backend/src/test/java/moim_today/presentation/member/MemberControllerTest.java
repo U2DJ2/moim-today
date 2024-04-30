@@ -174,7 +174,7 @@ class MemberControllerTest extends ControllerTest {
                         .file(file)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("프로필 이미지 업로드/수정",
+                .andDo(document("프로필 이미지 업로드/수정 성공",
                         requestParts(
                                 partWithName("file").description("프로필 이미지")
                         )

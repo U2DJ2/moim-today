@@ -43,7 +43,7 @@ class AuthControllerTest extends ControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("로그인 성공",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("로그인")
+                                .tag("인증")
                                 .summary("로그인")
                                 .requestFields(
                                         fieldWithPath("email").type(STRING).description("이메일"),

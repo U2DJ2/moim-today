@@ -126,13 +126,13 @@ class MoimControllerTest extends ControllerTest {
                         .file(file)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("모임 사진 업로드 테스트",
+                .andDo(document("모임 사진 업로드/수정 성공",
                         requestParts(
                                 partWithName("file").description("모임 사진 파일")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
-                                .summary("모임 사진 업로드 성공 테스트 입니다.")
+                                .summary("모임 사진 업로드/수정")
                                 .responseFields(
                                         fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL")
                                 )
@@ -148,10 +148,10 @@ class MoimControllerTest extends ControllerTest {
                         .param("moimId", "1")
                 )
                 .andExpect(status().isOk())
-                .andDo(document("모임 상세 정보 조회",
+                .andDo(document("모임 정보 조회 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
-                                .summary("모임 상세 정보 조회 API")
+                                .summary("모임 정보 조회")
                                 .queryParameters(
                                         parameterWithName("moimId").description("모임 ID")
                                 )
@@ -191,10 +191,10 @@ class MoimControllerTest extends ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(moimUpdateRequest)))
                 .andExpect(status().isOk())
-                .andDo(document("모임 정보 업데이트 테스트",
+                .andDo(document("모임 정보 수정 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
-                                .summary("모임 정보를 업데이트(수정)하는 테스트 입니다.")
+                                .summary("모임 정보 수정")
                                 .requestFields(
                                         fieldWithPath("moimId").type(NUMBER).description("수정할 모임의 ID"),
                                         fieldWithPath("title").type(STRING).description("수정한 모임명"),
