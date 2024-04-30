@@ -3,7 +3,10 @@ package moim_today.fake_class.moim;
 import moim_today.application.moim.MoimService;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.*;
+import moim_today.dto.moim.MoimAppendRequest;
+import moim_today.dto.moim.MoimDetailResponse;
+import moim_today.dto.moim.MoimUpdateRequest;
+import moim_today.dto.moim.UploadMoimImageResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -13,12 +16,7 @@ import static moim_today.util.TestConstant.*;
 public class FakeMoimService implements MoimService {
 
     @Override
-    public void createPublicMoim(final long memberId, final long universityId, final PublicMoimAppendRequest publicMoimAppendRequest) {
-
-    }
-
-    @Override
-    public void createPrivateMoim(final long memberId, final long universityId, final PrivateMoimAppendRequest privateMoimAppendRequest) {
+    public void createMoim(final long memberId, final long universityId, final MoimAppendRequest moimAppendRequest) {
 
     }
 

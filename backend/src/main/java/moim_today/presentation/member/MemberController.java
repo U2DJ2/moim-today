@@ -42,7 +42,7 @@ public class MemberController {
         memberService.updateProfile(memberSession.id(), memberSession.universityId(), profileUpdateRequest);
     }
 
-    @PatchMapping("/profile-image")
+    @PostMapping("/profile-image")
     public void updateProfileImage(@Login final MemberSession memberSession,
                                    @RequestPart final MultipartFile file) {
         memberService.updateProfileImage(memberSession.id(), file);

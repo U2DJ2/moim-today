@@ -11,8 +11,8 @@ import moim_today.fake_class.member.FakeMemberService;
 import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static moim_today.util.TestConstant.*;
@@ -30,13 +30,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class MemberControllerTest extends ControllerTest {
 
-    private final MemberService memberService = new FakeMemberService();
+    private final MemberService fakeMemberService = new FakeMemberService();
 
     @Override
     protected Object initController() {
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        return new MemberController(memberService);
+        return new MemberController(fakeMemberService);
     }
 
     @DisplayName("인증 토큰을 기반으로 비밀번호를 수정한다.")
@@ -168,7 +168,7 @@ class MemberControllerTest extends ControllerTest {
                 FILE_CONTENT.value().getBytes()
         );
 
-        mockMvc.perform(multipart( "/api/members/profile-image")
+        mockMvc.perform(multipart("/api/members/profile-image")
                         .file(file)
                 )
                 .andExpect(status().isOk())

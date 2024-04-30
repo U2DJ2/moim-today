@@ -1,7 +1,6 @@
 package moim_today.implement.moim;
 
-import moim_today.dto.moim.PrivateMoimAppendRequest;
-import moim_today.dto.moim.PublicMoimAppendRequest;
+import moim_today.dto.moim.MoimAppendRequest;
 import moim_today.global.annotation.Implement;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.repository.moim.moim.MoimRepository;
@@ -17,17 +16,9 @@ public class MoimAppender {
     }
 
     @Transactional
-    public MoimJpaEntity createPublicMoim(final long memberId, final long universityId,
-                                 final PublicMoimAppendRequest publicMoimAppendRequest) {
-
-        MoimJpaEntity moimJpaEntity = publicMoimAppendRequest.toEntity(memberId, universityId);
-        return moimRepository.save(moimJpaEntity);
-    }
-
-    @Transactional
-    public MoimJpaEntity createPrivateMoim(final long memberId, final long universityId,
-                                  final PrivateMoimAppendRequest privateMoimAppendRequest) {
-        MoimJpaEntity moimJpaEntity = privateMoimAppendRequest.toEntity(memberId, universityId);
+    public MoimJpaEntity createMoim(final long memberId, final long universityId,
+                                    final MoimAppendRequest moimAppendRequest) {
+        MoimJpaEntity moimJpaEntity = moimAppendRequest.toEntity(memberId, universityId);
         return moimRepository.save(moimJpaEntity);
     }
 }

@@ -1,6 +1,9 @@
 package moim_today.application.moim;
 
-import moim_today.dto.moim.*;
+import moim_today.dto.moim.MoimAppendRequest;
+import moim_today.dto.moim.MoimDetailResponse;
+import moim_today.dto.moim.MoimUpdateRequest;
+import moim_today.dto.moim.UploadMoimImageResponse;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.moim.MoimAppender;
 import moim_today.implement.moim.MoimFinder;
@@ -30,15 +33,9 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public void createPublicMoim(final long memberId, final long universityId,
-                                 final PublicMoimAppendRequest publicMoimAppendRequest) {
-        moimAppender.createPublicMoim(memberId, universityId, publicMoimAppendRequest);
-    }
-
-    @Override
-    public void createPrivateMoim(final long memberId, final long universityId,
-                                  final PrivateMoimAppendRequest privateMoimAppendRequest) {
-        moimAppender.createPrivateMoim(memberId, universityId, privateMoimAppendRequest);
+    public void createMoim(final long memberId, final long universityId,
+                           final MoimAppendRequest moimAppendRequest) {
+        moimAppender.createMoim(memberId, universityId, moimAppendRequest);
     }
 
     @Override
