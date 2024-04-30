@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.Collections.nCopies;
-import static moim_today.global.constant.UniversityConstant.UNIVERSITY_EMAIL;
-import static moim_today.global.constant.UniversityConstant.UNIVERSITY_NAME;
+import static moim_today.global.constant.UniversityConstant.*;
 import static moim_today.global.constant.exception.UniversityExceptionConstant.UNIVERSITY_EMAIL_NOT_FOUND;
 import static moim_today.global.constant.exception.UniversityExceptionConstant.UNIVERSITY_NOT_FOUND;
 
@@ -77,11 +76,10 @@ public class UniversityRepositoryImpl implements UniversityRepository {
     }
 
     private RowMapper<UniversityJpaEntity> universityJpaEntityRowMapper() {
-        return (rs, rowNum) -> {
-            return UniversityJpaEntity.builder()
-                    .universityName(rs.getString(UNIVERSITY_NAME.value()))
-                    .universityEmail(rs.getString(UNIVERSITY_EMAIL.value()))
-                    .build();
-        };
+        return (rs, rowNum) -> UniversityJpaEntity.builder()
+                .id(Long.parseLong(rs.getString(UNIVERSITY_ID.value())))
+                .universityName(rs.getString(UNIVERSITY_NAME.value()))
+                .universityEmail(rs.getString(UNIVERSITY_EMAIL.value()))
+                .build();
     }
 }

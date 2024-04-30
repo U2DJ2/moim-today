@@ -74,4 +74,8 @@ public enum TestConstant {
     public String value() {
         return value;
     }
+
+    public int intValue(){
+        return Integer.parseInt(value);
+    }
 }
