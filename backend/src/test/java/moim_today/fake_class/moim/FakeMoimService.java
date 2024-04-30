@@ -6,7 +6,7 @@ import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.MoimAppendRequest;
 import moim_today.dto.moim.MoimDetailResponse;
 import moim_today.dto.moim.MoimUpdateRequest;
-import moim_today.dto.moim.UploadMoimImageResponse;
+import moim_today.dto.moim.MoimImageResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -21,8 +21,8 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public UploadMoimImageResponse uploadMoimImage(final MultipartFile file) {
-        return UploadMoimImageResponse.from(MOIM_IMAGE_URL.value());
+    public MoimImageResponse uploadMoimImage(final MultipartFile file) {
+        return MoimImageResponse.from(MOIM_IMAGE_URL.value());
     }
 
     @Override

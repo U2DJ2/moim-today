@@ -3,7 +3,7 @@ package moim_today.application.moim;
 import moim_today.dto.moim.MoimAppendRequest;
 import moim_today.dto.moim.MoimDetailResponse;
 import moim_today.dto.moim.MoimUpdateRequest;
-import moim_today.dto.moim.UploadMoimImageResponse;
+import moim_today.dto.moim.MoimImageResponse;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.moim.MoimAppender;
 import moim_today.implement.moim.MoimFinder;
@@ -39,9 +39,9 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public UploadMoimImageResponse uploadMoimImage(final MultipartFile file) {
+    public MoimImageResponse uploadMoimImage(final MultipartFile file) {
         String imageUrl = fileUploader.uploadFile(MOIM_IMAGE.value(), file);
-        return UploadMoimImageResponse.from(imageUrl);
+        return MoimImageResponse.from(imageUrl);
     }
 
     @Override
