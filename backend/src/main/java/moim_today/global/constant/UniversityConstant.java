@@ -4,6 +4,7 @@ public enum UniversityConstant {
 
     UNIVERSITY_NAME("university_name"),
     UNIVERSITY_EMAIL("university_email"),
+    UNIVERSITY_ID("university_id"),
 
     ASSOCIATE_DEGREE("전문대학"),
     GRADUATE_DEGREE("대학교"),

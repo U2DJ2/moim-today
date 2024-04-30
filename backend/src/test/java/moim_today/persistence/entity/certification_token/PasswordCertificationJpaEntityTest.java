@@ -6,8 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static moim_today.util.TestConstant.*;
-import static org.assertj.core.api.Assertions.*;
+import static moim_today.util.TestConstant.CERTIFICATION_TOKEN;
+import static moim_today.util.TestConstant.NEW_CERTIFICATION_TOKEN;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class PasswordCertificationJpaEntityTest {
 

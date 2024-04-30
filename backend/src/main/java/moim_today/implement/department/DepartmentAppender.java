@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
+import static moim_today.global.constant.DepartmentConstant.DEPARTMENT_UPDATE_BATCH_SIZE;
 import static moim_today.global.constant.UniversityConstant.*;
 import static moim_today.global.constant.exception.CrawlingExceptionConstant.CRAWLING_PARSE_ERROR;
 
@@ -40,9 +41,13 @@ public class DepartmentAppender {
 
     public void putAllDepartment() {
         List<String> allMajor = findAllMajor();
+        Map<String, Set<String>> departmentUpdateQueue = new HashMap<>();
+
         for (String eachMajor : allMajor) {
-            updateDepartments(eachMajor);
+            patchMapAll(departmentUpdateQueue, getDepartments(eachMajor));
+            updateDepartmentsIfSizeOver(departmentUpdateQueue, DEPARTMENT_UPDATE_BATCH_SIZE.intValue());
         }
+        batchUpdate(getDepartmentJpaEntities(departmentUpdateQueue));
     }
 
     @Transactional
@@ -50,11 +55,30 @@ public class DepartmentAppender {
         departmentRepository.batchUpdate(departmentJpaEntities);
     }
 
-    private void updateDepartments(final String eachMajor) {
-        Map<String, Set<String>> universityAndDepartments = getDepartmentsOfUniversity(eachMajor);
+    public void updateDepartmentsIfSizeOver(final Map<String, Set<String>> universityAndDepartments, final int size){
+        if(getTotalMapSize(universityAndDepartments) > size){
+            batchUpdate(getDepartmentJpaEntities(universityAndDepartments));
+            universityAndDepartments.clear();
+        }
+    }
+
+    private int getTotalMapSize(final Map<String, Set<String>> mapWithSet){
+        int totalSize = 0;
+        for(Map.Entry<String, Set<String>> entry : mapWithSet.entrySet()){
+            totalSize += entry.getValue().size();
+        }
+        return totalSize;
+    }
+
+    private List<DepartmentJpaEntity> getDepartmentJpaEntities(final Map<String, Set<String>> universityAndDepartments) {
         Map<Long, Set<String>> universityIdAndDepartments = filterExistingUniversity(universityAndDepartments);
         List<DepartmentJpaEntity> departmentJpaEntities = Department.toEntities(universityIdAndDepartments);
-        batchUpdate(departmentJpaEntities);
+        return departmentJpaEntities;
+    }
+
+    private Map<String, Set<String>> getDepartments(final String eachMajor) {
+        Map<String, Set<String>> universityAndDepartments = getDepartmentsOfUniversity(eachMajor);
+        return universityAndDepartments;
     }
 
     private Map<Long, Set<String>> filterExistingUniversity(final Map<String, Set<String>> universityAndDepartments) {
@@ -114,5 +138,12 @@ public class DepartmentAppender {
         Set<String> departments = universityAndDepartments
                 .computeIfAbsent(universityName, k -> new HashSet<>());
         departments.add(departmentName);
+    }
+
+    private void patchMapAll(final Map<String, Set<String>> baseMap,
+                             final Map<String, Set<String>> addingMap){
+        for (Map.Entry<String, Set<String>> entry : addingMap.entrySet()) {
+            baseMap.computeIfAbsent(entry.getKey(), k -> new HashSet<>()).addAll(entry.getValue());
+        }
     }
 }
