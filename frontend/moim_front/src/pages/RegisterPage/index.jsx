@@ -11,15 +11,10 @@ import School from "./School";
 import Personal from "./Personal";
 import TimeTable from "./TimeTable";
 import Congrats from "./Congrats";
+import { StateMachineProvider, createStore } from "little-state-machine";
 
 function RegisterPage() {
-  const [step, setStep] = useState(0);
-  const [activeNext, setActiveNext] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const nextBtnHandler = (data) => {
-    console.log(data);
-  };
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -27,7 +22,11 @@ function RegisterPage() {
     setValue,
     watch,
   } = useForm();
-  const navigate = useNavigate();
+  const [step, setStep] = useState(0);
+  const [activeNext, setActiveNext] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const nextClick = (data) => {
     setStep(step + 1);
     setActiveNext(false);
@@ -49,25 +48,35 @@ function RegisterPage() {
   return (
     <div className="flex min-h-screen w-full py-0 overflow-hidden relative gap-1 pl-52 bg-scarlet">
       <div className="flex flex-1 flex-col items-start justify-center w-96 gap-16">
-        {step === 0 ? (
-          <Account
-            register={register}
-            errors={errors}
-            setValue={setValue}
-            setActiveNext={setActiveNext}
-            onSubmit={handleSubmit(nextClick)}
-          />
-        ) : step === 1 ? (
-          <AuthCheck register={register} errors={errors} setValue={setValue} />
-        ) : step === 2 ? (
-          <School register={register} errors={errors} setValue={setValue} />
-        ) : step === 3 ? (
-          <Personal register={register} errors={errors} setValue={setValue} />
-        ) : step === 4 ? (
-          <TimeTable register={register} errors={errors} setValue={setValue} />
-        ) : step === 5 ? (
-          <Congrats register={register} errors={errors} setValue={setValue} />
-        ) : null}
+        <StateMachineProvider>
+          {step === 0 ? (
+            <Account
+              register={register}
+              errors={errors}
+              setValue={setValue}
+              setActiveNext={setActiveNext}
+              onSubmit={handleSubmit(nextClick)}
+            />
+          ) : step === 1 ? (
+            <AuthCheck
+              register={register}
+              errors={errors}
+              setValue={setValue}
+            />
+          ) : step === 2 ? (
+            <School register={register} errors={errors} setValue={setValue} />
+          ) : step === 3 ? (
+            <Personal register={register} errors={errors} setValue={setValue} />
+          ) : step === 4 ? (
+            <TimeTable
+              register={register}
+              errors={errors}
+              setValue={setValue}
+            />
+          ) : step === 5 ? (
+            <Congrats register={register} errors={errors} setValue={setValue} />
+          ) : null}
+        </StateMachineProvider>
 
         {step !== 5 && (
           <div className="flex justify-center mt-16">
