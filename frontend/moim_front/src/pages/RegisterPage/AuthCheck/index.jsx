@@ -1,7 +1,8 @@
 import React from "react";
 import AuthTitle from "../../../components/Authentification/AuthTitle";
 
-function AuthCheck() {
+function AuthCheck({ emailAuth, setEmailAuth, setActiveNext }) {
+  setActiveNext(true);
   return (
     <div>
       <div>
