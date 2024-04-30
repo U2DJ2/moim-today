@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import AuthTitle from "../../../components/Authentification/AuthTitle";
 
 const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-const passwordPattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z]).{6,}$/;
-function Account({ email, setEmail, password, setPassword }) {
+const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=.*\d).{6,}$/;
+
+function Account({ email, setEmail, password, setPassword, setActiveNext }) {
   const [clicked, setClicked] = useState(false);
   const [validationEmail, setValidationEmail] = useState(true);
   const [validationPassword, setValidationPassword] = useState(true);
@@ -26,6 +27,12 @@ function Account({ email, setEmail, password, setPassword }) {
       setValidationPassword(false);
     else setValidationPassword(true);
   }, [email, password]);
+
+  useEffect(() => {
+    if (email && password && validationEmail && validationPassword)
+      setActiveNext(true);
+    else setActiveNext(false);
+  }, [email, password, validationEmail, validationPassword]);
 
   return (
     <div className="flex flex-col w-100 gap-16">
@@ -77,8 +84,7 @@ function Account({ email, setEmail, password, setPassword }) {
               !validationPassword ? "text-white" : "text-scarlet"
             } ${validationPassword && password ? "hidden" : "block"}`}
           >
-            6자 이상이면서 영문 대소문자, 숫자, 특수문자 중 적어도 하나를
-            포함해야합니다.
+            영문, 특수기호, 숫자를 포함해 6자리 이상 입력해 주세요.
           </p>
         </div>
       </div>

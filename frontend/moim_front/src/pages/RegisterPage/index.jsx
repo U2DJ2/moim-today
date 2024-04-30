@@ -15,30 +15,24 @@ import { StateMachineProvider, createStore } from "little-state-machine";
 
 function RegisterPage() {
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    watch,
-  } = useForm();
+
   const [step, setStep] = useState(0);
   const [activeNext, setActiveNext] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailDuplication, setEmailDuplication] = useState(false);
+  const [schoolValidation, setSchoolValidation] = useState(false);
 
-  const nextClick = (data) => {
+  const nextClick = async () => {
+    // if (step === 0) {
+    //   //check email validity
+    //   checkEmailValid("email", email).then((res) => {
+    //     if (res.statusCode === 200) return setEmailDuplication(true);
+    //     else if (res.statusCode === 404) return setSchoolValidation(false);
+    //   });
+    // } else {
     setStep(step + 1);
     setActiveNext(false);
-
-    console.log(data);
-    // if (step === 1) {
-    //   //check email validity
-    //   // checkEmailValid(data.email).then(() => {
-    //   // });
-    // } else {
-    //   setStep(step + 1);
-    //   setActiveNext(false);
     // }
   };
   const previousClick = () => {
@@ -81,20 +75,22 @@ function RegisterPage() {
         {step !== 5 && (
           <div className="flex justify-center mt-16">
             <div className="flex gap-8">
-              <Button
-                name={"이전"}
-                textColor={"gray"}
-                bgColor={"white"}
-                btnType={"cancel"}
-                onClick={previousClick}
-              />
-              <Button
-                name={"다음"}
-                textColor={"[#646464]"}
-                bgColor={"white"}
-                btnType={"next"}
-                onClick={nextClick}
-              />
+              <button
+                className={`w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-black bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer  `}
+                onClick={() => previousClick}
+              >
+                이전
+              </button>
+              <button
+                className={`${
+                  activeNext
+                    ? "w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-scarlet bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer "
+                    : "w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-[#8D8D8D] bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer "
+                }`}
+                onClick={() => nextClick()}
+              >
+                다음
+              </button>
             </div>
           </div>
         )}
