@@ -41,7 +41,7 @@ public class UniversityFinder {
 
     @Transactional(readOnly = true)
     public void validateExists(final String emailDomain) {
-        if (!universityRepository.existsByUniversityEmail(emailDomain)) {
+        if (!universityRepository.validateUniversityEmail(emailDomain)) {
             throw new NotFoundException(UNIVERSITY_EMAIL_NOT_FOUND.message());
         }
     }

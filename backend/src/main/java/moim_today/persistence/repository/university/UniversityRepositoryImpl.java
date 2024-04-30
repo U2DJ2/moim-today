@@ -37,7 +37,7 @@ public class UniversityRepositoryImpl implements UniversityRepository {
     }
 
     @Override
-    public boolean existsByUniversityEmail(final String universityEmail) {
+    public boolean validateUniversityEmail(final String universityEmail) {
         return universityJpaRepository.existsByUniversityEmail(universityEmail);
     }
 

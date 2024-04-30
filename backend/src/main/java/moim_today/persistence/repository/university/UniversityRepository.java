@@ -13,7 +13,7 @@ public interface UniversityRepository {
 
     UniversityJpaEntity getByEmail(final String email);
 
-    boolean existsByUniversityEmail(final String universityEmail);
+    boolean validateUniversityEmail(final String universityEmail);
 
     Optional<UniversityJpaEntity> findByName(final String name);
 

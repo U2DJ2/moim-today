@@ -43,11 +43,10 @@ public class DepartmentAppender {
     public void putAllDepartment(){
         List<String> allDepartment = fetchAllDepartment();
         for(String eachDepartment : allDepartment){
-            fetchUniversitiesByDepartment(eachDepartment);
+            queryUniversitiesByDepartment(eachDepartment);
         }
     }
 
-    @Transactional
     public List<String> fetchAllDepartment(){
         String url = UNIVERSITY_API_URL.value()+apiKey+FETCH_ALL_DEPARTMENT_URL.value();
         String response = restTemplate.getForObject(url, String.class);
@@ -69,9 +68,10 @@ public class DepartmentAppender {
     }
 
     @Transactional
-    public void fetchUniversitiesByDepartment(final String majorSeq){
+    public List<DepartmentJpaEntity> queryUniversitiesByDepartment(final String majorSeq){
         String url = UNIVERSITY_API_URL.value()+apiKey+FETCH_ALL_UNIVERSITY_BY_DEPARTMENT_URL.value()+majorSeq;
         String response = restTemplate.getForObject(url, String.class);
+        List<DepartmentJpaEntity> returnDepartmentJpaEntity = new ArrayList<>();
 
         try {
             JsonNode root = objectMapper.readTree(response);
@@ -92,6 +92,13 @@ public class DepartmentAppender {
         }catch (JsonProcessingException e){
             throw new InternalServerException(CRAWLING_PARSE_ERROR.message());
         }
+
+        return returnDepartmentJpaEntity;
+    }
+
+    @Transactional
+    public void batchUpdate(List<DepartmentJpaEntity> departmentJpaEntities){
+        departmentRepository.batchUpdate(departmentJpaEntities);
     }
 
     @Transactional
