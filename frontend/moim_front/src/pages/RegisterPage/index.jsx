@@ -51,11 +51,11 @@ function RegisterPage() {
         <StateMachineProvider>
           {step === 0 ? (
             <Account
-              register={register}
-              errors={errors}
-              setValue={setValue}
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
               setActiveNext={setActiveNext}
-              onSubmit={handleSubmit(nextClick)}
             />
           ) : step === 1 ? (
             <AuthCheck
@@ -82,7 +82,7 @@ function RegisterPage() {
           <div className="flex justify-center mt-16">
             <div className="flex gap-8">
               <Button
-                name={"취소"}
+                name={"이전"}
                 textColor={"gray"}
                 bgColor={"white"}
                 btnType={"cancel"}
