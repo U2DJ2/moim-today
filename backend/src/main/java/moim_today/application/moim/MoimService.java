@@ -1,11 +1,9 @@
 package moim_today.application.moim;
 
 import moim_today.dto.moim.*;
-import moim_today.dto.moim.MoimMembersResponse;
-import moim_today.dto.moim.PrivateMoimAppendRequest;
-import moim_today.dto.moim.PublicMoimAppendRequest;
-import moim_today.dto.moim.UploadMoimImageResponse;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface MoimService {
 
@@ -21,5 +19,5 @@ public interface MoimService {
 
     void updateMoim(final long memberId, final MoimUpdateRequest moimUpdateRequest);
 
-    MoimMembersResponse findMoimMembers(final long memberId, final long moimId);
+    List<MoimMemberTabResponse> findMoimMembers(final long memberId, final long moimId);
 }

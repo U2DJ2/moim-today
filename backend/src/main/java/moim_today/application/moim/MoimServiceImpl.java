@@ -59,7 +59,7 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public MoimMembersResponse findMoimMembers(final long memberId, final long moimId) {
+    public List<MoimMemberTabResponse> findMoimMembers(final long memberId, final long moimId) {
         List<MemberJpaEntity> moimMember = moimFinder.findMoimMembers(moimId);
         return null;
     }
