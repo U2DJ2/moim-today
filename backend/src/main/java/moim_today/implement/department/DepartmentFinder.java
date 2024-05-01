@@ -32,22 +32,18 @@ public class DepartmentFinder {
         }
     }
 
-    public List<DepartmentInfoResponse> getAllDepartment(final long universityId, final String universityName){
-        if(universityId != Long.parseLong(NO_UNIVERSITY_ID)){
-            return getAllDepartmentByUniversityId(universityId);
-        }
+    public List<DepartmentInfoResponse> getAllDepartmentByUniversityName(final String universityName){
         if(!universityName.isEmpty()){
-            return getAllDepartmentByUniversityName(universityName);
+            long universityId = universityRepository.getByName(universityName).getId();
+            return departmentRepository.findAllDepartmentOfUniversity(universityId);
         }
         throw new BadRequestException(UNIVERSITY_SEARCH_CONDITIONS_INSUFFICIENT.message());
     }
 
-    private List<DepartmentInfoResponse> getAllDepartmentByUniversityId(final long universityId) {
-        return departmentRepository.findAllDepartmentOfUniversity(universityId);
-    }
-
-    private List<DepartmentInfoResponse> getAllDepartmentByUniversityName(final String universityName) {
-        long universityId = universityRepository.getByName(universityName).getId();
-        return departmentRepository.findAllDepartmentOfUniversity(universityId);
+    public List<DepartmentInfoResponse> getAllDepartmentById(final long universityId){
+        if(universityId != Long.parseLong(NO_UNIVERSITY_ID)){
+            return departmentRepository.findAllDepartmentOfUniversity(universityId);
+        }
+        throw new BadRequestException(UNIVERSITY_SEARCH_CONDITIONS_INSUFFICIENT.message());
     }
 }

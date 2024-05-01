@@ -31,8 +31,10 @@ public enum TestConstant {
 
 
     // 대학교
+    UNIVERSITY_ID("universityId"),
     UNIV_ID("194"),
     UNIVERSITY_NAME("universityName"),
+    AJOU_UNIVERSITY_NAME("아주대학교"),
 
     // 학과
     DEPARTMENT_ID("9369"),
@@ -73,5 +75,9 @@ public enum TestConstant {
 
     public String value() {
         return value;
+    }
+
+    public int intValue(){
+        return Integer.parseInt(value);
     }
 }

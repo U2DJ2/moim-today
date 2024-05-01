@@ -13,11 +13,13 @@ public interface UniversityRepository {
 
     UniversityJpaEntity getByEmail(final String email);
 
-    boolean existsByUniversityEmail(final String universityEmail);
+    boolean validateUniversityEmail(final String universityEmail);
 
     Optional<UniversityJpaEntity> findByName(final String name);
 
     Optional<UniversityJpaEntity> findById(final long id);
 
     List<UniversityJpaEntity> findAll();
+
+    List<UniversityJpaEntity> findExistingUniversities(List<String> universityNames);
 }

@@ -41,7 +41,7 @@ public class UniversityFinder {
 
     @Transactional(readOnly = true)
     public void validateExists(final String emailDomain) {
-        if (!universityRepository.existsByUniversityEmail(emailDomain)) {
+        if (!universityRepository.validateUniversityEmail(emailDomain)) {
             throw new NotFoundException(UNIVERSITY_EMAIL_NOT_FOUND.message());
         }
     }
@@ -50,5 +50,10 @@ public class UniversityFinder {
     public boolean checkUniversityIdIsPresent(final long universityId){
         Optional<UniversityJpaEntity> findUniversity = universityRepository.findById(universityId);
         return findUniversity.isPresent();
+    }
+
+    @Transactional(readOnly = true)
+    public List<UniversityJpaEntity> findUniversitiesByName(final List<String> universityNames) {
+        return universityRepository.findExistingUniversities(universityNames);
     }
 }

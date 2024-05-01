@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
-import static moim_today.util.TestConstant.EMAIL;
-import static moim_today.util.TestConstant.UNIVERSITY_NAME;
+import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class UniversityFinderTest extends ImplementTest {
@@ -62,17 +62,55 @@ class UniversityFinderTest extends ImplementTest {
 
     @DisplayName("대학교 이름이 없을 때 테스트")
     @Test
-    void 대학교_이름으로_찾았는데_대학교가_없을_때() {
+    void noUniversityFoundByUniversityNameTest() {
         // when
-        Optional<UniversityJpaEntity> findUniversity = universityRepository.findByName(UNIVERSITY_NAME.value());
+        Optional<UniversityJpaEntity> findUniversity = universityFinder.findByName(UNIVERSITY_NAME.value());
 
         // then
         assertThat(findUniversity.isEmpty()).isTrue();
     }
 
+    @DisplayName("대학교 테이블에 존재하는 대학교 이름만 반환한다")
+    @Test
+    void findUniversitiesByUniversityNames(){
+        // given
+        final int MAX_UNIV = 5;
+        final int MAX_TEST_UNIV = 10;
+        Random random = new Random();
+        List<String> universityNames = new ArrayList<>();
+        String testUniversityName = UNIVERSITY_NAME.value();
+
+        for(int i = 0; i < MAX_UNIV; i++){
+            UniversityJpaEntity universityJpaEntity = UniversityJpaEntity.builder()
+                    .universityName(testUniversityName+i)
+                    .universityEmail(AJOU_EMAIL.value())
+                    .build();
+            universityRepository.save(universityJpaEntity);
+
+            universityNames.add(testUniversityName+i);
+        }
+
+        for(int i = MAX_UNIV; i < MAX_TEST_UNIV; i++){
+            universityNames.add(testUniversityName+i);
+        }
+
+        // when
+        List<UniversityJpaEntity> findUniversities = universityFinder.findUniversitiesByName(universityNames);
+
+        // then
+        UniversityJpaEntity randomUniversity = UniversityJpaEntity.builder()
+                .universityName(testUniversityName+(random.nextInt(MAX_UNIV)))
+                .universityEmail(AJOU_EMAIL.value())
+                .build();
+        assertThat(findUniversities.size()).isEqualTo(MAX_UNIV);
+        assertThat(findUniversities.stream().filter(u -> u.getUniversityName().equals(randomUniversity.getUniversityName()))
+                .findAny())
+                .isPresent();
+    }
+
     @DisplayName("대학교 ID가 있는지 없는지 검사한다")
     @Test
-    void 대학교_ID가_있는지_검사() {
+    void validateUniversityIdTest() {
         // given
         UniversityJpaEntity universityJpaEntity = UniversityJpaEntity.builder()
                 .universityName(UNIVERSITY_NAME.value())
