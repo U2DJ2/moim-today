@@ -50,44 +50,45 @@ function FilterBar() {
   };
 
   return (
-    <div className="flex gap-2.5 justify-between px-24 py-4 mt-9 w-full text-base text-center whitespace-nowrap text-neutral-700 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
+    <div className="flex gap-2.5 justify-between px-12 py-4 mt-9 w-full text-base text-center whitespace-nowrap text-neutral-700 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
       <div className="flex gap-0 justify-center items-center">
-        <Dropdown
-          options={["Latest", "Views"]} // 드롭다운에 표시할 옵션들을 배열로 전달
-          onSelect={handleDropdown} // 옵션 선택시 실행할 함수 전달
-        />
+        <div>
+          <Dropdown options={["Latest", "Views"]} onSelect={handleDropdown} />
+        </div>
       </div>
-      <div className="flex justify-center items-center self-start px-16 font-medium text-black max-md:px-5 max-md:max-w-full">
+      <div className="flex justify-center items-center self-start px-16 font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
         <div className="flex gap-3">
-          <button
-            className={`justify-center px-9 py-3 rounded-[64px] max-md:px-5 ${
+          <div
+            className={`justify-center px-9 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
               selected === "전체" ? "bg-gray-200" : ""
             }`}
             onClick={() => setSelected("전체")}
           >
             전체
-          </button>
-          <button
-            className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 ${
+          </div>
+          <div
+            className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
               selected === "추천순" ? "bg-gray-200" : ""
             }`}
             onClick={() => setSelected("추천순")}
           >
             추천순
-          </button>
-          <button
-            className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 ${
+          </div>
+          <div
+            className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
               selected === "최신순" ? "bg-gray-200" : ""
             }`}
             onClick={() => setSelected("최신순")}
           >
             최신순
-          </button>
+          </div>
         </div>
       </div>
-      <button className="flex gap-0 justify-center items-center">
-        <Filter options={["Time", "Distance"]} onSelect={handleFilter} />
-      </button>
+      <div>
+        <div className="flex gap-0 justify-center items-center">
+          <Filter options={["Time", "Distance"]} onSelect={handleFilter} />
+        </div>
+      </div>
     </div>
   );
 }
