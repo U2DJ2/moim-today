@@ -13,7 +13,12 @@ public class FakeDepartmentService implements DepartmentService {
     }
 
     @Override
-    public List<DepartmentInfoResponse> getAllDepartment(final long universityId, final String universityName) {
+    public List<DepartmentInfoResponse> getAllDepartmentByUniversityName(final String universityName) {
+        return null;
+    }
+
+    @Override
+    public List<DepartmentInfoResponse> getAllDepartmentById(final long universityId) {
         return null;
     }
 }
