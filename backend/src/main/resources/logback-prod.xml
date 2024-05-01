@@ -1,0 +1,49 @@
+<Configuration scan="true" scanPeriod="30 seconds">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+    <!-- ERROR 로그 파일 경로 -->
+    <property name="ERROR_LOG_FILE" value="/home/ubuntu/logs/error_file"/>
+    <!-- INFO 로그 파일 경로 -->
+    <property name="INFO_LOG_FILE" value="/home/ubuntu/logs/info_file"/>
+
+    <!-- ERROR 레벨 로그를 처리하는 File Appender -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>${FILE_LOG_CHARSET}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--fileNamePattern 사용 -->
+            <fileNamePattern>/home/ubuntu/logs/%d{yyyy-MM-dd}.error_file.log</fileNamePattern>
+            <maxHistory>${LOGBACK_ROLLINGPOLICY_MAX_HISTORY:-14}</maxHistory>
+            <cleanHistoryOnStart>${LOGBACK_ROLLINGPOLICY_CLEAN_HISTORY_ON_START:-false}</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 모든 레벨 로그를 처리하는 File Appender -->
+    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>${FILE_LOG_CHARSET}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--fileNamePattern 사용 -->
+            <fileNamePattern>/home/ubuntu/logs/%d{yyyy-MM-dd}.info_file.log</fileNamePattern>
+            <maxHistory>${LOGBACK_ROLLINGPOLICY_MAX_HISTORY:-14}</maxHistory>
+            <cleanHistoryOnStart>${LOGBACK_ROLLINGPOLICY_CLEAN_HISTORY_ON_START:-false}</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Root 로거 설정, CONSOLE, ERROR_FILE, INFO_FILE Appender 추가 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="ERROR_FILE" />
+        <appender-ref ref="INFO_FILE" />
+    </root>
+</Configuration>
