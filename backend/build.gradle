@@ -39,7 +39,7 @@ swaggerSources {
 
 openapi3 {
     servers = [
-            { url = "http://localhost:8080" }
+            { url = "https://api.moim.today" }
     ]
     title = "API 문서"
     description = "U2DJ2 API Docs"
