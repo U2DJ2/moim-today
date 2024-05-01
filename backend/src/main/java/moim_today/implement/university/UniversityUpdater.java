@@ -28,7 +28,7 @@ public class UniversityUpdater {
     private String apiKey;
 
     public UniversityUpdater(final UniversityRepository universityRepository,
-                             ObjectMapper objectMapper, RestTemplate restTemplate) {
+                             final ObjectMapper objectMapper, final RestTemplate restTemplate) {
         this.universityRepository = universityRepository;
         this.objectMapper = objectMapper;
         this.restTemplate = restTemplate;

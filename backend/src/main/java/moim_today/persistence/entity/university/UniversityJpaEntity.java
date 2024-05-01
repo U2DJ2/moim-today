@@ -22,7 +22,7 @@ public class UniversityJpaEntity extends BaseTimeEntity {
     }
 
     @Builder
-    public UniversityJpaEntity(long id, final String universityName, final String universityEmail) {
+    public UniversityJpaEntity(final long id, final String universityName, final String universityEmail) {
         this.id = id;
         this.universityName = universityName;
         this.universityEmail = universityEmail;
