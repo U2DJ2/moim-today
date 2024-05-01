@@ -26,7 +26,7 @@ class ScheduleTest {
                 .build();
 
         // when
-        boolean exist = schedule.isExist(beforeScheduleJpaEntity);
+        boolean exist = schedule.exists(beforeScheduleJpaEntity);
 
         // then
         assertThat(exist).isTrue();
@@ -47,7 +47,7 @@ class ScheduleTest {
                 .build();
 
         // when
-        boolean exist = schedule.isExist(beforeScheduleJpaEntity);
+        boolean exist = schedule.exists(beforeScheduleJpaEntity);
 
         // then
         assertThat(exist).isFalse();
@@ -68,7 +68,7 @@ class ScheduleTest {
                 .build();
 
         // when
-        boolean exist = schedule.isExist(afterScheduleJpaEntity);
+        boolean exist = schedule.exists(afterScheduleJpaEntity);
 
         // then
         assertThat(exist).isTrue();
@@ -89,7 +89,7 @@ class ScheduleTest {
                 .build();
 
         // when
-        boolean exist = schedule.isExist(afterScheduleJpaEntity);
+        boolean exist = schedule.exists(afterScheduleJpaEntity);
 
         // then
         assertThat(exist).isFalse();

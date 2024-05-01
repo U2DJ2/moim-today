@@ -40,7 +40,7 @@ class ScheduleControllerTest extends ControllerTest {
     @DisplayName("캘린더에 나타낼 Weekly 스케줄을 조회한다.")
     @Test
     void findAllByWeekly() throws Exception {
-        mockMvc.perform(get("/api/schedules-weekly")
+        mockMvc.perform(get("/api/schedules/weekly")
                         .param("startDate", "2024-03-04")
                 )
                 .andExpect(status().isOk())
@@ -66,7 +66,7 @@ class ScheduleControllerTest extends ControllerTest {
     @DisplayName("캘린더에 나타낼 Monthly 스케줄을 조회한다.")
     @Test
     void findAllByMonthly() throws Exception {
-        mockMvc.perform(get("/api/schedules-monthly")
+        mockMvc.perform(get("/api/schedules/monthly")
                         .param("yearMonth", "2024-03")
                 )
                 .andExpect(status().isOk())

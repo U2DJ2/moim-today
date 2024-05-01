@@ -22,14 +22,14 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
-    @GetMapping("/schedules-weekly")
+    @GetMapping("/schedules/weekly")
     public CollectionResponse<List<ScheduleResponse>> findAllByWeekly(@Login final MemberSession memberSession,
                                                                       @RequestParam final LocalDate startDate) {
         List<ScheduleResponse> scheduleResponses = scheduleService.findAllByWeekly(memberSession.id(), startDate);
         return CollectionResponse.of(scheduleResponses);
     }
 
-    @GetMapping("/schedules-monthly")
+    @GetMapping("/schedules/monthly")
     public CollectionResponse<List<ScheduleResponse>> findAllByMonthly(@Login final MemberSession memberSession,
                                                                       @RequestParam final YearMonth yearMonth) {
         List<ScheduleResponse> scheduleResponses = scheduleService.findAllByMonthly(memberSession.id(), yearMonth);
