@@ -1,5 +1,6 @@
 package moim_today.implement.member;
 
+import moim_today.domain.moim.MoimMember;
 import moim_today.dto.member.MemberProfileResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
@@ -41,5 +42,9 @@ public class MemberFinder {
         if(findMember.isPresent()){
             throw new BadRequestException(EMAIL_ALREADY_USED_ERROR.message());
         }
+    }
+
+    public MoimMember getMoimMemberById(final long memberId) {
+        return null;
     }
 }
