@@ -25,6 +25,8 @@ public class ScheduleDeleter {
 
     @Transactional
     public void deleteAllByMeetingIdIn(final List<Long> meetingIds) {
-        scheduleRepository.deleteAllByMeetingIdIn(meetingIds);
+        if (!meetingIds.isEmpty()) {
+            scheduleRepository.deleteAllByMeetingIdIn(meetingIds);
+        }
     }
 }

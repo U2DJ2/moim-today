@@ -4,6 +4,7 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.MoimAppendRequest;
+import moim_today.dto.moim.MoimDeleteRequest;
 import moim_today.dto.moim.MoimUpdateRequest;
 import moim_today.fake_class.moim.FakeMoimService;
 import moim_today.util.ControllerTest;
@@ -159,7 +160,7 @@ class MoimControllerTest extends ControllerTest {
                                 .tag("모임")
                                 .summary("모임 정보 수정")
                                 .requestFields(
-                                        fieldWithPath("moimId").type(NUMBER).description("수정할 모임의 ID"),
+                                        fieldWithPath("moimId").type(NUMBER).description("수정할 모임 ID"),
                                         fieldWithPath("title").type(STRING).description("수정한 모임명"),
                                         fieldWithPath("contents").type(STRING).description("수정한 내용"),
                                         fieldWithPath("capacity").type(NUMBER).description("수정한 모집 인원"),
@@ -169,6 +170,25 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("displayStatus").type(VARIES).description("수정한 공개여부"),
                                         fieldWithPath("startDate").type(STRING).description("수정한 시작일자"),
                                         fieldWithPath("endDate").type(STRING).description("수정한 종료일자")
+                                ).build()
+                        )));
+    }
+
+    @DisplayName("모임을 삭제한다.")
+    @Test
+    void deleteMoimTest() throws Exception {
+        MoimDeleteRequest moimDeleteRequest = new MoimDeleteRequest(Long.parseLong(MOIM_ID.value()));
+
+        mockMvc.perform(delete("/api/moims")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimDeleteRequest)))
+                .andExpect(status().isOk())
+                .andDo(document("모임 삭제 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("모임 삭제")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("삭제할 모임 ID")
                                 ).build()
                         )));
     }

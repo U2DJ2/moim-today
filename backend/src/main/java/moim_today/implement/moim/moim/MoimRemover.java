@@ -15,7 +15,7 @@ public class MoimRemover {
     }
 
     @Transactional
-    public void deleteMoim(final long moimId) {
+    public void deleteById(final long moimId) {
         moimRepository.deleteById(moimId);
     }
 }

@@ -63,6 +63,9 @@ public enum TestConstant {
     FORBIDDEN_SCHEDULE_ID("9999"),
     NOTFOUND_SCHEDULE_ID("0"),
 
+    //미팅
+    MEETING_ID("123"),
+
     STATUS_CODE("200"),
     MESSAGE("message"),
 

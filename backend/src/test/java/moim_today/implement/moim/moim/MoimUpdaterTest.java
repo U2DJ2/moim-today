@@ -1,4 +1,4 @@
-package moim_today.implement.moim;
+package moim_today.implement.moim.moim;
 
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;

@@ -1,4 +1,4 @@
-package moim_today.implement.moim;
+package moim_today.implement.moim.moim;
 
 import moim_today.global.error.NotFoundException;
 import moim_today.implement.moim.moim.MoimFinder;

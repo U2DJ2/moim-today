@@ -1,6 +1,7 @@
 package moim_today.persistence.repository.meeting.meeting;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity;
 import org.springframework.stereotype.Repository;
 
@@ -25,5 +26,10 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                 .from(QMeetingJpaEntity.meetingJpaEntity)
                 .where(QMeetingJpaEntity.meetingJpaEntity.moimId.eq(moimId))
                 .fetch();
+    }
+
+    @Override
+    public void save(final MeetingJpaEntity meetingJpaEntity) {
+        meetingJpaRepository.save(meetingJpaEntity);
     }
 }
