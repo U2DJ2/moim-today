@@ -2,6 +2,8 @@ package moim_today.persistence.repository.schedule;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.domain.schedule.Schedule;
+import moim_today.dto.schedule.QScheduleResponse;
+import moim_today.dto.schedule.ScheduleResponse;
 import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableSchedulingTask;
 import moim_today.global.error.NotFoundException;
@@ -41,6 +43,34 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     public ScheduleJpaEntity getById(final long scheduleId) {
         return scheduleJpaRepository.findById(scheduleId)
                 .orElseThrow(() -> new NotFoundException(SCHEDULE_NOT_FOUND.message()));
+    }
+
+    @Override
+    public List<ScheduleJpaEntity> findAllByMemberId(final long memberId) {
+        return scheduleJpaRepository.findAllByMemberId(memberId);
+    }
+
+    @Override
+    public List<ScheduleResponse> findAllByDateTime(final long memberId, final LocalDateTime startDateTime,
+                                                    final LocalDateTime endDateTime) {
+        return queryFactory.select(
+                        new QScheduleResponse(
+                                scheduleJpaEntity.id,
+                                scheduleJpaEntity.meetingId,
+                                scheduleJpaEntity.scheduleName,
+                                scheduleJpaEntity.dayOfWeek,
+                                scheduleJpaEntity.startDateTime,
+                                scheduleJpaEntity.endDateTime
+                        ))
+                .from(scheduleJpaEntity)
+                .where(
+                        scheduleJpaEntity.memberId.eq(memberId)
+                                .and(scheduleJpaEntity.startDateTime.goe(startDateTime))
+                                .and(scheduleJpaEntity.startDateTime.loe(endDateTime))
+                                .and(scheduleJpaEntity.endDateTime.goe(startDateTime))
+                                .and(scheduleJpaEntity.endDateTime.loe(endDateTime))
+                )
+                .fetch();
     }
 
     @Override

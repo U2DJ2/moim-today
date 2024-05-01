@@ -4,6 +4,7 @@ public enum TimeConstant {
 
     TEN_MINUTES(10),
     ONE_WEEK(1),
+    SIX_DAY(6),
     DAYS_PER_WEEK(7),
     WEEK_START_POINT(1),
 

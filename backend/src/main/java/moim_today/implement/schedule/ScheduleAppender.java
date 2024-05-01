@@ -24,6 +24,11 @@ public class ScheduleAppender {
 
     @Transactional
     public void batchUpdateSchedules(final List<Schedule> schedules, final long memberId) {
+        List<ScheduleJpaEntity> scheduleJpaEntities = scheduleRepository.findAllByMemberId(memberId);
+        for (ScheduleJpaEntity scheduleJpaEntity : scheduleJpaEntities) {
+            schedules.removeIf(schedule -> schedule.exists(scheduleJpaEntity));
+        }
+
         TimeTableSchedulingTask timeTableSchedulingTask = TimeTableSchedulingTask.of(schedules, memberId);
         scheduleRepository.batchUpdate(timeTableSchedulingTask);
     }
