@@ -6,14 +6,15 @@ import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
-import static javax.management.openmbean.SimpleType.STRING;
 import static moim_today.global.constant.StaticSymbolConstant.BLANK;
 import static moim_today.global.constant.StaticSymbolConstant.NO_UNIVERSITY_ID;
 import static moim_today.util.TestConstant.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,15 +39,14 @@ class DepartmentControllerTest extends ControllerTest {
                         resource(ResourceSnippetParameters.builder()
                                 .tag("학과")
                                 .summary("대학교 ID로 모든 학과 조회")
-                                .requestFields(
-                                        fieldWithPath("universityId").type(STRING).description("대학교 ID")
+                                .queryParameters(
+                                        parameterWithName("universityId").description("대학교 ID")
                                                 .optional().attributes(key("defaultValue").value(NO_UNIVERSITY_ID))
                                 )
                                 .responseFields(
-                                        fieldWithPath("[]").description("대학교 내 모든 학과의 정보 리스트"),
-                                        fieldWithPath("[].departmentId").description("학과 ID"),
-                                        fieldWithPath("[].departmentName").description("학과 이름"),
-                                        fieldWithPath("[].universityId").description("대학교 ID").optional()
+                                        fieldWithPath("data").type(ARRAY).description("대학교 내 모든 학과의 정보 리스트"),
+                                        fieldWithPath("data[].departmentId").type(NUMBER).description("학과 ID"),
+                                        fieldWithPath("data[].departmentName").type(STRING).description("학과 이름")
                                 )
                                 .build())
                 ));
@@ -63,15 +63,14 @@ class DepartmentControllerTest extends ControllerTest {
                         resource(ResourceSnippetParameters.builder()
                                 .tag("학과")
                                 .summary("대학교 이름으로 모든 학과 조회")
-                                .requestFields(
-                                        fieldWithPath("universityName").type(STRING).description("대학교 이름")
+                                .queryParameters(
+                                        parameterWithName("universityName").description("대학교 이름")
                                                 .optional().attributes(key("defaultValue").value(BLANK))
                                 )
                                 .responseFields(
-                                        fieldWithPath("[]").description("대학교 내 모든 학과의 정보 리스트"),
-                                        fieldWithPath("[].departmentId").description("학과 ID"),
-                                        fieldWithPath("[].departmentName").description("학과 이름"),
-                                        fieldWithPath("[].universityId").description("대학교 ID").optional()
+                                        fieldWithPath("data").type(ARRAY).description("대학교 내 모든 학과의 정보 리스트"),
+                                        fieldWithPath("data[].departmentId").type(NUMBER).description("학과 ID"),
+                                        fieldWithPath("data[].departmentName").type(STRING).description("학과 이름")
                                 )
                                 .build())
                 ));

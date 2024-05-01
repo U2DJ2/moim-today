@@ -14,11 +14,26 @@ public class FakeDepartmentService implements DepartmentService {
 
     @Override
     public List<DepartmentInfoResponse> getAllDepartmentByUniversityName(final String universityName) {
-        return null;
+
+        // given
+        List<DepartmentInfoResponse> mockData = List.of(
+                new DepartmentInfoResponse(1L, "소프트웨어학과"),
+                new DepartmentInfoResponse(2L, "의예과"),
+                new DepartmentInfoResponse(3L, "철학과")
+        );
+
+        return mockData;
     }
 
     @Override
     public List<DepartmentInfoResponse> getAllDepartmentById(final long universityId) {
-        return null;
+        // given
+        List<DepartmentInfoResponse> mockData = List.of(
+                new DepartmentInfoResponse(1L, "소프트웨어학과"),
+                new DepartmentInfoResponse(2L, "의예과"),
+                new DepartmentInfoResponse(3L, "철학과")
+        );
+
+        return mockData;
     }
 }

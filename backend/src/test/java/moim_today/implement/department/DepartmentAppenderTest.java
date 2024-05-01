@@ -38,7 +38,7 @@ class DepartmentAppenderTest extends ImplementTest {
 
         // when
         departmentAppender.batchUpdate(departmentJpaEntities);
-        List<DepartmentInfoResponse> allDepartment = departmentFinder.getAllDepartment(0, null);
+        List<DepartmentInfoResponse> allDepartment = departmentFinder.getAllDepartmentById(0);
 
         // then
         assertThat(allDepartment.size()).isEqualTo(10);

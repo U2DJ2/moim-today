@@ -31,7 +31,7 @@ public enum TestConstant {
 
 
     // 대학교
-    UNIVERSITY_ID("universityID"),
+    UNIVERSITY_ID("universityId"),
     UNIV_ID("194"),
     UNIVERSITY_NAME("universityName"),
     AJOU_UNIVERSITY_NAME("아주대학교"),
