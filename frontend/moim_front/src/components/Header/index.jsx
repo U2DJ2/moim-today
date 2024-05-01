@@ -18,12 +18,12 @@ function Header() {
 
   return (
     <header className="flex gap-5 justify-between px-10 py-6 w-full text-lg leading-7 text-center text-gray-500 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-      <nav className="flex gap-5 justify-center my-auto font-semibold">
+      <nav className="flex gap-5 justify-center my-auto font-Pretendard_SemiBold">
         <a href="#" onClick={openModal}>대시보드</a>
         <ModalTest isOpen={isModalOpen} closeModal={closeModal} />
         <a href="/creation" >모임 생성</a>
       </nav>
-      <div className="flex gap-5 justify-center font-bold whitespace-nowrap">
+      <div className="flex gap-5 justify-center font-Pretendard_SemiBold whitespace-nowrap">
         <div className="justify-center my-auto">아주대학교</div>
         <a href="/profile">
         <img
