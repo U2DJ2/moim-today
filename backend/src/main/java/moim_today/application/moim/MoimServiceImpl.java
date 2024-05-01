@@ -5,6 +5,7 @@ import moim_today.dto.moim.MoimDetailResponse;
 import moim_today.dto.moim.MoimUpdateRequest;
 import moim_today.dto.moim.MoimImageResponse;
 import moim_today.implement.file.FileUploader;
+import moim_today.implement.moim.joined_moim.JoinedMoimAppender;
 import moim_today.implement.moim.moim.MoimAppender;
 import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.implement.moim.moim.MoimRemover;
@@ -23,23 +24,27 @@ public class MoimServiceImpl implements MoimService{
     private final MoimFinder moimFinder;
     private final MoimUpdater moimUpdater;
     private final MoimRemover moimRemover;
+    private final JoinedMoimAppender joinedMoimAppender;
 
     public MoimServiceImpl(final MoimAppender moimAppender,
                            final FileUploader fileUploader,
                            final MoimFinder moimFinder,
                            final MoimUpdater moimUpdater,
-                           final MoimRemover moimRemover) {
+                           final MoimRemover moimRemover,
+                           final JoinedMoimAppender joinedMoimAppender) {
         this.moimAppender = moimAppender;
         this.fileUploader = fileUploader;
         this.moimFinder = moimFinder;
         this.moimUpdater = moimUpdater;
         this.moimRemover = moimRemover;
+        this.joinedMoimAppender = joinedMoimAppender;
     }
 
     @Override
     public void createMoim(final long memberId, final long universityId,
                            final MoimAppendRequest moimAppendRequest) {
-        moimAppender.createMoim(memberId, universityId, moimAppendRequest);
+        MoimJpaEntity moim = moimAppender.createMoim(memberId, universityId, moimAppendRequest);
+        joinedMoimAppender.createJoinedMoim(memberId, moim.getId());
     }
 
     @Override
