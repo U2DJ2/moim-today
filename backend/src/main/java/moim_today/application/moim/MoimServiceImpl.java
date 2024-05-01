@@ -2,17 +2,25 @@ package moim_today.application.moim;
 
 import moim_today.dto.moim.MoimAppendRequest;
 import moim_today.dto.moim.MoimDetailResponse;
-import moim_today.dto.moim.MoimUpdateRequest;
 import moim_today.dto.moim.MoimImageResponse;
+import moim_today.dto.moim.MoimUpdateRequest;
 import moim_today.implement.file.FileUploader;
+import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
+import moim_today.implement.meeting.meeting.MeetingFinder;
 import moim_today.implement.moim.joined_moim.JoinedMoimAppender;
+import moim_today.implement.moim.joined_moim.JoinedMoimRemover;
 import moim_today.implement.moim.moim.MoimAppender;
 import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.implement.moim.moim.MoimRemover;
 import moim_today.implement.moim.moim.MoimUpdater;
+import moim_today.implement.schedule.ScheduleDeleter;
+import moim_today.implement.todo.TodoRemover;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 import static moim_today.global.constant.FileTypeConstant.MOIM_IMAGE;
 
@@ -25,19 +33,34 @@ public class MoimServiceImpl implements MoimService{
     private final MoimUpdater moimUpdater;
     private final MoimRemover moimRemover;
     private final JoinedMoimAppender joinedMoimAppender;
+    private final MeetingFinder meetingFinder;
+    private final JoinedMeetingRemover joinedMeetingRemover;
+    private final TodoRemover todoRemover;
+    private final JoinedMoimRemover joinedMoimRemover;
+    private final ScheduleDeleter scheduleDeleter;
 
     public MoimServiceImpl(final MoimAppender moimAppender,
                            final FileUploader fileUploader,
                            final MoimFinder moimFinder,
                            final MoimUpdater moimUpdater,
                            final MoimRemover moimRemover,
-                           final JoinedMoimAppender joinedMoimAppender) {
+                           final JoinedMoimAppender joinedMoimAppender,
+                           final MeetingFinder meetingFinder,
+                           final JoinedMeetingRemover joinedMeetingRemover,
+                           final TodoRemover todoRemover,
+                           final JoinedMoimRemover joinedMoimRemover,
+                           final ScheduleDeleter scheduleDeleter) {
         this.moimAppender = moimAppender;
         this.fileUploader = fileUploader;
         this.moimFinder = moimFinder;
         this.moimUpdater = moimUpdater;
         this.moimRemover = moimRemover;
         this.joinedMoimAppender = joinedMoimAppender;
+        this.meetingFinder = meetingFinder;
+        this.joinedMeetingRemover = joinedMeetingRemover;
+        this.todoRemover = todoRemover;
+        this.joinedMoimRemover = joinedMoimRemover;
+        this.scheduleDeleter = scheduleDeleter;
     }
 
     @Override
@@ -64,8 +87,21 @@ public class MoimServiceImpl implements MoimService{
         moimUpdater.updateMoim(memberId, moimUpdateRequest);
     }
 
+    @Transactional
     @Override
     public void deleteMoim(final long memberId, final long moimId) {
-        moimRemover.deleteMoim(memberId, moimId);
+        MoimJpaEntity moimJpaEntity =  moimFinder.getById(moimId);
+        moimJpaEntity.validateMember(memberId);
+
+        joinedMoimRemover.deleteAllByMoimId(moimId);
+        todoRemover.deleteAllByMoimId(moimId);
+        moimRemover.deleteMoim(moimId);
+
+        List<Long> meetingIds = meetingFinder.findAllByMoimId(moimId);
+
+        if (!meetingIds.isEmpty()) {
+            joinedMeetingRemover.deleteAllByMeetingIdIn(meetingIds);
+            scheduleDeleter.deleteAllByMeetingIdIn(meetingIds);
+        }
     }
 }

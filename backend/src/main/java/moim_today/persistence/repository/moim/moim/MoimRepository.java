@@ -10,5 +10,5 @@ public interface MoimRepository {
 
     MoimJpaEntity getById(final long moimId);
 
-    void delete(final MoimJpaEntity moimJpaEntity);
+    void deleteById(final long moimId);
 }

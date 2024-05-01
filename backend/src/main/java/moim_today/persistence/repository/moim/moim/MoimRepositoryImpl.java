@@ -32,7 +32,7 @@ public class MoimRepositoryImpl implements MoimRepository {
     }
 
     @Override
-    public void delete(final MoimJpaEntity moimJpaEntity) {
-        moimJpaRepository.delete(moimJpaEntity);
+    public void deleteById(final long moimId) {
+        moimJpaRepository.deleteById(moimId);
     }
 }

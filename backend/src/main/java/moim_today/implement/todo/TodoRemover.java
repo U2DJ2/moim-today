@@ -2,6 +2,7 @@ package moim_today.implement.todo;
 
 import moim_today.global.annotation.Implement;
 import moim_today.persistence.repository.todo.TodoRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Implement
 public class TodoRemover {
@@ -12,6 +13,7 @@ public class TodoRemover {
         this.todoRepository = todoRepository;
     }
 
+    @Transactional
     public void deleteAllByMoimId(final long moimId) {
         todoRepository.deleteAllByMoimId(moimId);
     }

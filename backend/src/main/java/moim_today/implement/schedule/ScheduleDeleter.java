@@ -23,6 +23,7 @@ public class ScheduleDeleter {
         scheduleRepository.delete(scheduleJpaEntity);
     }
 
+    @Transactional
     public void deleteAllByMeetingIdIn(final List<Long> meetingIds) {
         scheduleRepository.deleteAllByMeetingIdIn(meetingIds);
     }

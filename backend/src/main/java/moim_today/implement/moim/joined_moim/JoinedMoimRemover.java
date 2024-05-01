@@ -2,6 +2,7 @@ package moim_today.implement.moim.joined_moim;
 
 import moim_today.global.annotation.Implement;
 import moim_today.persistence.repository.moim.joined_moim.JoinedMoimRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Implement
 public class JoinedMoimRemover {
@@ -12,6 +13,7 @@ public class JoinedMoimRemover {
         this.joinedMoimRepository = joinedMoimRepository;
     }
 
+    @Transactional
     public void deleteAllByMoimId(final long moimId) {
         joinedMoimRepository.deleteAllByMoimId(moimId);
     }

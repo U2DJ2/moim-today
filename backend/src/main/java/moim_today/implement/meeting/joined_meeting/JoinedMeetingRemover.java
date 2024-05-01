@@ -2,6 +2,7 @@ package moim_today.implement.meeting.joined_meeting;
 
 import moim_today.global.annotation.Implement;
 import moim_today.persistence.repository.meeting.joined_meeting.JoinedMeetingRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class JoinedMeetingRemover {
         this.joinedMeetingRepository = joinedMeetingRepository;
     }
 
+    @Transactional
     public void deleteAllByMeetingIdIn(final List<Long> meetingIds) {
         joinedMeetingRepository.deleteAllByMeetingIdIn(meetingIds);
     }
