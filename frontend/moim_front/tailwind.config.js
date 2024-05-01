@@ -6,6 +6,7 @@ export default {
     fontFamily: {
       Praise: ["Praise"],
       Pretendard_Black: ["Pretendard-Black"],
+      Pretendard_Bold: ["Pretendard-Bold"],
       Pretendard_Normal: ["Pretendard-Regular"],
       Pretendard_Light: ["Pretendard-Light"],
     },
