@@ -21,4 +21,9 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
     public void save(final JoinedMoimJpaEntity joinedMoimJpaEntity) {
         joinedMoimJpaRepository.save(joinedMoimJpaEntity);
     }
+
+    @Override
+    public long count() {
+        return joinedMoimJpaRepository.count();
+    }
 }

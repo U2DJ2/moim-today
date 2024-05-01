@@ -6,4 +6,6 @@ public interface JoinedMoimRepository {
     void deleteAllByMoimId(final long moimId);
 
     void save(final JoinedMoimJpaEntity joinedMoimJpaEntity);
+
+    long count();
 }
