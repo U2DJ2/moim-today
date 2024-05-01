@@ -28,7 +28,7 @@ public class UniversityJpaEntity extends BaseTimeEntity {
         this.universityEmail = universityEmail;
     }
 
-    public void updateEmail(String universityEmail){
+    public void updateEmail(final String universityEmail){
         this.universityEmail = universityEmail;
     }
 }

@@ -21,8 +21,8 @@ public class UniversityController {
     }
 
     @PostMapping
-    public void updateUniversityInfo(){
-        universityService.patchAllUniversity();
+    public void fetchUniversityInfo(){
+        universityService.fetchAllUniversity();
     }
 
     @GetMapping

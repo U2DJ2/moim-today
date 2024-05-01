@@ -19,7 +19,7 @@ public class UniversityServiceImpl implements UniversityService{
     }
 
     @Override
-    public void patchAllUniversity() {
+    public void fetchAllUniversity() {
         universityUpdater.fetchAllUniversity();
     }
 

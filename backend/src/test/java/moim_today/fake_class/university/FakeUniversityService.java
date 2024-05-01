@@ -9,7 +9,7 @@ import java.util.List;
 public class FakeUniversityService implements UniversityService {
 
     @Override
-    public void patchAllUniversity() {
+    public void fetchAllUniversity() {
 
     }
 

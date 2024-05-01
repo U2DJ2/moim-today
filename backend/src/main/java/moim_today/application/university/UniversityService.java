@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UniversityService {
 
-    void patchAllUniversity();
+    void fetchAllUniversity();
 
     List<UniversityInfoResponse> getUniversities();
 }

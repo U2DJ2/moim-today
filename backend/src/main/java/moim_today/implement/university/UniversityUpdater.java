@@ -49,25 +49,22 @@ public class UniversityUpdater {
                     continue;
                 }
                 extractUniversity.extractEmailExtension();
-                putUniversity(extractUniversity.toEntity());
+                putUniversity(extractUniversity);
             }
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
             throw new InternalServerException(CRAWLING_PARSE_ERROR.message());
         }
     }
 
     @Transactional
-    public void putUniversity(final UniversityJpaEntity universityJpaEntity) {
-        Optional<UniversityJpaEntity> findUniversity = universityRepository.findByName(universityJpaEntity.getUniversityName());
+    public void putUniversity(final ExtractUniversity extractUniversity) {
+        Optional<UniversityJpaEntity> findUniversity = universityRepository.findByName(extractUniversity.getSchoolName());
 
         if (findUniversity.isEmpty()) {
-            universityRepository.save(universityJpaEntity);
-            return;
-        }
-        if (!universityJpaEntity.getUniversityEmail().isEmpty()) {
+            universityRepository.save(extractUniversity.toEntity());
+        } else if (!extractUniversity.isEmailEmpty()) {
             UniversityJpaEntity getUniversity = findUniversity.get();
-            getUniversity.updateEmail(universityJpaEntity.getUniversityEmail());
+            getUniversity.updateEmail(extractUniversity.getLink());
             universityRepository.save(getUniversity);
         }
     }
