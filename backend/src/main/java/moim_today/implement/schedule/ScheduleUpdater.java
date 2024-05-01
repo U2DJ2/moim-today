@@ -3,8 +3,8 @@ package moim_today.implement.schedule;
 import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
-import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
-import moim_today.persistence.repository.schedule.ScheduleRepository;
+import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
+import moim_today.persistence.repository.schedule.schedule.ScheduleRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 

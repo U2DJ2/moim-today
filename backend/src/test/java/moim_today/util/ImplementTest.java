@@ -9,7 +9,7 @@ import moim_today.persistence.repository.meeting.meeting.MeetingRepository;
 import moim_today.persistence.repository.member.MemberRepository;
 import moim_today.persistence.repository.moim.joined_moim.JoinedMoimRepository;
 import moim_today.persistence.repository.moim.moim.MoimRepository;
-import moim_today.persistence.repository.schedule.ScheduleRepository;
+import moim_today.persistence.repository.schedule.schedule.ScheduleRepository;
 import moim_today.persistence.repository.todo.TodoRepository;
 import moim_today.persistence.repository.university.UniversityRepository;
 import org.junit.jupiter.api.BeforeEach;

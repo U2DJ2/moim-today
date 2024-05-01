@@ -2,7 +2,7 @@ package moim_today.dto.schedule;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
-import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
+import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;

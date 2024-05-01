@@ -1,7 +1,7 @@
 package moim_today.domain.schedule;
 
 import lombok.Builder;
-import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
+import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
