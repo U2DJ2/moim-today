@@ -12,4 +12,6 @@ public interface DepartmentRepository {
     DepartmentJpaEntity getById(final long departmentId);
 
     List<DepartmentInfoResponse> findAllDepartmentOfUniversity(final long universityId);
+
+    void batchUpdate(List<DepartmentJpaEntity> departmentJpaEntities);
 }

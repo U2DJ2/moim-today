@@ -61,7 +61,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void updateProfileImage(final long memberId, final MultipartFile file) {
-        FileInfoResponse fileInfoResponse = fileUploader.uploadFile(PROFILE_IMAGE.value(), file);
-        memberUpdater.updateProfileImageUrl(memberId, fileInfoResponse.uploadFileUrl());
+        String imageUrl = fileUploader.uploadFile(PROFILE_IMAGE.value(), file);
+        memberUpdater.updateProfileImageUrl(memberId, imageUrl);
     }
 }

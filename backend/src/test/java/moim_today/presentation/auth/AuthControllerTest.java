@@ -67,7 +67,7 @@ class AuthControllerTest extends ControllerTest {
                 .andExpect(status().isNotFound())
                 .andDo(document("로그인 실패",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("로그인")
+                                .tag("인증")
                                 .summary("로그인")
                                 .requestFields(
                                         fieldWithPath("email").type(STRING).description("이메일"),
@@ -89,7 +89,7 @@ class AuthControllerTest extends ControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("로그아웃 성공",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("로그아웃")
+                                .tag("인증")
                                 .summary("로그아웃")
                                 .build()
                         )
@@ -112,14 +112,14 @@ class AuthControllerTest extends ControllerTest {
 
         String json = objectMapper.writeValueAsString(memberRegisterRequest);
 
-        mockMvc.perform(post("/api/register")
+        mockMvc.perform(post("/api/sign-up")
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isOk())
                 .andDo(document("회원가입 성공",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("회원")
+                                .tag("인증")
                                 .summary("회원가입")
                                 .requestFields(
                                         fieldWithPath("email").type(STRING).description("학교 이메일"),

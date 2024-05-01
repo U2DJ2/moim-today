@@ -33,9 +33,9 @@ public class AuthController {
         authService.logout(request);
     }
 
-    @PostMapping("/register")
-    public void register(@Valid @RequestBody final MemberRegisterRequest memberRegisterRequest,
-                         final HttpServletRequest request){
-        authService.register(memberRegisterRequest, request);
+    @PostMapping("/sign-up")
+    public void signUp(@Valid @RequestBody final MemberRegisterRequest memberRegisterRequest,
+                       final HttpServletRequest request){
+        authService.signUp(memberRegisterRequest, request);
     }
 }

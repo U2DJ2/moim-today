@@ -39,11 +39,11 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public void register(final MemberRegisterRequest memberRegisterRequest,
-                         final HttpServletRequest request) {
+    public void signUp(final MemberRegisterRequest memberRegisterRequest,
+                       final HttpServletRequest request) {
         universityFinder.checkUniversityIdIsPresent(memberRegisterRequest.universityId());
         departmentFinder.isDepartmentAssociatedWithUniversity(memberRegisterRequest.universityId(), memberRegisterRequest.departmentId());
         memberFinder.validateEmailNotExists(memberRegisterRequest.email());
-        authManager.register(memberRegisterRequest, request);
+        authManager.signUp(memberRegisterRequest, request);
     }
 }

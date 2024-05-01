@@ -64,10 +64,7 @@ public class ExtractUniversity {
 
     public boolean checkUniversityType() {
         List<String> universityType = List.of(ASSOCIATE_DEGREE.value(), GRADUATE_DEGREE.value());
-        if (universityType.contains(this.schoolType)) {
-            return true;
-        }
-        return false;
+        return universityType.contains(this.schoolType);
     }
 
     public UniversityJpaEntity toEntity() {
@@ -75,5 +72,9 @@ public class ExtractUniversity {
                 .universityEmail(this.link)
                 .universityName(this.schoolName)
                 .build();
+    }
+
+    public boolean isEmailEmpty(){
+        return link.isEmpty();
     }
 }

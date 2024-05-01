@@ -1,5 +1,6 @@
 package moim_today.implement.university;
 
+import moim_today.domain.university.ExtractUniversity;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;
@@ -28,13 +29,13 @@ class UniversityUpdaterTest extends ImplementTest {
 
         universityRepository.save(universityJpaEntity);
 
-        UniversityJpaEntity updateUniversity = UniversityJpaEntity.builder()
-                .universityName(AJOU_UNIV_NAME)
-                .universityEmail(AJOU_EMAIL)
+        ExtractUniversity extractUniversity = ExtractUniversity.builder()
+                .schoolName(AJOU_UNIV_NAME)
+                .link(AJOU_EMAIL)
                 .build();
 
         // when
-        universityUpdater.putUniversity(updateUniversity);
+        universityUpdater.putUniversity(extractUniversity);
         UniversityJpaEntity findUniversity = universityRepository.findByName(AJOU_UNIV_NAME).get();
 
         // then
@@ -45,13 +46,13 @@ class UniversityUpdaterTest extends ImplementTest {
     @Test
     void 중복되는_대학이름이_없을_때_putUniversity(){
         // given
-        UniversityJpaEntity universityJpaEntity = UniversityJpaEntity.builder()
-                .universityName(AJOU_UNIV_NAME)
-                .universityEmail(AJOU_EMAIL)
+        ExtractUniversity extractUniversity = ExtractUniversity.builder()
+                .schoolName(AJOU_UNIV_NAME)
+                .link(AJOU_EMAIL)
                 .build();
 
         // when
-        universityUpdater.putUniversity(universityJpaEntity);
+        universityUpdater.putUniversity(extractUniversity);
         UniversityJpaEntity findUniversity = universityRepository.findByName(AJOU_UNIV_NAME).get();
 
         // then
