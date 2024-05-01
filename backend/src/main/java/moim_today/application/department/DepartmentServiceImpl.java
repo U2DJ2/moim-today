@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DepartmentServiceImpl implements DepartmentService{
+public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentAppender departmentAppender;
     private final DepartmentFinder departmentFinder;
@@ -24,7 +24,12 @@ public class DepartmentServiceImpl implements DepartmentService{
     }
 
     @Override
-    public List<DepartmentInfoResponse> getAllDepartment(final long universityId, final String universityName) {
-        return departmentFinder.getAllDepartment(universityId, universityName);
+    public List<DepartmentInfoResponse> getAllDepartmentByUniversityName(final String universityName) {
+        return departmentFinder.getAllDepartmentByUniversityName(universityName);
+    }
+
+    @Override
+    public List<DepartmentInfoResponse> getAllDepartmentById(final long universityId) {
+        return departmentFinder.getAllDepartmentById(universityId);
     }
 }
