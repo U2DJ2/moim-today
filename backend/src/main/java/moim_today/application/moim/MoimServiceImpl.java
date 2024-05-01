@@ -13,7 +13,7 @@ import moim_today.implement.moim.moim.MoimAppender;
 import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.implement.moim.moim.MoimRemover;
 import moim_today.implement.moim.moim.MoimUpdater;
-import moim_today.implement.schedule.ScheduleDeleter;
+import moim_today.implement.schedule.ScheduleRemover;
 import moim_today.implement.todo.TodoRemover;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class MoimServiceImpl implements MoimService{
     private final JoinedMeetingRemover joinedMeetingRemover;
     private final TodoRemover todoRemover;
     private final JoinedMoimRemover joinedMoimRemover;
-    private final ScheduleDeleter scheduleDeleter;
+    private final ScheduleRemover scheduleRemover;
 
     public MoimServiceImpl(final MoimAppender moimAppender,
                            final FileUploader fileUploader,
@@ -49,7 +49,7 @@ public class MoimServiceImpl implements MoimService{
                            final JoinedMeetingRemover joinedMeetingRemover,
                            final TodoRemover todoRemover,
                            final JoinedMoimRemover joinedMoimRemover,
-                           final ScheduleDeleter scheduleDeleter) {
+                           final ScheduleRemover scheduleRemover) {
         this.moimAppender = moimAppender;
         this.fileUploader = fileUploader;
         this.moimFinder = moimFinder;
@@ -60,7 +60,7 @@ public class MoimServiceImpl implements MoimService{
         this.joinedMeetingRemover = joinedMeetingRemover;
         this.todoRemover = todoRemover;
         this.joinedMoimRemover = joinedMoimRemover;
-        this.scheduleDeleter = scheduleDeleter;
+        this.scheduleRemover = scheduleRemover;
     }
 
     @Override
@@ -100,6 +100,6 @@ public class MoimServiceImpl implements MoimService{
         List<Long> meetingIds = meetingFinder.findAllByMoimId(moimId);
 
         joinedMeetingRemover.deleteAllByMeetingIdIn(meetingIds);
-        scheduleDeleter.deleteAllByMeetingIdIn(meetingIds);
+        scheduleRemover.deleteAllByMeetingIdIn(meetingIds);
     }
 }

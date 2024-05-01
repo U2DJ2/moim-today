@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Implement
-public class ScheduleDeleter {
+public class ScheduleRemover {
 
     private final ScheduleRepository scheduleRepository;
 
-    public ScheduleDeleter(final ScheduleRepository scheduleRepository) {
+    public ScheduleRemover(final ScheduleRepository scheduleRepository) {
         this.scheduleRepository = scheduleRepository;
     }
 

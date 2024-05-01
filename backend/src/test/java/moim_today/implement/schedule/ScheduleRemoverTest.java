@@ -2,7 +2,6 @@ package moim_today.implement.schedule;
 
 import moim_today.global.error.ForbiddenException;
 import moim_today.global.error.NotFoundException;
-import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
 import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;
@@ -17,10 +16,10 @@ import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCH
 import static moim_today.util.TestConstant.MEETING_ID;
 import static org.assertj.core.api.Assertions.*;
 
-class ScheduleDeleterTest extends ImplementTest {
+class ScheduleRemoverTest extends ImplementTest {
 
     @Autowired
-    private ScheduleDeleter scheduleDeleter;
+    private ScheduleRemover scheduleRemover;
 
     @DisplayName("개인 일정을 삭제한다.")
     @Test
@@ -35,7 +34,7 @@ class ScheduleDeleterTest extends ImplementTest {
         scheduleRepository.save(scheduleJpaEntity);
 
         // when
-        scheduleDeleter.deleteSchedule(memberId, scheduleJpaEntity.getId());
+        scheduleRemover.deleteSchedule(memberId, scheduleJpaEntity.getId());
 
         // then
         assertThat(scheduleRepository.count()).isEqualTo(0);
@@ -55,7 +54,7 @@ class ScheduleDeleterTest extends ImplementTest {
         scheduleRepository.save(scheduleJpaEntity);
 
         // expected
-        assertThatCode(() ->  scheduleDeleter.deleteSchedule(anotherMemberId, scheduleJpaEntity.getId()))
+        assertThatCode(() ->  scheduleRemover.deleteSchedule(anotherMemberId, scheduleJpaEntity.getId()))
                 .isInstanceOf(ForbiddenException.class)
                 .hasMessage(SCHEDULE_FORBIDDEN.message());
     }
@@ -64,7 +63,7 @@ class ScheduleDeleterTest extends ImplementTest {
     @Test
     void deleteScheduleNotFound() {
         // expected
-        assertThatCode(() ->  scheduleDeleter.deleteSchedule(1L, 9999L))
+        assertThatCode(() ->  scheduleRemover.deleteSchedule(1L, 9999L))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(SCHEDULE_NOT_FOUND.message());
     }
@@ -99,7 +98,7 @@ class ScheduleDeleterTest extends ImplementTest {
         meetingIds.add(meetingId2);
 
         //when
-        scheduleDeleter.deleteAllByMeetingIdIn(meetingIds);
+        scheduleRemover.deleteAllByMeetingIdIn(meetingIds);
 
         //then
         assertThat(scheduleRepository.count()).isEqualTo(1L);
