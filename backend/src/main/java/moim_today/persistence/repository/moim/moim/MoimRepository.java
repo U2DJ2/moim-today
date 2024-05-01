@@ -9,4 +9,6 @@ public interface MoimRepository {
     long count();
 
     MoimJpaEntity getById(final long moimId);
+
+    void delete(final MoimJpaEntity moimJpaEntity);
 }

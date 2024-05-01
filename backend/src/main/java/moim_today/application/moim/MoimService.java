@@ -16,4 +16,6 @@ public interface MoimService {
     MoimDetailResponse getMoimDetail(final long moimId);
 
     void updateMoim(final long memberId, final MoimUpdateRequest moimUpdateRequest);
+
+    void deleteMoim(final long memberId, final long moimId);
 }

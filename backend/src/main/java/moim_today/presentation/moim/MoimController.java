@@ -2,10 +2,7 @@ package moim_today.presentation.moim;
 
 import moim_today.application.moim.MoimService;
 import moim_today.domain.member.MemberSession;
-import moim_today.dto.moim.MoimAppendRequest;
-import moim_today.dto.moim.MoimDetailResponse;
-import moim_today.dto.moim.MoimUpdateRequest;
-import moim_today.dto.moim.MoimImageResponse;
+import moim_today.dto.moim.*;
 import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,5 +38,11 @@ public class MoimController {
     public void updateMoim(@Login final MemberSession memberSession,
                            @RequestBody final MoimUpdateRequest moimUpdateRequest) {
         moimService.updateMoim(memberSession.id(), moimUpdateRequest);
+    }
+
+    @DeleteMapping
+    public void deleteMoim(@Login final MemberSession memberSession,
+                           @RequestBody final MoimDeleteRequest moimDeleteRequest) {
+        moimService.deleteMoim(memberSession.id(), moimDeleteRequest.moimId());
     }
 }

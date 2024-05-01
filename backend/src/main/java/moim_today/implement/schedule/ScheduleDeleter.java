@@ -5,6 +5,8 @@ import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
 import moim_today.persistence.repository.schedule.ScheduleRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Implement
 public class ScheduleDeleter {
 
@@ -19,5 +21,9 @@ public class ScheduleDeleter {
         ScheduleJpaEntity scheduleJpaEntity = scheduleRepository.getById(scheduleId);
         scheduleJpaEntity.validateMember(memberId);
         scheduleRepository.delete(scheduleJpaEntity);
+    }
+
+    public void deleteAllByMeetingIdIn(final List<Long> meetingIds) {
+        scheduleRepository.deleteAllByMeetingIdIn(meetingIds);
     }
 }

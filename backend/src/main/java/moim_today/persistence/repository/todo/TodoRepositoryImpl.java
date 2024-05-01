@@ -10,4 +10,9 @@ public class TodoRepositoryImpl implements TodoRepository {
     public TodoRepositoryImpl(final TodoJpaRepository todoJpaRepository) {
         this.todoJpaRepository = todoJpaRepository;
     }
+
+    @Override
+    public void deleteAllByMoimId(final long moimId) {
+        todoJpaRepository.deleteAllByMoimId(moimId);
+    }
 }

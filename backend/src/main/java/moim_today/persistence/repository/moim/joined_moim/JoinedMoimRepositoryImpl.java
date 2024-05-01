@@ -10,4 +10,9 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
     public JoinedMoimRepositoryImpl(final JoinedMoimJpaRepository joinedMoimJpaRepository) {
         this.joinedMoimJpaRepository = joinedMoimJpaRepository;
     }
+
+    @Override
+    public void deleteAllByMoimId(final long moimId) {
+        joinedMoimJpaRepository.deleteAllByMoimId(moimId);
+    }
 }

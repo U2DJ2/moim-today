@@ -30,4 +30,9 @@ public class MoimRepositoryImpl implements MoimRepository {
         return moimJpaRepository.findById(moimId)
                 .orElseThrow(() -> new NotFoundException(MOIM_NOT_FOUND_ERROR.message()));
     }
+
+    @Override
+    public void delete(final MoimJpaEntity moimJpaEntity) {
+        moimJpaRepository.delete(moimJpaEntity);
+    }
 }
