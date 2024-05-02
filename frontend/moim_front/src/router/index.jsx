@@ -26,7 +26,7 @@ function Router() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/creation" element={<MoimCreationPage />} />
-      <Route path="/profile" element={<Manage />} />
+      <Route path="/manage" element={<Manage />} />
       <Route path="/calendar" element={<Calendar />} />
     </Routes>
   );
