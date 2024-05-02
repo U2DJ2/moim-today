@@ -6,6 +6,7 @@ import moim_today.util.ImplementTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -14,13 +15,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class JoinedMoimFinderTest extends ImplementTest {
 
-    private final JoinedMoimFinder joinedMoimFinder;
+    @Autowired
+    private JoinedMoimFinder joinedMoimFinder;
 
     private final int MOIM_MEMBER_SIZE = 3;
-
-    JoinedMoimFinderTest(JoinedMoimFinder joinedMoimFinder) {
-        this.joinedMoimFinder = joinedMoimFinder;
-    }
 
     @DisplayName("모임에 참여한 멤버들을 조회한다")
     @Test
@@ -49,7 +47,7 @@ class JoinedMoimFinderTest extends ImplementTest {
         Assertions.assertThat(membersByMoimId.size()).isEqualTo(MOIM_MEMBER_SIZE);
     }
 
-    @DisplayName("없는 모임의 멤버를 조회할 때 에러를 발생한다")
+    @DisplayName("모임의 멤버를 조회할 때 아무도 없으면 에러를 발생시킨다")
     @Test
     void findMembersByMoimIdNotFound() {
 
@@ -59,15 +57,6 @@ class JoinedMoimFinderTest extends ImplementTest {
                 .build();
 
         MoimJpaEntity savedMoim = moimRepository.save(moimJpaEntity);
-
-        // given2
-        for(int i  = 0 ; i < MOIM_MEMBER_SIZE; i++){
-            JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
-                    .memberId(i)
-                    .moimId(savedMoim.getId())
-                    .build();
-            joinedMoimRepository.save(joinedMoimJpaEntity);
-        }
 
         // expected
         assertThatThrownBy(() -> joinedMoimFinder.findMembersByMoimId(savedMoim.getId()))

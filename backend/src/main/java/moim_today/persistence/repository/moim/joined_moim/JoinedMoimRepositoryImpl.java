@@ -33,7 +33,7 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
     }
 
     @Override
-    public List<JoinedMoimJpaEntity> findMoimJoinMembersByMoimId(final long moimId) {
+    public List<JoinedMoimJpaEntity> findJoinMembersByMoimId(final long moimId) {
         List<JoinedMoimJpaEntity> membersByMoimId = joinedMoimJpaRepository.findMembersByMoimId(moimId);
         if(membersByMoimId.isEmpty()){
             throw new NotFoundException(JOINED_MOIM_MEMBER_NOT_FOUND.message());

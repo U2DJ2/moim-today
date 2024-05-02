@@ -1,6 +1,6 @@
 package moim_today.implement.moim.moim;
 
-import moim_today.dto.moim.MoimMemberResponse;
+import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;

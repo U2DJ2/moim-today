@@ -1,6 +1,6 @@
 package moim_today.implement.moim.moim;
 
-import moim_today.dto.moim.MoimMemberResponse;
+import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.member.MemberFinder;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;

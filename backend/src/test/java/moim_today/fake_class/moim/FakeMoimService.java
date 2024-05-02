@@ -3,10 +3,7 @@ package moim_today.fake_class.moim;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.moim.MoimAppendRequest;
-import moim_today.dto.moim.moim.MoimDetailResponse;
-import moim_today.dto.moim.moim.MoimUpdateRequest;
-import moim_today.dto.moim.moim.MoimImageResponse;
+import moim_today.dto.moim.moim.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;

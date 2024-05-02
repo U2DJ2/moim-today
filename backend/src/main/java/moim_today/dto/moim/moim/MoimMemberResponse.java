@@ -1,4 +1,4 @@
-package moim_today.dto.moim;
+package moim_today.dto.moim.moim;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
@@ -11,7 +11,7 @@ public record MoimMemberResponse(
         boolean isHost,
         long memberId,
         String memberName,
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
         LocalDateTime joinedDate
 ) {
 

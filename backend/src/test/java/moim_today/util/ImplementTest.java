@@ -55,9 +55,6 @@ public abstract class ImplementTest {
     protected ScheduleColorRepository scheduleColorRepository;
 
     @Autowired
-    protected JoinedMoimRepository joinedMoimRepository;
-
-    @Autowired
     protected JoinedMeetingRepository joinedMeetingRepository;
 
     @Autowired

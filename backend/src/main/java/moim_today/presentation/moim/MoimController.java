@@ -41,7 +41,7 @@ public class MoimController {
     }
 
     @GetMapping("/members")
-    public MoimMembersResponse findMoimMembers(@Login final MemberSession memberSession,
+    public MoimMemberTabResponse findMoimMembers(@Login final MemberSession memberSession,
                                                @RequestParam final long moimId){
         return moimService.findMoimMembers(memberSession.id(), moimId);
     }
