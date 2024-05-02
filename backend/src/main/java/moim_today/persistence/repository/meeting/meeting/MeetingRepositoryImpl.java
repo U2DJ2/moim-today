@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity.*;
+
 @Repository
 public class MeetingRepositoryImpl implements MeetingRepository {
 
@@ -22,9 +24,9 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     @Override
     public List<Long> findAllByMoimId(final long moimId) {
         return queryFactory
-                .select(QMeetingJpaEntity.meetingJpaEntity.id)
-                .from(QMeetingJpaEntity.meetingJpaEntity)
-                .where(QMeetingJpaEntity.meetingJpaEntity.moimId.eq(moimId))
+                .select(meetingJpaEntity.id)
+                .from(meetingJpaEntity)
+                .where(meetingJpaEntity.moimId.eq(moimId))
                 .fetch();
     }
 

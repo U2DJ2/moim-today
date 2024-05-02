@@ -22,10 +22,7 @@ public class JoinedMoimAppender {
     public void createJoinedMoim(final long memberId, final long moimId) {
         moimFinder.getById(moimId);
 
-        JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
-                .moimId(moimId)
-                .memberId(memberId)
-                .build();
+        JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.of(memberId, moimId);
 
         joinedMoimRepository.save(joinedMoimJpaEntity);
     }
