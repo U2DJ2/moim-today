@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AuthTitle from "../../../components/Authentification/AuthTitle";
+import { GET } from "../../../utils/axios";
+import axios from "axios";
+import properties from "../../../config/properties";
 
 function School({
+  universityId,
   setDepartment,
   department,
   setStudentId,
@@ -9,10 +13,36 @@ function School({
   universityName,
   setActiveNext,
 }) {
+  const getAllDepartment = axios.create({
+    baseURL: properties.baseURL,
+    withCredentials: true,
+  });
+  // 학과
   const departmentHandler = (e) => {
     setDepartment(e.target.value);
     checkInputsFilled(e.target.value, studentId);
   };
+
+  useEffect(() => {
+    if (universityId) {
+      getAllDepartment
+        .get(`api/departments/university-id`, {
+          params: { universityId: universityId },
+        })
+        .then((res) => {
+          console.log(res.data);
+        });
+    } else {
+      console.log("first");
+    }
+  }, [universityId]);
+  useEffect(() => console.log(universityId), []);
+
+  // const departmentDrop = async (universityId) => {
+  //   getAllDepartment.get(`api/departments/${universityId}`).then((res) => {
+  //     console.log(res.data);
+  //   });
+  // };
 
   const studentIdHandler = (e) => {
     setStudentId(e.target.value);

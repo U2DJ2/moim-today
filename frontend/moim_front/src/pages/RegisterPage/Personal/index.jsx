@@ -14,7 +14,6 @@ function Personal({
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
   // const [optionVisible, setOptionVisible] = useState();
-  const buttonName = ["남성", "여성"];
   const checkInputsFilled = (username, year, month, day, gender) => {
     if (
       username.trim() !== "" &&

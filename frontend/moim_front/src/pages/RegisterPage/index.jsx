@@ -62,7 +62,8 @@ function RegisterPage() {
       client.post("api/certification/email/complete", emailBody).then((res) => {
         if (res.statusCode === 400) return setEmailValidation(true);
         setUniversityName(res.data.universityName);
-        setUniversityId(res.data.universityID);
+        setUniversityId(res.data.universityId);
+        console.log(setUniversityId);
         setStep(step + 1);
       });
     } else if (step === 3) {
@@ -97,6 +98,7 @@ function RegisterPage() {
           />
         ) : step === 2 ? (
           <School
+            universityId={universityId}
             universityName={universityName}
             studentId={studentId}
             setStudentId={setStudentId}
