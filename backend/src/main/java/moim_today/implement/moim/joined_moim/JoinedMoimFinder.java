@@ -17,7 +17,7 @@ public class JoinedMoimFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<JoinedMoimJpaEntity> findMembersByMoimId(final long moimId) {
+    public List<JoinedMoimJpaEntity> findByMoimId(final long moimId) {
         return joinedMoimRepository.findJoinMembersByMoimId(moimId);
     }
 }

@@ -97,7 +97,6 @@ class MoimFinderTest extends ImplementTest {
         MemberJpaEntity savedMember3 = saveRandomMember();
         MemberJpaEntity savedMember4 = saveRandomMember();
 
-
         // given2
         MoimJpaEntity savedMoim = saveRandomMoim(savedMember1.getId());
 
@@ -108,7 +107,7 @@ class MoimFinderTest extends ImplementTest {
         joinedMoimJpaEntities.add(saveRandomJoinedMoim(savedMoim.getId(), savedMember3.getId()));
 
         // when
-        List<MoimMemberResponse> moimMembers = moimFinder.findMoimMembers(savedMoim.getId(), joinedMoimJpaEntities);
+        List<MoimMemberResponse> moimMembers = moimFinder.findMembersInMoim(joinedMoimJpaEntities, savedMoim.getMemberId());
 
         List<Long> moimMemberIds = new ArrayList<>();
         moimMembers.stream().forEach(m -> moimMemberIds.add(m.memberId()));
@@ -153,8 +152,8 @@ class MoimFinderTest extends ImplementTest {
         joinedMoimJpaEntities.add(joinedMoimRepository.save(joinedMoimJpaEntity3));
 
         // expected
-        assertThat(moimFinder.isHost(savedMoim.getId(), 1L)).isTrue();
-        assertThat(moimFinder.isHost(savedMoim.getId(), 2L)).isFalse();
+        assertThat(moimFinder.isHost(savedMoim.getMemberId(), 1L)).isTrue();
+        assertThat(moimFinder.isHost(savedMoim.getMemberId(), 2L)).isFalse();
     }
 
     private MemberJpaEntity saveRandomMember() {

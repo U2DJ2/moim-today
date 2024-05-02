@@ -4,7 +4,7 @@ import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.member.MemberFinder;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
-import moim_today.persistence.entity.member.MemberJpaEntity;
+import moim_today.implement.moim.joined_moim.JoinedMoimManager;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.repository.moim.moim.MoimRepository;
@@ -15,11 +15,14 @@ import java.util.List;
 @Implement
 public class MoimFinder {
 
-    private final MoimRepository moimRepository;
+    private final JoinedMoimManager joinedMoimManager;
     private final JoinedMoimFinder joinedMoimFinder;
+    private final MoimRepository moimRepository;
     private final MemberFinder memberFinder;
 
-    public MoimFinder(final MoimRepository moimRepository, final JoinedMoimFinder joinedMoimFinder, final MemberFinder memberFinder) {
+    public MoimFinder(final JoinedMoimManager joinedMoimManager, final MoimRepository moimRepository,
+                      final JoinedMoimFinder joinedMoimFinder, final MemberFinder memberFinder) {
+        this.joinedMoimManager = joinedMoimManager;
         this.moimRepository = moimRepository;
         this.joinedMoimFinder = joinedMoimFinder;
         this.memberFinder = memberFinder;
@@ -27,7 +30,7 @@ public class MoimFinder {
 
     @Transactional(readOnly = true)
     public List<JoinedMoimJpaEntity> findJoinedMoims(final long moimId) {
-        return joinedMoimFinder.findMembersByMoimId(moimId);
+        return joinedMoimFinder.findByMoimId(moimId);
     }
 
     @Transactional(readOnly = true)
@@ -36,17 +39,13 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<MoimMemberResponse> findMoimMembers(final long moimId, final List<JoinedMoimJpaEntity> joinedMoimJpaEntities) {
-        return joinedMoimJpaEntities.stream().map(joinedMoimJpaEntity -> {
-            MemberJpaEntity memberJpaEntity = memberFinder.getMemberById(joinedMoimJpaEntity.getMemberId());
-            boolean isHost = isHost(moimId, memberJpaEntity.getId());
-            return MoimMemberResponse.of(memberJpaEntity, isHost, joinedMoimJpaEntity.getCreatedAt());
-        }).toList();
+    public List<MoimMemberResponse> findMembersInMoim(final List<JoinedMoimJpaEntity> joinedMoimJpaEntities,
+                                                      final long hostId) {
+        List<Long> memberIds = joinedMoimManager.extractMemberIds(joinedMoimJpaEntities);
+        return memberFinder.findMembersWithJoinedInfo(memberIds, hostId);
     }
 
-    @Transactional(readOnly = true)
-    public boolean isHost(final long moimId, final long memberId) {
-        MoimJpaEntity moimJpaEntity = getById(moimId);
-        return moimJpaEntity.getMemberId() == memberId;
+    public boolean isHost(final long moimHostId, final long memberId) {
+        return moimHostId == memberId;
     }
 }

@@ -107,9 +107,11 @@ public class MoimServiceImpl implements MoimService{
 
     @Override
     public MoimMemberTabResponse findMoimMembers(final long memberId, final long moimId) {
-        List<JoinedMoimJpaEntity> membersByMoimId = joinedMoimFinder.findMembersByMoimId(moimId);
-        List<MoimMemberResponse> moimMembers = moimFinder.findMoimMembers(moimId, membersByMoimId);
-        boolean isHostRequest = moimFinder.isHost(moimId, memberId);
-        return MoimMemberTabResponse.of(isHostRequest, moimMembers);
+        MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
+        long moimHostId = moimJpaEntity.getMemberId();
+        List<JoinedMoimJpaEntity> joinedMoimJpaEntities = joinedMoimFinder.findByMoimId(moimId);
+        List<MoimMemberResponse> moimMemberResponses = moimFinder.findMembersInMoim(joinedMoimJpaEntities, moimHostId);
+        boolean isHostRequest = moimFinder.isHost(moimHostId, memberId);
+        return MoimMemberTabResponse.of(isHostRequest, moimMemberResponses);
     }
 }

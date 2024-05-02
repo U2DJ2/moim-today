@@ -41,7 +41,7 @@ class JoinedMoimFinderTest extends ImplementTest {
         }
 
         // when
-        List<JoinedMoimJpaEntity> membersByMoimId = joinedMoimFinder.findMembersByMoimId(savedMoim.getId());
+        List<JoinedMoimJpaEntity> membersByMoimId = joinedMoimFinder.findByMoimId(savedMoim.getId());
 
         // then
         Assertions.assertThat(membersByMoimId.size()).isEqualTo(MOIM_MEMBER_SIZE);
@@ -59,7 +59,7 @@ class JoinedMoimFinderTest extends ImplementTest {
         MoimJpaEntity savedMoim = moimRepository.save(moimJpaEntity);
 
         // expected
-        assertThatThrownBy(() -> joinedMoimFinder.findMembersByMoimId(savedMoim.getId()))
+        assertThatThrownBy(() -> joinedMoimFinder.findByMoimId(savedMoim.getId()))
                 .hasMessage(JOINED_MOIM_MEMBER_NOT_FOUND.message());
     }
 }
