@@ -1,11 +1,13 @@
 package moim_today.dto.meeting;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import moim_today.domain.meeting.enums.MeetingCategory;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 
 import java.time.LocalDateTime;
 
+@Builder
 public record MeetingCreateRequest(
         long moimId,
         String agenda,
