@@ -43,6 +43,9 @@ public abstract class ImplementTest {
     protected DepartmentRepository departmentRepository;
 
     @Autowired
+    protected JoinedMoimRepository joinedMoimRepository;
+
+    @Autowired
     protected MoimRepository moimRepository;
 
     @Autowired

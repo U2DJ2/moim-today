@@ -3,8 +3,6 @@ package moim_today.application.moim;
 import moim_today.dto.moim.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 public interface MoimService {
 
     void createPublicMoim(final long memberId, final long universityId,
@@ -19,5 +17,5 @@ public interface MoimService {
 
     void updateMoim(final long memberId, final MoimUpdateRequest moimUpdateRequest);
 
-    List<MoimMemberTabResponse> findMoimMembers(final long memberId, final long moimId);
+    MoimMemberTabResponse findMoimMembers(final long memberId, final long moimId);
 }

@@ -30,6 +30,7 @@ public class DepartmentAppender {
         this.departmentRepository = departmentRepository;
     }
 
+    @Transactional
     public void putAllDepartment() {
         List<String> allMajor = departmentFetcher.getAllMajor();
         Map<String, Set<String>> departmentUpdateQueue = new HashMap<>();
@@ -46,6 +47,7 @@ public class DepartmentAppender {
         departmentRepository.batchUpdate(departmentJpaEntities);
     }
 
+    @Transactional
     public void updateDepartmentsIfSizeOver(final Map<String, Set<String>> universityAndDepartments, final int size){
         if(getTotalMapSize(universityAndDepartments) > size){
             batchUpdate(filterUniversityExistToDepartment(universityAndDepartments));
@@ -53,7 +55,8 @@ public class DepartmentAppender {
         }
     }
 
-    private List<DepartmentJpaEntity> filterUniversityExistToDepartment(final Map<String, Set<String>> universityAndDepartments) {
+    @Transactional(readOnly = true)
+    public List<DepartmentJpaEntity> filterUniversityExistToDepartment(final Map<String, Set<String>> universityAndDepartments) {
         List<UniversityJpaEntity> universityIdAndDepartments = universityFinder
                 .findUniversitiesByName(universityAndDepartments.keySet().stream().toList());
         return Department.toEntities(universityAndDepartments, universityIdAndDepartments);

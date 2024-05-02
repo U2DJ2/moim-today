@@ -1,5 +1,6 @@
 package moim_today.implement.moim.moim;
 
+import moim_today.global.annotation.Implement;
 import moim_today.dto.moim.moim.MoimAppendRequest;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.moim.joined_moim.JoinedMoimAppender;

@@ -1,21 +1,11 @@
 package moim_today.presentation.moim;
 
-import moim_today.application.moim.MoimService;
-import moim_today.application.moim.MoimServiceImpl;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.domain.member.MemberSession;
-import moim_today.dto.moim.*;
-import moim_today.dto.moim.MoimMembersResponse;
-import moim_today.dto.moim.PrivateMoimAppendRequest;
-import moim_today.dto.moim.PublicMoimAppendRequest;
-import moim_today.dto.moim.UploadMoimImageResponse;
 import moim_today.dto.moim.moim.*;
 import moim_today.global.annotation.Login;
-import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RequestMapping("/api/moims")
 @RestController

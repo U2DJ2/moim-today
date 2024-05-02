@@ -11,7 +11,9 @@ public interface JoinedMoimRepository {
     List<JoinedMoimJpaEntity> findMembersByMoimId(final long moimId);
     void deleteAllByMoimId(final long moimId);
 
-    void save(final JoinedMoimJpaEntity joinedMoimJpaEntity);
-
     long count();
+
+    JoinedMoimJpaEntity save(final JoinedMoimJpaEntity joinedMoimJpaEntity);
+
+    List<JoinedMoimJpaEntity> findMoimJoinMembersByMoimId(final long moimId);
 }

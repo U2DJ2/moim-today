@@ -1,11 +1,12 @@
 package moim_today.application.moim;
 
+import moim_today.dto.moim.MoimMemberResponse;
 import moim_today.dto.moim.*;
 import moim_today.implement.file.FileUploader;
-import moim_today.implement.moim.MoimAppender;
-import moim_today.implement.moim.MoimFinder;
-import moim_today.implement.moim.MoimUpdater;
-import moim_today.persistence.entity.member.MemberJpaEntity;
+import moim_today.implement.moim.moim.MoimAppender;
+import moim_today.implement.moim.moim.MoimFinder;
+import moim_today.implement.moim.moim.MoimUpdater;
+import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,8 +60,10 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public List<MoimMemberTabResponse> findMoimMembers(final long memberId, final long moimId) {
-        List<MemberJpaEntity> moimMember = moimFinder.findMoimMembers(moimId);
-        return null;
+    public MoimMemberTabResponse findMoimMembers(final long memberId, final long moimId) {
+        List<JoinedMoimJpaEntity> joinedMoimInfo = moimFinder.findJoinedMoims(moimId);
+        List<MoimMemberResponse> moimMemberResponse = moimFinder.findMoimMembers(moimId, joinedMoimInfo);
+        boolean isHostRequest = moimFinder.isHost(memberId, moimId);
+        return MoimMemberTabResponse.of(isHostRequest, moimMemberResponse);
     }
 }

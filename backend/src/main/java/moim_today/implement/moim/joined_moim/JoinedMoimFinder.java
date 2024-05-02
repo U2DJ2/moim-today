@@ -1,8 +1,9 @@
-package moim_today.implement.joined_moim;
+package moim_today.implement.moim.joined_moim;
 
 import moim_today.global.annotation.Implement;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.repository.moim.joined_moim.JoinedMoimRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -11,11 +12,12 @@ public class JoinedMoimFinder {
 
     private final JoinedMoimRepository joinedMoimRepository;
 
-    public JoinedMoimFinder(JoinedMoimRepository joinedMoimRepository) {
+    public JoinedMoimFinder(final JoinedMoimRepository joinedMoimRepository) {
         this.joinedMoimRepository = joinedMoimRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<JoinedMoimJpaEntity> findMembersByMoimId(final long moimId) {
-        return null;
+        return joinedMoimRepository.findMoimJoinMembersByMoimId(moimId);
     }
 }
