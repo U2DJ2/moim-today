@@ -33,7 +33,7 @@ class MeetingControllerTest extends ControllerTest {
 
     @DisplayName("단일 미팅을 생성한다.")
     @Test
-    void createMeeting() throws Exception {
+    void createSingleMeeting() throws Exception {
         MeetingCreateRequest meetingCreateRequest = MeetingCreateRequest.builder()
                 .moimId(1)
                 .agenda(MEETING_AGENDA.value())
@@ -53,7 +53,42 @@ class MeetingControllerTest extends ControllerTest {
                 .andDo(document("단일 미팅 생성 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("미팅")
-                                .summary("단일 미팅 생성")
+                                .summary("미팅 생성")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("모임 id"),
+                                        fieldWithPath("agenda").type(STRING).description("미팅 의제"),
+                                        fieldWithPath("startDateTime").type(STRING).description("미팅 시작 시간"),
+                                        fieldWithPath("endDateTime").type(STRING).description("미팅 종료 시간"),
+                                        fieldWithPath("place").type(STRING).description("미팅 장소"),
+                                        fieldWithPath("meetingCategory").type(STRING).description("미팅 카테고리")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("정기 미팅을 생성한다.")
+    @Test
+    void createRegularMeeting() throws Exception {
+        MeetingCreateRequest meetingCreateRequest = MeetingCreateRequest.builder()
+                .moimId(1)
+                .agenda(MEETING_AGENDA.value())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
+                .place(MEETING_PLACE.value())
+                .meetingCategory(MeetingCategory.REGULAR)
+                .build();
+
+        String json = objectMapper.writeValueAsString(meetingCreateRequest);
+
+        mockMvc.perform(post("/api/meetings")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("정기 미팅 생성 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅")
+                                .summary("미팅 생성")
                                 .requestFields(
                                         fieldWithPath("moimId").type(NUMBER).description("모임 id"),
                                         fieldWithPath("agenda").type(STRING).description("미팅 의제"),

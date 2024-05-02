@@ -2,12 +2,15 @@ package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingCategory;
 import moim_today.dto.meeting.MeetingCreateRequest;
+import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import static moim_today.util.TestConstant.MEETING_AGENDA;
 import static moim_today.util.TestConstant.MEETING_PLACE;
@@ -20,7 +23,7 @@ class MeetingAppenderTest extends ImplementTest {
 
     @DisplayName("단일 미팅을 생성한다.")
     @Test
-    void createMeeting() {
+    void createSingleMeeting() {
         // given
         long moimId = 1L;
 
@@ -38,5 +41,39 @@ class MeetingAppenderTest extends ImplementTest {
 
         // then
         assertThat(meetingRepository.count()).isEqualTo(1);
+    }
+
+    @DisplayName("정기 미팅을 생성한다.")
+    @Test
+    void createRegularMeeting() {
+        // given 1
+        long memberId = 1;
+        LocalDate startDate = LocalDate.of(2024, 3, 4);
+        LocalDate endDate = LocalDate.of(2024, 6, 30);
+
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .memberId(memberId)
+                .startDate(startDate)
+                .endDate(endDate)
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+
+        // given 2
+        MeetingCreateRequest meetingCreateRequest = MeetingCreateRequest.builder()
+                .moimId(moimJpaEntity.getId())
+                .agenda(MEETING_AGENDA.value())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
+                .place(MEETING_PLACE.value())
+                .meetingCategory(MeetingCategory.REGULAR)
+                .build();
+
+        // when
+        meetingAppender.createMeeting(meetingCreateRequest);
+
+        // then
+        long between = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
+        assertThat(meetingRepository.count()).isEqualTo(between);
     }
 }
