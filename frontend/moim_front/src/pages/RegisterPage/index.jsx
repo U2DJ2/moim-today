@@ -11,6 +11,7 @@ import TimeTable from "./TimeTable";
 import Congrats from "./Congrats";
 import axios from "axios";
 import Modal from "../../components/Modal/ModalTest.jsx";
+import ConfirmModal from "./ConfirmModal/index.jsx";
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -34,7 +35,9 @@ function RegisterPage() {
   const [studentId, setStudentId] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [gender, setGender] = useState("");
+  const [message, setMessage] = useState("");
 
+  const [isOpen, setIsOpen] = useState(false);
   const client = axios.create({
     baseURL: "https://api.moim.today/",
   });
@@ -55,13 +58,24 @@ function RegisterPage() {
     if (step === 0) {
       //check email validity
       client.post("api/certification/email", emailBody).then((res) => {
-        if (res.statusCode === 400) return setEmailDuplication(true);
-        else if (res.statusCode === 404) return setSchoolValidation(true);
+        if (res.statusCode === 400) {
+          setEmailDuplication(true);
+          isOpen(true);
+          console.log(res);
+          message("이미 있는 이메일 입니다");
+        } else if (res.statusCode === 404) return setSchoolValidation(true);
         setStep(step + 1);
+        console.log(res);
       });
     } else if (step === 1) {
       client.post("api/certification/email/complete", emailBody).then((res) => {
-        if (res.statusCode === 400) return setEmailValidation(true);
+        if (res.status === "400") {
+          console.log(res.status);
+          setEmailValidation(true);
+          setIsOpen(true);
+        }
+        console.log(res);
+        console.log(res.status);
         setUniversityName(res.data.universityName);
         setUniversityId(res.data.universityId);
         console.log(setUniversityId);
@@ -69,6 +83,12 @@ function RegisterPage() {
       });
     } else if (step === 3) {
       client.post("api/sign-up", userData).then((res) => {
+        if (res.status === "404") {
+          isOpen(true);
+          message(
+            "이메일 또는 비밀번호가 올바르지 않습니다. 다시 확인해주세요."
+          );
+        }
         console.log(res.data);
         setStep(step + 1);
       });
@@ -81,7 +101,9 @@ function RegisterPage() {
     if (step === 0) navigate(-1);
     else setStep(step - 1);
   };
-
+  const handleModal = () => {
+    setIsOpen(false);
+  };
   return (
     <div className="flex min-h-screen w-full py-0 overflow-hidden relative gap-1 pl-52 bg-scarlet">
       <div className="flex flex-1 flex-col items-start justify-center w-96 gap-16">
@@ -151,6 +173,7 @@ function RegisterPage() {
         )}
       </div>
       <AuthRight cardColor={"white"} textColor={"scarlet"} />
+      <Modal isOpen={isOpen} closeModal={handleModal} message={message} />
     </div>
   );
 }

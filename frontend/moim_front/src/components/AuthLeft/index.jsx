@@ -7,6 +7,7 @@ import RegisterLabel from "../../assets/svg/Register_Label.svg";
 import EmailBtn from "../../assets/svg/EmailBtn.svg";
 import { useNavigate } from "react-router";
 import { POST } from "../../utils/axios";
+import Modal from "../Modal/ModalTest";
 function AuthLeft({
   title,
   firstContent,
@@ -33,8 +34,9 @@ function AuthLeft({
     };
 
     POST("api/login", data).then((res) => {
-      if (res.statusCode === 404) {
+      if (res.status === "404") {
         console.log(res);
+        console.log("first");
         alert("아이디 및 비밀번호를 다시 확인하시오.");
       } else {
         console.log(res.data);

@@ -3,17 +3,15 @@ import AuthRight from "../../components/AuthRight";
 import AuthLeft from "../../components/AuthLeft";
 import right1 from "../../assets/svg/right1.svg";
 import { POST } from "../../utils/axios";
+import Modal from "../../components/Modal/ModalTest";
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const data = {
-  //   email: email,
-  //   password: password,
-  // };
+  const [isOpen, setIsOpen] = useState(false);
 
-  // POST("api/login", data).then((res) => {
-  //   console.log(res.data);
-  // });
+  const modalHandler = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <div className="flex min-h-screen w-full py-0 overflow-hidden relative gap-1 pl-52">
       <AuthLeft
@@ -29,6 +27,7 @@ function LoginPage() {
         setPassword={setPassword}
       />
       <AuthRight textColor={"white"} cardColor={"scarlet"} />
+      <Modal isOpen={isOpen} closeModal={modalHandler} />
     </div>
   );
 }
