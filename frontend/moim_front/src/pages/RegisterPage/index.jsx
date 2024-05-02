@@ -10,6 +10,7 @@ import Personal from "./Personal";
 import TimeTable from "./TimeTable";
 import Congrats from "./Congrats";
 import axios from "axios";
+import Modal from "../../components/Modal/ModalTest.jsx";
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -80,6 +81,7 @@ function RegisterPage() {
     if (step === 0) navigate(-1);
     else setStep(step - 1);
   };
+
   return (
     <div className="flex min-h-screen w-full py-0 overflow-hidden relative gap-1 pl-52 bg-scarlet">
       <div className="flex flex-1 flex-col items-start justify-center w-96 gap-16">

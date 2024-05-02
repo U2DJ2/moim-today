@@ -44,7 +44,7 @@ function Account({ email, setEmail, password, setPassword, setActiveNext }) {
       />
       <div className="flex flex-col gap-12">
         <div className="gap-1">
-          <p className=" font-Pretendard_Black block text-xl text-white">
+          <p className=" font-Pretendard_Black block text-2xl text-white">
             Email
           </p>
           <input
@@ -52,12 +52,12 @@ function Account({ email, setEmail, password, setPassword, setActiveNext }) {
             name="email"
             autoComplete="off"
             placeholder="enter your email"
-            className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white`}
+            className={`border-b border-white font-Pretendard_Light text-white text-2xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white`}
             value={email}
             onChange={emailHandler}
           />
           <p
-            className={`mt-2 text-xs font-medium ${
+            className={`mt-2 text-xl font-medium ${
               !validationEmail ? "text-white" : "text-scarlet"
             } ${validationEmail && email ? "hidden" : "block"}`}
           >
@@ -65,7 +65,7 @@ function Account({ email, setEmail, password, setPassword, setActiveNext }) {
           </p>
         </div>
         <div className="gap-1">
-          <p className=" font-Pretendard_Black block text-xl text-white">
+          <p className=" font-Pretendard_Black block text-2xl text-white">
             Password
           </p>
           <input
@@ -73,12 +73,12 @@ function Account({ email, setEmail, password, setPassword, setActiveNext }) {
             name="password"
             autoComplete="off"
             placeholder="enter your password"
-            className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white `}
+            className={`border-b border-white font-Pretendard_Light text-white text-2xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white `}
             value={password}
             onChange={passwordHandler}
           />
           <p
-            className={`mt-2 text-xs font-medium ${
+            className={`mt-2 text-xl font-medium ${
               !validationPassword ? "text-white" : "text-scarlet"
             } ${validationPassword && password ? "hidden" : "block"}`}
           >
