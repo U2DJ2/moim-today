@@ -16,13 +16,20 @@ function RegisterPage() {
 
   const [step, setStep] = useState(0);
   const [activeNext, setActiveNext] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const [universityName, setUniversityName] = useState("");
   const [emailDuplication, setEmailDuplication] = useState(false);
+  const [emailValidation, setEmailValidation] = useState(false);
+
   const [schoolValidation, setSchoolValidation] = useState(false);
   const [emailAuth, setEmailAuth] = useState(false);
-  const [schoolName, setSchoolName] = useState("");
   const [department, setDepartment] = useState("");
+  /* register form data */
+  const [universityId, setUniversityId] = useState();
+  const [departmentId, setDepartmentId] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUserName] = useState("");
   const [studentId, setStudentId] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [gender, setGender] = useState("");
@@ -39,6 +46,13 @@ function RegisterPage() {
       client.post("api/certification/email", emailBody).then((res) => {
         if (res.statusCode === 400) return setEmailDuplication(true);
         else if (res.statusCode === 404) return setSchoolValidation(true);
+        setStep(step + 1);
+      });
+    } else if (step === 1) {
+      client.post("api/certification/email/complete", emailBody).then((res) => {
+        if (res.statusCode === 400) return setEmailValidation(true);
+        setUniversityName(res.data.universityName);
+        setUniversityId(res.data.universityID);
         setStep(step + 1);
       });
     } else {
@@ -68,8 +82,7 @@ function RegisterPage() {
           />
         ) : step === 2 ? (
           <School
-            schoolName={schoolName}
-            setSchoolName={setSchoolName}
+            universityName={universityName}
             studentId={studentId}
             setStudentId={setStudentId}
             department={department}

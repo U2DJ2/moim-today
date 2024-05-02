@@ -1,10 +1,19 @@
 import React from "react";
 import AuthTitle from "../../../components/Authentification/AuthTitle";
-import { useForm } from "react-hook-form";
 
-function School({ schoolName }) {
-  const { register, handleSubmit, errors, formState, setValue, data } =
-    useForm();
+function School({
+  setDepartment,
+  department,
+  setStudentId,
+  studentId,
+  universityName,
+}) {
+  const departmentHandler = (e) => {
+    setDepartment(e.target.value);
+  };
+  const studentIdHandler = (e) => {
+    setStudentId(e.target.value);
+  };
   return (
     <div className="flex flex-col gap-16">
       <AuthTitle
@@ -19,8 +28,8 @@ function School({ schoolName }) {
           <p className=" font-Pretendard_Black block text-xl text-white">
             학교명
           </p>
-          <p className="border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white">
-            {schoolName}
+          <p className="border-b border-white font-Pretendard_Light text-gray-300 text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white">
+            {universityName}
           </p>
         </div>
         <div className="gap-1">
@@ -33,6 +42,8 @@ function School({ schoolName }) {
             autoComplete="off"
             placeholder="학과명을 입력해주세요."
             className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white `}
+            value={department}
+            onChange={departmentHandler}
           />
         </div>
         <div className="gap-1">
@@ -45,6 +56,8 @@ function School({ schoolName }) {
             autoComplete="off"
             placeholder="학번을 입력해주세요."
             className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white `}
+            value={studentId}
+            onChange={studentIdHandler}
           />
         </div>
       </div>
