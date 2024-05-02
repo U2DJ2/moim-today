@@ -94,27 +94,20 @@ function RegisterPage() {
           setStep(step + 1);
         })
         .catch((error) => {
-          console.log(error);
+          setIsOpen(true);
+          setMessage(error.response.data.message);
         });
     } else if (step === 3) {
       client
         .post("api/sign-up", userData)
         .then((res) => {
-          if (res.status === "404") {
-            isOpen(true);
-            message(
-              "이메일 또는 비밀번호가 올바르지 않습니다. 다시 확인해주세요."
-            );
-          }
           console.log(res.data);
           setStep(step + 1);
         })
         .catch((error) => {
           console.log(error);
-          if (error.response.data.statusCode === 404) {
-            setIsOpen(true);
-            setMessage(error.response.data.message);
-          }
+          setIsOpen(true);
+          setMessage(error.response.data.message);
         });
     } else {
       setStep(step + 1);
@@ -167,12 +160,12 @@ function RegisterPage() {
             setActiveNext={setActiveNext}
           />
         ) : step === 4 ? (
-          <Congrats />
+          <Congrats setStep={setStep} step={step} />
         ) : (
           <TimeTable />
         )}
 
-        {step !== 4 && (
+        {step !== 4 && step != 5 && (
           <div className="flex justify-center mt-16">
             <div className="flex gap-8">
               <button
@@ -180,6 +173,29 @@ function RegisterPage() {
                 onClick={() => previousClick()}
               >
                 이전
+              </button>
+              <button
+                className={`${
+                  activeNext
+                    ? "w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-scarlet bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer "
+                    : "w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-[#8D8D8D] bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer "
+                }`}
+                disabled={!activeNext}
+                onClick={() => nextClick()}
+              >
+                다음
+              </button>
+            </div>
+          </div>
+        )}
+        {step === 5 && (
+          <div className="flex justify-center mt-16">
+            <div className="flex gap-8">
+              <button
+                className={`w-52 justify-center px-7 py-5 text-[22px] font-bold text-slate-400  bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer  `}
+                onClick={() => previousClick()}
+              >
+                건너뛰기
               </button>
               <button
                 className={`${

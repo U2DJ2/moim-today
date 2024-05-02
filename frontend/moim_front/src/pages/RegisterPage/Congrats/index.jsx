@@ -2,7 +2,7 @@ import React from "react";
 import AuthTitle from "../../../components/Authentification/AuthTitle";
 import Button from "../../../components/Button";
 import { useNavigate } from "react-router";
-function Congrats() {
+function Congrats({ setStep, step }) {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col gap-10">
@@ -17,7 +17,7 @@ function Congrats() {
         name="바로 시작하기"
         textColor={"white"}
         bgColor={"black"}
-        onClick={() => navigate("/")}
+        onClick={() => setStep(step + 1)}
       />
     </div>
   );
