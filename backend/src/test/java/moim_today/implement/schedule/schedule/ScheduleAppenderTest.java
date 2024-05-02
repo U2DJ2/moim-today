@@ -1,8 +1,7 @@
-package moim_today.implement.schedule;
+package moim_today.implement.schedule.schedule;
 
 import moim_today.domain.schedule.Schedule;
 import moim_today.global.error.BadRequestException;
-import moim_today.implement.schedule.schedule.ScheduleAppender;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;

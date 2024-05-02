@@ -42,11 +42,13 @@ public class ScheduleManager {
     }
 
     public TimeTableProcessor processTimetable(final String timeTableXML,
-                                           final TimeTableRequest timeTableRequest) {
+                                               final TimeTableRequest timeTableRequest,
+                                               final int colorCount) {
+
         TimeTableParser timeTableParser = TimeTableParser.toDomain(timeTableXML);
         NodeList subjects = timeTableParser.getSubjects();
 
-        TimeTableProcessor timeTableProcessor = TimeTableProcessor.toDomain(timeTableRequest);
+        TimeTableProcessor timeTableProcessor = TimeTableProcessor.toDomain(timeTableRequest, colorCount);
         timeTableProcessor.processTimeTable(subjects);
 
         return timeTableProcessor;

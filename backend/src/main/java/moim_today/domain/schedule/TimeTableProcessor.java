@@ -26,20 +26,22 @@ public record TimeTableProcessor(
         LocalDate startDate,
         LocalDate endDate,
         List<Schedule> schedules,
-        Map<String, Integer> colorCount
+        Map<String, Integer> colorCountPair,
+        int colorCount
 ) {
 
-    public static TimeTableProcessor toDomain(final TimeTableRequest timeTableRequest) {
+    public static TimeTableProcessor toDomain(final TimeTableRequest timeTableRequest, final int colorCount) {
         return TimeTableProcessor.builder()
                 .startDate(timeTableRequest.startDate())
                 .endDate(timeTableRequest.endDate())
                 .schedules(new ArrayList<>())
-                .colorCount(new HashMap<>())
+                .colorCountPair(new HashMap<>())
+                .colorCount(colorCount)
                 .build();
     }
 
     public int getColorCountSize() {
-        return colorCount.size();
+        return colorCountPair.size();
     }
 
     public void processTimeTable(final NodeList subjects) {
@@ -92,8 +94,8 @@ public record TimeTableProcessor(
             LocalDateTime startDateTime = LocalDateTime.of(nextDate, startTime);
             LocalDateTime endDateTime = LocalDateTime.of(nextDate, endTime);
 
-            colorCount.putIfAbsent(name, colorCount.size());
-            int count = colorCount.get(name);
+            colorCountPair.putIfAbsent(name, colorCountPair.size() + colorCount);
+            int count = colorCountPair.get(name);
             ColorHex hexByCount = ColorHex.getHexByCount(count);
             String colorHex = hexByCount.value();
 

@@ -10,6 +10,7 @@ import moim_today.persistence.repository.member.MemberRepository;
 import moim_today.persistence.repository.moim.joined_moim.JoinedMoimRepository;
 import moim_today.persistence.repository.moim.moim.MoimRepository;
 import moim_today.persistence.repository.schedule.schedule.ScheduleRepository;
+import moim_today.persistence.repository.schedule.schedule_color.ScheduleColorRepository;
 import moim_today.persistence.repository.todo.TodoRepository;
 import moim_today.persistence.repository.university.UniversityRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,6 +47,9 @@ public abstract class ImplementTest {
 
     @Autowired
     protected ScheduleRepository scheduleRepository;
+
+    @Autowired
+    protected ScheduleColorRepository scheduleColorRepository;
 
     @Autowired
     protected JoinedMoimRepository joinedMoimRepository;

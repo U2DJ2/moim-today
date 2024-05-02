@@ -50,7 +50,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void fetchTimeTable(final long memberId, final TimeTableRequest timeTableRequest) {
         String timeTableXML = scheduleManager.fetchTimetable(timeTableRequest.everytimeId());
-        TimeTableProcessor timeTableProcessor = scheduleManager.processTimetable(timeTableXML, timeTableRequest);
+        int count = scheduleColorManager.getColorCount(memberId);
+        TimeTableProcessor timeTableProcessor =
+                scheduleManager.processTimetable(timeTableXML, timeTableRequest, count);
         int colorCount = timeTableProcessor.getColorCountSize();
         scheduleColorManager.updateColorCount(memberId, colorCount);
 
@@ -59,7 +61,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void createSchedule(final long memberId, final ScheduleCreateRequest scheduleCreateRequest) {
-        String colorHex = scheduleColorManager.getColorHex(memberId, SCHEDULE_COLOR_NEXT_COUNT.value());
+        String colorHex = scheduleColorManager.getColorHex(memberId);
+        scheduleColorManager.updateColorCount(memberId, SCHEDULE_COLOR_NEXT_COUNT.value());
         ScheduleJpaEntity scheduleJpaEntity = scheduleCreateRequest.toEntity(memberId, colorHex);
         scheduleAppender.createSchedule(scheduleJpaEntity);
     }

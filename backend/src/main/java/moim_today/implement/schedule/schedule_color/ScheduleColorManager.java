@@ -1,6 +1,5 @@
 package moim_today.implement.schedule.schedule_color;
 
-import moim_today.domain.schedule.enums.ColorHex;
 import moim_today.global.annotation.Implement;
 import moim_today.persistence.entity.schedule.schedule_color.ScheduleColorJpaEntity;
 import moim_today.persistence.repository.schedule.schedule_color.ScheduleColorRepository;
@@ -8,37 +7,31 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static moim_today.global.constant.NumberConstant.SCHEDULE_COLOR_START_COUNT;
 
 @Implement
 public class ScheduleColorManager {
 
     private final ScheduleColorRepository scheduleColorRepository;
     private final ScheduleColorAppender scheduleColorAppender;
+    private final ScheduleColorFinder scheduleColorFinder;
     private final ScheduleColorUpdater scheduleColorUpdater;
 
     public ScheduleColorManager(final ScheduleColorRepository scheduleColorRepository,
                                 final ScheduleColorAppender scheduleColorAppender,
+                                final ScheduleColorFinder scheduleColorFinder,
                                 final ScheduleColorUpdater scheduleColorUpdater) {
         this.scheduleColorRepository = scheduleColorRepository;
         this.scheduleColorAppender = scheduleColorAppender;
+        this.scheduleColorFinder = scheduleColorFinder;
         this.scheduleColorUpdater = scheduleColorUpdater;
     }
 
-    @Transactional
-    public String getColorHex(final long memberId, final int nextCount) {
-        Optional<ScheduleColorJpaEntity> optionalEntity = scheduleColorRepository.findByMemberId(memberId);
-        int count = SCHEDULE_COLOR_START_COUNT.value();
+    public String getColorHex(final long memberId) {
+        return scheduleColorFinder.getColorHex(memberId);
+    }
 
-        if (optionalEntity.isEmpty()) {
-            scheduleColorAppender.save(memberId, count);
-        } else {
-            ScheduleColorJpaEntity scheduleColorJpaEntity = optionalEntity.get();
-            count = scheduleColorUpdater.updateColorCount(scheduleColorJpaEntity, nextCount);
-        }
-
-        ColorHex colorHex = ColorHex.getHexByCount(count);
-        return colorHex.value();
+    public int getColorCount(final long memberId) {
+        return scheduleColorFinder.getColorCount(memberId);
     }
 
     @Transactional
@@ -48,8 +41,7 @@ public class ScheduleColorManager {
         if (optionalEntity.isEmpty()) {
             scheduleColorAppender.save(memberId, nextCount);
         } else {
-            ScheduleColorJpaEntity scheduleColorJpaEntity = optionalEntity.get();
-            scheduleColorUpdater.updateColorCount(scheduleColorJpaEntity, nextCount);
+            scheduleColorUpdater.updateColorCount(memberId, nextCount);
         }
     }
 }

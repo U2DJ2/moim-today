@@ -1,8 +1,7 @@
-package moim_today.implement.schedule;
+package moim_today.implement.schedule.schedule;
 
 import moim_today.global.error.ForbiddenException;
 import moim_today.global.error.NotFoundException;
-import moim_today.implement.schedule.schedule.ScheduleRemover;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;

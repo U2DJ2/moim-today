@@ -3,10 +3,10 @@ package moim_today.persistence.entity.schedule.schedule_color;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import moim_today.domain.schedule.enums.ColorHex;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
 
-import static moim_today.global.constant.NumberConstant.SCHEDULE_COLOR_START_COUNT;
 
 @Getter
 @Table(name = "schedule_color")
@@ -40,5 +40,10 @@ public class ScheduleColorJpaEntity extends BaseTimeEntity {
 
     public void updateColorCount(final int colorCount) {
         this.colorCount = colorCount;
+    }
+
+    public String calculateColorHex() {
+        ColorHex colorHex = ColorHex.getHexByCount(colorCount);
+        return colorHex.value();
     }
 }

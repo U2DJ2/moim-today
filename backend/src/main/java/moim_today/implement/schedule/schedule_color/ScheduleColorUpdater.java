@@ -5,7 +5,6 @@ import moim_today.persistence.entity.schedule.schedule_color.ScheduleColorJpaEnt
 import moim_today.persistence.repository.schedule.schedule_color.ScheduleColorRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Implement
 public class ScheduleColorUpdater {
 
@@ -16,9 +15,10 @@ public class ScheduleColorUpdater {
     }
 
     @Transactional
-    public int updateColorCount(final ScheduleColorJpaEntity scheduleColorJpaEntity, final int nextCount) {
+    public int updateColorCount(final long memberId, final int count) {
+        ScheduleColorJpaEntity scheduleColorJpaEntity = scheduleColorRepository.getByMemberId(memberId);
         int currentCount = scheduleColorJpaEntity.getColorCount();
-        int newCount = currentCount + nextCount;
+        int newCount = currentCount + count;
         scheduleColorJpaEntity.updateColorCount(newCount);
 
         return newCount;

@@ -8,5 +8,9 @@ public interface ScheduleColorRepository {
 
     Optional<ScheduleColorJpaEntity> findByMemberId(final long memberId);
 
+    ScheduleColorJpaEntity getByMemberId(final long memberId);
+
     void save(final ScheduleColorJpaEntity scheduleColorJpaEntity);
+
+    long count();
 }
