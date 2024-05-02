@@ -40,6 +40,16 @@ function RegisterPage() {
   const emailBody = {
     email: email,
   };
+  const userData = {
+    universityId: universityId,
+    departmentId: departmentId,
+    email: email,
+    password: password,
+    username: username,
+    studentId: studentId,
+    birthDate: birthDate,
+    gender: gender,
+  };
   const nextClick = async () => {
     if (step === 0) {
       //check email validity
@@ -53,6 +63,11 @@ function RegisterPage() {
         if (res.statusCode === 400) return setEmailValidation(true);
         setUniversityName(res.data.universityName);
         setUniversityId(res.data.universityID);
+        setStep(step + 1);
+      });
+    } else if (step === 3) {
+      client.post("api/sign-up", userData).then((res) => {
+        console.log(res.data);
         setStep(step + 1);
       });
     } else {
@@ -100,9 +115,9 @@ function RegisterPage() {
             setActiveNext={setActiveNext}
           />
         ) : step === 4 ? (
-          <TimeTable />
-        ) : (
           <Congrats />
+        ) : (
+          <TimeTable />
         )}
 
         {step !== 5 && (

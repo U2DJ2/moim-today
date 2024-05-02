@@ -63,7 +63,7 @@ function Personal({
             type="text"
             name="username"
             autoComplete="off"
-            placeholder="enter your email"
+            placeholder="enter your name"
             className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white`}
             value={username}
             onChange={usernameHandler}
