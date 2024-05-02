@@ -91,6 +91,8 @@ function RegisterPage() {
           />
         ) : step === 3 ? (
           <Personal
+            username={username}
+            setUserName={setUserName}
             birthDate={birthDate}
             setBirthDate={setBirthDate}
             gender={gender}
