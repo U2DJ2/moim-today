@@ -1,8 +1,8 @@
-import { useState } from 'react';
+// React
+import { useState, Fragment } from 'react';
 import { Transition } from '@headlessui/react';
-import { Fragment } from 'react';
 
-function Dropdown({ options, onSelect }) {
+function Search({ options, onSelect }) {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedOption, setSelectedOption] = useState(options[0]);
@@ -72,4 +72,4 @@ function Dropdown({ options, onSelect }) {
     );
 }
 
-export default Dropdown;
+export default Search;
