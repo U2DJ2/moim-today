@@ -4,6 +4,7 @@ import moim_today.domain.meeting.enums.MeetingCategory;
 import moim_today.dto.meeting.MeetingCreateRequest;
 import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.global.annotation.Implement;
+import moim_today.implement.meeting.joined_meeting.JoinedMeetingAppender;
 import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.repository.meeting.meeting.MeetingRepository;
@@ -21,10 +22,13 @@ public class MeetingAppender {
 
     private final MeetingRepository meetingRepository;
     private final MoimFinder moimFinder;
+    private final JoinedMeetingAppender joinedMeetingAppender;
 
-    public MeetingAppender(final MeetingRepository meetingRepository, final MoimFinder moimFinder) {
+    public MeetingAppender(final MeetingRepository meetingRepository, final MoimFinder moimFinder,
+                           final JoinedMeetingAppender joinedMeetingAppender) {
         this.meetingRepository = meetingRepository;
         this.moimFinder = moimFinder;
+        this.joinedMeetingAppender = joinedMeetingAppender;
     }
 
     @Transactional
@@ -32,20 +36,21 @@ public class MeetingAppender {
         MeetingCategory meetingCategory = meetingCreateRequest.meetingCategory();
 
         if (meetingCategory.equals(MeetingCategory.SINGLE)) {
-            createSingleMeeting(meetingCreateRequest);
+            MeetingJpaEntity meetingJpaEntity = createSingleMeeting(meetingCreateRequest);
+            joinedMeetingAppender.saveJoinedMeeting(meetingCreateRequest.moimId(), meetingJpaEntity.getId());
 
         } else if (meetingCategory.equals(MeetingCategory.REGULAR)) {
             createRegularMeeting(meetingCreateRequest);
         }
     }
 
-    private void createSingleMeeting(final MeetingCreateRequest meetingCreateRequest) {
+    private MeetingJpaEntity createSingleMeeting(final MeetingCreateRequest meetingCreateRequest) {
         MeetingJpaEntity meetingJpaEntity = meetingCreateRequest.toEntity(
                         meetingCreateRequest.startDateTime(),
                         meetingCreateRequest.endDateTime()
                 );
 
-        meetingRepository.save(meetingJpaEntity);
+        return meetingRepository.save(meetingJpaEntity);
     }
 
     private void createRegularMeeting(final MeetingCreateRequest meetingCreateRequest) {
@@ -62,6 +67,7 @@ public class MeetingAppender {
 
             MeetingJpaEntity meetingJpaEntity = meetingCreateRequest.toEntity(startDateTime, endDateTime);
             meetingRepository.save(meetingJpaEntity);
+            joinedMeetingAppender.saveJoinedMeeting(meetingCreateRequest.moimId(), meetingJpaEntity.getId());
         }
     }
 }

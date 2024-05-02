@@ -10,7 +10,7 @@ public interface MeetingRepository {
 
     MeetingJpaEntity getById(final long meetingId);
 
-    void save(final MeetingJpaEntity meetingJpaEntity);
+    MeetingJpaEntity save(final MeetingJpaEntity meetingJpaEntity);
 
     long count();
 }

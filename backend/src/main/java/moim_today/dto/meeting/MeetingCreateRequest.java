@@ -5,7 +5,6 @@ import lombok.Builder;
 import moim_today.domain.meeting.enums.MeetingCategory;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 @Builder

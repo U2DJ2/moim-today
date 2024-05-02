@@ -40,8 +40,8 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     }
 
     @Override
-    public void save(final MeetingJpaEntity meetingJpaEntity) {
-        meetingJpaRepository.save(meetingJpaEntity);
+    public MeetingJpaEntity save(final MeetingJpaEntity meetingJpaEntity) {
+        return meetingJpaRepository.save(meetingJpaEntity);
     }
 
     @Override
