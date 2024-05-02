@@ -97,16 +97,25 @@ function RegisterPage() {
           console.log(error);
         });
     } else if (step === 3) {
-      client.post("api/sign-up", userData).then((res) => {
-        if (res.status === "404") {
-          isOpen(true);
-          message(
-            "이메일 또는 비밀번호가 올바르지 않습니다. 다시 확인해주세요."
-          );
-        }
-        console.log(res.data);
-        setStep(step + 1);
-      });
+      client
+        .post("api/sign-up", userData)
+        .then((res) => {
+          if (res.status === "404") {
+            isOpen(true);
+            message(
+              "이메일 또는 비밀번호가 올바르지 않습니다. 다시 확인해주세요."
+            );
+          }
+          console.log(res.data);
+          setStep(step + 1);
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.data.statusCode === 404) {
+            setIsOpen(true);
+            setMessage(error.response.data.message);
+          }
+        });
     } else {
       setStep(step + 1);
       setActiveNext(false);

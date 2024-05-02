@@ -8,6 +8,7 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState("");
 
   const modalHandler = () => {
     setIsOpen(!isOpen);
@@ -25,9 +26,18 @@ function LoginPage() {
         setEmail={setEmail}
         password={password}
         setPassword={setPassword}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        message={message}
+        setMessage={setMessage}
       />
       <AuthRight textColor={"white"} cardColor={"scarlet"} />
-      <Modal isOpen={isOpen} closeModal={modalHandler} />
+      <Modal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        closeModal={modalHandler}
+        message={message}
+      />
     </div>
   );
 }

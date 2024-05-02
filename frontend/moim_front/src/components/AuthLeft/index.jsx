@@ -18,6 +18,8 @@ function AuthLeft({
   setEmail,
   password,
   setPassword,
+  setIsOpen,
+  setMessage,
 }) {
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
@@ -33,17 +35,27 @@ function AuthLeft({
       password: password,
     };
 
-    POST("api/login", data).then((res) => {
-      if (res.status === 404) {
-        console.log(res);
-        console.log("first");
-        alert("아이디 및 비밀번호를 다시 확인하시오.");
-        checkLoginFailed(true);
-      } else {
-        console.log(res.data);
-        navigation("/");
-      }
-    });
+    POST("api/login", data)
+      .then((res) => {
+        if (res.status === 404) {
+          console.log(res);
+          console.log("first");
+          alert("아이디 및 비밀번호를 다시 확인하시오.");
+          checkLoginFailed(true);
+        } else {
+          console.log(res.data);
+          navigation("/");
+        }
+      })
+      .catch((error) => {
+        console.log(error.response.data.statusCode);
+        const errorCode = error.response.data.statusCode;
+        if (errorCode === "404") {
+          setIsOpen(true);
+          setMessage(error.response.data.message);
+          console.log(error.response.message);
+        }
+      });
   };
   return (
     <div className="flex-1 flex flex-col justify-center justify-items-center">
