@@ -1,11 +1,16 @@
 package moim_today.domain.member;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.Builder;
 import moim_today.global.error.InternalServerException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
+import static moim_today.global.constant.NumberConstant.ONE_DAYS_IN_SECONDS;
+import static moim_today.global.constant.NumberConstant.THIRTY_DAYS_IN_SECONDS;
 import static moim_today.global.constant.exception.SessionExceptionConstant.MEMBER_SESSION_JSON_PROCESSING_ERROR;
 
 @Builder
@@ -32,6 +37,17 @@ public record MemberSession(
             return objectMapper.writeValueAsString(this);
         } catch (JsonProcessingException e) {
             throw new InternalServerException(MEMBER_SESSION_JSON_PROCESSING_ERROR.message());
+        }
+    }
+
+    public void setSession(final HttpServletRequest request, final String memberSessionJson, final boolean isKeepLogin) {
+        HttpSession session = request.getSession(true);
+        session.setAttribute(MEMBER_SESSION.value(), memberSessionJson);
+
+        if (isKeepLogin) {
+            session.setMaxInactiveInterval(THIRTY_DAYS_IN_SECONDS.value());
+        } else {
+            session.setMaxInactiveInterval(ONE_DAYS_IN_SECONDS.value());
         }
     }
 }

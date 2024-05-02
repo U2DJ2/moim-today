@@ -18,6 +18,8 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import java.time.LocalDate;
 
 import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
+import static moim_today.global.constant.NumberConstant.ONE_DAYS_IN_SECONDS;
+import static moim_today.global.constant.NumberConstant.THIRTY_DAYS_IN_SECONDS;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -35,15 +37,56 @@ class AuthManagerTest extends ImplementTest {
                 .password(passwordEncoder.encode(PASSWORD.value())).build();
 
         memberRepository.save(entity);
-        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(EMAIL.value(), PASSWORD.value());
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(EMAIL.value(), PASSWORD.value(), true);
         MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
 
         //when
         authManager.login(memberLoginRequest, mockHttpServletRequest);
 
         //then
-        assertThat(mockHttpServletRequest.getSession(false)).isNotNull();
-        assertThat(mockHttpServletRequest.getSession(false).getAttribute(MEMBER_SESSION.value())).isNotNull();
+        HttpSession session = mockHttpServletRequest.getSession(false);
+        assert session != null;
+        assertThat(session.getAttribute(MEMBER_SESSION.value())).isNotNull();
+    }
+
+    @DisplayName("로그인 유지를 하지 않으면 세션의 값이 하루로 설정된다.")
+    @Test
+    void noKeepLoginTest() {
+        //given
+        MemberJpaEntity entity = MemberJpaEntity.builder().email(EMAIL.value())
+                .password(passwordEncoder.encode(PASSWORD.value())).build();
+
+        memberRepository.save(entity);
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(EMAIL.value(), PASSWORD.value(), false);
+        MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
+
+        //when
+        authManager.login(memberLoginRequest, mockHttpServletRequest);
+
+        //then
+        HttpSession session = mockHttpServletRequest.getSession(false);
+        assert session != null;
+        assertThat(session.getMaxInactiveInterval()).isEqualTo(ONE_DAYS_IN_SECONDS.value());
+    }
+
+    @DisplayName("로그인 유지를 선택하면 세션의 값이 한달로 설정된다.")
+    @Test
+    void keepLoginTest() {
+        //given
+        MemberJpaEntity entity = MemberJpaEntity.builder().email(EMAIL.value())
+                .password(passwordEncoder.encode(PASSWORD.value())).build();
+
+        memberRepository.save(entity);
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(EMAIL.value(), PASSWORD.value(), true);
+        MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
+
+        //when
+        authManager.login(memberLoginRequest, mockHttpServletRequest);
+
+        //then
+        HttpSession session = mockHttpServletRequest.getSession(false);
+        assert session != null;
+        assertThat(session.getMaxInactiveInterval()).isEqualTo(THIRTY_DAYS_IN_SECONDS.value());
     }
 
     @DisplayName("잘못된 정보가 입력되면 404 예외를 발생시킨다.")
@@ -54,7 +97,7 @@ class AuthManagerTest extends ImplementTest {
                 .password(passwordEncoder.encode(PASSWORD.value())).build();
 
         memberRepository.save(entity);
-        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(WRONG_EMAIL.value(), WRONG_PASSWORD.value());
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(WRONG_EMAIL.value(), WRONG_PASSWORD.value(), true);
         MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
 
         //when && then
