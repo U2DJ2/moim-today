@@ -1,9 +1,9 @@
-package moim_today.application.moim;
+package moim_today.application.moim.moim;
 
-import moim_today.dto.moim.MoimAppendRequest;
-import moim_today.dto.moim.MoimDetailResponse;
-import moim_today.dto.moim.MoimImageResponse;
-import moim_today.dto.moim.MoimUpdateRequest;
+import moim_today.dto.moim.moim.MoimAppendRequest;
+import moim_today.dto.moim.moim.MoimDetailResponse;
+import moim_today.dto.moim.moim.MoimImageResponse;
+import moim_today.dto.moim.moim.MoimUpdateRequest;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
 import moim_today.implement.meeting.meeting.MeetingFinder;

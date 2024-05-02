@@ -1,7 +1,8 @@
-package moim_today.dto.moim;
+package moim_today.dto.moim.moim;
 
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
+import moim_today.dto.moim.moim.MoimAppendRequest;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

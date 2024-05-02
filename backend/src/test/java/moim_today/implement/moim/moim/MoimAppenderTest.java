@@ -2,8 +2,7 @@ package moim_today.implement.moim.moim;
 
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.MoimAppendRequest;
-import moim_today.implement.moim.moim.MoimAppender;
+import moim_today.dto.moim.moim.MoimAppendRequest;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;

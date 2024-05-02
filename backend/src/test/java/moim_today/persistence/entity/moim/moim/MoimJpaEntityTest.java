@@ -2,7 +2,7 @@ package moim_today.persistence.entity.moim.moim;
 
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.MoimUpdateRequest;
+import moim_today.dto.moim.moim.MoimUpdateRequest;
 import moim_today.global.error.ForbiddenException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

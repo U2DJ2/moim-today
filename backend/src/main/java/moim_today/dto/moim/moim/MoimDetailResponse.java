@@ -1,4 +1,4 @@
-package moim_today.dto.moim;
+package moim_today.dto.moim.moim;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;

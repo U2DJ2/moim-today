@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.MoimUpdateRequest;
+import moim_today.dto.moim.moim.MoimUpdateRequest;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
 import moim_today.global.error.ForbiddenException;

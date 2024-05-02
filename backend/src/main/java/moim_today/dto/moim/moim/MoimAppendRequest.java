@@ -1,4 +1,4 @@
-package moim_today.dto.moim;
+package moim_today.dto.moim.moim;
 
 import lombok.Builder;
 import moim_today.domain.moim.DisplayStatus;

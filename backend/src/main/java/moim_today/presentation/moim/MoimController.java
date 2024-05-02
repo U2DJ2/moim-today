@@ -1,8 +1,8 @@
 package moim_today.presentation.moim;
 
-import moim_today.application.moim.MoimService;
+import moim_today.application.moim.moim.MoimService;
 import moim_today.domain.member.MemberSession;
-import moim_today.dto.moim.*;
+import moim_today.dto.moim.moim.*;
 import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
