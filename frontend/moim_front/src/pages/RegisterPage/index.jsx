@@ -27,16 +27,16 @@ function RegisterPage() {
   const [gender, setGender] = useState("");
 
   const nextClick = async () => {
-    // if (step === 0) {
-    //   //check email validity
-    //   checkEmailValid("email", email).then((res) => {
-    //     if (res.statusCode === 200) return setEmailDuplication(true);
-    //     else if (res.statusCode === 404) return setSchoolValidation(false);
-    //   });
-    // } else {
-    setStep(step + 1);
-    setActiveNext(false);
-    // }
+    if (step === 0) {
+      //check email validity
+      checkEmailValid("email", email).then((res) => {
+        if (res.statusCode === 200) return setEmailDuplication(true);
+        else if (res.statusCode === 404) return setSchoolValidation(false);
+      });
+    } else {
+      setStep(step + 1);
+      setActiveNext(false);
+    }
   };
   const previousClick = () => {
     if (step === 0) navigate(-1);
@@ -55,7 +55,6 @@ function RegisterPage() {
           />
         ) : step === 1 ? (
           <AuthCheck
-            emailAuth={emailAuth}
             setEmailAuth={setEmailAuth}
             setActiveNext={setActiveNext}
           />

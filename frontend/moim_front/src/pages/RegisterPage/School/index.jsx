@@ -2,7 +2,7 @@ import React from "react";
 import AuthTitle from "../../../components/Authentification/AuthTitle";
 import { useForm } from "react-hook-form";
 
-function School() {
+function School({ schoolName }) {
   const { register, handleSubmit, errors, formState, setValue, data } =
     useForm();
   return (
@@ -19,14 +19,9 @@ function School() {
           <p className=" font-Pretendard_Black block text-xl text-white">
             학교명
           </p>
-          <input
-            type="text"
-            name="universityName"
-            autoComplete="off"
-            placeholder="학교명을 입력해주세요."
-            className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white`}
-            {...register("universityName", { required: true })}
-          />
+          <p className="border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white">
+            {schoolName}
+          </p>
         </div>
         <div className="gap-1">
           <p className=" font-Pretendard_Black block text-xl text-white">
@@ -38,9 +33,6 @@ function School() {
             autoComplete="off"
             placeholder="학과명을 입력해주세요."
             className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white `}
-            {...register("departmentId", {
-              required: true,
-            })}
           />
         </div>
         <div className="gap-1">
@@ -53,9 +45,6 @@ function School() {
             autoComplete="off"
             placeholder="학번을 입력해주세요."
             className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white `}
-            {...register("studentId", {
-              required: true,
-            })}
           />
         </div>
       </div>

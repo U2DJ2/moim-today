@@ -12,11 +12,9 @@ function Account({ email, setEmail, password, setPassword, setActiveNext }) {
   const emailHandler = (e) => {
     //setEmailDuplication(false);
     setEmail(e.target.value);
-    console.log(e.target.value);
   };
   const passwordHandler = (e) => {
     setPassword(e.target.value);
-    console.log(e.target.value);
   };
 
   useEffect(() => {

@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AuthTitle from "../../../components/Authentification/AuthTitle";
 
 function AuthCheck({ emailAuth, setEmailAuth, setActiveNext }) {
-  setActiveNext(true);
+  useEffect(() => {
+    setActiveNext(true);
+  }, [emailAuth]);
+
   return (
     <div>
       <div>
