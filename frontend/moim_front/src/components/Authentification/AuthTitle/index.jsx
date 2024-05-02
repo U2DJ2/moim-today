@@ -13,7 +13,7 @@ function AuthTitle({
         {title}
       </div>
       <div
-        className={`font-Pretendard_Normal font-medium text-xl text-${contentColor}`}
+        className={`font-Pretendard_Normal font-medium text-2xl text-${contentColor}`}
       >
         <div>{firstContent}</div>
         <div>{secondContent}</div>
