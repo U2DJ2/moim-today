@@ -31,10 +31,10 @@ public class ScheduleColorJpaEntity extends BaseTimeEntity {
         this.colorCount = colorCount;
     }
 
-    public static ScheduleColorJpaEntity toEntity(final long memberId) {
+    public static ScheduleColorJpaEntity toEntity(final long memberId, final int colorCount) {
         return ScheduleColorJpaEntity.builder()
                 .memberId(memberId)
-                .colorCount(SCHEDULE_COLOR_START_COUNT.value())
+                .colorCount(colorCount)
                 .build();
     }
 

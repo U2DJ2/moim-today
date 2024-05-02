@@ -1,6 +1,5 @@
 package moim_today.implement.schedule.schedule;
 
-import moim_today.domain.schedule.Schedule;
 import moim_today.domain.schedule.TimeTableParser;
 import moim_today.domain.schedule.TimeTableProcessor;
 import moim_today.dto.schedule.TimeTableRequest;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.NodeList;
 
-import java.util.List;
 
 import static moim_today.global.constant.EveryTimeConstant.*;
 
@@ -43,7 +41,7 @@ public class ScheduleManager {
         return response.getBody();
     }
 
-    public List<Schedule> processTimetable(final String timeTableXML,
+    public TimeTableProcessor processTimetable(final String timeTableXML,
                                            final TimeTableRequest timeTableRequest) {
         TimeTableParser timeTableParser = TimeTableParser.toDomain(timeTableXML);
         NodeList subjects = timeTableParser.getSubjects();
@@ -51,6 +49,6 @@ public class ScheduleManager {
         TimeTableProcessor timeTableProcessor = TimeTableProcessor.toDomain(timeTableRequest);
         timeTableProcessor.processTimeTable(subjects);
 
-        return timeTableProcessor.schedules();
+        return timeTableProcessor;
     }
 }

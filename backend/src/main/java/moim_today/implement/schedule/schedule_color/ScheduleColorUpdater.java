@@ -16,9 +16,9 @@ public class ScheduleColorUpdater {
     }
 
     @Transactional
-    public int updateColorCount(final ScheduleColorJpaEntity scheduleColorJpaEntity) {
+    public int updateColorCount(final ScheduleColorJpaEntity scheduleColorJpaEntity, final int nextCount) {
         int currentCount = scheduleColorJpaEntity.getColorCount();
-        int newCount = currentCount + 1;
+        int newCount = currentCount + nextCount;
         scheduleColorJpaEntity.updateColorCount(newCount);
 
         return newCount;

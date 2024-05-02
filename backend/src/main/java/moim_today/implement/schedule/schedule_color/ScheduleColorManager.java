@@ -26,18 +26,30 @@ public class ScheduleColorManager {
     }
 
     @Transactional
-    public String getColorHex(final long memberId) {
+    public String getColorHex(final long memberId, final int nextCount) {
         Optional<ScheduleColorJpaEntity> optionalEntity = scheduleColorRepository.findByMemberId(memberId);
         int count = SCHEDULE_COLOR_START_COUNT.value();
 
         if (optionalEntity.isEmpty()) {
-            scheduleColorAppender.save(memberId);
+            scheduleColorAppender.save(memberId, count);
         } else {
             ScheduleColorJpaEntity scheduleColorJpaEntity = optionalEntity.get();
-            count = scheduleColorUpdater.updateColorCount(scheduleColorJpaEntity);
+            count = scheduleColorUpdater.updateColorCount(scheduleColorJpaEntity, nextCount);
         }
 
         ColorHex colorHex = ColorHex.getHexByCount(count);
         return colorHex.value();
+    }
+
+    @Transactional
+    public void updateColorCount(final long memberId, final int nextCount) {
+        Optional<ScheduleColorJpaEntity> optionalEntity = scheduleColorRepository.findByMemberId(memberId);
+
+        if (optionalEntity.isEmpty()) {
+            scheduleColorAppender.save(memberId, nextCount);
+        } else {
+            ScheduleColorJpaEntity scheduleColorJpaEntity = optionalEntity.get();
+            scheduleColorUpdater.updateColorCount(scheduleColorJpaEntity, nextCount);
+        }
     }
 }

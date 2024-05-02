@@ -1,6 +1,6 @@
 package moim_today.application.schedule;
 
-import moim_today.domain.schedule.Schedule;
+import moim_today.domain.schedule.TimeTableProcessor;
 import moim_today.dto.schedule.ScheduleCreateRequest;
 import moim_today.dto.schedule.ScheduleResponse;
 import moim_today.dto.schedule.ScheduleUpdateRequest;
@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
+
+import static moim_today.global.constant.NumberConstant.SCHEDULE_COLOR_NEXT_COUNT;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -48,13 +50,16 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void fetchTimeTable(final long memberId, final TimeTableRequest timeTableRequest) {
         String timeTableXML = scheduleManager.fetchTimetable(timeTableRequest.everytimeId());
-        List<Schedule> schedules = scheduleManager.processTimetable(timeTableXML, timeTableRequest);
-        scheduleAppender.batchUpdateSchedules(schedules, memberId);
+        TimeTableProcessor timeTableProcessor = scheduleManager.processTimetable(timeTableXML, timeTableRequest);
+        int colorCount = timeTableProcessor.getColorCountSize();
+        scheduleColorManager.updateColorCount(memberId, colorCount);
+
+        scheduleAppender.batchUpdateSchedules(timeTableProcessor.schedules(), memberId);
     }
 
     @Override
     public void createSchedule(final long memberId, final ScheduleCreateRequest scheduleCreateRequest) {
-        String colorHex = scheduleColorManager.getColorHex(memberId);
+        String colorHex = scheduleColorManager.getColorHex(memberId, SCHEDULE_COLOR_NEXT_COUNT.value());
         ScheduleJpaEntity scheduleJpaEntity = scheduleCreateRequest.toEntity(memberId, colorHex);
         scheduleAppender.createSchedule(scheduleJpaEntity);
     }

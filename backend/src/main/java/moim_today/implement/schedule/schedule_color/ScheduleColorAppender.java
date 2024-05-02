@@ -16,8 +16,8 @@ public class ScheduleColorAppender {
     }
 
     @Transactional
-    public void save(final long memberId) {
-        ScheduleColorJpaEntity scheduleColorJpaEntity = ScheduleColorJpaEntity.toEntity(memberId);
+    public void save(final long memberId, final int colorCount) {
+        ScheduleColorJpaEntity scheduleColorJpaEntity = ScheduleColorJpaEntity.toEntity(memberId, colorCount);
         scheduleColorRepository.save(scheduleColorJpaEntity);
     }
 }

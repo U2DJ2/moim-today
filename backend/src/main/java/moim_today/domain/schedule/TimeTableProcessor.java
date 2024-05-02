@@ -38,6 +38,10 @@ public record TimeTableProcessor(
                 .build();
     }
 
+    public int getColorCountSize() {
+        return colorCount.size();
+    }
+
     public void processTimeTable(final NodeList subjects) {
         int subjectsLength = subjects.getLength();
         for (int i = 0; i < subjectsLength; i++) {
