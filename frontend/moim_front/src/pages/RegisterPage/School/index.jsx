@@ -7,13 +7,27 @@ function School({
   setStudentId,
   studentId,
   universityName,
+  setActiveNext,
 }) {
   const departmentHandler = (e) => {
     setDepartment(e.target.value);
+    checkInputsFilled(e.target.value, studentId);
   };
+
   const studentIdHandler = (e) => {
     setStudentId(e.target.value);
+    checkInputsFilled(department, e.target.value);
   };
+
+  const checkInputsFilled = (departmentValue, studentIdValue) => {
+    // 학과와 학번이 모두 채워졌는지 확인
+    if (departmentValue.trim() !== "" && studentIdValue.trim() !== "") {
+      setActiveNext(true); // 모두 입력되면 setActiveNext를 true로 설정
+    } else {
+      setActiveNext(false); // 둘 중 하나라도 비어있으면 setActiveNext를 false로 설정
+    }
+  };
+
   return (
     <div className="flex flex-col gap-16">
       <AuthTitle
