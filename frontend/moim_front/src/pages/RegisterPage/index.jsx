@@ -105,6 +105,8 @@ function RegisterPage() {
             department={department}
             setDepartment={setDepartment}
             setActiveNext={setActiveNext}
+            setDepartmentId={setDepartmentId}
+            departmentId={departmentId}
           />
         ) : step === 3 ? (
           <Personal
@@ -122,7 +124,7 @@ function RegisterPage() {
           <TimeTable />
         )}
 
-        {step !== 5 && (
+        {step !== 4 && (
           <div className="flex justify-center mt-16">
             <div className="flex gap-8">
               <button

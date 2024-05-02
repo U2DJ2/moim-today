@@ -107,7 +107,7 @@ function Personal({
                   ? "border border-white bg-white text-scarlet placeholder:w-fit font-Pretendard_Normal text-xl rounded-lg px-4 py-1 focus:outline-none font-bold"
                   : "border border-white bg-scarlet text-white placeholder:w-fit font-Pretendard_Normal text-xl rounded-lg px-4 py-1 focus:outline-none"
               }`}
-              onClick={() => setGender("male")}
+              onClick={() => setGender("MALE")}
             >
               남성
             </button>
@@ -117,7 +117,7 @@ function Personal({
                   ? "border border-white bg-white text-scarlet placeholder:w-fit font-Pretendard_Normal text-xl rounded-lg px-4 py-1 focus:outline-none font-bold"
                   : "border border-white bg-scarlet text-white placeholder:w-fit font-Pretendard_Normal text-xl rounded-lg px-4 py-1 focus:outline-none "
               }`}
-              onClick={() => setGender("female")}
+              onClick={() => setGender("FEMALE")}
             >
               여성
             </button>
