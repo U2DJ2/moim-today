@@ -31,12 +31,11 @@ function TimeTable({ everytimeUrl, setEverytimeUrl }) {
             에브리타임 시간표 주소
           </p>
           <input
-            type="string"
+            type="text"
             name="everytimeUrl"
             autoComplete="off"
             placeholder="에브리타임 시간표 url을 복사해 붙여주세요."
             className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block mb-12 placeholder:text-white `}
-            value={everytimeUrl}
             onChange={onChangeHandler}
           />
         </div>

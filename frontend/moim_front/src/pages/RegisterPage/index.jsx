@@ -65,12 +65,6 @@ function RegisterPage() {
       client
         .post("api/certification/email", emailBody)
         .then((res) => {
-          if (res.status === 400) {
-            setEmailDuplication(true);
-            setIsOpen(true);
-            console.log(res);
-            message("이미 있는 이메일 입니다");
-          } else if (res.statusCode === 404) return setSchoolValidation(true);
           setStep(step + 1);
           console.log(res);
         })
@@ -86,11 +80,6 @@ function RegisterPage() {
       client
         .post("api/certification/email/complete", emailBody)
         .then((res) => {
-          // if (res.status === 400) {
-          //   console.log(res.status);
-          //   setEmailValidation(true);
-          //   setIsOpen(true);
-          // }
           console.log(res);
           console.log(res.status);
           setUniversityName(res.data.universityName);
@@ -134,9 +123,7 @@ function RegisterPage() {
     if (step === 0) navigate(-1);
     else setStep(step - 1);
   };
-  const handleModal = () => {
-    setIsOpen(false);
-  };
+
   return (
     <div className="flex min-h-screen w-full py-0 overflow-hidden relative gap-1 pl-52 bg-scarlet">
       <div className="flex flex-1 flex-col items-start justify-center w-96 gap-16">
@@ -179,7 +166,7 @@ function RegisterPage() {
           <Congrats setStep={setStep} step={step} />
         ) : (
           <TimeTable
-            setEverytimeURL={setEverytimeUrl}
+            setEverytimeUrl={setEverytimeUrl}
             everytimeUrl={everytimeUrl}
           />
         )}
