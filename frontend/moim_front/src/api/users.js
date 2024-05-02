@@ -8,6 +8,6 @@ export const checkEmailValid = async (data) =>
       "Content-Type": "application/json",
     },
     properties: {
-      baseURL: properties.baseUrl,
+      baseURL: properties.baseURL,
     },
   });

@@ -3,12 +3,13 @@ import AuthRight from "../../components/AuthRight";
 import Account from "./Account";
 import { useState } from "react";
 import AuthCheck from "./AuthCheck";
-
+import { checkEmailValid } from "../../api/users.js";
 import { useNavigate } from "react-router";
 import School from "./School";
 import Personal from "./Personal";
 import TimeTable from "./TimeTable";
 import Congrats from "./Congrats";
+import axios from "axios";
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -26,12 +27,19 @@ function RegisterPage() {
   const [birthDate, setBirthDate] = useState("");
   const [gender, setGender] = useState("");
 
+  const client = axios.create({
+    baseURL: "https://api.moim.today/",
+  });
+  const emailBody = {
+    email: email,
+  };
   const nextClick = async () => {
     if (step === 0) {
       //check email validity
-      checkEmailValid("email", email).then((res) => {
-        if (res.statusCode === 200) return setEmailDuplication(true);
-        else if (res.statusCode === 404) return setSchoolValidation(false);
+      client.post("api/certification/email", emailBody).then((res) => {
+        if (res.statusCode === 400) return setEmailDuplication(true);
+        else if (res.statusCode === 404) return setSchoolValidation(true);
+        setStep(step + 1);
       });
     } else {
       setStep(step + 1);
@@ -87,7 +95,7 @@ function RegisterPage() {
             <div className="flex gap-8">
               <button
                 className={`w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-black bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer  `}
-                onClick={() => previousClick}
+                onClick={() => previousClick()}
               >
                 이전
               </button>
