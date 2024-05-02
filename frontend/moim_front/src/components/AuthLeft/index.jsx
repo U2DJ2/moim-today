@@ -6,21 +6,42 @@ import Button from "../Button";
 import RegisterLabel from "../../assets/svg/Register_Label.svg";
 import EmailBtn from "../../assets/svg/EmailBtn.svg";
 import { useNavigate } from "react-router";
+import { POST } from "../../utils/axios";
 function AuthLeft({
   title,
   firstContent,
   secondContent,
   titleColor,
   contentColor,
+  email,
+  setEmail,
+  password,
+  setPassword,
 }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
   const [memory, setMemory] = useState(true);
 
   const emailHandler = (e) => setEmail(e.target.value);
   const passwordHandler = (e) => setPassword(e.target.value);
   const memoryHandler = (e) => !setMemory;
   const navigation = useNavigate();
+  const onClick = () => {
+    const data = {
+      email: email,
+      password: password,
+    };
+
+    POST("api/login", data).then((res) => {
+      if (res.statusCode === 404) {
+        console.log(res);
+        alert("아이디 및 비밀번호를 다시 확인하시오.");
+      } else {
+        console.log(res.data);
+        navigation("/");
+      }
+    });
+  };
   return (
     <div className="flex-1 flex flex-col justify-center justify-items-center">
       <div className="w-96 ">
@@ -71,7 +92,12 @@ function AuthLeft({
           <p>로그인 정보 기억하기</p>
         </div>
         <div className="pt-7">
-          <Button name={"로그인"} textColor={"white"} bgColor={"scarlet"} />
+          <Button
+            name={"로그인"}
+            textColor={"white"}
+            bgColor={"scarlet"}
+            onClick={onClick}
+          />
         </div>
         <div className="self-center items-center flex gap-3 flex-col pt-12">
           <img src={RegisterLabel} />

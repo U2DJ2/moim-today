@@ -2,7 +2,7 @@
 import { useState, Fragment } from "react";
 import { Transition } from "@headlessui/react";
 
-function Search({ options, onSelect, setActiveNext }) {
+function Search({ options, onSelect }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
