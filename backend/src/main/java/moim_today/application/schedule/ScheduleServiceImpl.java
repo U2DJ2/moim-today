@@ -5,7 +5,7 @@ import moim_today.dto.schedule.ScheduleCreateRequest;
 import moim_today.dto.schedule.ScheduleResponse;
 import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableRequest;
-import moim_today.implement.schedule.*;
+import moim_today.implement.schedule.schedule.*;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.stereotype.Service;
 

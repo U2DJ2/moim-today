@@ -1,4 +1,4 @@
-package moim_today.implement.schedule;
+package moim_today.implement.schedule.schedule;
 
 import moim_today.global.annotation.Implement;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;

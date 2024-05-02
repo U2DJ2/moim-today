@@ -6,6 +6,8 @@ import lombok.Getter;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
 
+import static moim_today.global.constant.NumberConstant.SCHEDULE_COLOR_START_COUNT;
+
 @Getter
 @Table(name = "schedule_color")
 @Entity
@@ -26,6 +28,17 @@ public class ScheduleColorJpaEntity extends BaseTimeEntity {
     @Builder
     private ScheduleColorJpaEntity(final long memberId, final int colorCount) {
         this.memberId = memberId;
+        this.colorCount = colorCount;
+    }
+
+    public static ScheduleColorJpaEntity toEntity(final long memberId) {
+        return ScheduleColorJpaEntity.builder()
+                .memberId(memberId)
+                .colorCount(SCHEDULE_COLOR_START_COUNT.value())
+                .build();
+    }
+
+    public void updateColorCount(final int colorCount) {
         this.colorCount = colorCount;
     }
 }
