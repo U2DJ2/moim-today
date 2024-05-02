@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AuthTitle from "../../../components/Authentification/AuthTitle";
 import { GET } from "../../../utils/axios";
 import axios from "axios";
 import properties from "../../../config/properties";
+import Dropdown from "../../../components/Dropdown/Simple";
 
 function School({
   universityId,
@@ -13,6 +14,7 @@ function School({
   universityName,
   setActiveNext,
 }) {
+  const [departmentInfo, setDepartmentInfo] = useState([]);
   const getAllDepartment = axios.create({
     baseURL: properties.baseURL,
     withCredentials: true,
@@ -30,13 +32,17 @@ function School({
           params: { universityId: universityId },
         })
         .then((res) => {
-          console.log(res.data);
+          console.log(res.data.data);
+          const result = res.data.data.map((department, index) => {
+            return department.departmentName;
+          });
+          console.log(result);
+          setDepartmentInfo(result);
         });
     } else {
       console.log("first");
     }
   }, [universityId]);
-  useEffect(() => console.log(universityId), []);
 
   // const departmentDrop = async (universityId) => {
   //   getAllDepartment.get(`api/departments/${universityId}`).then((res) => {
@@ -89,6 +95,7 @@ function School({
             value={department}
             onChange={departmentHandler}
           />
+          <Dropdown options={departmentInfo} />
         </div>
         <div className="gap-1">
           <p className=" font-Pretendard_Black block text-xl text-white">
