@@ -33,26 +33,26 @@ public class ScheduleJpaEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek;
 
+    private String colorHex;
+
     private LocalDateTime startDateTime;
 
     private LocalDateTime endDateTime;
-
-    private String color;
 
     protected ScheduleJpaEntity() {
     }
 
     @Builder
     private ScheduleJpaEntity(final long memberId, final long meetingId, final String scheduleName,
-                              final DayOfWeek dayOfWeek, final LocalDateTime startDateTime,
-                              final LocalDateTime endDateTime, final String color) {
+                              final DayOfWeek dayOfWeek, final String colorHex,
+                              final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         this.memberId = memberId;
         this.meetingId = meetingId;
         this.scheduleName = scheduleName;
         this.dayOfWeek = dayOfWeek;
+        this.colorHex = colorHex;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        this.color = color;
     }
 
     public void updateSchedule(final ScheduleUpdateRequest scheduleUpdateRequest) {

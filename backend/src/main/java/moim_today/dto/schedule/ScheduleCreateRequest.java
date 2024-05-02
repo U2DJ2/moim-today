@@ -20,7 +20,7 @@ public record ScheduleCreateRequest(
         LocalDateTime endDateTime
 ) {
 
-    public ScheduleJpaEntity toEntity(final long memberId) {
+    public ScheduleJpaEntity toEntity(final long memberId, final String colorHex) {
         return ScheduleJpaEntity.builder()
                 .memberId(memberId)
                 .meetingId(SCHEDULE_MEETING_ID.value())
@@ -28,6 +28,7 @@ public record ScheduleCreateRequest(
                 .dayOfWeek(dayOfWeek)
                 .startDateTime(startDateTime)
                 .endDateTime(endDateTime)
+                .colorHex(colorHex)
                 .build();
     }
 }

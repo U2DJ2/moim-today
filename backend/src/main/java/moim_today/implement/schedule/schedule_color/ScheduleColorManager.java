@@ -1,6 +1,6 @@
 package moim_today.implement.schedule.schedule_color;
 
-import moim_today.domain.schedule.ColorCount;
+import moim_today.domain.schedule.enums.ColorHex;
 import moim_today.global.annotation.Implement;
 import moim_today.persistence.entity.schedule.schedule_color.ScheduleColorJpaEntity;
 import moim_today.persistence.repository.schedule.schedule_color.ScheduleColorRepository;
@@ -37,7 +37,7 @@ public class ScheduleColorManager {
             count = scheduleColorUpdater.updateColorCount(scheduleColorJpaEntity);
         }
 
-        ColorCount colorCount = ColorCount.getHexByCount(count);
-        return colorCount.value();
+        ColorHex colorHex = ColorHex.getHexByCount(count);
+        return colorHex.value();
     }
 }

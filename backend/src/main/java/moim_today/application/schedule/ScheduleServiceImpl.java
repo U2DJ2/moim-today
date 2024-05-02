@@ -6,6 +6,7 @@ import moim_today.dto.schedule.ScheduleResponse;
 import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableRequest;
 import moim_today.implement.schedule.schedule.*;
+import moim_today.implement.schedule.schedule_color.ScheduleColorManager;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,25 +22,27 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleAppender scheduleAppender;
     private final ScheduleUpdater scheduleUpdater;
     private final ScheduleRemover scheduleRemover;
+    private final ScheduleColorManager scheduleColorManager;
 
     public ScheduleServiceImpl(final ScheduleManager scheduleManager, final ScheduleFinder scheduleFinder,
                                final ScheduleAppender scheduleAppender, final ScheduleUpdater scheduleUpdater,
-                               final ScheduleRemover scheduleRemover) {
+                               final ScheduleRemover scheduleRemover, final ScheduleColorManager scheduleColorManager) {
         this.scheduleManager = scheduleManager;
         this.scheduleFinder = scheduleFinder;
         this.scheduleAppender = scheduleAppender;
         this.scheduleUpdater = scheduleUpdater;
         this.scheduleRemover = scheduleRemover;
-    }
-
-    @Override
-    public List<ScheduleResponse> findAllByMonthly(final long memberId, final YearMonth yearMonth) {
-        return scheduleFinder.findAllByMonthly(memberId, yearMonth);
+        this.scheduleColorManager = scheduleColorManager;
     }
 
     @Override
     public List<ScheduleResponse> findAllByWeekly(final long memberId, final LocalDate startDate) {
         return scheduleFinder.findAllByWeekly(memberId, startDate);
+    }
+
+    @Override
+    public List<ScheduleResponse> findAllByMonthly(final long memberId, final YearMonth yearMonth) {
+        return scheduleFinder.findAllByMonthly(memberId, yearMonth);
     }
 
     @Override
@@ -51,7 +54,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void createSchedule(final long memberId, final ScheduleCreateRequest scheduleCreateRequest) {
-        ScheduleJpaEntity scheduleJpaEntity = scheduleCreateRequest.toEntity(memberId);
+        String colorHex = scheduleColorManager.getColorHex(memberId);
+        ScheduleJpaEntity scheduleJpaEntity = scheduleCreateRequest.toEntity(memberId, colorHex);
         scheduleAppender.createSchedule(scheduleJpaEntity);
     }
 
