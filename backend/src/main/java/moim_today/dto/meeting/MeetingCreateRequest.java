@@ -5,6 +5,7 @@ import lombok.Builder;
 import moim_today.domain.meeting.enums.MeetingCategory;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 @Builder
@@ -22,6 +23,16 @@ public record MeetingCreateRequest(
 ) {
 
     public MeetingJpaEntity toEntity() {
+        return MeetingJpaEntity.builder()
+                .moimId(moimId)
+                .agenda(agenda)
+                .startDateTime(startDateTime)
+                .endDateTime(endDateTime)
+                .place(place)
+                .build();
+    }
+
+    public MeetingJpaEntity toEntity(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         return MeetingJpaEntity.builder()
                 .moimId(moimId)
                 .agenda(agenda)
