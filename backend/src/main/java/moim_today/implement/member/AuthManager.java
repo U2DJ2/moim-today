@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
+import static moim_today.global.constant.NumberConstant.ONE_DAYS_IN_SECONDS;
+import static moim_today.global.constant.NumberConstant.THIRTY_DAYS_IN_SECONDS;
 import static moim_today.global.constant.exception.MemberExceptionConstant.EMAIL_PASSWORD_ERROR;
 
 @Implement
@@ -37,7 +39,9 @@ public class AuthManager {
         MemberJpaEntity memberJpaEntity = memberRepository.getByEmail(memberLoginRequest.email());
 
         if (passwordEncoder.matches(memberLoginRequest.password(), memberJpaEntity.getPassword())) {
-            setSessionByMemberSession(memberJpaEntity, request);
+            MemberSession memberSession = MemberSession.from(memberJpaEntity);
+            String memberSessionJson = memberSession.toJson(objectMapper);
+            memberSession.setSession(request, memberSessionJson, memberLoginRequest.isKeepLogin());
             return;
         }
         throw new NotFoundException(EMAIL_PASSWORD_ERROR.message());
@@ -53,14 +57,9 @@ public class AuthManager {
     public void signUp(final MemberRegisterRequest memberRegisterRequest, final HttpServletRequest request) {
         String encodedPassword = passwordEncode(memberRegisterRequest.password());
         MemberJpaEntity saveMember = memberRepository.save(memberRegisterRequest.toEntity(encodedPassword));
-        setSessionByMemberSession(saveMember, request);
-    }
-
-    private void setSessionByMemberSession(final MemberJpaEntity memberJpaEntity, final HttpServletRequest request){
-        MemberSession memberSession = MemberSession.from(memberJpaEntity);
+        MemberSession memberSession = MemberSession.from(saveMember);
         String memberSessionJson = memberSession.toJson(objectMapper);
-        HttpSession session = request.getSession(true);
-        session.setAttribute(MEMBER_SESSION.value(), memberSessionJson);
+        memberSession.setSession(request, memberSessionJson, false);
     }
 
     private String passwordEncode(final String password){
