@@ -38,6 +38,8 @@ function RegisterPage() {
   const [message, setMessage] = useState("");
 
   const [isOpen, setIsOpen] = useState(false);
+  const [everytimeUrl, setEverytimeUrl] = useState("");
+
   const client = axios.create({
     baseURL: "https://api.moim.today/",
   });
@@ -53,6 +55,9 @@ function RegisterPage() {
     studentId: studentId,
     birthDate: birthDate,
     gender: gender,
+  };
+  const everytimeInfo = {
+    everytimeUrl: everytimeUrl,
   };
   const nextClick = async () => {
     if (step === 0) {
@@ -109,6 +114,17 @@ function RegisterPage() {
           setIsOpen(true);
           setMessage(error.response.data.message);
         });
+    } else if (step === 5) {
+      client
+        .post("api/schedules/timetable", everytimeInfo)
+        .then((res) => {
+          console.log(res.data);
+          navigate("/");
+        })
+        .catch((error) => {
+          setIsOpen(true);
+          setMessage(error.response.data.message);
+        });
     } else {
       setStep(step + 1);
       setActiveNext(false);
@@ -162,7 +178,10 @@ function RegisterPage() {
         ) : step === 4 ? (
           <Congrats setStep={setStep} step={step} />
         ) : (
-          <TimeTable />
+          <TimeTable
+            setEverytimeURL={setEverytimeUrl}
+            everytimeUrl={everytimeUrl}
+          />
         )}
 
         {step !== 4 && step != 5 && (
@@ -193,7 +212,7 @@ function RegisterPage() {
             <div className="flex gap-8">
               <button
                 className={`w-52 justify-center px-7 py-5 text-[22px] font-bold text-slate-400  bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer  `}
-                onClick={() => previousClick()}
+                onClick={() => navigate("/")}
               >
                 건너뛰기
               </button>
