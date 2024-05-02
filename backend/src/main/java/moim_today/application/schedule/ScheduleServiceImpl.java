@@ -49,7 +49,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void fetchTimeTable(final long memberId, final TimeTableRequest timeTableRequest) {
-        String timeTableXML = scheduleManager.fetchTimetable(timeTableRequest.everytimeId());
+        String timeTableXML = scheduleManager.fetchTimetable(timeTableRequest.everytimeUrl());
         int count = scheduleColorManager.getColorCount(memberId);
         TimeTableProcessor timeTableProcessor =
                 scheduleManager.processTimetable(timeTableXML, timeTableRequest, count);

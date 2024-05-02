@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import static moim_today.global.constant.exception.EveryTimeExceptionConstant.TIME_INPUT_ERROR;
 
 public record TimeTableRequest(
-        String everytimeId,
+        String everytimeUrl,
         LocalDate startDate,
         LocalDate endDate
 ) {
