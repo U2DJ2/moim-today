@@ -1,5 +1,6 @@
 package moim_today.persistence.entity.member;
 
+import moim_today.dto.member.ProfileUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,28 +37,14 @@ class MemberJpaEntityTest {
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
                 .build();
 
-        long updateDepartmentId = 1L;
+        long updateDepartmentId = Long.parseLong(DEPARTMENT_ID.value());
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(updateDepartmentId, PROFILE_IMAGE_URL.value());
 
         // when
-        memberJpaEntity.updateProfile(updateDepartmentId);
+        memberJpaEntity.updateProfile(profileUpdateRequest);
 
         // then
         assertThat(memberJpaEntity.getDepartmentId()).isEqualTo(updateDepartmentId);
-    }
-
-    @DisplayName("사용자가 업로드한 프로필 이미지의 URL로 수정한다.")
-    @Test
-    void updateProfileUrl() {
-        // given
-        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
-                .build();
-
-        String updateProfileUrl = PROFILE_IMAGE_URL.value();
-
-        // when
-        memberJpaEntity.updateProfileImageUrl(updateProfileUrl);
-
-        // then
-        assertThat(memberJpaEntity.getMemberProfileImageUrl()).isEqualTo(updateProfileUrl);
+        assertThat(memberJpaEntity.getMemberProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL.value());
     }
 }

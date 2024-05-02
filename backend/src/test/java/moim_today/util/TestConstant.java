@@ -56,10 +56,15 @@ public enum TestConstant {
     CURRENT_COUNT("0"),
     VIEWS("10"),
 
+    
+    // 스케줄
     SCHEDULE_NAME("scheduleName"),
     NEW_SCHEDULE_NAME("new scheduleName"),
     FORBIDDEN_SCHEDULE_ID("9999"),
     NOTFOUND_SCHEDULE_ID("0"),
+
+    //미팅
+    MEETING_ID("123"),
 
     STATUS_CODE("200"),
     MESSAGE("message"),

@@ -2,10 +2,7 @@ package moim_today.presentation.member;
 
 import moim_today.application.member.MemberService;
 import moim_today.domain.member.MemberSession;
-import moim_today.dto.member.MemberProfileResponse;
-import moim_today.dto.member.PasswordRecoverRequest;
-import moim_today.dto.member.PasswordUpdateRequest;
-import moim_today.dto.member.ProfileUpdateRequest;
+import moim_today.dto.member.*;
 import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,9 +39,9 @@ public class MemberController {
         memberService.updateProfile(memberSession.id(), memberSession.universityId(), profileUpdateRequest);
     }
 
-    @PatchMapping("/profile-image")
-    public void updateProfileImage(@Login final MemberSession memberSession,
-                                   @RequestPart final MultipartFile file) {
-        memberService.updateProfileImage(memberSession.id(), file);
+    @PostMapping("/profile-image")
+    public ProfileImageResponse uploadProfileImage(@Login final MemberSession memberSession,
+                                                   @RequestPart final MultipartFile file) {
+        return memberService.uploadProfileImage(memberSession.id(), file);
     }
 }

@@ -4,4 +4,6 @@ import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JoinedMoimJpaRepository extends JpaRepository<JoinedMoimJpaEntity, Long> {
+
+    void deleteAllByMoimId(final long moimId);
 }

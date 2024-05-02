@@ -17,7 +17,9 @@ public enum NumberConstant {
     EVERYTIME_ITEM_START_INDEX(0),
     EVERYTIME_NODE_START_INDEX(0),
 
-    NOT_EXIST_IDX(-1);
+    NOT_EXIST_IDX(-1),
+    THIRTY_DAYS_IN_SECONDS(2592000),
+    ONE_DAYS_IN_SECONDS(3600);
 
     private final int value;
 

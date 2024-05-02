@@ -25,7 +25,7 @@ public class DepartmentFinder {
         this.universityRepository = universityRepository;
     }
 
-    public void isDepartmentAssociatedWithUniversity(final long universityId, final long departmentId) {
+    public void validateBelongToUniversity(final long universityId, final long departmentId) {
         DepartmentJpaEntity departmentJpaEntity = departmentRepository.getById(departmentId);
         if (departmentJpaEntity.getUniversityId() != universityId) {
             throw new BadRequestException(DEPARTMENT_NOT_MATCH_UNIVERSITY.message());

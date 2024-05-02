@@ -1,9 +1,12 @@
 package moim_today.fake_class.moim;
 
-import moim_today.application.moim.MoimService;
+import moim_today.application.moim.moim.MoimService;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.*;
+import moim_today.dto.moim.moim.MoimAppendRequest;
+import moim_today.dto.moim.moim.MoimDetailResponse;
+import moim_today.dto.moim.moim.MoimUpdateRequest;
+import moim_today.dto.moim.moim.MoimImageResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -13,18 +16,13 @@ import static moim_today.util.TestConstant.*;
 public class FakeMoimService implements MoimService {
 
     @Override
-    public void createPublicMoim(final long memberId, final long universityId, final PublicMoimAppendRequest publicMoimAppendRequest) {
+    public void createMoim(final long memberId, final long universityId, final MoimAppendRequest moimAppendRequest) {
 
     }
 
     @Override
-    public void createPrivateMoim(final long memberId, final long universityId, final PrivateMoimAppendRequest privateMoimAppendRequest) {
-
-    }
-
-    @Override
-    public UploadMoimImageResponse uploadMoimImage(final MultipartFile file) {
-        return UploadMoimImageResponse.from(MOIM_IMAGE_URL.value());
+    public MoimImageResponse uploadMoimImage(final MultipartFile file) {
+        return MoimImageResponse.from(MOIM_IMAGE_URL.value());
     }
 
     @Override
@@ -45,6 +43,11 @@ public class FakeMoimService implements MoimService {
 
     @Override
     public void updateMoim(final long memberId, final MoimUpdateRequest moimUpdateRequest) {
+
+    }
+
+    @Override
+    public void deleteMoim(final long memberId, final long moimId) {
 
     }
 }

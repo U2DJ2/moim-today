@@ -1,20 +1,20 @@
 package moim_today.presentation.auth;
 
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.auth.AuthService;
 import moim_today.domain.member.enums.Gender;
 import moim_today.dto.auth.MemberLoginRequest;
 import moim_today.dto.auth.MemberRegisterRequest;
 import moim_today.fake_class.auth.FakeAuthService;
 import moim_today.util.ControllerTest;
-import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static moim_today.util.TestConstant.*;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static moim_today.util.TestConstant.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
@@ -30,10 +30,10 @@ class AuthControllerTest extends ControllerTest {
         return new AuthController(authService);
     }
 
-    @DisplayName("로그인 테스트")
+    @DisplayName("로그인에 성공한다.")
     @Test
     void loginTest() throws Exception {
-        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(EMAIL.value(), PASSWORD.value());
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(EMAIL.value(), PASSWORD.value(), true);
         String json = objectMapper.writeValueAsString(memberLoginRequest);
 
         mockMvc.perform(post("/api/login")
@@ -43,21 +43,22 @@ class AuthControllerTest extends ControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("로그인 성공",
                         resource(ResourceSnippetParameters.builder()
-                                .tag("로그인")
+                                .tag("인증")
                                 .summary("로그인")
                                 .requestFields(
                                         fieldWithPath("email").type(STRING).description("이메일"),
-                                        fieldWithPath("password").type(STRING).description("비밀번호")
+                                        fieldWithPath("password").type(STRING).description("비밀번호"),
+                                        fieldWithPath("isKeepLogin").type(BOOLEAN).description("로그인 유지 여부 체크")
                                 )
                                 .build()
                         )
                 ));
     }
 
-    @DisplayName("로그인 테스트 실패")
+    @DisplayName("이메일/비밀번호가 틀리면 예오가 발생한다.")
     @Test
     void loginTestFail() throws Exception {
-        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(WRONG_EMAIL.value(), WRONG_PASSWORD.value());
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(WRONG_EMAIL.value(), WRONG_PASSWORD.value(), true);
         String json = objectMapper.writeValueAsString(memberLoginRequest);
 
         mockMvc.perform(post("/api/login")
@@ -71,7 +72,8 @@ class AuthControllerTest extends ControllerTest {
                                 .summary("로그인")
                                 .requestFields(
                                         fieldWithPath("email").type(STRING).description("이메일"),
-                                        fieldWithPath("password").type(STRING).description("비밀번호")
+                                        fieldWithPath("password").type(STRING).description("비밀번호"),
+                                        fieldWithPath("isKeepLogin").type(BOOLEAN).description("로그인 유지 여부 체크")
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태코드"),
@@ -82,7 +84,7 @@ class AuthControllerTest extends ControllerTest {
                 ));
     }
 
-    @DisplayName("로그아웃 테스트 성공")
+    @DisplayName("로그아웃에 성공한다.")
     @Test
     void logoutTest() throws Exception {
         mockMvc.perform(post("/api/logout"))
@@ -96,7 +98,7 @@ class AuthControllerTest extends ControllerTest {
                 ));
     }
 
-    @DisplayName("회원가입 성공")
+    @DisplayName("회원가입에 성공한다.")
     @Test
     void registerTest() throws Exception {
         MemberRegisterRequest memberRegisterRequest = MemberRegisterRequest.builder()

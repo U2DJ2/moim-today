@@ -40,7 +40,7 @@ class DepartmentFinderTest extends ImplementTest {
 
         // expected
         assertThatCode(() -> {
-            departmentFinder.isDepartmentAssociatedWithUniversity(saveUniv.getId(), saveDepart.getId());
+            departmentFinder.validateBelongToUniversity(saveUniv.getId(), saveDepart.getId());
         }).doesNotThrowAnyException();
 
     }

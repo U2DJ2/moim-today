@@ -1,6 +1,7 @@
-package moim_today.implement.moim;
+package moim_today.implement.moim.moim;
 
 import moim_today.global.error.NotFoundException;
+import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;

@@ -1,8 +1,8 @@
-package moim_today.implement.moim;
+package moim_today.implement.moim.moim;
 
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.MoimUpdateRequest;
+import moim_today.dto.moim.moim.MoimUpdateRequest;
 import moim_today.global.error.ForbiddenException;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
