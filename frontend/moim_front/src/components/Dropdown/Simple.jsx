@@ -10,15 +10,15 @@ function classNames(...classes) {
 export default function Simple({ options, onSelect }) {
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = (option, index) => {
     setSelectedOption(option);
-    onSelect(option);
+    onSelect(option, index);
   };
 
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-4 py-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50">
+        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-4 py-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50 ">
           {selectedOption}
           <ChevronDownIcon
             className="-mr-1 h-5 w-5 text-gray-400"
@@ -43,7 +43,7 @@ export default function Simple({ options, onSelect }) {
                 {({ active }) => (
                   <a
                     href="#"
-                    onClick={() => handleOptionClick(option)}
+                    onClick={() => handleOptionClick(option, index)}
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block px-4 py-2 text-sm"

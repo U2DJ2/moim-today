@@ -15,6 +15,7 @@ function School({
   setActiveNext,
 }) {
   const [departmentInfo, setDepartmentInfo] = useState([]);
+  const [result, setResult] = useState([]);
   const getAllDepartment = axios.create({
     baseURL: properties.baseURL,
     withCredentials: true,
@@ -33,11 +34,12 @@ function School({
         })
         .then((res) => {
           console.log(res.data.data);
-          const result = res.data.data.map((department, index) => {
+          const departmentNameList = res.data.data.map((department, index) => {
             return department.departmentName;
           });
-          console.log(result);
-          setDepartmentInfo(result);
+          console.log(departmentNameList);
+          setResult(res.data.data);
+          setDepartmentInfo(departmentNameList);
         });
     } else {
       console.log("first");
@@ -62,6 +64,9 @@ function School({
     } else {
       setActiveNext(false); // 둘 중 하나라도 비어있으면 setActiveNext를 false로 설정
     }
+  };
+  const handleDropdown = (option, index) => {
+    console.log(option, index);
   };
 
   return (
@@ -95,7 +100,7 @@ function School({
             value={department}
             onChange={departmentHandler}
           />
-          <Dropdown options={departmentInfo} />
+          <Dropdown options={departmentInfo} onSelect={handleDropdown} />
         </div>
         <div className="gap-1">
           <p className=" font-Pretendard_Black block text-xl text-white">
