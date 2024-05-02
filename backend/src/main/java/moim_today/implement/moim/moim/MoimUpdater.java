@@ -1,6 +1,6 @@
-package moim_today.implement.moim;
+package moim_today.implement.moim.moim;
 
-import moim_today.dto.moim.MoimUpdateRequest;
+import moim_today.dto.moim.moim.MoimUpdateRequest;
 import moim_today.global.annotation.Implement;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.repository.moim.moim.MoimRepository;

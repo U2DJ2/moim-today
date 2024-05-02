@@ -1,11 +1,7 @@
 package moim_today.application.member;
 
 import moim_today.domain.member.MemberSession;
-import moim_today.dto.file.FileInfoResponse;
-import moim_today.dto.member.MemberProfileResponse;
-import moim_today.dto.member.PasswordRecoverRequest;
-import moim_today.dto.member.PasswordUpdateRequest;
-import moim_today.dto.member.ProfileUpdateRequest;
+import moim_today.dto.member.*;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.member.MemberFinder;
 import moim_today.implement.member.MemberUpdater;
@@ -60,8 +56,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void updateProfileImage(final long memberId, final MultipartFile file) {
+    public ProfileImageResponse uploadProfileImage(final long memberId, final MultipartFile file) {
         String imageUrl = fileUploader.uploadFile(PROFILE_IMAGE.value(), file);
-        memberUpdater.updateProfileImageUrl(memberId, imageUrl);
+        return ProfileImageResponse.from(imageUrl);
     }
 }

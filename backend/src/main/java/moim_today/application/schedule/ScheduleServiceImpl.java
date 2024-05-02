@@ -20,26 +20,26 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleFinder scheduleFinder;
     private final ScheduleAppender scheduleAppender;
     private final ScheduleUpdater scheduleUpdater;
-    private final ScheduleDeleter scheduleDeleter;
+    private final ScheduleRemover scheduleRemover;
 
     public ScheduleServiceImpl(final ScheduleManager scheduleManager, final ScheduleFinder scheduleFinder,
                                final ScheduleAppender scheduleAppender, final ScheduleUpdater scheduleUpdater,
-                               final ScheduleDeleter scheduleDeleter) {
+                               final ScheduleRemover scheduleRemover) {
         this.scheduleManager = scheduleManager;
         this.scheduleFinder = scheduleFinder;
         this.scheduleAppender = scheduleAppender;
         this.scheduleUpdater = scheduleUpdater;
-        this.scheduleDeleter = scheduleDeleter;
-    }
-
-    @Override
-    public List<ScheduleResponse> findAllByWeekly(final long memberId, final LocalDate startDate) {
-        return scheduleFinder.findAllByWeekly(memberId, startDate);
+        this.scheduleRemover = scheduleRemover;
     }
 
     @Override
     public List<ScheduleResponse> findAllByMonthly(final long memberId, final YearMonth yearMonth) {
         return scheduleFinder.findAllByMonthly(memberId, yearMonth);
+    }
+
+    @Override
+    public List<ScheduleResponse> findAllByWeekly(final long memberId, final LocalDate startDate) {
+        return scheduleFinder.findAllByWeekly(memberId, startDate);
     }
 
     @Override
@@ -62,6 +62,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void deleteSchedule(final long memberId, final long scheduleId) {
-        scheduleDeleter.deleteSchedule(memberId, scheduleId);
+        scheduleRemover.deleteSchedule(memberId, scheduleId);
     }
 }

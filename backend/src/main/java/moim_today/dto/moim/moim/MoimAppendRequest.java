@@ -1,4 +1,4 @@
-package moim_today.dto.moim;
+package moim_today.dto.moim.moim;
 
 import lombok.Builder;
 import moim_today.domain.moim.DisplayStatus;
@@ -9,17 +9,21 @@ import moim_today.persistence.entity.moim.moim.MoimJpaEntity.MoimJpaEntityBuilde
 import java.time.LocalDate;
 
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
+import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
 import static moim_today.global.constant.NumberConstant.DEFAULT_MOIM_CURRENT_COUNT;
 import static moim_today.global.constant.NumberConstant.DEFAULT_MOIM_VIEWS;
 
 @Builder
-public record PrivateMoimAppendRequest(
+public record MoimAppendRequest(
         String title,
         String contents,
         int capacity,
+        //비밀번호 null 허용
         String password,
+        //모임 사진 null 허용
         String imageUrl,
         MoimCategory moimCategory,
+        DisplayStatus displayStatus,
         LocalDate startDate,
         LocalDate endDate
 ) {
@@ -33,12 +37,17 @@ public record PrivateMoimAppendRequest(
                 .contents(contents)
                 .capacity(capacity)
                 .currentCount(DEFAULT_MOIM_CURRENT_COUNT.value())
-                .password(password)
                 .moimCategory(moimCategory)
-                .displayStatus(DisplayStatus.PRIVATE)
+                .displayStatus(displayStatus)
                 .views(DEFAULT_MOIM_VIEWS.value())
                 .startDate(startDate)
                 .endDate(endDate);
+
+        if (displayStatus.equals(DisplayStatus.PRIVATE) && password != null) {
+            moimJpaEntityBuilder.password(password);
+        } else {
+            moimJpaEntityBuilder.password(DEFAULT_MOIM_PASSWORD.value());
+        }
 
         if (imageUrl == null) {
             return buildMoimByImageUrl(moimJpaEntityBuilder, DEFAULT_MOIM_IMAGE_URL.value());

@@ -1,5 +1,6 @@
 package moim_today.persistence.repository.todo;
 
+import moim_today.persistence.entity.todo.TodoJpaEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -9,5 +10,20 @@ public class TodoRepositoryImpl implements TodoRepository {
 
     public TodoRepositoryImpl(final TodoJpaRepository todoJpaRepository) {
         this.todoJpaRepository = todoJpaRepository;
+    }
+
+    @Override
+    public void deleteAllByMoimId(final long moimId) {
+        todoJpaRepository.deleteAllByMoimId(moimId);
+    }
+
+    @Override
+    public void save(final TodoJpaEntity todoJpaEntity) {
+        todoJpaRepository.save(todoJpaEntity);
+    }
+
+    @Override
+    public long count() {
+        return todoJpaRepository.count();
     }
 }

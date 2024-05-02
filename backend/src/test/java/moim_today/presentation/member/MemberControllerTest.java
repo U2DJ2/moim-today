@@ -1,7 +1,6 @@
 package moim_today.presentation.member;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import moim_today.application.member.MemberService;
@@ -12,9 +11,7 @@ import moim_today.fake_class.member.FakeMemberService;
 import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static moim_today.util.TestConstant.*;
@@ -22,7 +19,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.JsonFieldType.*;
+import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
@@ -31,13 +29,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class MemberControllerTest extends ControllerTest {
 
-    private final MemberService memberService = new FakeMemberService();
+    private final MemberService fakeMemberService = new FakeMemberService();
 
     @Override
     protected Object initController() {
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        return new MemberController(memberService);
+        return new MemberController(fakeMemberService);
     }
 
     @DisplayName("인증 토큰을 기반으로 비밀번호를 수정한다.")
@@ -114,7 +112,7 @@ class MemberControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("프로필을 조회에 성공한다.")
+    @DisplayName("프로필을 조회한다.")
     @Test
     void getMemberProfile() throws Exception {
         mockMvc.perform(get("/api/members/profile"))
@@ -137,10 +135,15 @@ class MemberControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("프로필을 정보를 수정한다.")
+    @DisplayName("프로필 정보를 수정한다.")
     @Test
     void updateProfile() throws Exception {
-        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(1L);
+
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(
+                Long.parseLong(DEPARTMENT_ID.value()),
+                PROFILE_IMAGE_URL.value()
+        );
+
         String json = objectMapper.writeValueAsString(profileUpdateRequest);
 
         mockMvc.perform(patch("/api/members/profile")
@@ -153,13 +156,14 @@ class MemberControllerTest extends ControllerTest {
                                 .tag("회원")
                                 .summary("프로필 정보 수정")
                                 .requestFields(
-                                        fieldWithPath("departmentId").type(NUMBER).description("주 전공 아이디")
+                                        fieldWithPath("departmentId").type(NUMBER).description("주 전공 아이디"),
+                                        fieldWithPath("imageUrl").type(STRING).description("프로필 이미지 URL")
                                 )
                                 .build()
                         )));
     }
 
-    @DisplayName("프로필 이미지를 수정하면 회원의 프로필 이미지 URL 정보가 변경된다.")
+    @DisplayName("프로필 이미지를 업로드/수정하면 업로드/수정된 파일의 URL울 반환한다.")
     @Test
     void updateProfileImage() throws Exception {
         MockMultipartFile file = new MockMultipartFile(
@@ -169,14 +173,21 @@ class MemberControllerTest extends ControllerTest {
                 FILE_CONTENT.value().getBytes()
         );
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .multipart(HttpMethod.PATCH, "/api/members/profile-image")
+        mockMvc.perform(multipart("/api/members/profile-image")
                         .file(file)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("프로필 이미지 업로드/수정",
+                .andDo(document("프로필 이미지 업로드/수정 성공",
                         requestParts(
                                 partWithName("file").description("프로필 이미지")
+                        )
+                        ,resource(ResourceSnippetParameters.builder()
+                                .tag("회원")
+                                .summary("프로필 이미지 업로드/수정")
+                                .responseFields(
+                                        fieldWithPath("imageUrl").type(STRING).description("업로드된 프로필 이미지 URL")
+                                )
+                                .build()
                         )
                 ));
     }

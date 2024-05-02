@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface ScheduleJpaRepository extends JpaRepository<ScheduleJpaEntity, Long> {
 
+    void deleteAllByMeetingIdIn(final List<Long> meetingIds);
+
     List<ScheduleJpaEntity> findAllByMemberId(final long memberId);
 }

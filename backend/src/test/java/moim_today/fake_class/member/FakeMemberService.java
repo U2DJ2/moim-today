@@ -3,10 +3,7 @@ package moim_today.fake_class.member;
 import moim_today.application.member.MemberService;
 import moim_today.domain.member.MemberSession;
 import moim_today.domain.member.enums.Gender;
-import moim_today.dto.member.MemberProfileResponse;
-import moim_today.dto.member.PasswordRecoverRequest;
-import moim_today.dto.member.PasswordUpdateRequest;
-import moim_today.dto.member.ProfileUpdateRequest;
+import moim_today.dto.member.*;
 import moim_today.fake_DB.FakeMemberSession;
 import moim_today.global.error.NotFoundException;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,8 +12,7 @@ import java.time.LocalDate;
 
 import static moim_today.global.constant.exception.MailExceptionConstant.MAIL_CERTIFICATION_TOKEN_NOT_FOUND_ERROR;
 import static moim_today.global.constant.exception.MemberExceptionConstant.MEMBER_NOT_FOUND_ERROR;
-import static moim_today.util.TestConstant.CERTIFICATION_TOKEN;
-import static moim_today.util.TestConstant.EMAIL;
+import static moim_today.util.TestConstant.*;
 
 
 public class FakeMemberService implements MemberService {
@@ -57,7 +53,7 @@ public class FakeMemberService implements MemberService {
     }
 
     @Override
-    public void updateProfileImage(final long memberId, final MultipartFile file) {
-
+    public ProfileImageResponse uploadProfileImage(final long memberId, final MultipartFile file) {
+        return ProfileImageResponse.from(PROFILE_IMAGE_URL.value());
     }
 }

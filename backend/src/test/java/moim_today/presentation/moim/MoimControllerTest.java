@@ -3,9 +3,9 @@ package moim_today.presentation.moim;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.MoimUpdateRequest;
-import moim_today.dto.moim.PrivateMoimAppendRequest;
-import moim_today.dto.moim.PublicMoimAppendRequest;
+import moim_today.dto.moim.moim.MoimAppendRequest;
+import moim_today.dto.moim.moim.MoimDeleteRequest;
+import moim_today.dto.moim.moim.MoimUpdateRequest;
 import moim_today.fake_class.moim.FakeMoimService;
 import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
@@ -33,77 +33,41 @@ class MoimControllerTest extends ControllerTest {
         return new MoimController(fakeMoimService);
     }
 
-    @DisplayName("공개 모임 생성 테스트")
-    @Test
-    void createPublicMoimApiTest() throws Exception {
-        LocalDate startDate = LocalDate.of(2024, 03, 01);
-        LocalDate endDate = LocalDate.of(2024, 06, 30);
-
-        PublicMoimAppendRequest publicMoimAppendRequest = new PublicMoimAppendRequest(
-                TITLE.value(),
-                CONTENTS.value(),
-                Integer.parseInt(CAPACITY.value()),
-                MOIM_IMAGE_URL.value(),
-                MoimCategory.STUDY,
-                startDate,
-                endDate
-        );
-
-        mockMvc.perform(post("/api/moims/public")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(publicMoimAppendRequest))
-                )
-                .andExpect(status().isOk())
-                .andDo(document("공개 모임 생성 성공",
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("모임")
-                                .summary("공개 모임 생성")
-                                .requestFields(
-                                        fieldWithPath("title").type(STRING).description("모임명"),
-                                        fieldWithPath("contents").type(STRING).description("내용"),
-                                        fieldWithPath("capacity").type(NUMBER).description("모집 인원"),
-                                        fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL"),
-                                        fieldWithPath("moimCategory").type(VARIES).description("카테고리"),
-                                        fieldWithPath("startDate").type(STRING).description("시작 일자"),
-                                        fieldWithPath("endDate").type(STRING).description("종료 일자")
-                                )
-                                .build()
-                        )));
-    }
-
-    @DisplayName("비공개 모임 생성 테스트")
+    @DisplayName("모임을 생성한다.")
     @Test
     void createPrivateMoimApiTest() throws Exception {
-        LocalDate startDate = LocalDate.of(2024, 03, 01);
-        LocalDate endDate = LocalDate.of(2024, 06, 30);
+        LocalDate startDate = LocalDate.of(2024, 3, 1);
+        LocalDate endDate = LocalDate.of(2024, 6, 30);
 
-        PrivateMoimAppendRequest privateMoimAppendRequest = new PrivateMoimAppendRequest(
+        MoimAppendRequest moimAppendRequest = new MoimAppendRequest(
                 TITLE.value(),
                 CONTENTS.value(),
                 Integer.parseInt(CAPACITY.value()),
                 PASSWORD.value(),
                 MOIM_IMAGE_URL.value(),
                 MoimCategory.STUDY,
+                DisplayStatus.PRIVATE,
                 startDate,
                 endDate
         );
 
-        mockMvc.perform(post("/api/moims/private")
+        mockMvc.perform(post("/api/moims")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(privateMoimAppendRequest))
+                        .content(objectMapper.writeValueAsString(moimAppendRequest))
                 )
                 .andExpect(status().isOk())
-                .andDo(document("비공개 모임 생성 성공",
+                .andDo(document("모임 생성 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
-                                .summary("비공개 모임 생성")
+                                .summary("모임 생성")
                                 .requestFields(
                                         fieldWithPath("title").type(STRING).description("모임명"),
                                         fieldWithPath("contents").type(STRING).description("내용"),
                                         fieldWithPath("capacity").type(NUMBER).description("모집 인원"),
-                                        fieldWithPath("password").type(STRING).description("모임 비밀번호"),
-                                        fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL"),
+                                        fieldWithPath("password").type(STRING).description("모임 비밀번호(공개 여부가 PUBLIC일 경우 Nullable)"),
+                                        fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL(Nullable)"),
                                         fieldWithPath("moimCategory").type(VARIES).description("카테고리"),
+                                        fieldWithPath("displayStatus").type(VARIES).description("공개 여부"),
                                         fieldWithPath("startDate").type(STRING).description("시작 일자"),
                                         fieldWithPath("endDate").type(STRING).description("종료 일자")
                                 )
@@ -111,7 +75,7 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("모임 사진 업로드 테스트 성공")
+    @DisplayName("모임 사진을 업로드/수정하면 업로드/수정된 파일의 URL을 반환한다. ")
     @Test
     void uploadMoimImageTest() throws Exception {
 
@@ -126,13 +90,13 @@ class MoimControllerTest extends ControllerTest {
                         .file(file)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("모임 사진 업로드 테스트",
+                .andDo(document("모임 사진 업로드/수정 성공",
                         requestParts(
                                 partWithName("file").description("모임 사진 파일")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
-                                .summary("모임 사진 업로드 성공 테스트 입니다.")
+                                .summary("모임 사진 업로드/수정")
                                 .responseFields(
                                         fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL")
                                 )
@@ -140,7 +104,7 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("모임 상제 정보 조회 테스트")
+    @DisplayName("모임 정보를 조회한다.")
     @Test
     void getMoimDetailTest() throws Exception {
 
@@ -148,10 +112,10 @@ class MoimControllerTest extends ControllerTest {
                         .param("moimId", "1")
                 )
                 .andExpect(status().isOk())
-                .andDo(document("모임 상세 정보 조회",
+                .andDo(document("모임 정보 조회 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
-                                .summary("모임 상세 정보 조회 API")
+                                .summary("모임 정보 조회")
                                 .queryParameters(
                                         parameterWithName("moimId").description("모임 ID")
                                 )
@@ -171,7 +135,7 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("모임 정보 업데이트 테스트")
+    @DisplayName("모임 정보를 수정한다.")
     @Test
     void updateMoimTest() throws Exception {
         MoimUpdateRequest moimUpdateRequest = MoimUpdateRequest.builder()
@@ -191,12 +155,12 @@ class MoimControllerTest extends ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(moimUpdateRequest)))
                 .andExpect(status().isOk())
-                .andDo(document("모임 정보 업데이트 테스트",
+                .andDo(document("모임 정보 수정 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
-                                .summary("모임 정보를 업데이트(수정)하는 테스트 입니다.")
+                                .summary("모임 정보 수정")
                                 .requestFields(
-                                        fieldWithPath("moimId").type(NUMBER).description("수정할 모임의 ID"),
+                                        fieldWithPath("moimId").type(NUMBER).description("수정할 모임 ID"),
                                         fieldWithPath("title").type(STRING).description("수정한 모임명"),
                                         fieldWithPath("contents").type(STRING).description("수정한 내용"),
                                         fieldWithPath("capacity").type(NUMBER).description("수정한 모집 인원"),
@@ -206,6 +170,25 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("displayStatus").type(VARIES).description("수정한 공개여부"),
                                         fieldWithPath("startDate").type(STRING).description("수정한 시작일자"),
                                         fieldWithPath("endDate").type(STRING).description("수정한 종료일자")
+                                ).build()
+                        )));
+    }
+
+    @DisplayName("모임을 삭제한다.")
+    @Test
+    void deleteMoimTest() throws Exception {
+        MoimDeleteRequest moimDeleteRequest = new MoimDeleteRequest(Long.parseLong(MOIM_ID.value()));
+
+        mockMvc.perform(delete("/api/moims")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimDeleteRequest)))
+                .andExpect(status().isOk())
+                .andDo(document("모임 삭제 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("모임 삭제")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("삭제할 모임 ID")
                                 ).build()
                         )));
     }

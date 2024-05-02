@@ -27,7 +27,7 @@ class FileControllerTest extends ControllerTest {
         return new FileController(fileService);
     }
 
-    @DisplayName("S3 파일 업로드 테스트")
+    @DisplayName("S3에 파일을 업로드한다.")
     @Test
     void uploadFileTest() throws Exception {
 
@@ -51,7 +51,7 @@ class FileControllerTest extends ControllerTest {
                 ));
     }
 
-    @DisplayName("파일 삭제 테스트")
+    @DisplayName("S3 파일을 삭제한다.")
     @Test
     void deleteFileTest() throws Exception {
 

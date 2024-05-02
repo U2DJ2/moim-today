@@ -5,12 +5,14 @@ import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
 import moim_today.persistence.repository.schedule.ScheduleRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Implement
-public class ScheduleDeleter {
+public class ScheduleRemover {
 
     private final ScheduleRepository scheduleRepository;
 
-    public ScheduleDeleter(final ScheduleRepository scheduleRepository) {
+    public ScheduleRemover(final ScheduleRepository scheduleRepository) {
         this.scheduleRepository = scheduleRepository;
     }
 
@@ -19,5 +21,12 @@ public class ScheduleDeleter {
         ScheduleJpaEntity scheduleJpaEntity = scheduleRepository.getById(scheduleId);
         scheduleJpaEntity.validateMember(memberId);
         scheduleRepository.delete(scheduleJpaEntity);
+    }
+
+    @Transactional
+    public void deleteAllByMeetingIdIn(final List<Long> meetingIds) {
+        if (!meetingIds.isEmpty()) {
+            scheduleRepository.deleteAllByMeetingIdIn(meetingIds);
+        }
     }
 }

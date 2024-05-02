@@ -5,8 +5,8 @@ import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableSchedulingTask;
 import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.time.LocalDateTime;
 
 
 public interface ScheduleRepository {
@@ -28,4 +28,6 @@ public interface ScheduleRepository {
     void delete(final ScheduleJpaEntity scheduleJpaEntity);
 
     long count();
+
+    void deleteAllByMeetingIdIn(final List<Long> meetingIds);
 }

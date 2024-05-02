@@ -8,14 +8,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCHEDULE_FORBIDDEN;
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCHEDULE_NOT_FOUND;
+import static moim_today.util.TestConstant.MEETING_ID;
 import static org.assertj.core.api.Assertions.*;
 
-class ScheduleDeleterTest extends ImplementTest {
+class ScheduleRemoverTest extends ImplementTest {
 
     @Autowired
-    private ScheduleDeleter scheduleDeleter;
+    private ScheduleRemover scheduleRemover;
 
     @DisplayName("개인 일정을 삭제한다.")
     @Test
@@ -30,7 +34,7 @@ class ScheduleDeleterTest extends ImplementTest {
         scheduleRepository.save(scheduleJpaEntity);
 
         // when
-        scheduleDeleter.deleteSchedule(memberId, scheduleJpaEntity.getId());
+        scheduleRemover.deleteSchedule(memberId, scheduleJpaEntity.getId());
 
         // then
         assertThat(scheduleRepository.count()).isEqualTo(0);
@@ -50,7 +54,7 @@ class ScheduleDeleterTest extends ImplementTest {
         scheduleRepository.save(scheduleJpaEntity);
 
         // expected
-        assertThatCode(() ->  scheduleDeleter.deleteSchedule(anotherMemberId, scheduleJpaEntity.getId()))
+        assertThatCode(() ->  scheduleRemover.deleteSchedule(anotherMemberId, scheduleJpaEntity.getId()))
                 .isInstanceOf(ForbiddenException.class)
                 .hasMessage(SCHEDULE_FORBIDDEN.message());
     }
@@ -59,8 +63,44 @@ class ScheduleDeleterTest extends ImplementTest {
     @Test
     void deleteScheduleNotFound() {
         // expected
-        assertThatCode(() ->  scheduleDeleter.deleteSchedule(1L, 9999L))
+        assertThatCode(() ->  scheduleRemover.deleteSchedule(1L, 9999L))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(SCHEDULE_NOT_FOUND.message());
+    }
+
+    @DisplayName("미팅id가 리스트로 주어지면 해당되는 스케줄 데이터를 모두 삭제한다.")
+    @Test
+    void deleteSchedulesByMeetingIdsTest() {
+
+        // given
+        long meetingId1 = Long.parseLong(MEETING_ID.value());
+        long meetingId2 = Long.parseLong(MEETING_ID.value()) + 1L;
+        long meetingId3 = Long.parseLong(MEETING_ID.value()) + 2L;
+
+        ScheduleJpaEntity scheduleJpaEntity1 = ScheduleJpaEntity.builder()
+                .meetingId(meetingId1)
+                .build();
+
+        ScheduleJpaEntity scheduleJpaEntity2 = ScheduleJpaEntity.builder()
+                .meetingId(meetingId2)
+                .build();
+
+        ScheduleJpaEntity scheduleJpaEntity3 = ScheduleJpaEntity.builder()
+                .meetingId(meetingId3)
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity1);
+        scheduleRepository.save(scheduleJpaEntity2);
+        scheduleRepository.save(scheduleJpaEntity3);
+
+        List<Long> meetingIds = new ArrayList<>();
+        meetingIds.add(meetingId1);
+        meetingIds.add(meetingId2);
+
+        //when
+        scheduleRemover.deleteAllByMeetingIdIn(meetingIds);
+
+        //then
+        assertThat(scheduleRepository.count()).isEqualTo(1L);
     }
 }
