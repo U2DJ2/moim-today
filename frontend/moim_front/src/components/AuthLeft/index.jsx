@@ -34,10 +34,11 @@ function AuthLeft({
     };
 
     POST("api/login", data).then((res) => {
-      if (res.status === "404") {
+      if (res.status === 404) {
         console.log(res);
         console.log("first");
         alert("아이디 및 비밀번호를 다시 확인하시오.");
+        checkLoginFailed(true);
       } else {
         console.log(res.data);
         navigation("/");

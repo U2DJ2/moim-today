@@ -57,30 +57,45 @@ function RegisterPage() {
   const nextClick = async () => {
     if (step === 0) {
       //check email validity
-      client.post("api/certification/email", emailBody).then((res) => {
-        if (res.statusCode === 400) {
-          setEmailDuplication(true);
-          isOpen(true);
+      client
+        .post("api/certification/email", emailBody)
+        .then((res) => {
+          if (res.status === 400) {
+            setEmailDuplication(true);
+            setIsOpen(true);
+            console.log(res);
+            message("이미 있는 이메일 입니다");
+          } else if (res.statusCode === 404) return setSchoolValidation(true);
+          setStep(step + 1);
           console.log(res);
-          message("이미 있는 이메일 입니다");
-        } else if (res.statusCode === 404) return setSchoolValidation(true);
-        setStep(step + 1);
-        console.log(res);
-      });
+        })
+        .catch((error) => {
+          const errorCode = error.response.data.statusCode;
+          if (errorCode === "400") {
+            setIsOpen(true);
+            setMessage(error.response.data.message);
+          }
+          console.log(error.response.data.statusCode);
+        });
     } else if (step === 1) {
-      client.post("api/certification/email/complete", emailBody).then((res) => {
-        if (res.status === "400") {
+      client
+        .post("api/certification/email/complete", emailBody)
+        .then((res) => {
+          // if (res.status === 400) {
+          //   console.log(res.status);
+          //   setEmailValidation(true);
+          //   setIsOpen(true);
+          // }
+          console.log(res);
           console.log(res.status);
-          setEmailValidation(true);
-          setIsOpen(true);
-        }
-        console.log(res);
-        console.log(res.status);
-        setUniversityName(res.data.universityName);
-        setUniversityId(res.data.universityId);
-        console.log(setUniversityId);
-        setStep(step + 1);
-      });
+          setUniversityName(res.data.universityName);
+          setUniversityId(res.data.universityId);
+          console.log(setUniversityId);
+          setStep(step + 1);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else if (step === 3) {
       client.post("api/sign-up", userData).then((res) => {
         if (res.status === "404") {
@@ -173,7 +188,7 @@ function RegisterPage() {
         )}
       </div>
       <AuthRight cardColor={"white"} textColor={"scarlet"} />
-      <Modal isOpen={isOpen} closeModal={handleModal} message={message} />
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen} message={message} />
     </div>
   );
 }
