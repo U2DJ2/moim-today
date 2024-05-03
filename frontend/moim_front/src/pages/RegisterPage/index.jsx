@@ -163,7 +163,11 @@ function RegisterPage() {
             setActiveNext={setActiveNext}
           />
         ) : step === 4 ? (
-          <Congrats setStep={setStep} step={step} />
+          <Congrats
+            setStep={setStep}
+            step={step}
+            setActiveNext={setActiveNext}
+          />
         ) : (
           <TimeTable
             setEverytimeUrl={setEverytimeUrl}

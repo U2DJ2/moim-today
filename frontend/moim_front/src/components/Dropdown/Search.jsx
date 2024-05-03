@@ -15,7 +15,6 @@ function Search({ options, onSelect }) {
     onSelect(index);
     setSelectedOption(option);
     toggleDropdown();
-    setActiveNext(true);
   };
 
   const handleInputChange = (event) => {
