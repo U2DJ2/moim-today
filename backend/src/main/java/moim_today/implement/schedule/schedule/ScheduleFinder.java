@@ -1,8 +1,8 @@
-package moim_today.implement.schedule;
+package moim_today.implement.schedule.schedule;
 
 import moim_today.dto.schedule.ScheduleResponse;
 import moim_today.global.annotation.Implement;
-import moim_today.persistence.repository.schedule.ScheduleRepository;
+import moim_today.persistence.repository.schedule.schedule.ScheduleRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;

@@ -1,6 +1,6 @@
-package moim_today.persistence.repository.schedule;
+package moim_today.persistence.repository.schedule.schedule;
 
-import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
+import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

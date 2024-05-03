@@ -1,7 +1,7 @@
-package moim_today.implement.schedule;
+package moim_today.implement.schedule.schedule;
 
 import moim_today.dto.schedule.ScheduleResponse;
-import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
+import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

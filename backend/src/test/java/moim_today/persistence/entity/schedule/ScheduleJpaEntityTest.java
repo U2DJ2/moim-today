@@ -2,6 +2,7 @@ package moim_today.persistence.entity.schedule;
 
 import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.global.error.ForbiddenException;
+import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

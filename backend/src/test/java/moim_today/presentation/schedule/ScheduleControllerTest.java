@@ -111,7 +111,7 @@ class ScheduleControllerTest extends ControllerTest {
                                 .tag("스케줄")
                                 .summary("에브리타임 URL 공유")
                                 .requestFields(
-                                        fieldWithPath("everytimeId").type(STRING).description("에브리타임 id"),
+                                        fieldWithPath("everytimeUrl").type(STRING).description("에브리타임 url"),
                                         fieldWithPath("startDate").type(STRING).description("시작 기간"),
                                         fieldWithPath("endDate").type(STRING).description("종료 기간")
                                 )
@@ -141,7 +141,7 @@ class ScheduleControllerTest extends ControllerTest {
                                 .tag("스케줄")
                                 .summary("에브리타임 URL 공유")
                                 .requestFields(
-                                        fieldWithPath("everytimeId").type(STRING).description("에브리타임 id"),
+                                        fieldWithPath("everytimeUrl").type(STRING).description("에브리타임 id"),
                                         fieldWithPath("startDate").type(STRING).description("시작 기간"),
                                         fieldWithPath("endDate").type(STRING).description("종료 기간")
                                 )

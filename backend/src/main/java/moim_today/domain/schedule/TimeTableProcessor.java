@@ -1,6 +1,7 @@
 package moim_today.domain.schedule;
 
 import lombok.Builder;
+import moim_today.domain.schedule.enums.ColorHex;
 import moim_today.dto.schedule.TimeTableRequest;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -11,27 +12,36 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 import static moim_today.global.constant.EveryTimeConstant.*;
-import static moim_today.global.constant.NumberConstant.EVERYTIME_ITEM_START_INDEX;
-import static moim_today.global.constant.NumberConstant.EVERYTIME_NODE_START_INDEX;
+import static moim_today.global.constant.NumberConstant.*;
 import static moim_today.global.constant.TimeConstant.*;
 
 @Builder
 public record TimeTableProcessor(
         LocalDate startDate,
         LocalDate endDate,
-        List<Schedule> schedules
+        List<Schedule> schedules,
+        Map<String, Integer> colorCountPair,
+        int colorCount
 ) {
 
-    public static TimeTableProcessor toDomain(final TimeTableRequest timeTableRequest) {
+    public static TimeTableProcessor toDomain(final TimeTableRequest timeTableRequest, final int colorCount) {
         return TimeTableProcessor.builder()
                 .startDate(timeTableRequest.startDate())
                 .endDate(timeTableRequest.endDate())
                 .schedules(new ArrayList<>())
+                .colorCountPair(new HashMap<>())
+                .colorCount(colorCount)
                 .build();
+    }
+
+    public int getColorCountSize() {
+        return colorCountPair.size();
     }
 
     public void processTimeTable(final NodeList subjects) {
@@ -83,7 +93,14 @@ public record TimeTableProcessor(
         while (!nextDate.isAfter(endDate)) {
             LocalDateTime startDateTime = LocalDateTime.of(nextDate, startTime);
             LocalDateTime endDateTime = LocalDateTime.of(nextDate, endTime);
-            schedules.add(Schedule.toDomain(name, dayOfWeek, startDateTime, endDateTime));
+
+            colorCountPair.putIfAbsent(name, colorCountPair.size() + colorCount);
+            int count = colorCountPair.get(name);
+            ColorHex hexByCount = ColorHex.getHexByCount(count);
+            String colorHex = hexByCount.value();
+
+            Schedule schedule = Schedule.toDomain(name, dayOfWeek, colorHex, startDateTime, endDateTime);
+            schedules.add(schedule);
             nextDate = nextDate.plusWeeks(ONE_WEEK.time());
         }
     }
