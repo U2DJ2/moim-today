@@ -15,6 +15,7 @@ import Schedule from "../pages/Schedule";
 
 // Components
 import Calendar from "../components/Calendar";
+import TimeTable from "../pages/RegisterPage/TimeTable";
 
 /**
  * Basic Router

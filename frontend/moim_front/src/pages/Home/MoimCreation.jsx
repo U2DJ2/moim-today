@@ -7,6 +7,7 @@ import { Checkbox } from "@mui/material";
 import { withStyles } from "@material-ui/core/styles";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { POST } from "../../utils/axios";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -71,7 +72,12 @@ function Dropdown({ options, onSelect }) {
   );
 }
 
-function InputField({ label, placeholder }) {
+function InputField({ label, placeholder, setTitle, setContents }) {
+  const onChange = (e) => {
+    if (label === "모임명") {
+      setTitle(e.target.value);
+    } else if (label === "상세 설명") setContents(e.target.value);
+  };
   return (
     <>
       <div className="mt-2.5 text-sm font-semibold leading-5 text-stone-500 max-md:max-w-full">
@@ -82,6 +88,7 @@ function InputField({ label, placeholder }) {
           type="text"
           className={`w-full bg-transparent outline-none`}
           placeholder={placeholder}
+          onChange={onChange}
         />
       </div>
     </>
@@ -139,6 +146,16 @@ function ImageUploader() {
 
 export default function MoimCreation() {
   // Check box 커스터마이징
+
+  /* moim 생성 data */
+  const [title, setTitle] = useState("");
+  const [contentes, setContents] = useState("");
+  const [capacity, setCapacity] = useState("");
+  const [password, setPassword] = useState();
+  const [imageUrl, setImageUrl] = useState();
+  const [moimCategory, setMoimCategory] = useState("");
+  const [displayStatus, setDisplayStatus] = useState("");
+  const [endDate, setEndDate] = useState("");
   const BlackCheckbox = withStyles({
     root: {
       color: "black",
@@ -159,13 +176,19 @@ export default function MoimCreation() {
 
   const handleDropdown = (option) => {
     console.log(option);
+    setMoimCategory(option);
   };
 
   // "취소하기" 버튼 클릭 시 메인 페이지로 이동
   const handleCancel = () => {
     navigate("/");
   };
-
+  const onClickHandler = () => {
+    console.log("clicked");
+    POST("api/moims", data).then((res) => {
+      console.log(res);
+    });
+  };
   return (
     <div className="flex flex-col justify-center p-8 bg-white rounded-[32px] max-md:px-5">
       <header className="flex gap-0 justify-between font-semibold text-black leading-[150%] max-md:flex-wrap items-center">
@@ -182,22 +205,31 @@ export default function MoimCreation() {
       </header>
       <main>
         <div className="mt-10 text-sm font-semibold leading-5 text-stone-500 max-md:max-w-full">
-          {" "}
-          카테고리{" "}
+          카테고리
         </div>
         <Dropdown
           options={["스터디", "팀 프로젝트", "취미활동", "기타"]}
           onSelect={handleDropdown}
         />
-        <InputField label="모임명" placeholder="모임 이름을 적어주세요." />
-        <InputField label="상세 설명" placeholder="모임 설명을 적어주세요." />
+        <InputField
+          label="모임명"
+          placeholder="모임 이름을 적어주세요."
+          setContents={setContents}
+          setTitle={setTitle}
+        />
+        <InputField
+          label="상세 설명"
+          placeholder="모임 설명을 적어주세요."
+          setContents={setContents}
+          setTitle={setTitle}
+        />
         <div className="mt-2.5 text-sm font-semibold leading-5 text-stone-500 max-md:max-w-full">
           {" "}
           이미지 올리세요{" "}
         </div>
         <ImageUploader />
         <InputField
-          label="운영 시간"
+          label="운영 기간"
           placeholder="이거 클릭하면 Date Picker 떠야 됨"
         />
         <InputField
@@ -213,7 +245,10 @@ export default function MoimCreation() {
           {" "}
           취소하기{" "}
         </button>
-        <button className="mt-10 text-lg font-Pretendard_SemiBold leading-7 text-rose-600">
+        <button
+          className="mt-10 text-lg font-Pretendard_SemiBold leading-7 text-rose-600"
+          onClick={onClickHandler}
+        >
           {" "}
           생성하기{" "}
         </button>

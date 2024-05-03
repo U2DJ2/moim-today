@@ -5,7 +5,7 @@ function TimeTable({ everytimeUrl, setEverytimeUrl }) {
     setEverytimeUrl(e.target.value);
   };
   return (
-    <div className="flex flex-col gap-16">
+    <div className="flex flex-col gap-16 ">
       <AuthTitle
         title={"Timetable"}
         firstContent={"마지막 단계입니다!"}
