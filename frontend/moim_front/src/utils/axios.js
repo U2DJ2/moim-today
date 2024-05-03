@@ -6,7 +6,7 @@ const fetchWrap = async ({ method, url, body, auth }) => {
     const config = {
       baseURL: properties.baseURL,
 
-      // withCredentials: true,
+      withCredentials: true,
     };
 
     // if (auth === true) {

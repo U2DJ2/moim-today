@@ -112,6 +112,7 @@ function RegisterPage() {
         })
         .catch((error) => {
           setIsOpen(true);
+          console.log(error);
           setMessage(error.response.data.message);
         });
     } else {

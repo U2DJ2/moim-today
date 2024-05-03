@@ -9,6 +9,8 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { POST } from "../../utils/axios";
 
+import DatePicker from "react-datepicker";
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -147,15 +149,17 @@ function ImageUploader() {
 export default function MoimCreation() {
   // Check box 커스터마이징
 
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
   /* moim 생성 data */
   const [title, setTitle] = useState("");
-  const [contentes, setContents] = useState("");
+  const [contents, setContents] = useState("");
   const [capacity, setCapacity] = useState("");
   const [password, setPassword] = useState();
   const [imageUrl, setImageUrl] = useState();
   const [moimCategory, setMoimCategory] = useState("");
   const [displayStatus, setDisplayStatus] = useState("");
-  const [endDate, setEndDate] = useState("");
   const BlackCheckbox = withStyles({
     root: {
       color: "black",
@@ -182,6 +186,18 @@ export default function MoimCreation() {
   // "취소하기" 버튼 클릭 시 메인 페이지로 이동
   const handleCancel = () => {
     navigate("/");
+  };
+
+  const data = {
+    title: title,
+    contents: contents,
+    capacity: capacity,
+    password: password,
+    imageUrl: imageUrl,
+    moimCategory: moimCategory,
+    displayStatus: displayStatus,
+    startDate: startDate,
+    endDate: endDate,
   };
   const onClickHandler = () => {
     console.log("clicked");
@@ -231,6 +247,10 @@ export default function MoimCreation() {
         <InputField
           label="운영 기간"
           placeholder="이거 클릭하면 Date Picker 떠야 됨"
+        />{" "}
+        <DatePicker
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
         />
         <InputField
           label="참여 인원"
