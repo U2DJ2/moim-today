@@ -10,8 +10,9 @@ import LoginPage from "../pages/Login";
 
 // Page : Manage
 import Manage from "../pages/Manage/Manage";
-
 import RegisterPage from "../pages/RegisterPage";
+import Schedule from "../pages/Schedule";
+
 // Components
 import Calendar from "../components/Calendar";
 
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/creation" element={<MoimCreationPage />} />
       <Route path="/manage" element={<Manage />} />
       <Route path="/calendar" element={<Calendar />} />
+      <Route path="/schedule" element={<Schedule />} />
     </Routes>
   );
 }

@@ -1,12 +1,71 @@
+// React
+import { useState, useRef, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function CategorySelector() {
+// UI and Icons
+import { Checkbox } from '@mui/material'
+import { withStyles } from '@material-ui/core/styles';
+import { Menu, Transition } from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
+
+function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+}
+
+/**
+ * Creation 페이지 전용 Dropdown Component 입니다!
+ * @param {*} param0 
+ * @returns 
+ */
+function Dropdown({ options, onSelect }) {
+    const [selectedOption, setSelectedOption] = useState(options[0]);
+
+    const handleOptionClick = (option) => {
+        setSelectedOption(option);
+        onSelect(option);
+    }
+
     return (
-        <div className="flex gap-0 justify-between px-4 py-2.5 mt-2 text-sm font-semibold leading-7 rounded-xl bg-neutral-50 text-zinc-400 max-md:flex-wrap">
-            <div className="flex-1 max-md:max-w-full">어디까지 올라가는거에요??</div>
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/95da3276034397a5966cf1c2c5fefc4519307760c7e98daff957792b9dc250d0?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&" className="shrink-0 my-auto w-6 aspect-square" />
-        </div>
-    );
+        <Menu as="div" className="relative w-full py-2.5 inline-block text-left">
+            <div>
+                <Menu.Button className="inline-flex w-full justify-between items-center gap-x-1.5 rounded-xl bg-neutral-50 px-4 py-3.5 text-sm font-Pretendard_Medium text-black hover:bg-gray-50">
+                    <span>{selectedOption}</span>
+                    <ChevronDownIcon className="h-5 w-5 text-gray-400 ml-auto" aria-hidden="true" />
+                </Menu.Button>
+            </div>
+
+            <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+            >
+                <Menu.Items className="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <div className="py-1">
+                        {options.map((option, index) => (
+                            <Menu.Item key={index}>
+                                {({ active }) => (
+                                    <a
+                                        href="#"
+                                        onClick={() => handleOptionClick(option)}
+                                        className={classNames(
+                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                            'block px-4 py-2 text-sm'
+                                        )}
+                                    >
+                                        {option}
+                                    </a>
+                                )}
+                            </Menu.Item>
+                        ))}
+                    </div>
+                </Menu.Items>
+            </Transition>
+        </Menu>
+    )
 }
 
 function InputField({ label, placeholder }) {
@@ -15,24 +74,86 @@ function InputField({ label, placeholder }) {
             <div className="mt-2.5 text-sm font-semibold leading-5 text-stone-500 max-md:max-w-full">
                 {label}
             </div>
-            <div className="justify-center px-4 py-2.5 mt-2 text-sm font-semibold leading-7 rounded-xl bg-neutral-50 text-zinc-400 max-md:max-w-full">
-                <input type="text" className="w-full bg-transparent outline-none text-gray-600" placeholder={placeholder} />
+            <div className="justify-center px-4 py-2.5 mt-2 text-sm font-Pretendard_Medium leading-7 rounded-xl bg-neutral-50 text-black max-md:max-w-full">
+                <input type="text" className={`w-full bg-transparent outline-none`} placeholder={placeholder} />
             </div>
         </>
     );
 }
 
 function ImageUploader() {
+    const [image, setImage] = useState(null);
+    const fileInputRef = useRef(null);
+
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            setImage(reader.result);
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleImageClick = () => {
+        fileInputRef.current.click();
+    };
+
     return (
-        <div className="flex justify-center items-center px-4 py-20 mt-2 rounded-xl border border-dashed border-neutral-400 max-md:px-5 max-md:max-w-full">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6bf0157b2a958fbe906dbd51a7e42975c058c0ecf274028bbcdbf686001a61ed?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&" className="my-3 w-14 aspect-square fill-zinc-300" />
+        <div className="flex justify-center items-center px-4 py-4 mt-2 rounded-xl border border-dashed border-neutral-400 max-md:px-5 max-md:max-w-full">
+            {image ? (
+                <img
+                    loading="lazy"
+                    src={image}
+                    className="my-3 max-w-full max-h-96 object-contain cursor-pointer"
+                    onClick={handleImageClick}
+                />
+            ) : (
+                <img
+                    loading="lazy"
+                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/6bf0157b2a958fbe906dbd51a7e42975c058c0ecf274028bbcdbf686001a61ed?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&"
+                    className="my-3 w-14 aspect-square fill-zinc-300 cursor-pointer"
+                    onClick={handleImageClick}
+                />
+            )}
+            <input
+                ref={fileInputRef}
+                id="upload"
+                type="file"
+                className="hidden"
+                onChange={handleImageChange}
+            />
         </div>
     );
 }
 
+
 export default function MoimCreation() {
+    // Check box 커스터마이징
+    const BlackCheckbox = withStyles({
+        root: {
+            color: 'black',
+            '&$checked': {
+                color: 'black',
+            },
+        },
+        checked: {},
+    })((props) => <Checkbox color="default" {...props} />);
 
     const navigate = useNavigate();
+
+    const handleVisibility = (event) => {
+        const isChecked = event.target.checked; // 체크 여부를 가져옵니다.
+        // isChecked 값에 따라 필요한 작업을 수행합니다.
+        console.log('체크 여부:', isChecked);
+    };
+
+    const handleDropdown = (option) => {
+        console.log(option);
+    };
 
     // "취소하기" 버튼 클릭 시 메인 페이지로 이동
     const handleCancel = () => {
@@ -40,17 +161,21 @@ export default function MoimCreation() {
     };
 
     return (
+
         <div className="flex flex-col justify-center p-8 bg-white rounded-[32px] max-md:px-5">
-            <header className="flex gap-0 justify-between font-semibold text-black leading-[150%] max-md:flex-wrap">
+            <header className="flex gap-0 justify-between font-semibold text-black leading-[150%] max-md:flex-wrap items-center">
                 <h1 className="flex-1 text-3xl max-md:max-w-full">모임을 생성해주세요</h1>
-                <div className="flex gap-2 justify-center py-3 text-lg whitespace-nowrap">
-                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/a7bb680ab431d8653bc4b53b87bc26a6b767d05f0b1c6a5303549035c8fcc8b7?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&" className="shrink-0 my-auto w-6 aspect-square" />
+                <div className="flex gap-2 justify-center py-3 text-lg whitespace-nowrap items-center">
+                    <BlackCheckbox
+                        onChange={handleVisibility}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                    />
                     <div>공개</div>
                 </div>
             </header>
             <main>
                 <div className="mt-10 text-sm font-semibold leading-5 text-stone-500 max-md:max-w-full"> 카테고리 </div>
-                <CategorySelector />
+                <Dropdown options={["Latest", "Views"]} onSelect={handleDropdown} />
                 <InputField label="모임명" placeholder="모임 이름을 적어주세요." />
                 <InputField label="상세 설명" placeholder="모임 설명을 적어주세요." />
                 <div className="mt-2.5 text-sm font-semibold leading-5 text-stone-500 max-md:max-w-full"> 이미지 올리세요 </div>
@@ -59,8 +184,8 @@ export default function MoimCreation() {
                 <InputField label="참여 인원" placeholder="참여 인원을 숫자만 입력해주세요!" />
             </main>
             <footer className="flex justify-center gap-12">
-                <button className="mt-10 text-lg font-semibold leading-7 text-gray-400" onClick={handleCancel}> 취소하기 </button>
-                <button className="mt-10 text-lg font-semibold leading-7 text-rose-600"> 생성하기 </button>
+                <button className="mt-10 text-lg font-Pretendard_SemiBold leading-7 text-gray-400" onClick={handleCancel}> 취소하기 </button>
+                <button className="mt-10 text-lg font-Pretendard_SemiBold leading-7 text-rose-600"> 생성하기 </button>
             </footer>
         </div>
     );
