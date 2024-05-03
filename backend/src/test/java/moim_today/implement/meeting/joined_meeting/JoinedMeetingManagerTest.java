@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class JoinedMeetingAppenderTest extends ImplementTest {
+class JoinedMeetingManagerTest extends ImplementTest {
 
     @Autowired
     private JoinedMeetingAppender joinedMeetingAppender;

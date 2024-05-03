@@ -12,23 +12,29 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import static moim_today.util.TestConstant.*;
 import static moim_today.util.TestConstant.MEETING_AGENDA;
 import static moim_today.util.TestConstant.MEETING_PLACE;
 import static org.assertj.core.api.Assertions.*;
 
-class MeetingAppenderTest extends ImplementTest {
+class MeetingManagerTest extends ImplementTest {
 
     @Autowired
-    private MeetingAppender meetingAppender;
+    private MeetingManager meetingManager;
 
     @DisplayName("단일 미팅을 생성한다.")
     @Test
     void createSingleMeeting() {
-        // given
-        long moimId = 1L;
+        // given 1
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .title(TITLE.value())
+                .build();
 
+        moimRepository.save(moimJpaEntity);
+
+        // given 2
         MeetingCreateRequest meetingCreateRequest = MeetingCreateRequest.builder()
-                .moimId(moimId)
+                .moimId(moimJpaEntity.getId())
                 .agenda(MEETING_AGENDA.value())
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
@@ -37,7 +43,7 @@ class MeetingAppenderTest extends ImplementTest {
                 .build();
 
         // when
-        meetingAppender.createMeeting(meetingCreateRequest);
+        meetingManager.createMeeting(meetingCreateRequest);
 
         // then
         assertThat(meetingRepository.count()).isEqualTo(1);
@@ -70,7 +76,7 @@ class MeetingAppenderTest extends ImplementTest {
                 .build();
 
         // when
-        meetingAppender.createMeeting(meetingCreateRequest);
+        meetingManager.createMeeting(meetingCreateRequest);
 
         // then
         long between = ChronoUnit.WEEKS.between(startDate, endDate) + 1;

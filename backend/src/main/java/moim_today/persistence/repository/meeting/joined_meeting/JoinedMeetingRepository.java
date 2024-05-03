@@ -10,5 +10,7 @@ public interface JoinedMeetingRepository {
 
     void save(final JoinedMeetingJpaEntity joinedMeetingJpaEntity);
 
+    List<Long> findAllMemberIdByMeetingId(final long meetingId);
+
     long count();
 }

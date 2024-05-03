@@ -21,6 +21,11 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
+    public String getTitleById(final long moimId) {
+        return moimRepository.getTitleById(moimId);
+    }
+
+    @Transactional(readOnly = true)
     public MoimDateResponse findMoimDate(final long moimId) {
         return moimRepository.findMoimDate(moimId);
     }

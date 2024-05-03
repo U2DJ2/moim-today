@@ -11,6 +11,8 @@ public interface MoimRepository {
 
     MoimJpaEntity getById(final long moimId);
 
+    String getTitleById(final long moimId);
+
     MoimDateResponse findMoimDate(final long moimId);
 
     void deleteById(final long moimId);

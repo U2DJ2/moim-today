@@ -24,9 +24,10 @@ public class JoinedMeetingAppender {
     public void saveJoinedMeeting(final long moimId, final long meetingId) {
         List<Long> memberIds = joinedMoimFinder.findAllJoinedMemberId(moimId);
 
-        memberIds.stream()
-                .mapToLong(memberId -> memberId)
-                .mapToObj(memberId -> JoinedMeetingJpaEntity.toEntity(meetingId, memberId, true))
-                .forEach(joinedMeetingRepository::save);
+        for (long memberId : memberIds) {
+            JoinedMeetingJpaEntity joinedMeetingJpaEntity =
+                    JoinedMeetingJpaEntity.toEntity(meetingId, memberId, true);
+            joinedMeetingRepository.save(joinedMeetingJpaEntity);
+        }
     }
 }

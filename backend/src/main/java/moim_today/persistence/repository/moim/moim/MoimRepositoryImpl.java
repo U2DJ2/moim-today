@@ -39,6 +39,14 @@ public class MoimRepositoryImpl implements MoimRepository {
     }
 
     @Override
+    public String getTitleById(final long moimId) {
+        return queryFactory.select(moimJpaEntity.title)
+                .from(moimJpaEntity)
+                .where(moimJpaEntity.id.eq(moimId))
+                .fetchOne();
+    }
+
+    @Override
     public MoimDateResponse findMoimDate(final long moimId) {
         return queryFactory.select(
                         new QMoimDateResponse(
