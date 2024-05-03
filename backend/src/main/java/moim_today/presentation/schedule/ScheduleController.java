@@ -31,7 +31,7 @@ public class ScheduleController {
 
     @GetMapping("/schedules/monthly")
     public CollectionResponse<List<ScheduleResponse>> findAllByMonthly(@Login final MemberSession memberSession,
-                                                                      @RequestParam final YearMonth yearMonth) {
+                                                                       @RequestParam final YearMonth yearMonth) {
         List<ScheduleResponse> scheduleResponses = scheduleService.findAllByMonthly(memberSession.id(), yearMonth);
         return CollectionResponse.of(scheduleResponses);
     }

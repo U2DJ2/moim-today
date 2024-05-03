@@ -13,7 +13,7 @@ import moim_today.implement.moim.moim.MoimAppender;
 import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.implement.moim.moim.MoimRemover;
 import moim_today.implement.moim.moim.MoimUpdater;
-import moim_today.implement.schedule.ScheduleRemover;
+import moim_today.implement.schedule.schedule.ScheduleRemover;
 import moim_today.implement.todo.TodoRemover;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.stereotype.Service;

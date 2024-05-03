@@ -1,4 +1,4 @@
-package moim_today.persistence.repository.schedule;
+package moim_today.persistence.repository.schedule.schedule;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.domain.schedule.Schedule;
@@ -7,7 +7,7 @@ import moim_today.dto.schedule.ScheduleResponse;
 import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableSchedulingTask;
 import moim_today.global.error.NotFoundException;
-import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
+import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,8 +19,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static moim_today.global.constant.NumberConstant.SCHEDULE_MEETING_ID;
+import static moim_today.global.constant.exception.ScheduleExceptionConstant.*;
+import static moim_today.persistence.entity.schedule.schedule.QScheduleJpaEntity.scheduleJpaEntity;
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCHEDULE_NOT_FOUND;
-import static moim_today.persistence.entity.schedule.QScheduleJpaEntity.scheduleJpaEntity;
 
 
 @Repository
@@ -83,8 +84,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         LocalDateTime now = LocalDateTime.now();
         List<Schedule> schedules = timeTableSchedulingTask.schedules();
         long memberId = timeTableSchedulingTask.memberId();
-        String sql = "INSERT INTO schedule (member_id, meeting_id, schedule_name, day_of_week, start_date_time, end_date_time, created_at, last_modified_at)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO schedule (member_id, meeting_id, schedule_name, day_of_week, color_hex, start_date_time, end_date_time, created_at, last_modified_at)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 
@@ -96,10 +97,11 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                 ps.setLong(2, entity.getMeetingId());
                 ps.setString(3, entity.getScheduleName());
                 ps.setString(4, entity.getDayOfWeek().toString());
-                ps.setTimestamp(5, Timestamp.valueOf(entity.getStartDateTime()));
-                ps.setTimestamp(6, Timestamp.valueOf(entity.getEndDateTime()));
-                ps.setTimestamp(7, Timestamp.valueOf(now));
+                ps.setString(5, entity.getColorHex());
+                ps.setTimestamp(6, Timestamp.valueOf(entity.getStartDateTime()));
+                ps.setTimestamp(7, Timestamp.valueOf(entity.getEndDateTime()));
                 ps.setTimestamp(8, Timestamp.valueOf(now));
+                ps.setTimestamp(9, Timestamp.valueOf(now));
             }
 
             @Override

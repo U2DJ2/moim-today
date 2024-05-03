@@ -84,7 +84,7 @@ public class FakeScheduleService implements ScheduleService {
 
     @Override
     public void fetchTimeTable(final long memberId, final TimeTableRequest timeTableRequest) {
-        if (!timeTableRequest.everytimeId().equals(EVERY_TIME_ID.value())) {
+        if (!timeTableRequest.everytimeUrl().equals(EVERY_TIME_ID.value())) {
             throw new BadRequestException(TIME_INPUT_ERROR.value());
         }
     }

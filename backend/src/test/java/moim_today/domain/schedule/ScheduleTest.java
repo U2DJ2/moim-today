@@ -1,6 +1,6 @@
 package moim_today.domain.schedule;
 
-import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
+import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

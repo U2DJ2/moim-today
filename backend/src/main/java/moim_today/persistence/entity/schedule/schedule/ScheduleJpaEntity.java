@@ -1,4 +1,4 @@
-package moim_today.persistence.entity.schedule;
+package moim_today.persistence.entity.schedule.schedule;
 
 import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.global.annotation.Association;
@@ -33,6 +33,8 @@ public class ScheduleJpaEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek;
 
+    private String colorHex;
+
     private LocalDateTime startDateTime;
 
     private LocalDateTime endDateTime;
@@ -42,12 +44,13 @@ public class ScheduleJpaEntity extends BaseTimeEntity {
 
     @Builder
     private ScheduleJpaEntity(final long memberId, final long meetingId, final String scheduleName,
-                              final DayOfWeek dayOfWeek, final LocalDateTime startDateTime,
-                              final LocalDateTime endDateTime) {
+                              final DayOfWeek dayOfWeek, final String colorHex,
+                              final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         this.memberId = memberId;
         this.meetingId = meetingId;
         this.scheduleName = scheduleName;
         this.dayOfWeek = dayOfWeek;
+        this.colorHex = colorHex;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
     }

@@ -1,9 +1,9 @@
-package moim_today.persistence.repository.schedule;
+package moim_today.persistence.repository.schedule.schedule;
 
 import moim_today.dto.schedule.ScheduleResponse;
 import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableSchedulingTask;
-import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
+import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 
 import java.util.List;
 import java.time.LocalDateTime;
