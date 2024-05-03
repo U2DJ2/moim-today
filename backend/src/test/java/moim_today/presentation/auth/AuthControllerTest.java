@@ -7,6 +7,7 @@ import moim_today.dto.auth.MemberLoginRequest;
 import moim_today.dto.auth.MemberRegisterRequest;
 import moim_today.fake_class.auth.FakeAuthService;
 import moim_today.util.ControllerTest;
+import moim_today.util.EnumDocsUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -130,7 +131,8 @@ class AuthControllerTest extends ControllerTest {
                                         fieldWithPath("departmentId").type(NUMBER).description("학과 ID"),
                                         fieldWithPath("studentId").type(STRING).description("학번"),
                                         fieldWithPath("birthDate").type(STRING).description("생년월일 (yyyy-MM-dd)"),
-                                        fieldWithPath("gender").type(VARIES).description("성별 (MALE, FEMALE, UNKNOWN)"),
+                                        fieldWithPath("gender").type(VARIES).description(String.format("성별 - %s",
+                                                EnumDocsUtils.getEnumNames(Gender.class))),
                                         fieldWithPath("username").type(STRING).description("이름")
                                 )
                                 .build())
