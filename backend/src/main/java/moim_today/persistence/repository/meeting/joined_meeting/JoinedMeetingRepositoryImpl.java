@@ -40,6 +40,11 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
     }
 
     @Override
+    public List<JoinedMeetingJpaEntity> findAll() {
+        return joinedMeetingJpaRepository.findAll();
+    }
+
+    @Override
     public long count() {
         return joinedMeetingJpaRepository.count();
     }

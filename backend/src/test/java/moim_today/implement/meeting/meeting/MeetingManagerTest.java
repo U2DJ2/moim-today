@@ -2,8 +2,10 @@ package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingCategory;
 import moim_today.dto.meeting.MeetingCreateRequest;
+import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
+import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

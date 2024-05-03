@@ -12,5 +12,7 @@ public interface JoinedMeetingRepository {
 
     List<Long> findAllMemberIdByMeetingId(final long meetingId);
 
+    List<JoinedMeetingJpaEntity> findAll();
+
     long count();
 }
