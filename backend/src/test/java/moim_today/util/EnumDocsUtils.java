@@ -1,15 +1,13 @@
 package moim_today.util;
 
-import moim_today.global.enum_descriptor.EnumDescriptor;
-
 import java.util.Arrays;
 
 public abstract class EnumDocsUtils {
 
-    public static String getEnumNames(Class<? extends EnumDescriptor> enums){
+    public static String getEnumNames(Class<? extends Enum> enums){
 
         return Arrays.stream(enums.getEnumConstants())
-                .map(EnumDescriptor::getName)
+                .map(Enum::name)
                 .toList()
                 .toString();
     }
