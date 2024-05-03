@@ -7,9 +7,9 @@ import moim_today.global.annotation.Implement;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingAppender;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingFinder;
 import moim_today.implement.moim.moim.MoimFinder;
-import moim_today.implement.schedule.ScheduleAppender;
+import moim_today.implement.schedule.schedule.ScheduleAppender;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
-import moim_today.persistence.entity.schedule.ScheduleJpaEntity;
+import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
