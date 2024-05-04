@@ -32,6 +32,11 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
     }
 
     @Override
+    public void saveAll(final List<JoinedMeetingJpaEntity> joinedMeetingJpaEntities) {
+        joinedMeetingJpaRepository.saveAll(joinedMeetingJpaEntities);
+    }
+
+    @Override
     public List<Long> findAllMemberIdByMeetingId(final long meetingId) {
         return queryFactory.select(joinedMeetingJpaEntity.memberId)
                 .from(joinedMeetingJpaEntity)

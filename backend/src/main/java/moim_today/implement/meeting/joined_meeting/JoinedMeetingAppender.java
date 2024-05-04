@@ -6,6 +6,7 @@ import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEnti
 import moim_today.persistence.repository.meeting.joined_meeting.JoinedMeetingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Implement
@@ -23,11 +24,13 @@ public class JoinedMeetingAppender {
     @Transactional
     public void saveJoinedMeeting(final long moimId, final long meetingId) {
         List<Long> memberIds = joinedMoimFinder.findAllJoinedMemberId(moimId);
+        List<JoinedMeetingJpaEntity> joinedMeetings = new ArrayList<>();
 
         for (long memberId : memberIds) {
-            JoinedMeetingJpaEntity joinedMeetingJpaEntity =
-                    JoinedMeetingJpaEntity.toEntity(meetingId, memberId, true);
-            joinedMeetingRepository.save(joinedMeetingJpaEntity);
+            JoinedMeetingJpaEntity joinedMeeting = JoinedMeetingJpaEntity.toEntity(meetingId, memberId, true);
+            joinedMeetings.add(joinedMeeting);
         }
+
+        joinedMeetingRepository.saveAll(joinedMeetings);
     }
 }
