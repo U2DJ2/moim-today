@@ -19,4 +19,6 @@ public interface JoinedMoimRepository {
     void deleteMoimMember(final long moimId, final long memberId);
 
     boolean isJoining(final long moimId2, final long memberId1);
+
+    boolean existsByMoimIdAndMemberId(final long moimId, final long memberId);
 }

@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface TodoJpaRepository extends JpaRepository<TodoJpaEntity, Long> {
 
     void deleteAllByMoimId(final long moimId);
+
+    void deleteAllByMoimIdAndMemberId(final long moimId, final long memberId);
 }

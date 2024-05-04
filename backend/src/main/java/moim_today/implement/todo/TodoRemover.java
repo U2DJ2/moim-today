@@ -17,4 +17,8 @@ public class TodoRemover {
     public void deleteAllByMoimId(final long moimId) {
         todoRepository.deleteAllByMoimId(moimId);
     }
+
+    public void deleteAllTodosCreatedByMemberInMoim(final long moimId, final long memberId) {
+        todoRepository.deleteAllTodosCreatedByMemberInMoim(moimId, memberId);
+    }
 }

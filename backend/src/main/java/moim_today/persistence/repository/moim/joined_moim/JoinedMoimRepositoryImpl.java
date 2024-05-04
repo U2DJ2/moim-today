@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_NOT_FOUND;
+import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_IS_EMPTY;
 import static moim_today.persistence.entity.moim.joined_moim.QJoinedMoimJpaEntity.joinedMoimJpaEntity;
 
 @Repository
@@ -49,7 +49,7 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
     public List<JoinedMoimJpaEntity> findJoinMembersByMoimId(final long moimId) {
         List<JoinedMoimJpaEntity> membersByMoimId = joinedMoimJpaRepository.findMembersByMoimId(moimId);
         if(membersByMoimId.isEmpty()){
-            throw new NotFoundException(JOINED_MOIM_MEMBER_NOT_FOUND.message());
+            throw new NotFoundException(JOINED_MOIM_MEMBER_IS_EMPTY.message());
         }
         return membersByMoimId;
     }
@@ -62,5 +62,10 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
     @Override
     public boolean isJoining(final long moimId, final long memberId) {
         return joinedMoimJpaRepository.existsByMoimIdAndMemberId(moimId,memberId);
+    }
+
+    @Override
+    public boolean existsByMoimIdAndMemberId(final long moimId, final long memberId) {
+        return joinedMoimJpaRepository.existsByMoimIdAndMemberId(moimId, memberId);
     }
 }

@@ -8,4 +8,6 @@ public interface TodoRepository {
     void save(final TodoJpaEntity todoJpaEntity);
 
     long count();
+
+    void deleteAllTodosCreatedByMemberInMoim(final long moimId, final long memberId);
 }

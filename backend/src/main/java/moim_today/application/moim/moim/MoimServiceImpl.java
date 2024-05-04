@@ -117,9 +117,15 @@ public class MoimServiceImpl implements MoimService{
 
     @Override
     public void deleteMember(final long requestMemberId, final MoimMemberDeleteRequest moimMemberDeleteRequest) {
-        MoimJpaEntity moimJpaEntity = moimFinder.getById(moimMemberDeleteRequest.moimId());
-        moimJpaEntity.validateMember(requestMemberId);
+        long moimId = moimMemberDeleteRequest.moimId();
+        long memberId = moimMemberDeleteRequest.memberId();
 
-        joinedMoimRemover.deleteMoimMember(moimMemberDeleteRequest.moimId(), moimMemberDeleteRequest.memberId());
+        MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
+        moimJpaEntity.validateMember(requestMemberId);
+        joinedMoimFinder.validateMemberInMoim(moimId, memberId);
+
+        joinedMoimRemover.deleteMoimMember(moimId, memberId);
+        todoRemover.deleteAllTodosCreatedByMemberInMoim(moimId, memberId);
+
     }
 }
