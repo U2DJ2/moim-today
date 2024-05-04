@@ -1,12 +1,14 @@
 package moim_today.implement.moim.moim;
 
+import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.global.error.NotFoundException;
-import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDate;
 
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_NOT_FOUND_ERROR;
 import static moim_today.util.TestConstant.MOIM_ID;
@@ -44,5 +46,41 @@ class MoimFinderTest extends ImplementTest {
         assertThatThrownBy(() -> moimFinder.getById(Long.parseLong(MOIM_ID.value())))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(MOIM_NOT_FOUND_ERROR.message());
+    }
+
+    @DisplayName("모임 id로 모임명을 가져온다.")
+    @Test
+    void getTitleById() {
+        // given
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .title(TITLE.value())
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+
+        // when
+        String title = moimFinder.getTitleById(moimJpaEntity.getId());
+
+        // then
+        assertThat(title).isEqualTo(TITLE.value());
+    }
+
+    @DisplayName("모임 id로 모임명을 가져온다.")
+    @Test
+    void findMoimDate() {
+        // given
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .startDate(LocalDate.of(2024, 3, 4))
+                .endDate(LocalDate.of(2024, 6, 30))
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+
+        // when
+        MoimDateResponse moimDateResponse = moimFinder.findMoimDate(moimJpaEntity.getId());
+
+        // then
+        assertThat(moimDateResponse.startDate()).isEqualTo(LocalDate.of(2024, 3, 4));
+        assertThat(moimDateResponse.endDate()).isEqualTo(LocalDate.of(2024, 6, 30));
     }
 }

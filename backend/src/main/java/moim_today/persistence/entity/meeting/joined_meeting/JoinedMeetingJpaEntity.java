@@ -21,7 +21,7 @@ public class JoinedMeetingJpaEntity extends BaseTimeEntity {
     @Association
     private long memberId;
 
-    private boolean Attendance;
+    private boolean attendance;
 
     protected JoinedMeetingJpaEntity() {
     }
@@ -30,6 +30,15 @@ public class JoinedMeetingJpaEntity extends BaseTimeEntity {
     private JoinedMeetingJpaEntity(final long meetingId, final long memberId, final boolean attendance) {
         this.meetingId = meetingId;
         this.memberId = memberId;
-        Attendance = attendance;
+        this.attendance = attendance;
+    }
+
+    public static JoinedMeetingJpaEntity toEntity(final long meetingId, final long memberId,
+                                                  final boolean attendance) {
+        return JoinedMeetingJpaEntity.builder()
+                .meetingId(meetingId)
+                .memberId(memberId)
+                .attendance(attendance)
+                .build();
     }
 }
