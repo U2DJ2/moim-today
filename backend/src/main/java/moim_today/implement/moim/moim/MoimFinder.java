@@ -46,10 +46,6 @@ public class MoimFinder {
         return memberFinder.findMembersWithJoinedInfo(memberIds, hostId);
     }
 
-    public boolean isHost(final long moimHostId, final long memberId) {
-        return moimHostId == memberId;
-    }
-
     @Transactional(readOnly = true)
     public String getTitleById(final long moimId) {
         return moimRepository.getTitleById(moimId);
@@ -58,5 +54,9 @@ public class MoimFinder {
     @Transactional(readOnly = true)
     public MoimDateResponse findMoimDate(final long moimId) {
         return moimRepository.findMoimDate(moimId);
+    }
+
+    public boolean isHost(final long moimHostId, final long memberId) {
+        return moimHostId == memberId;
     }
 }

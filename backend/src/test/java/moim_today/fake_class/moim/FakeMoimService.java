@@ -52,4 +52,9 @@ public class FakeMoimService implements MoimService {
     public MoimMemberTabResponse findMoimMembers(final long memberId, final long moimId) {
         return null;
     }
+
+    @Override
+    public void deleteMember(long id, MoimMemberDeleteRequest moimMemberDeleteRequest) {
+
+    }
 }

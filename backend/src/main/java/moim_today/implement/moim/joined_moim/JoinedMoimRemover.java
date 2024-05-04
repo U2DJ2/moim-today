@@ -17,4 +17,9 @@ public class JoinedMoimRemover {
     public void deleteAllByMoimId(final long moimId) {
         joinedMoimRepository.deleteAllByMoimId(moimId);
     }
+
+    @Transactional
+    public void deleteMoimMember(final long moimId, final long memberId) {
+        joinedMoimRepository.deleteMoimMember(moimId, memberId);
+    }
 }

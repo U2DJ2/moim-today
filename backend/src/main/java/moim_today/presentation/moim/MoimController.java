@@ -51,4 +51,10 @@ public class MoimController {
                            @RequestBody final MoimDeleteRequest moimDeleteRequest) {
         moimService.deleteMoim(memberSession.id(), moimDeleteRequest.moimId());
     }
+
+    @DeleteMapping("/members")
+    public void deleteMember(@Login final MemberSession memberSession,
+                             @RequestBody final MoimMemberDeleteRequest moimMemberDeleteRequest){
+        moimService.deleteMember(memberSession.id(), moimMemberDeleteRequest);
+    }
 }

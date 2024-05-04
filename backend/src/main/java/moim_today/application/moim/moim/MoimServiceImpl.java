@@ -114,4 +114,12 @@ public class MoimServiceImpl implements MoimService{
         boolean isHostRequest = moimFinder.isHost(moimHostId, memberId);
         return MoimMemberTabResponse.of(isHostRequest, moimMemberResponses);
     }
+
+    @Override
+    public void deleteMember(final long requestMemberId, final MoimMemberDeleteRequest moimMemberDeleteRequest) {
+        MoimJpaEntity moimJpaEntity = moimFinder.getById(moimMemberDeleteRequest.moimId());
+        moimJpaEntity.validateMember(requestMemberId);
+
+        joinedMoimRemover.deleteMoimMember(moimMemberDeleteRequest.moimId(), moimMemberDeleteRequest.memberId());
+    }
 }

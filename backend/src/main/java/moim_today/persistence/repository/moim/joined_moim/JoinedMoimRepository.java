@@ -15,4 +15,6 @@ public interface JoinedMoimRepository {
     JoinedMoimJpaEntity save(final JoinedMoimJpaEntity joinedMoimJpaEntity);
 
     List<JoinedMoimJpaEntity> findJoinMembersByMoimId(final long moimId);
+
+    void deleteMoimMember(long moimId, long memberId);
 }

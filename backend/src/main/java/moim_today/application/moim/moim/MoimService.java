@@ -16,5 +16,7 @@ public interface MoimService {
 
     void deleteMoim(final long memberId, final long moimId);
 
-    MoimMemberTabResponse findMoimMembers(long memberId, long moimId);
+    MoimMemberTabResponse findMoimMembers(final long memberId, final long moimId);
+
+    void deleteMember(final long id, final MoimMemberDeleteRequest moimMemberDeleteRequest);
 }
