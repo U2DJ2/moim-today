@@ -20,8 +20,8 @@ import java.util.List;
 
 import static moim_today.global.constant.NumberConstant.SCHEDULE_MEETING_ID;
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.*;
-import static moim_today.persistence.entity.schedule.schedule.QScheduleJpaEntity.scheduleJpaEntity;
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCHEDULE_NOT_FOUND;
+import static moim_today.persistence.entity.schedule.schedule.QScheduleJpaEntity.scheduleJpaEntity;
 
 
 @Repository
@@ -59,6 +59,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                                 scheduleJpaEntity.meetingId,
                                 scheduleJpaEntity.scheduleName,
                                 scheduleJpaEntity.dayOfWeek,
+                                scheduleJpaEntity.colorHex,
                                 scheduleJpaEntity.startDateTime,
                                 scheduleJpaEntity.endDateTime
                         ))

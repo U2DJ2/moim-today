@@ -65,6 +65,8 @@ public enum TestConstant {
 
     //미팅
     MEETING_ID("123"),
+    MEETING_AGENDA("meeting agenda"),
+    MEETING_PLACE("meeting place"),
 
     STATUS_CODE("200"),
     MESSAGE("message"),

@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface JoinedMoimRepository {
 
+    List<Long> findAllJoinedMemberId(final long moimId);
+
     void deleteAllByMoimId(final long moimId);
 
     long count();

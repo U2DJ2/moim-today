@@ -20,4 +20,9 @@ public class JoinedMoimFinder {
     public List<JoinedMoimJpaEntity> findByMoimId(final long moimId) {
         return joinedMoimRepository.findJoinMembersByMoimId(moimId);
     }
+
+    @Transactional(readOnly = true)
+    public List<Long> findAllJoinedMemberId(final long moimId) {
+        return joinedMoimRepository.findAllJoinedMemberId(moimId);
+    }
 }

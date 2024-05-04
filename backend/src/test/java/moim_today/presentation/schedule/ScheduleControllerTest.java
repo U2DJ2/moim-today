@@ -56,6 +56,7 @@ class ScheduleControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("data[0].scheduleName").type(STRING).description("스케줄명"),
                                         fieldWithPath("data[0].dayOfWeek").type(STRING).description("요일"),
+                                        fieldWithPath("data[0].colorHex").type(STRING).description("색상"),
                                         fieldWithPath("data[0].startDateTime").type(STRING).description("시작 시간"),
                                         fieldWithPath("data[0].endDateTime").type(STRING).description("종료 시간")
                                 )
@@ -82,6 +83,7 @@ class ScheduleControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("data[0].scheduleName").type(STRING).description("스케줄명"),
                                         fieldWithPath("data[0].dayOfWeek").type(STRING).description("요일"),
+                                        fieldWithPath("data[0].colorHex").type(STRING).description("색상"),
                                         fieldWithPath("data[0].startDateTime").type(STRING).description("시작 시간"),
                                         fieldWithPath("data[0].endDateTime").type(STRING).description("종료 시간")
                                 )

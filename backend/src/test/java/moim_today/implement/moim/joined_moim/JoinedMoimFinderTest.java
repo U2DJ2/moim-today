@@ -1,6 +1,7 @@
 package moim_today.implement.moim.joined_moim;
 
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
+import moim_today.util.ImplementTest;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
 import org.assertj.core.api.Assertions;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_NOT_FOUND;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class JoinedMoimFinderTest extends ImplementTest {
 
@@ -61,5 +63,27 @@ class JoinedMoimFinderTest extends ImplementTest {
         // expected
         assertThatThrownBy(() -> joinedMoimFinder.findByMoimId(savedMoim.getId()))
                 .hasMessage(JOINED_MOIM_MEMBER_NOT_FOUND.message());
+    }
+
+    @DisplayName("특정 모임에 참여한 회원의 id 리스트를 가져온다.")
+    @Test
+    void findAllJoinedMemberId() {
+        // given
+        long moimId = 1L;
+
+        for (long i = 0; i < 3; i++) {
+            JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
+                    .memberId(i)
+                    .moimId(moimId)
+                    .build();
+
+            joinedMoimRepository.save(joinedMoimJpaEntity);
+        }
+
+        // when
+        List<Long> memberIds = joinedMoimFinder.findAllJoinedMemberId(moimId);
+
+        // then
+        assertThat(memberIds.size()).isEqualTo(3);
     }
 }
