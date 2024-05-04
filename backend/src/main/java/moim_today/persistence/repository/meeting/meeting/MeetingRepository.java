@@ -8,5 +8,9 @@ public interface MeetingRepository {
 
     List<Long> findAllByMoimId(final long moimId);
 
-    void save(final MeetingJpaEntity meetingJpaEntity);
+    MeetingJpaEntity getById(final long meetingId);
+
+    MeetingJpaEntity save(final MeetingJpaEntity meetingJpaEntity);
+
+    long count();
 }

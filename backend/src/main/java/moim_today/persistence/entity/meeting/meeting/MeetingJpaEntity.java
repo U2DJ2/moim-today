@@ -20,25 +20,24 @@ public class MeetingJpaEntity extends BaseTimeEntity {
     @Association
     private long moimId;
 
-    @Association
-    private long memberId;
-
     private String agenda;
 
     private LocalDateTime startDateTime;
 
     private LocalDateTime endDateTime;
 
+    private String place;
+
     protected MeetingJpaEntity() {
     }
 
     @Builder
-    private MeetingJpaEntity(final long moimId, final long memberId, final String agenda,
-                            final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
+    private MeetingJpaEntity(final long moimId, final String agenda, final LocalDateTime startDateTime,
+                             final LocalDateTime endDateTime, final String place) {
         this.moimId = moimId;
-        this.memberId = memberId;
         this.agenda = agenda;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+        this.place = place;
     }
 }

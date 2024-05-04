@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import moim_today.global.error.ForbiddenException;
+import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -53,6 +54,18 @@ public class ScheduleJpaEntity extends BaseTimeEntity {
         this.colorHex = colorHex;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+    }
+
+    public static ScheduleJpaEntity toEntity(final long memberId, final String moimTitle,
+                                             final MeetingJpaEntity meetingJpaEntity) {
+        return ScheduleJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity.getId())
+                .scheduleName(moimTitle)
+                .dayOfWeek(meetingJpaEntity.getStartDateTime().getDayOfWeek())
+                .startDateTime(meetingJpaEntity.getStartDateTime())
+                .endDateTime(meetingJpaEntity.getEndDateTime())
+                .build();
     }
 
     public void updateSchedule(final ScheduleUpdateRequest scheduleUpdateRequest) {

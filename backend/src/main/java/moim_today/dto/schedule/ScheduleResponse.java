@@ -13,6 +13,7 @@ public record ScheduleResponse(
         long meetingId,
         String scheduleName,
         DayOfWeek dayOfWeek,
+        String colorHex,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         LocalDateTime startDateTime,

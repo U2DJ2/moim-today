@@ -39,6 +39,13 @@ public class ScheduleAppender {
         scheduleRepository.save(scheduleJpaEntity);
     }
 
+    @Transactional
+    public void createScheduleIfNotExist(final ScheduleJpaEntity scheduleJpaEntity) {
+        if (!scheduleRepository.exists(scheduleJpaEntity)) {
+            scheduleRepository.save(scheduleJpaEntity);
+        }
+    }
+
     private void validateAlreadyExist(final ScheduleJpaEntity scheduleJpaEntity) {
         if (scheduleRepository.exists(scheduleJpaEntity)) {
             throw new BadRequestException(SCHEDULE_ALREADY_EXIST.message());
