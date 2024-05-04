@@ -16,5 +16,7 @@ public interface JoinedMoimRepository {
 
     List<JoinedMoimJpaEntity> findJoinMembersByMoimId(final long moimId);
 
-    void deleteMoimMember(long moimId, long memberId);
+    void deleteMoimMember(final long moimId, final long memberId);
+
+    boolean isJoining(final long moimId2, final long memberId1);
 }

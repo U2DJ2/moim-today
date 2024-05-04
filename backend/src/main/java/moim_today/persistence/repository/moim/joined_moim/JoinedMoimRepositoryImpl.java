@@ -58,4 +58,9 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
     public void deleteMoimMember(long moimId, long memberId) {
         joinedMoimJpaRepository.deleteByMoimIdAndMemberId(moimId,memberId);
     }
+
+    @Override
+    public boolean isJoining(final long moimId, final long memberId) {
+        return joinedMoimJpaRepository.existsByMoimIdAndMemberId(moimId,memberId);
+    }
 }
