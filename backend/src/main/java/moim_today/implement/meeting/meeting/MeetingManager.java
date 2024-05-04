@@ -87,7 +87,7 @@ public class MeetingManager {
 
         for (long memberId : memberIds) {
             ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.toEntity(memberId, moimTitle, meetingJpaEntity);
-            scheduleAppender.createIfNotExist(scheduleJpaEntity);
+            scheduleAppender.createScheduleIfNotExist(scheduleJpaEntity);
         }
     }
 }

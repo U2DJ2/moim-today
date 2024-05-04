@@ -40,7 +40,7 @@ public class ScheduleAppender {
     }
 
     @Transactional
-    public void createIfNotExist(final ScheduleJpaEntity scheduleJpaEntity) {
+    public void createScheduleIfNotExist(final ScheduleJpaEntity scheduleJpaEntity) {
         if (!scheduleRepository.exists(scheduleJpaEntity)) {
             scheduleRepository.save(scheduleJpaEntity);
         }

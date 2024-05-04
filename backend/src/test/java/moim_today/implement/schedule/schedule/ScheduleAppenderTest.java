@@ -4,6 +4,7 @@ import moim_today.domain.schedule.Schedule;
 import moim_today.global.error.BadRequestException;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import moim_today.util.ImplementTest;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -263,6 +264,54 @@ class ScheduleAppenderTest extends ImplementTest {
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage(SCHEDULE_ALREADY_EXIST.message());
 
+        assertThat(scheduleRepository.count()).isEqualTo(1);
+    }
+
+    @DisplayName("원래 있던 일정과 겹치지 않으면 스케줄을 등록한다.")
+    @Test
+    void createScheduleIfNotExist() {
+        // given 1
+        ScheduleJpaEntity beforeScheduleJpaEntity = ScheduleJpaEntity.builder()
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
+                .build();
+
+        scheduleRepository.save(beforeScheduleJpaEntity);
+
+        // given 2
+        ScheduleJpaEntity newScheduleJpaEntity = ScheduleJpaEntity.builder()
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 14, 0, 0))
+                .build();
+
+        // when
+        scheduleAppender.createScheduleIfNotExist(newScheduleJpaEntity);
+
+        // then
+        assertThat(scheduleRepository.count()).isEqualTo(2);
+    }
+
+    @DisplayName("원래 있던 일정과 겹치면 스케줄을 등록하지 않는다.")
+    @Test
+    void notCreateScheduleIfExist() {
+        // given 1
+        ScheduleJpaEntity beforeScheduleJpaEntity = ScheduleJpaEntity.builder()
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
+                .build();
+
+        scheduleRepository.save(beforeScheduleJpaEntity);
+
+        // given 2
+        ScheduleJpaEntity newScheduleJpaEntity = ScheduleJpaEntity.builder()
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 11, 59, 59))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 14, 0, 0))
+                .build();
+
+        // when
+        scheduleAppender.createScheduleIfNotExist(newScheduleJpaEntity);
+
+        // then
         assertThat(scheduleRepository.count()).isEqualTo(1);
     }
 }
