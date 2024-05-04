@@ -10,13 +10,12 @@ import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.implement.schedule.schedule.ScheduleAppender;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import static moim_today.global.constant.TimeConstant.*;
 
@@ -40,6 +39,7 @@ public class MeetingManager {
         this.joinedMeetingFinder = joinedMeetingFinder;
     }
 
+    @Transactional
     public void createMeeting(final MeetingCreateRequest meetingCreateRequest) {
         MeetingCategory meetingCategory = meetingCreateRequest.meetingCategory();
         String moimTitle = moimFinder.getTitleById(meetingCreateRequest.moimId());
@@ -84,17 +84,10 @@ public class MeetingManager {
 
     private void createSchedules(final String moimTitle, final MeetingJpaEntity meetingJpaEntity) {
         List<Long> memberIds = joinedMeetingFinder.findAllMemberId(meetingJpaEntity.getId());
-        List<CompletableFuture<Void>> futures = new ArrayList<>();
 
         for (long memberId : memberIds) {
-            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
-                ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.toEntity(memberId, moimTitle, meetingJpaEntity);
-                scheduleAppender.createSchedule(scheduleJpaEntity);
-            });
-
-            futures.add(future);
+            ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.toEntity(memberId, moimTitle, meetingJpaEntity);
+            scheduleAppender.createIfNotExist(scheduleJpaEntity);
         }
-
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
     }
 }
