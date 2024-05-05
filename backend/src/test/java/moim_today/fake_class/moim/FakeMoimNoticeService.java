@@ -7,7 +7,7 @@ import moim_today.dto.moim.moim_notice.SimpleMoimNoticeResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static moim_today.util.TestConstant.TITLE;
+import static moim_today.util.TestConstant.NOTICE_TITLE;
 
 public class FakeMoimNoticeService implements MoimNoticeService {
     @Override
@@ -19,19 +19,19 @@ public class FakeMoimNoticeService implements MoimNoticeService {
     public List<SimpleMoimNoticeResponse> findAllMoimNotice(final long memberId, final long moimId) {
         SimpleMoimNoticeResponse simpleMoimNoticeResponse1 = SimpleMoimNoticeResponse.builder()
                 .moimNoticeId(1L)
-                .title(TITLE.value())
+                .title(NOTICE_TITLE.value())
                 .createdAt(LocalDateTime.now())
                 .build();
 
         SimpleMoimNoticeResponse simpleMoimNoticeResponse2 = SimpleMoimNoticeResponse.builder()
                 .moimNoticeId(2L)
-                .title(TITLE.value())
+                .title(NOTICE_TITLE.value())
                 .createdAt(LocalDateTime.now())
                 .build();
 
         SimpleMoimNoticeResponse simpleMoimNoticeResponse3 = SimpleMoimNoticeResponse.builder()
                 .moimNoticeId(3L)
-                .title(TITLE.value())
+                .title(NOTICE_TITLE.value())
                 .createdAt(LocalDateTime.now())
                 .build();
 

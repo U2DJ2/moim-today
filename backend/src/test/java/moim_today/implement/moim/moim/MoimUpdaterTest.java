@@ -42,8 +42,8 @@ class MoimUpdaterTest extends ImplementTest {
 
         MoimUpdateRequest moimUpdateRequest = MoimUpdateRequest.builder()
                 .moimId(moimId)
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .password(PASSWORD.value())
@@ -58,8 +58,8 @@ class MoimUpdaterTest extends ImplementTest {
                 .doesNotThrowAnyException();
 
         MoimJpaEntity updatedMoim = moimRepository.getById(moimId);
-        assertThat(updatedMoim.getTitle()).isEqualTo(TITLE.value());
-        assertThat(updatedMoim.getContents()).isEqualTo(CONTENTS.value());
+        assertThat(updatedMoim.getTitle()).isEqualTo(MOIM_TITLE.value());
+        assertThat(updatedMoim.getContents()).isEqualTo(MOIM_CONTENTS.value());
         assertThat(updatedMoim.getCapacity()).isEqualTo(capacity);
         assertThat(updatedMoim.getImageUrl()).isEqualTo(MOIM_IMAGE_URL.value());
         assertThat(updatedMoim.getPassword()).isEqualTo(PASSWORD.value());

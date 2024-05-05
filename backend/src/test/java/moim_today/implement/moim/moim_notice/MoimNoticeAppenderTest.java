@@ -30,8 +30,8 @@ class MoimNoticeAppenderTest extends ImplementTest {
 
         MoimNoticeCreateRequest moimNoticeCreateRequest = new MoimNoticeCreateRequest(
                 moimId,
-                TITLE.value(),
-                CONTENTS.value()
+                NOTICE_TITLE.value(),
+                NOTICE_CONTENTS.value()
         );
 
         //when
@@ -58,8 +58,8 @@ class MoimNoticeAppenderTest extends ImplementTest {
 
         MoimNoticeCreateRequest moimNoticeCreateRequest = new MoimNoticeCreateRequest(
                 moimId,
-                TITLE.value(),
-                CONTENTS.value()
+                NOTICE_TITLE.value(),
+                NOTICE_CONTENTS.value()
         );
 
         //expected

@@ -46,8 +46,8 @@ class MoimControllerTest extends ControllerTest {
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
         MoimAppendRequest moimAppendRequest = new MoimAppendRequest(
-                TITLE.value(),
-                CONTENTS.value(),
+                MOIM_TITLE.value(),
+                MOIM_CONTENTS.value(),
                 Integer.parseInt(CAPACITY.value()),
                 PASSWORD.value(),
                 MOIM_IMAGE_URL.value(),
@@ -146,8 +146,8 @@ class MoimControllerTest extends ControllerTest {
     void updateMoimTest() throws Exception {
         MoimUpdateRequest moimUpdateRequest = MoimUpdateRequest.builder()
                 .moimId(Long.parseLong(MOIM_ID.value()))
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(Integer.parseInt(CAPACITY.value()))
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .password(PASSWORD.value())
@@ -282,8 +282,8 @@ class MoimControllerTest extends ControllerTest {
     void createMoimNoticeTest() throws Exception {
         MoimNoticeCreateRequest moimNoticeCreateRequest = new MoimNoticeCreateRequest(
                 MOIM_ID.longValue(),
-                TITLE.value(),
-                CONTENTS.value());
+                NOTICE_TITLE.value(),
+                NOTICE_CONTENTS.value());
 
         mockMvc.perform(post("/api/moims/notices")
                         .contentType(MediaType.APPLICATION_JSON)

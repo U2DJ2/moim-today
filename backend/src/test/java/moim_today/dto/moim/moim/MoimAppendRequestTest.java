@@ -2,7 +2,6 @@ package moim_today.dto.moim.moim;
 
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.moim.MoimAppendRequest;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,8 +27,8 @@ class MoimAppendRequestTest {
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
         MoimAppendRequest moimAppendRequest = MoimAppendRequest.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .password(PASSWORD.value())
                 .moimCategory(MoimCategory.STUDY)
@@ -57,8 +56,8 @@ class MoimAppendRequestTest {
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
         MoimAppendRequest moimAppendRequest = MoimAppendRequest.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .password(PASSWORD.value())
@@ -87,8 +86,8 @@ class MoimAppendRequestTest {
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
         MoimAppendRequest moimAppendRequest = MoimAppendRequest.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .password(PASSWORD.value())
                 .moimCategory(MoimCategory.STUDY)
@@ -116,8 +115,8 @@ class MoimAppendRequestTest {
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
         MoimAppendRequest moimAppendRequest = MoimAppendRequest.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .password(PASSWORD.value())
@@ -146,8 +145,8 @@ class MoimAppendRequestTest {
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
         MoimAppendRequest moimAppendRequest = MoimAppendRequest.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .moimCategory(MoimCategory.STUDY)

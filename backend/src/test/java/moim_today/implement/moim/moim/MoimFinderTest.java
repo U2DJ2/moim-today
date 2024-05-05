@@ -36,7 +36,7 @@ class MoimFinderTest extends ImplementTest {
     void getByIdTest() {
         //given
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
-                .title(TITLE.value())
+                .title(MOIM_TITLE.value())
                 .build();
 
         moimRepository.save(moimJpaEntity);
@@ -46,7 +46,7 @@ class MoimFinderTest extends ImplementTest {
 
         //then
         assertThat(findMoimJpaEntity).isExactlyInstanceOf(MoimJpaEntity.class);
-        assertThat(findMoimJpaEntity.getTitle()).isEqualTo(TITLE.value());
+        assertThat(findMoimJpaEntity.getTitle()).isEqualTo(MOIM_TITLE.value());
     }
 
     @DisplayName("getById로 모임을 조회할 때, 해당하는 모임이 없으면 예외를 발생시킨다.")
@@ -189,7 +189,7 @@ class MoimFinderTest extends ImplementTest {
     void getTitleById() {
         // given
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
-                .title(TITLE.value())
+                .title(MOIM_TITLE.value())
                 .build();
 
         moimRepository.save(moimJpaEntity);
@@ -198,7 +198,7 @@ class MoimFinderTest extends ImplementTest {
         String title = moimFinder.getTitleById(moimJpaEntity.getId());
 
         // then
-        assertThat(title).isEqualTo(TITLE.value());
+        assertThat(title).isEqualTo(MOIM_TITLE.value());
     }
 
     @DisplayName("모임 id로 모임 기간을 가져온다.")

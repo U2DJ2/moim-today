@@ -49,12 +49,17 @@ public enum TestConstant {
 
     // 모임
     MOIM_ID("1"),
-    TITLE("title"),
-    CONTENTS("contents"),
+    MOIM_TITLE("moim title"),
+    MOIM_CONTENTS("moim contents"),
     CAPACITY("5"),
     MOIM_IMAGE_URL("moimImageUrl"),
     CURRENT_COUNT("0"),
     VIEWS("10"),
+
+    //공지
+    NOTICE_ID("1"),
+    NOTICE_TITLE("notice title"),
+    NOTICE_CONTENTS("notice contents"),
 
     
     // 스케줄

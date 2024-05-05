@@ -33,8 +33,8 @@ class MoimAppenderTest extends ImplementTest {
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
         MoimAppendRequest moimAppendRequest = new MoimAppendRequest(
-                TITLE.value(),
-                CONTENTS.value(),
+                MOIM_TITLE.value(),
+                MOIM_CONTENTS.value(),
                 capacity,
                 PASSWORD.value(),
                 MOIM_IMAGE_URL.value(),
@@ -56,8 +56,8 @@ class MoimAppenderTest extends ImplementTest {
         assertThat(count).isEqualTo(1);
         assertThat(moimJpaEntity.getMemberId()).isEqualTo(memberId);
         assertThat(moimJpaEntity.getUniversityId()).isEqualTo(universityId);
-        assertThat(moimJpaEntity.getTitle()).isEqualTo(TITLE.value());
-        assertThat(moimJpaEntity.getContents()).isEqualTo(CONTENTS.value());
+        assertThat(moimJpaEntity.getTitle()).isEqualTo(MOIM_TITLE.value());
+        assertThat(moimJpaEntity.getContents()).isEqualTo(MOIM_CONTENTS.value());
         assertThat(moimJpaEntity.getCapacity()).isEqualTo(capacity);
         assertThat(moimJpaEntity.getCurrentCount()).isEqualTo(DEFAULT_MOIM_CURRENT_COUNT.value());
         assertThat(moimJpaEntity.getImageUrl()).isEqualTo(MOIM_IMAGE_URL.value());
