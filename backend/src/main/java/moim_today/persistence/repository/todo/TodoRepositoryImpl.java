@@ -3,6 +3,8 @@ package moim_today.persistence.repository.todo;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class TodoRepositoryImpl implements TodoRepository {
 
@@ -30,5 +32,10 @@ public class TodoRepositoryImpl implements TodoRepository {
     @Override
     public void deleteAllTodosCreatedByMemberInMoim(final long moimId, final long memberId) {
         todoJpaRepository.deleteAllByMoimIdAndMemberId(moimId,memberId);
+    }
+
+    @Override
+    public List<TodoJpaEntity> getAllTodosByMemberId(final long memberId) {
+        return todoJpaRepository.findAllByMemberId(memberId);
     }
 }
