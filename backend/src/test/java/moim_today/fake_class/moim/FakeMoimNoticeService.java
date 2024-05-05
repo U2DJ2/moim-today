@@ -1,10 +1,7 @@
 package moim_today.fake_class.moim;
 
 import moim_today.application.moim.moim_notice.MoimNoticeService;
-import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
-import moim_today.dto.moim.moim_notice.MoimNoticeDetailResponse;
-import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
-import moim_today.dto.moim.moim_notice.MoimNoticeUpdateRequest;
+import moim_today.dto.moim.moim_notice.*;
 import moim_today.global.error.ForbiddenException;
 
 import java.time.LocalDateTime;
@@ -69,5 +66,10 @@ public class FakeMoimNoticeService implements MoimNoticeService {
         if (moimNoticeUpdateRequest.moimNoticeId() == FORBIDDEN_NOTICE_ID.longValue()) {
             throw new ForbiddenException(ORGANIZER_FORBIDDEN_ERROR.message());
         }
+    }
+
+    @Override
+    public void deleteMoimNotice(final long memberId, final MoimNoticeDeleteRequest moimNoticeDeleteRequest) {
+
     }
 }

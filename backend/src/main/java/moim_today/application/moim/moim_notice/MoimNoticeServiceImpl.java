@@ -1,11 +1,9 @@
 package moim_today.application.moim.moim_notice;
 
-import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
-import moim_today.dto.moim.moim_notice.MoimNoticeDetailResponse;
-import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
-import moim_today.dto.moim.moim_notice.MoimNoticeUpdateRequest;
+import moim_today.dto.moim.moim_notice.*;
 import moim_today.implement.moim.moim_notice.MoimNoticeAppender;
 import moim_today.implement.moim.moim_notice.MoimNoticeFinder;
+import moim_today.implement.moim.moim_notice.MoimNoticeRemover;
 import moim_today.implement.moim.moim_notice.MoimNoticeUpdater;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +15,17 @@ public class MoimNoticeServiceImpl implements MoimNoticeService{
     private final MoimNoticeAppender moimNoticeAppender;
     private final MoimNoticeFinder moimNoticeFinder;
     private final MoimNoticeUpdater moimNoticeUpdater;
+    private final MoimNoticeRemover moimNoticeRemover;
 
 
     public MoimNoticeServiceImpl(final MoimNoticeAppender moimNoticeAppender,
                                  final MoimNoticeFinder moimNoticeFinder,
-                                 final MoimNoticeUpdater moimNoticeUpdater) {
+                                 final MoimNoticeUpdater moimNoticeUpdater,
+                                 final MoimNoticeRemover moimNoticeRemover) {
         this.moimNoticeAppender = moimNoticeAppender;
         this.moimNoticeFinder = moimNoticeFinder;
         this.moimNoticeUpdater = moimNoticeUpdater;
+        this.moimNoticeRemover = moimNoticeRemover;
     }
 
     @Override
@@ -45,5 +46,10 @@ public class MoimNoticeServiceImpl implements MoimNoticeService{
     @Override
     public void updateMoimNotice(final long memberId, final MoimNoticeUpdateRequest moimNoticeUpdateRequest) {
         moimNoticeUpdater.updateMoimNotice(memberId, moimNoticeUpdateRequest);
+    }
+
+    @Override
+    public void deleteMoimNotice(final long memberId, final MoimNoticeDeleteRequest moimNoticeDeleteRequest) {
+        moimNoticeRemover.deleteMoimNotice(memberId, moimNoticeDeleteRequest);
     }
 }

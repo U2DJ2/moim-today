@@ -51,4 +51,9 @@ public class MoimNoticeRepositoryImpl implements MoimNoticeRepository {
         return moimNoticeJpaRepository.findById(moimNoticeId)
                 .orElseThrow(() -> new NotFoundException(NOTICE_NOT_FOUND_ERROR.message()));
     }
+
+    @Override
+    public void deleteById(final long moimNoticeId) {
+        moimNoticeJpaRepository.deleteById(moimNoticeId);
+    }
 }

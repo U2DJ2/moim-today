@@ -14,4 +14,6 @@ public interface MoimNoticeRepository {
     List<MoimNoticeSimpleResponse> findAllMoimNotice(final long moimId);
 
     MoimNoticeJpaEntity getById(final long moimNoticeId);
+
+    void deleteById(final long moimNoticeId);
 }
