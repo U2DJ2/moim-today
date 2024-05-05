@@ -128,6 +128,7 @@ class MoimControllerTest extends ControllerTest {
                                         parameterWithName("moimId").description("모임 ID")
                                 )
                                 .responseFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("모임 Id"),
                                         fieldWithPath("title").type(STRING).description("모임명"),
                                         fieldWithPath("contents").type(STRING).description("내용"),
                                         fieldWithPath("capacity").type(NUMBER).description("모집 인원"),

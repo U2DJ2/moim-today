@@ -29,6 +29,7 @@ public class FakeMoimService implements MoimService {
     @Override
     public MoimDetailResponse getMoimDetail(final long moimId) {
         return MoimDetailResponse.builder()
+                .moimId(moimId)
                 .title(MOIM_TITLE.value())
                 .contents(MOIM_CONTENTS.value())
                 .capacity(Integer.parseInt((CAPACITY.value())))
