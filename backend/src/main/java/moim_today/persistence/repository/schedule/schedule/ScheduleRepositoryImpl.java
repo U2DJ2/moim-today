@@ -11,6 +11,7 @@ import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -74,8 +75,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     }
 
     @Override
-    public void save(final ScheduleJpaEntity scheduleJpaEntity) {
-        scheduleJpaRepository.save(scheduleJpaEntity);
+    public ScheduleJpaEntity save(final ScheduleJpaEntity scheduleJpaEntity) {
+        return scheduleJpaRepository.save(scheduleJpaEntity);
     }
 
     // jdbc batch update
@@ -150,6 +151,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         scheduleJpaRepository.deleteAllByMeetingIdIn(meetingIds);
     }
 
+    @Transactional
     @Override
     public void deleteAllByMemberInMeeting(final long memberId, final List<Long> meetingIds) {
         queryFactory.delete(scheduleJpaEntity)

@@ -135,7 +135,6 @@ public class MoimServiceImpl implements MoimService{
 
         joinedMeetingRemover.deleteAllByMemberInMeeting(memberId, meetingIds);
         meetingCommentUpdater.updateDeletedMembers(memberId, meetingIds);
-//        TODO: 추방당한 멤버의 미팅에 참여한다는 스케쥴을 모두 삭제하기
         scheduleRemover.deleteAllByMemberInMeeting(memberId, meetingIds);
     }
 }
