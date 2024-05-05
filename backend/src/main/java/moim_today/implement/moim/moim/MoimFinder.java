@@ -59,4 +59,9 @@ public class MoimFinder {
     public boolean isHost(final long moimHostId, final long memberId) {
         return moimHostId == memberId;
     }
+
+    @Transactional(readOnly = true)
+    public long getMemberIdById(final long moimId) {
+        return moimRepository.getMemberIdById(moimId);
+    }
 }

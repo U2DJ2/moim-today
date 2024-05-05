@@ -62,4 +62,14 @@ public class MoimRepositoryImpl implements MoimRepository {
     public void deleteById(final long moimId) {
         moimJpaRepository.deleteById(moimId);
     }
+
+    @Override
+    public long getMemberIdById(final long moimId) {
+        return queryFactory
+                .select(moimJpaEntity.memberId)
+                .from(moimJpaEntity)
+                .where(moimJpaEntity.id.eq(moimId))
+                .stream().findAny()
+                .orElseThrow(() -> new NotFoundException(MOIM_NOT_FOUND_ERROR.message()));
+    }
 }

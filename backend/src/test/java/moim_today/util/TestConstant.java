@@ -88,7 +88,7 @@ public enum TestConstant {
         return Integer.parseInt(value);
     }
 
-    public long longValue(){
+    public long longValue() {
         return Long.parseLong(value);
     }
 }

@@ -201,7 +201,7 @@ class MoimFinderTest extends ImplementTest {
         assertThat(title).isEqualTo(TITLE.value());
     }
 
-    @DisplayName("모임 id로 모임명을 가져온다.")
+    @DisplayName("모임 id로 모임 기간을 가져온다.")
     @Test
     void findMoimDate() {
         // given
@@ -218,5 +218,23 @@ class MoimFinderTest extends ImplementTest {
         // then
         assertThat(moimDateResponse.startDate()).isEqualTo(LocalDate.of(2024, 3, 4));
         assertThat(moimDateResponse.endDate()).isEqualTo(LocalDate.of(2024, 6, 30));
+    }
+
+    @DisplayName("모임 Id로 모임을 생성한 회원의 Id를 가져온다.")
+    @Test
+    void getMemberIdByMoimIdTest() {
+        //given
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+        long moimid = moimJpaEntity.getId();
+
+        //when
+        long memberId = moimFinder.getMemberIdById(moimid);
+
+        //then
+        assertThat(memberId).isEqualTo(MEMBER_ID.longValue());
     }
 }

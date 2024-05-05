@@ -1,8 +1,10 @@
 package moim_today.presentation.moim;
 
 import moim_today.application.moim.moim.MoimService;
+import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.moim.moim.*;
+import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
 import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,9 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class MoimController {
 
     private final MoimService moimService;
+    private final MoimNoticeService moimNoticeService;
 
-    public MoimController(final MoimService moimService) {
+    public MoimController(final MoimService moimService,
+                          final MoimNoticeService moimNoticeService) {
         this.moimService = moimService;
+        this.moimNoticeService = moimNoticeService;
     }
 
     @PostMapping
@@ -50,6 +55,12 @@ public class MoimController {
     public void deleteMoim(@Login final MemberSession memberSession,
                            @RequestBody final MoimDeleteRequest moimDeleteRequest) {
         moimService.deleteMoim(memberSession.id(), moimDeleteRequest.moimId());
+    }
+
+    @PostMapping("/notices")
+    public void createMoimNotice(@Login final MemberSession memberSession,
+                                 @RequestBody final MoimNoticeCreateRequest moimNoticeCreateRequest) {
+        moimNoticeService.createMoimNotice(memberSession.id(), moimNoticeCreateRequest);
     }
 
     @DeleteMapping("/members")

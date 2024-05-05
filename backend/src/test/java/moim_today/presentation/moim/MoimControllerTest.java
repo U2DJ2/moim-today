@@ -8,6 +8,8 @@ import moim_today.dto.moim.moim.MoimAppendRequest;
 import moim_today.dto.moim.moim.MoimDeleteRequest;
 import moim_today.dto.moim.moim.MoimMemberDeleteRequest;
 import moim_today.dto.moim.moim.MoimUpdateRequest;
+import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
+import moim_today.fake_class.moim.FakeMoimNoticeService;
 import moim_today.fake_class.moim.FakeMoimService;
 import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
@@ -30,10 +32,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MoimControllerTest extends ControllerTest {
 
     private final MoimService fakeMoimService = new FakeMoimService();
+    private final FakeMoimNoticeService fakeMoimNoticeService = new FakeMoimNoticeService();
 
     @Override
     protected Object initController() {
-        return new MoimController(fakeMoimService);
+        return new MoimController(fakeMoimService, fakeMoimNoticeService);
     }
 
     @DisplayName("모임을 생성한다.")
@@ -269,6 +272,31 @@ class MoimControllerTest extends ControllerTest {
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),
                                         fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임 공지를 생성한다.")
+    @Test
+    void createMoimNoticeTest() throws Exception {
+        MoimNoticeCreateRequest moimNoticeCreateRequest = new MoimNoticeCreateRequest(
+                MOIM_ID.longValue(),
+                TITLE.value(),
+                CONTENTS.value());
+
+        mockMvc.perform(post("/api/moims/notices")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimNoticeCreateRequest)))
+                .andExpect(status().isOk())
+                .andDo(document("모임 공지 생성 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임 공지")
+                                .summary("모임 공지 생성")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("모임 Id"),
+                                        fieldWithPath("title").type(STRING).description("공지 제목"),
+                                        fieldWithPath("contents").type(STRING).description("공지 내용")
                                 )
                                 .build()
                         )));

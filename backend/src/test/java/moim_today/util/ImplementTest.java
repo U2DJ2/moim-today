@@ -10,6 +10,7 @@ import moim_today.persistence.repository.meeting.meeting_comment.MeetingCommentR
 import moim_today.persistence.repository.member.MemberRepository;
 import moim_today.persistence.repository.moim.joined_moim.JoinedMoimRepository;
 import moim_today.persistence.repository.moim.moim.MoimRepository;
+import moim_today.persistence.repository.moim.moim_notice.MoimNoticeRepository;
 import moim_today.persistence.repository.schedule.schedule.ScheduleRepository;
 import moim_today.persistence.repository.schedule.schedule_color.ScheduleColorRepository;
 import moim_today.persistence.repository.todo.TodoRepository;
@@ -63,6 +64,9 @@ public abstract class ImplementTest {
 
     @Autowired
     protected MeetingRepository meetingRepository;
+
+    @Autowired
+    protected MoimNoticeRepository moimNoticeRepository;
 
     @Autowired
     protected PasswordEncoder passwordEncoder;
