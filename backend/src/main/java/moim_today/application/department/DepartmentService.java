@@ -1,6 +1,6 @@
 package moim_today.application.department;
 
-import moim_today.dto.department.DepartmentInfoResponse;
+import moim_today.dto.department.DepartmentDetailResponse;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ public interface DepartmentService {
 
     void patchAllDepartment();
 
-    List<DepartmentInfoResponse> getAllDepartmentByUniversityName(final String universityName);
+    List<DepartmentDetailResponse> getAllDepartmentByUniversityName(final String universityName);
 
-    List<DepartmentInfoResponse> getAllDepartmentById(final long universityId);
+    List<DepartmentDetailResponse> getAllDepartmentById(final long universityId);
 }

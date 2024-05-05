@@ -1,6 +1,6 @@
 package moim_today.implement.moim.moim_notice;
 
-import moim_today.dto.moim.moim_notice.SimpleMoimNoticeResponse;
+import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.ForbiddenException;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
@@ -24,7 +24,7 @@ public class MoimNoticeFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<SimpleMoimNoticeResponse> findAllMoimNotice(final long memberId, final long moimId) {
+    public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long memberId, final long moimId) {
         List<Long> joinedMemberIds = joinedMoimFinder.findAllJoinedMemberId(moimId);
         if (!joinedMemberIds.contains(memberId)) {
             throw new ForbiddenException(MOIM_FORBIDDEN.message());

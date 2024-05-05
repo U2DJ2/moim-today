@@ -4,7 +4,7 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.auth.AuthService;
 import moim_today.domain.member.enums.Gender;
 import moim_today.dto.auth.MemberLoginRequest;
-import moim_today.dto.auth.MemberRegisterRequest;
+import moim_today.dto.auth.MemberSignUpRequest;
 import moim_today.fake_class.auth.FakeAuthService;
 import moim_today.util.ControllerTest;
 import moim_today.util.EnumDocsUtils;
@@ -102,7 +102,7 @@ class AuthControllerTest extends ControllerTest {
     @DisplayName("회원가입에 성공한다.")
     @Test
     void registerTest() throws Exception {
-        MemberRegisterRequest memberRegisterRequest = MemberRegisterRequest.builder()
+        MemberSignUpRequest memberSignUpRequest = MemberSignUpRequest.builder()
                 .email(AJOU_EMAIL.value())
                 .password(PASSWORD.value())
                 .universityId(Long.parseLong(UNIV_ID.value()))
@@ -113,7 +113,7 @@ class AuthControllerTest extends ControllerTest {
                 .username(USERNAME.value())
                 .build();
 
-        String json = objectMapper.writeValueAsString(memberRegisterRequest);
+        String json = objectMapper.writeValueAsString(memberSignUpRequest);
 
         mockMvc.perform(post("/api/sign-up")
                 .contentType(APPLICATION_JSON)

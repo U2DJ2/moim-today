@@ -1,6 +1,6 @@
 package moim_today.dto.file;
 
-public record FileInfoResponse(
+public record FileDetailResponse(
         String uploadFileUrl
 ) {
 }

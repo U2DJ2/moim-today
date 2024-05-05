@@ -5,7 +5,7 @@ import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.moim.moim.*;
 import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
-import moim_today.dto.moim.moim_notice.SimpleMoimNoticeResponse;
+import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
 import moim_today.global.annotation.Login;
 import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;
@@ -74,7 +74,7 @@ public class MoimController {
     }
 
     @GetMapping("/notices/simple")
-    public CollectionResponse<List<SimpleMoimNoticeResponse>> findAllMoimNotice(@Login final MemberSession memberSession,
+    public CollectionResponse<List<MoimNoticeSimpleResponse>> findAllMoimNotice(@Login final MemberSession memberSession,
                                                                                 @RequestParam final long moimId) {
         return CollectionResponse.of(moimNoticeService.findAllMoimNotice(memberSession.id(), moimId));
     }

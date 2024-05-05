@@ -1,7 +1,7 @@
 package moim_today.fake_class.department;
 
 import moim_today.application.department.DepartmentService;
-import moim_today.dto.department.DepartmentInfoResponse;
+import moim_today.dto.department.DepartmentDetailResponse;
 
 import java.util.List;
 
@@ -13,25 +13,25 @@ public class FakeDepartmentService implements DepartmentService {
     }
 
     @Override
-    public List<DepartmentInfoResponse> getAllDepartmentByUniversityName(final String universityName) {
+    public List<DepartmentDetailResponse> getAllDepartmentByUniversityName(final String universityName) {
 
         // given
-        List<DepartmentInfoResponse> mockData = List.of(
-                new DepartmentInfoResponse(1L, "소프트웨어학과"),
-                new DepartmentInfoResponse(2L, "의예과"),
-                new DepartmentInfoResponse(3L, "철학과")
+        List<DepartmentDetailResponse> mockData = List.of(
+                new DepartmentDetailResponse(1L, "소프트웨어학과"),
+                new DepartmentDetailResponse(2L, "의예과"),
+                new DepartmentDetailResponse(3L, "철학과")
         );
 
         return mockData;
     }
 
     @Override
-    public List<DepartmentInfoResponse> getAllDepartmentById(final long universityId) {
+    public List<DepartmentDetailResponse> getAllDepartmentById(final long universityId) {
         // given
-        List<DepartmentInfoResponse> mockData = List.of(
-                new DepartmentInfoResponse(1L, "소프트웨어학과"),
-                new DepartmentInfoResponse(2L, "의예과"),
-                new DepartmentInfoResponse(3L, "철학과")
+        List<DepartmentDetailResponse> mockData = List.of(
+                new DepartmentDetailResponse(1L, "소프트웨어학과"),
+                new DepartmentDetailResponse(2L, "의예과"),
+                new DepartmentDetailResponse(3L, "철학과")
         );
 
         return mockData;

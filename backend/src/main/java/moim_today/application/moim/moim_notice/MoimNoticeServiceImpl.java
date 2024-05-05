@@ -1,7 +1,7 @@
 package moim_today.application.moim.moim_notice;
 
 import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
-import moim_today.dto.moim.moim_notice.SimpleMoimNoticeResponse;
+import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
 import moim_today.implement.moim.moim_notice.MoimNoticeAppender;
 import moim_today.implement.moim.moim_notice.MoimNoticeFinder;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class MoimNoticeServiceImpl implements MoimNoticeService{
     }
 
     @Override
-    public List<SimpleMoimNoticeResponse> findAllMoimNotice(final long memberId, final long moimId) {
+    public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long memberId, final long moimId) {
         return moimNoticeFinder.findAllMoimNotice(memberId, moimId);
     }
 }

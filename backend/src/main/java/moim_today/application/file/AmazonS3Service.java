@@ -2,13 +2,11 @@ package moim_today.application.file;
 
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.file.FileDeleteRequest;
-import moim_today.dto.file.FileInfoResponse;
+import moim_today.dto.file.FileDetailResponse;
 import moim_today.implement.file.FileRemover;
 import moim_today.implement.file.FileUploader;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 
 @Service
 public class AmazonS3Service implements FileService{
@@ -22,9 +20,9 @@ public class AmazonS3Service implements FileService{
         this.fileRemover = fileRemover;
     }
 
-    public FileInfoResponse uploadFile(final String fileType, final MultipartFile multipartFile){
+    public FileDetailResponse uploadFile(final String fileType, final MultipartFile multipartFile){
         String imageUrl = fileUploader.uploadFile(fileType, multipartFile);
-        return new FileInfoResponse(imageUrl);
+        return new FileDetailResponse(imageUrl);
     }
 
     public void deleteFile(final MemberSession memberSession, final FileDeleteRequest fileDeleteRequest){

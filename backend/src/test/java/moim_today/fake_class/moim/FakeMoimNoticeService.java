@@ -2,7 +2,7 @@ package moim_today.fake_class.moim;
 
 import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
-import moim_today.dto.moim.moim_notice.SimpleMoimNoticeResponse;
+import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
 import moim_today.global.error.ForbiddenException;
 
 import java.time.LocalDateTime;
@@ -21,29 +21,29 @@ public class FakeMoimNoticeService implements MoimNoticeService {
     }
 
     @Override
-    public List<SimpleMoimNoticeResponse> findAllMoimNotice(final long memberId, final long moimId) {
+    public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long memberId, final long moimId) {
         if (moimId == FORBIDDEN_MOIM_ID.longValue()) {
             throw new ForbiddenException(MOIM_FORBIDDEN.message());
         }
 
-        SimpleMoimNoticeResponse simpleMoimNoticeResponse1 = SimpleMoimNoticeResponse.builder()
+        MoimNoticeSimpleResponse moimNoticeSimpleResponse1 = MoimNoticeSimpleResponse.builder()
                 .moimNoticeId(1L)
                 .title(NOTICE_TITLE.value())
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        SimpleMoimNoticeResponse simpleMoimNoticeResponse2 = SimpleMoimNoticeResponse.builder()
+        MoimNoticeSimpleResponse moimNoticeSimpleResponse2 = MoimNoticeSimpleResponse.builder()
                 .moimNoticeId(2L)
                 .title(NOTICE_TITLE.value())
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        SimpleMoimNoticeResponse simpleMoimNoticeResponse3 = SimpleMoimNoticeResponse.builder()
+        MoimNoticeSimpleResponse moimNoticeSimpleResponse3 = MoimNoticeSimpleResponse.builder()
                 .moimNoticeId(3L)
                 .title(NOTICE_TITLE.value())
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        return List.of(simpleMoimNoticeResponse1, simpleMoimNoticeResponse2, simpleMoimNoticeResponse3);
+        return List.of(moimNoticeSimpleResponse1, moimNoticeSimpleResponse2, moimNoticeSimpleResponse3);
     }
 }

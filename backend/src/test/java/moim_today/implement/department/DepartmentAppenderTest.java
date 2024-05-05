@@ -1,6 +1,6 @@
 package moim_today.implement.department;
 
-import moim_today.dto.department.DepartmentInfoResponse;
+import moim_today.dto.department.DepartmentDetailResponse;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
 import moim_today.util.ImplementTest;
@@ -38,7 +38,7 @@ class DepartmentAppenderTest extends ImplementTest {
 
         // when
         departmentAppender.batchUpdate(departmentJpaEntities);
-        List<DepartmentInfoResponse> allDepartment = departmentFinder.getAllDepartmentById(0);
+        List<DepartmentDetailResponse> allDepartment = departmentFinder.getAllDepartmentById(0);
 
         // then
         assertThat(allDepartment.size()).isEqualTo(10);

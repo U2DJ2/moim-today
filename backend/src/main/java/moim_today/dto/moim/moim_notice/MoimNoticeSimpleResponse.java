@@ -7,7 +7,7 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record SimpleMoimNoticeResponse(
+public record MoimNoticeSimpleResponse(
         long moimNoticeId,
         String title,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -15,6 +15,6 @@ public record SimpleMoimNoticeResponse(
 ) {
 
         @QueryProjection
-        public SimpleMoimNoticeResponse {
+        public MoimNoticeSimpleResponse {
         }
 }

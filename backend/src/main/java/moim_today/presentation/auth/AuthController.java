@@ -5,7 +5,7 @@ import jakarta.validation.Valid;
 import moim_today.application.auth.AuthService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.auth.MemberLoginRequest;
-import moim_today.dto.auth.MemberRegisterRequest;
+import moim_today.dto.auth.MemberSignUpRequest;
 import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,8 +34,8 @@ public class AuthController {
     }
 
     @PostMapping("/sign-up")
-    public void signUp(@Valid @RequestBody final MemberRegisterRequest memberRegisterRequest,
+    public void signUp(@Valid @RequestBody final MemberSignUpRequest memberSignUpRequest,
                        final HttpServletRequest request){
-        authService.signUp(memberRegisterRequest, request);
+        authService.signUp(memberSignUpRequest, request);
     }
 }

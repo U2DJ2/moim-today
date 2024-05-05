@@ -1,8 +1,8 @@
 package moim_today.persistence.repository.moim.moim_notice;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
 import moim_today.dto.moim.moim_notice.QSimpleMoimNoticeResponse;
-import moim_today.dto.moim.moim_notice.SimpleMoimNoticeResponse;
 import moim_today.persistence.entity.moim.moim_notice.MoimNoticeJpaEntity;
 import org.springframework.stereotype.Repository;
 
@@ -33,7 +33,7 @@ public class MoimNoticeRepositoryImpl implements MoimNoticeRepository {
     }
 
     @Override
-    public List<SimpleMoimNoticeResponse> findAllMoimNotice(final long moimId) {
+    public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long moimId) {
         return queryFactory.select(new QSimpleMoimNoticeResponse(
                         moimNoticeJpaEntity.id,
                         moimNoticeJpaEntity.title,

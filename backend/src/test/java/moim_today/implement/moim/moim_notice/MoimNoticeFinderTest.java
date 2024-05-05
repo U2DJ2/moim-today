@@ -1,6 +1,6 @@
 package moim_today.implement.moim.moim_notice;
 
-import moim_today.dto.moim.moim_notice.SimpleMoimNoticeResponse;
+import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
 import moim_today.global.error.ForbiddenException;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim_notice.MoimNoticeJpaEntity;
@@ -51,7 +51,7 @@ class MoimNoticeFinderTest extends ImplementTest {
         moimNoticeRepository.save(moimNoticeJpaEntity2);
 
         //when
-        List<SimpleMoimNoticeResponse> moimNoticeResponses = moimNoticeFinder
+        List<MoimNoticeSimpleResponse> moimNoticeResponses = moimNoticeFinder
                 .findAllMoimNotice(memberId, moimId);
 
         //then
