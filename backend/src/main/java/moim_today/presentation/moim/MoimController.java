@@ -5,9 +5,13 @@ import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.moim.moim.*;
 import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
+import moim_today.dto.moim.moim_notice.SimpleMoimNoticeResponse;
 import moim_today.global.annotation.Login;
+import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RequestMapping("/api/moims")
 @RestController
@@ -67,5 +71,11 @@ public class MoimController {
     public void deleteMember(@Login final MemberSession memberSession,
                              @RequestBody final MoimMemberDeleteRequest moimMemberDeleteRequest){
         moimService.deleteMember(memberSession.id(), moimMemberDeleteRequest);
+    }
+
+    @GetMapping("/notices/simple")
+    public CollectionResponse<List<SimpleMoimNoticeResponse>> findAllMoimNotice(@Login final MemberSession memberSession,
+                                                                                @RequestParam final long moimId) {
+        return CollectionResponse.of(moimNoticeService.findAllMoimNotice(memberSession.id(), moimId));
     }
 }

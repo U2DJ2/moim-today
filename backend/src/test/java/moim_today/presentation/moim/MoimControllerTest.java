@@ -153,8 +153,8 @@ class MoimControllerTest extends ControllerTest {
                 .password(PASSWORD.value())
                 .moimCategory(MoimCategory.STUDY)
                 .displayStatus(DisplayStatus.PRIVATE)
-                .startDate(LocalDate.of(2024,3,1))
-                .endDate(LocalDate.of(2024,6,30))
+                .startDate(LocalDate.of(2024, 3, 1))
+                .endDate(LocalDate.of(2024, 6, 30))
                 .build();
 
         mockMvc.perform(patch("/api/moims")
@@ -297,6 +297,29 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("moimId").type(NUMBER).description("모임 Id"),
                                         fieldWithPath("title").type(STRING).description("공지 제목"),
                                         fieldWithPath("contents").type(STRING).description("공지 내용")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임의 모든 공지를 가져온다.")
+    @Test
+    void findAllMoimNoticeTest() throws Exception {
+
+        mockMvc.perform(get("/api/moims/notices/simple")
+                        .queryParam("moimId", MOIM_ID.value()))
+                .andExpect(status().isOk())
+                .andDo(document("모든 공지 조회 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임 공지")
+                                .summary("모든 공지 조회")
+                                .queryParameters(
+                                        parameterWithName("moimId").description("모임 Id")
+                                )
+                                .responseFields(
+                                        fieldWithPath("data[0].moimNoticeId").type(NUMBER).description("공지 Id"),
+                                        fieldWithPath("data[0].title").type(STRING).description("공지 제목"),
+                                        fieldWithPath("data[0].createdAt").type(STRING).description("생성 일자")
                                 )
                                 .build()
                         )));
