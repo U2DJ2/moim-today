@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static moim_today.global.constant.NumberConstant.SCHEDULE_MEETING_ID;
-import static moim_today.global.constant.exception.ScheduleExceptionConstant.*;
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCHEDULE_NOT_FOUND;
 import static moim_today.persistence.entity.schedule.schedule.QScheduleJpaEntity.scheduleJpaEntity;
 
@@ -149,5 +148,13 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     @Override
     public void deleteAllByMeetingIdIn(final List<Long> meetingIds) {
         scheduleJpaRepository.deleteAllByMeetingIdIn(meetingIds);
+    }
+
+    @Override
+    public void deleteAllByMemberInMeeting(final long memberId, final List<Long> meetingIds) {
+        queryFactory.delete(scheduleJpaEntity)
+                .where(scheduleJpaEntity.memberId.eq(memberId)
+                        .and(scheduleJpaEntity.meetingId.in(meetingIds)))
+                .execute();
     }
 }
