@@ -1,7 +1,7 @@
 package moim_today.implement.moim.moim_notice;
 
 import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
-import moim_today.global.error.ForbiddenException;
+import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim_notice.MoimNoticeJpaEntity;
 import moim_today.util.ImplementTest;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
+import static moim_today.global.constant.exception.MoimExceptionConstant.NOTICE_NOT_FOUND_ERROR;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -58,13 +58,12 @@ class MoimNoticeFinderTest extends ImplementTest {
         assertThat(moimNoticeResponses.size()).isEqualTo(2);
     }
 
-    @DisplayName("모임에 속한 회원이 아니라면 공지 조회에 실패한다.")
+    @DisplayName("공지Id로 공지 정보를 조회한다.")
     @Test
-    void findAllMoimNoticeForbiddenTest() {
+    void getMoimNoticeTest() {
         //given
         long moimId = MOIM_ID.longValue();
         long memberId = MEMBER_ID.longValue();
-        long forbiddenMoimId = FORBIDDEN_MOIM_ID.longValue();
 
         JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
                 .moimId(moimId)
@@ -74,25 +73,39 @@ class MoimNoticeFinderTest extends ImplementTest {
         joinedMoimRepository.save(joinedMoimJpaEntity);
 
         //given
-        MoimNoticeJpaEntity moimNoticeJpaEntity1 = MoimNoticeJpaEntity
+        MoimNoticeJpaEntity moimNoticeJpaEntity = MoimNoticeJpaEntity
                 .builder()
                 .moimId(moimId)
+                .title(NOTICE_TITLE.value())
                 .build();
+        
+        moimNoticeRepository.save(moimNoticeJpaEntity);
+        long noticeId = moimNoticeJpaEntity.getId();
 
-        //given
-        MoimNoticeJpaEntity moimNoticeJpaEntity2 = MoimNoticeJpaEntity
-                .builder()
-                .moimId(moimId)
-                .build();
+        //when
+        MoimNoticeJpaEntity findEntity = moimNoticeFinder.getById(memberId, noticeId);
 
-        moimNoticeRepository.save(moimNoticeJpaEntity1);
-        moimNoticeRepository.save(moimNoticeJpaEntity2);
-
-        //expected
-        assertThatThrownBy(() -> moimNoticeFinder
-                .findAllMoimNotice(memberId, forbiddenMoimId))
-                .isInstanceOf(ForbiddenException.class)
-                .hasMessage(MOIM_FORBIDDEN_ERROR.message());
+        //then
+        assertThat(findEntity.getTitle()).isEqualTo(NOTICE_TITLE.value());
     }
 
+    @DisplayName("존재하지 않는 모임을 조회하려고 하면 예외가 발생한다")
+    @Test
+    void getMoimNoticeNotFoundTest() {
+        //given
+        long moimId = MOIM_ID.longValue();
+        long memberId = MEMBER_ID.longValue();
+
+        JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
+                .moimId(moimId)
+                .memberId(memberId)
+                .build();
+
+        joinedMoimRepository.save(joinedMoimJpaEntity);
+
+        //expected
+        assertThatThrownBy(() -> moimNoticeFinder.getById(memberId, NOTICE_ID.longValue()))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage(NOTICE_NOT_FOUND_ERROR.message());
+    }
 }

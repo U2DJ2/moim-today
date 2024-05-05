@@ -2,7 +2,7 @@ package moim_today.persistence.repository.moim.moim_notice;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
-import moim_today.dto.moim.moim_notice.QSimpleMoimNoticeResponse;
+import moim_today.dto.moim.moim_notice.QMoimNoticeSimpleResponse;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.moim_notice.MoimNoticeJpaEntity;
 import org.springframework.stereotype.Repository;
@@ -36,7 +36,7 @@ public class MoimNoticeRepositoryImpl implements MoimNoticeRepository {
 
     @Override
     public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long moimId) {
-        return queryFactory.select(new QSimpleMoimNoticeResponse(
+        return queryFactory.select(new QMoimNoticeSimpleResponse(
                         moimNoticeJpaEntity.id,
                         moimNoticeJpaEntity.title,
                         moimNoticeJpaEntity.createdAt
@@ -49,6 +49,16 @@ public class MoimNoticeRepositoryImpl implements MoimNoticeRepository {
     @Override
     public MoimNoticeJpaEntity getById(final long moimNoticeId) {
         return moimNoticeJpaRepository.findById(moimNoticeId)
+                .orElseThrow(() -> new NotFoundException(NOTICE_NOT_FOUND_ERROR.message()));
+    }
+
+    @Override
+    public long getMoimIdById(final long moimNoticeId) {
+        return queryFactory
+                .select(moimNoticeJpaEntity.moimId)
+                .from(moimNoticeJpaEntity)
+                .where(moimNoticeJpaEntity.id.eq(moimNoticeId))
+                .stream().findAny()
                 .orElseThrow(() -> new NotFoundException(NOTICE_NOT_FOUND_ERROR.message()));
     }
 }

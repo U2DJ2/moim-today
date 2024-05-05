@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
-import static moim_today.util.TestConstant.FORBIDDEN_MOIM_ID;
-import static moim_today.util.TestConstant.NOTICE_TITLE;
+import static moim_today.util.TestConstant.*;
 
 public class FakeMoimNoticeService implements MoimNoticeService {
     @Override
@@ -50,6 +49,16 @@ public class FakeMoimNoticeService implements MoimNoticeService {
 
     @Override
     public MoimNoticeDetailResponse getMoimNoticeDetail(final long memberId, final long moimNoticeId) {
-        return null;
+        if (moimNoticeId == FORBIDDEN_NOTICE_ID.longValue()) {
+            throw new ForbiddenException(MOIM_FORBIDDEN_ERROR.message());
+        }
+
+        return MoimNoticeDetailResponse.builder()
+                .moimNoticeId(NOTICE_ID.longValue())
+                .title(NOTICE_TITLE.value())
+                .contents(NOTICE_CONTENTS.value())
+                .createdAt(LocalDateTime.now())
+                .lastModifiedAt(LocalDateTime.now())
+                .build();
     }
 }

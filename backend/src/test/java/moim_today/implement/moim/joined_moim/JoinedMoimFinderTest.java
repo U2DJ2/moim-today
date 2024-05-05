@@ -1,5 +1,6 @@
 package moim_today.implement.moim.joined_moim;
 
+import moim_today.global.error.ForbiddenException;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
@@ -11,6 +12,9 @@ import java.util.List;
 
 import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_IS_EMPTY;
 import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_NOT_FOUNT;
+import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
+import static moim_today.util.TestConstant.MEMBER_ID;
+import static moim_today.util.TestConstant.MOIM_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -117,5 +121,37 @@ class JoinedMoimFinderTest extends ImplementTest {
         assertThatCode(() ->
                 joinedMoimFinder.validateMemberInMoim(savedJoined.getMoimId(), 1L))
                 .doesNotThrowAnyException();
+    }
+
+    @DisplayName("모임에 참가중인 회원이면 검증에 성공한다.")
+    @Test
+    void validateJoinedMemberTest() {
+        //given
+        long moimId = MOIM_ID.longValue();
+        long memberId = MEMBER_ID.longValue();
+
+        JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
+                .moimId(moimId)
+                .memberId(memberId)
+                .build();
+
+        joinedMoimRepository.save(joinedMoimJpaEntity);
+
+        //expected
+        assertThatCode(() -> joinedMoimFinder.validateJoinedMember(memberId, moimId))
+                .doesNotThrowAnyException();
+    }
+
+    @DisplayName("모임에 참가중인 회원이 아니면 예외가 발생한다.")
+    @Test
+    void validateJoinedMemberForbiddenTest() {
+        //given
+        long moimId = MOIM_ID.longValue();
+        long memberId = MEMBER_ID.longValue();
+
+        //expected
+        assertThatThrownBy(() -> joinedMoimFinder.validateJoinedMember(memberId, moimId))
+                .isInstanceOf(ForbiddenException.class)
+                .hasMessage(MOIM_FORBIDDEN_ERROR.message());
     }
 }

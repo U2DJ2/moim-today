@@ -29,7 +29,8 @@ public class MoimNoticeFinder {
 
     @Transactional(readOnly = true)
     public MoimNoticeJpaEntity getById(final long memberId, final long moimNoticeId) {
-        joinedMoimFinder.validateJoinedMember(memberId, moimNoticeId);
+        long moimId = moimNoticeRepository.getMoimIdById(moimNoticeId);
+        joinedMoimFinder.validateJoinedMember(memberId, moimId);
         return moimNoticeRepository.getById(moimNoticeId);
     }
 }

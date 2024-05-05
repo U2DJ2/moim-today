@@ -378,4 +378,51 @@ class MoimControllerTest extends ControllerTest {
                                 .build()
                         )));
     }
+
+    @DisplayName("공지를 클릭해 확인한다.")
+    @Test
+    void getMoimNoticeDetailTest() throws Exception {
+
+        mockMvc.perform(get("/api/moims/notices/detail")
+                        .queryParam("moimNoticeId", NOTICE_ID.value()))
+                .andExpect(status().isOk())
+                .andDo(document("공지 정보 조회 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임 공지")
+                                .summary("공지 정보 조회")
+                                .queryParameters(
+                                        parameterWithName("moimNoticeId").description("공지 Id")
+                                )
+                                .responseFields(
+                                        fieldWithPath("moimNoticeId").type(NUMBER).description("공지 Id"),
+                                        fieldWithPath("title").type(STRING).description("공지 제목"),
+                                        fieldWithPath("contents").type(STRING).description("공지 내용"),
+                                        fieldWithPath("createdAt").type(STRING).description("생성 일자"),
+                                        fieldWithPath("lastModifiedAt").type(STRING).description("수정 일자")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("공지를 클릭해 확인한다. - 회원이 속한 모임이 아니면 조회할 수 없다.")
+    @Test
+    void getMoimNoticeDetailForbiddenTest() throws Exception {
+
+        mockMvc.perform(get("/api/moims/notices/detail")
+                        .queryParam("moimNoticeId", FORBIDDEN_NOTICE_ID.value()))
+                .andExpect(status().isForbidden())
+                .andDo(document("공지 정보 조회 실패 - 모임에 참여하지 않은 회원이 요청시",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임 공지")
+                                .summary("공지 정보 조회")
+                                .queryParameters(
+                                        parameterWithName("moimNoticeId").description("접근 권한이 없는 공지 Id")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description(FORBIDDEN.statusCode()),
+                                        fieldWithPath("message").type(STRING).description(MOIM_FORBIDDEN_ERROR.message())
+                                )
+                                .build()
+                        )));
+    }
 }

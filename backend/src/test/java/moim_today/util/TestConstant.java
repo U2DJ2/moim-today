@@ -59,6 +59,7 @@ public enum TestConstant {
 
     //공지
     NOTICE_ID("1"),
+    FORBIDDEN_NOTICE_ID("9999"),
     NOTICE_TITLE("notice title"),
     NOTICE_CONTENTS("notice contents"),
 
