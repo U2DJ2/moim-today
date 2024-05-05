@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN;
+import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -65,6 +65,6 @@ class MoimNoticeAppenderTest extends ImplementTest {
         //expected
         assertThatThrownBy(() -> moimNoticeAppender.createMoimNotice(forbiddenMemberId, moimNoticeCreateRequest))
                 .isInstanceOf(ForbiddenException.class)
-                .hasMessage(MOIM_FORBIDDEN.message());
+                .hasMessage(MOIM_FORBIDDEN_ERROR.message());
     }
 }

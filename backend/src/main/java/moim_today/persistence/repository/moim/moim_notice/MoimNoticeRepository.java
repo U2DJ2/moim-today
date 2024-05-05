@@ -11,5 +11,7 @@ public interface MoimNoticeRepository {
 
     long count();
 
-    List<MoimNoticeSimpleResponse> findAllMoimNotice(long moimId);
+    List<MoimNoticeSimpleResponse> findAllMoimNotice(final long moimId);
+
+    MoimNoticeJpaEntity getById(final long moimNoticeId);
 }

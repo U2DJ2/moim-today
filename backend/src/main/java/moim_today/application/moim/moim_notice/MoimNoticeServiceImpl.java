@@ -1,6 +1,7 @@
 package moim_today.application.moim.moim_notice;
 
 import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
+import moim_today.dto.moim.moim_notice.MoimNoticeDetailResponse;
 import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
 import moim_today.implement.moim.moim_notice.MoimNoticeAppender;
 import moim_today.implement.moim.moim_notice.MoimNoticeFinder;
@@ -28,5 +29,10 @@ public class MoimNoticeServiceImpl implements MoimNoticeService{
     @Override
     public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long memberId, final long moimId) {
         return moimNoticeFinder.findAllMoimNotice(memberId, moimId);
+    }
+
+    @Override
+    public MoimNoticeDetailResponse getMoimNoticeDetail(final long memberId, final long moimNoticeId) {
+        return MoimNoticeDetailResponse.from(moimNoticeFinder.getById(memberId, moimNoticeId));
     }
 }

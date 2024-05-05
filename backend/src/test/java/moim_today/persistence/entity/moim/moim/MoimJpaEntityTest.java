@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN;
+import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -49,7 +49,7 @@ class MoimJpaEntityTest {
         //expected
         assertThatCode(() -> moimJpaEntity.validateMember(forbiddenMemberId))
                 .isInstanceOf(ForbiddenException.class)
-                .hasMessage(MOIM_FORBIDDEN.message());
+                .hasMessage(MOIM_FORBIDDEN_ERROR.message());
     }
 
     @DisplayName("수정시 공개 여부가 PUBLIC이라면 default password가 설정된다.")

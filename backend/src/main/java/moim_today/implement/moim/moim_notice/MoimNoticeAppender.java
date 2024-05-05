@@ -8,7 +8,7 @@ import moim_today.persistence.entity.moim.moim_notice.MoimNoticeJpaEntity;
 import moim_today.persistence.repository.moim.moim_notice.MoimNoticeRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN;
+import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
 
 @Implement
 public class MoimNoticeAppender {
@@ -26,7 +26,7 @@ public class MoimNoticeAppender {
     public void createMoimNotice(final long memberId, final MoimNoticeCreateRequest moimNoticeCreateRequest) {
         long organizerId = moimFinder.getMemberIdById(moimNoticeCreateRequest.moimId());
         if (organizerId != memberId) {
-            throw new ForbiddenException(MOIM_FORBIDDEN.message());
+            throw new ForbiddenException(MOIM_FORBIDDEN_ERROR.message());
         }
         MoimNoticeJpaEntity moimNoticeJpaEntity = moimNoticeCreateRequest.toEntity();
         moimNoticeRepository.save(moimNoticeJpaEntity);

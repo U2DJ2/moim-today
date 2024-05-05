@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN;
+import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -92,7 +92,7 @@ class MoimNoticeFinderTest extends ImplementTest {
         assertThatThrownBy(() -> moimNoticeFinder
                 .findAllMoimNotice(memberId, forbiddenMoimId))
                 .isInstanceOf(ForbiddenException.class)
-                .hasMessage(MOIM_FORBIDDEN.message());
+                .hasMessage(MOIM_FORBIDDEN_ERROR.message());
     }
 
 }

@@ -2,14 +2,12 @@ package moim_today.implement.moim.moim_notice;
 
 import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
 import moim_today.global.annotation.Implement;
-import moim_today.global.error.ForbiddenException;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
+import moim_today.persistence.entity.moim.moim_notice.MoimNoticeJpaEntity;
 import moim_today.persistence.repository.moim.moim_notice.MoimNoticeRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN;
 
 @Implement
 public class MoimNoticeFinder {
@@ -25,10 +23,13 @@ public class MoimNoticeFinder {
 
     @Transactional(readOnly = true)
     public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long memberId, final long moimId) {
-        List<Long> joinedMemberIds = joinedMoimFinder.findAllJoinedMemberId(moimId);
-        if (!joinedMemberIds.contains(memberId)) {
-            throw new ForbiddenException(MOIM_FORBIDDEN.message());
-        }
+        joinedMoimFinder.validateJoinedMember(memberId, moimId);
         return moimNoticeRepository.findAllMoimNotice(moimId);
+    }
+
+    @Transactional(readOnly = true)
+    public MoimNoticeJpaEntity getById(final long memberId, final long moimNoticeId) {
+        joinedMoimFinder.validateJoinedMember(memberId, moimNoticeId);
+        return moimNoticeRepository.getById(moimNoticeId);
     }
 }

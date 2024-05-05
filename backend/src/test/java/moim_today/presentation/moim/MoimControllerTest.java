@@ -21,7 +21,7 @@ import java.time.LocalDate;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static moim_today.global.constant.StatusCodeConstant.FORBIDDEN;
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN;
+import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -328,7 +328,7 @@ class MoimControllerTest extends ControllerTest {
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description(FORBIDDEN.statusCode()),
-                                        fieldWithPath("message").type(STRING).description(MOIM_FORBIDDEN.message())
+                                        fieldWithPath("message").type(STRING).description(MOIM_FORBIDDEN_ERROR.message())
                                 )
                                 .build()
                         )));
@@ -373,7 +373,7 @@ class MoimControllerTest extends ControllerTest {
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description(FORBIDDEN.statusCode()),
-                                        fieldWithPath("message").type(STRING).description(MOIM_FORBIDDEN.message())
+                                        fieldWithPath("message").type(STRING).description(MOIM_FORBIDDEN_ERROR.message())
                                 )
                                 .build()
                         )));
