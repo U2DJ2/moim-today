@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
+import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
 
 public class FakeMoimNoticeService implements MoimNoticeService {
@@ -65,6 +66,8 @@ public class FakeMoimNoticeService implements MoimNoticeService {
 
     @Override
     public void updateMoimNotice(final long memberId, final MoimNoticeUpdateRequest moimNoticeUpdateRequest) {
-
+        if (moimNoticeUpdateRequest.moimNoticeId() == FORBIDDEN_NOTICE_ID.longValue()) {
+            throw new ForbiddenException(ORGANIZER_FORBIDDEN_ERROR.message());
+        }
     }
 }
