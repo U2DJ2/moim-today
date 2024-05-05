@@ -9,6 +9,7 @@ import moim_today.dto.moim.moim.MoimDeleteRequest;
 import moim_today.dto.moim.moim.MoimMemberDeleteRequest;
 import moim_today.dto.moim.moim.MoimUpdateRequest;
 import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
+import moim_today.dto.moim.moim_notice.MoimNoticeDeleteRequest;
 import moim_today.dto.moim.moim_notice.MoimNoticeUpdateRequest;
 import moim_today.fake_class.moim.FakeMoimNoticeService;
 import moim_today.fake_class.moim.FakeMoimService;
@@ -475,6 +476,50 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("moimNoticeId").type(NUMBER).description("수정할 공지 Id"),
                                         fieldWithPath("title").type(STRING).description("수정할 공지 제목"),
                                         fieldWithPath("contents").type(STRING).description("수정할 공지 내용")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description(FORBIDDEN.statusCode()),
+                                        fieldWithPath("message").type(STRING).description(ORGANIZER_FORBIDDEN_ERROR.message())
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("공지를 삭제한다.")
+    @Test
+    void deleteMoimNoticeTest() throws Exception {
+        MoimNoticeDeleteRequest deleteRequest = new MoimNoticeDeleteRequest(NOTICE_ID.longValue());
+
+        mockMvc.perform(delete("/api/moims/notices")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(deleteRequest)))
+                .andExpect(status().isOk())
+                .andDo(document("공지 삭제 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임 공지")
+                                .summary("공지 삭제")
+                                .requestFields(
+                                        fieldWithPath("moimNoticeId").type(NUMBER).description("삭제할 공지 Id")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("공지를 삭제한다. - 주최자가 아니면 예외가 발생한다.")
+    @Test
+    void deleteMoimNoticeForbiddenTest() throws Exception {
+        MoimNoticeDeleteRequest forbiddenRequest = new MoimNoticeDeleteRequest(FORBIDDEN_NOTICE_ID.longValue());
+
+        mockMvc.perform(delete("/api/moims/notices")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(forbiddenRequest)))
+                .andExpect(status().isForbidden())
+                .andDo(document("공지 삭제 실패 - 주최자가 아닌 회원이 요청시",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임 공지")
+                                .summary("공지 삭제")
+                                .requestFields(
+                                        fieldWithPath("moimNoticeId").type(NUMBER).description("삭제할 공지 Id")
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description(FORBIDDEN.statusCode()),

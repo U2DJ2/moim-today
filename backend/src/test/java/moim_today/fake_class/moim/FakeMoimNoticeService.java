@@ -70,6 +70,8 @@ public class FakeMoimNoticeService implements MoimNoticeService {
 
     @Override
     public void deleteMoimNotice(final long memberId, final MoimNoticeDeleteRequest moimNoticeDeleteRequest) {
-
+        if (moimNoticeDeleteRequest.moimNoticeId() == FORBIDDEN_MOIM_ID.longValue()) {
+            throw new ForbiddenException(ORGANIZER_FORBIDDEN_ERROR.message());
+        }
     }
 }
