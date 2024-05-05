@@ -113,12 +113,15 @@ public class MoimServiceImpl implements MoimService{
     public MoimMemberTabResponse findMoimMembers(final long memberId, final long moimId) {
         MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
         long moimHostId = moimJpaEntity.getMemberId();
+
         List<JoinedMoimJpaEntity> joinedMoimJpaEntities = joinedMoimFinder.findByMoimId(moimId);
         List<MoimMemberResponse> moimMemberResponses = moimFinder.findMembersInMoim(joinedMoimJpaEntities, moimHostId);
         boolean isHostRequest = moimFinder.isHost(moimHostId, memberId);
+
         return MoimMemberTabResponse.of(isHostRequest, moimMemberResponses);
     }
 
+    @Transactional
     @Override
     public void deleteMember(final long requestMemberId, final MoimMemberDeleteRequest moimMemberDeleteRequest) {
         long moimId = moimMemberDeleteRequest.moimId();

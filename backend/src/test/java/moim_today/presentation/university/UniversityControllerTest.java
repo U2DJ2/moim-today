@@ -1,11 +1,11 @@
 package moim_today.presentation.university;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import moim_today.application.university.UniversityService;
 import moim_today.fake_class.university.FakeUniversityService;
 import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class UniversityControllerTest extends ControllerTest {
 
-    private final FakeUniversityService fakeUniversityService = new FakeUniversityService();
+    private final UniversityService fakeUniversityService = new FakeUniversityService();
 
     @Override
     protected Object initController() {
@@ -32,7 +32,6 @@ class UniversityControllerTest extends ControllerTest {
                         .contentType(APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andDo(MockMvcResultHandlers.print())
                 .andDo(document("모든 대학교 정보 조회 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("대학교")
