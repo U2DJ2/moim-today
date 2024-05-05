@@ -49,6 +49,7 @@ public enum TestConstant {
 
     // 모임
     MOIM_ID("1"),
+    FORBIDDEN_MOIM_ID("9999"),
     MOIM_TITLE("moim title"),
     MOIM_CONTENTS("moim contents"),
     CAPACITY("5"),

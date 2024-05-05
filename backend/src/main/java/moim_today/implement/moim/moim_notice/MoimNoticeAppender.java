@@ -24,8 +24,8 @@ public class MoimNoticeAppender {
 
     @Transactional
     public void createMoimNotice(final long memberId, final MoimNoticeCreateRequest moimNoticeCreateRequest) {
-        long ownerId = moimFinder.getMemberIdById(moimNoticeCreateRequest.moimId());
-        if (ownerId != memberId) {
+        long organizerId = moimFinder.getMemberIdById(moimNoticeCreateRequest.moimId());
+        if (organizerId != memberId) {
             throw new ForbiddenException(MOIM_FORBIDDEN.message());
         }
         MoimNoticeJpaEntity moimNoticeJpaEntity = moimNoticeCreateRequest.toEntity();

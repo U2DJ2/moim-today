@@ -20,6 +20,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import java.time.LocalDate;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static moim_today.global.constant.StatusCodeConstant.FORBIDDEN;
+import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN;
 import static moim_today.util.TestConstant.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -302,6 +304,35 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
+    @DisplayName("모임 공지를 생성한다. - 주최자가 아니면 예외가 발생한다.")
+    @Test
+    void createMoimNoticeForbiddenTest() throws Exception {
+        MoimNoticeCreateRequest moimNoticeCreateRequest = new MoimNoticeCreateRequest(
+                FORBIDDEN_MOIM_ID.longValue(),
+                NOTICE_TITLE.value(),
+                NOTICE_CONTENTS.value());
+
+        mockMvc.perform(post("/api/moims/notices")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimNoticeCreateRequest)))
+                .andExpect(status().isForbidden())
+                .andDo(document("모임 공지 생성 실패 - 주최자가 아닌 회원이 요청시",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임 공지")
+                                .summary("모임 공지 생성")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("모임 Id"),
+                                        fieldWithPath("title").type(STRING).description("공지 제목"),
+                                        fieldWithPath("contents").type(STRING).description("공지 내용")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description(FORBIDDEN.statusCode()),
+                                        fieldWithPath("message").type(STRING).description(MOIM_FORBIDDEN.message())
+                                )
+                                .build()
+                        )));
+    }
+
     @DisplayName("모임의 모든 공지를 가져온다.")
     @Test
     void findAllMoimNoticeTest() throws Exception {
@@ -320,6 +351,28 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].moimNoticeId").type(NUMBER).description("공지 Id"),
                                         fieldWithPath("data[0].title").type(STRING).description("공지 제목"),
                                         fieldWithPath("data[0].createdAt").type(STRING).description("생성 일자")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임의 모든 공지를 가져온다. - 회원이 속한 모임이 아니면 조회할 수 없다.")
+    @Test
+    void findAllMoimNoticeForbiddenTest() throws Exception {
+
+        mockMvc.perform(get("/api/moims/notices/simple")
+                        .queryParam("moimId", FORBIDDEN_MOIM_ID.value()))
+                .andExpect(status().isForbidden())
+                .andDo(document("모든 공지 조회 실패 - 모임에 참여하지 않은 회원이 요청시",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임 공지")
+                                .summary("모든 공지 조회")
+                                .queryParameters(
+                                        parameterWithName("moimId").description("접근 권한이 없는 모임 Id")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description(FORBIDDEN.statusCode()),
+                                        fieldWithPath("message").type(STRING).description(MOIM_FORBIDDEN.message())
                                 )
                                 .build()
                         )));
