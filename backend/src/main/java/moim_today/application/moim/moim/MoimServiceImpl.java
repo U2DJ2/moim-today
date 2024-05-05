@@ -13,6 +13,7 @@ import moim_today.implement.moim.moim.MoimRemover;
 import moim_today.implement.moim.moim.MoimUpdater;
 import moim_today.implement.schedule.schedule.ScheduleRemover;
 import moim_today.implement.todo.TodoRemover;
+import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.stereotype.Service;
@@ -127,5 +128,8 @@ public class MoimServiceImpl implements MoimService{
         joinedMoimRemover.deleteMoimMember(moimId, memberId);
         todoRemover.deleteAllTodosCreatedByMemberInMoim(moimId, memberId);
 
+        List<Long> meetingIds = meetingFinder.findAllByMoimId(moimId);
+
+        joinedMeetingRemover.deleteAllByMemberInMeeting(memberId, meetingIds);
     }
 }

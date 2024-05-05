@@ -17,4 +17,6 @@ public interface JoinedMeetingRepository {
     List<JoinedMeetingJpaEntity> findAll();
 
     long count();
+
+    void deleteAllByMemberInMeeting(final long memberId, final List<Long> meetingIds);
 }

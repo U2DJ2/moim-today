@@ -1,6 +1,7 @@
 package moim_today.implement.meeting.meeting;
 
 import moim_today.global.annotation.Implement;
+import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.repository.meeting.meeting.MeetingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,4 +20,5 @@ public class MeetingFinder {
     public List<Long> findAllByMoimId(final long moimId) {
         return meetingRepository.findAllByMoimId(moimId);
     }
+
 }
