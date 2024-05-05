@@ -4,6 +4,7 @@ import moim_today.dto.moim.moim.*;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
 import moim_today.implement.meeting.meeting.MeetingFinder;
+import moim_today.implement.meeting.meeting_comment.MeetingCommentUpdater;
 import moim_today.implement.moim.joined_moim.JoinedMoimAppender;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import moim_today.implement.moim.joined_moim.JoinedMoimRemover;
@@ -39,6 +40,7 @@ public class MoimServiceImpl implements MoimService{
     private final TodoRemover todoRemover;
     private final JoinedMoimRemover joinedMoimRemover;
     private final ScheduleRemover scheduleRemover;
+    private final MeetingCommentUpdater meetingCommentUpdater;
 
     public MoimServiceImpl(final MoimAppender moimAppender,
                            final FileUploader fileUploader,
@@ -51,7 +53,8 @@ public class MoimServiceImpl implements MoimService{
                            final JoinedMeetingRemover joinedMeetingRemover,
                            final TodoRemover todoRemover,
                            final JoinedMoimRemover joinedMoimRemover,
-                           final ScheduleRemover scheduleRemover) {
+                           final ScheduleRemover scheduleRemover,
+                           final MeetingCommentUpdater meetingCommentUpdater) {
         this.moimAppender = moimAppender;
         this.fileUploader = fileUploader;
         this.moimFinder = moimFinder;
@@ -64,6 +67,7 @@ public class MoimServiceImpl implements MoimService{
         this.todoRemover = todoRemover;
         this.joinedMoimRemover = joinedMoimRemover;
         this.scheduleRemover = scheduleRemover;
+        this.meetingCommentUpdater = meetingCommentUpdater;
     }
 
     @Override
@@ -131,5 +135,8 @@ public class MoimServiceImpl implements MoimService{
         List<Long> meetingIds = meetingFinder.findAllByMoimId(moimId);
 
         joinedMeetingRemover.deleteAllByMemberInMeeting(memberId, meetingIds);
+//        TODO: 미팅 내에 댓글에서 추방당한 회원의 ID를 모두 NULL 로 업뎃하기
+        meetingCommentUpdater.updateDeletedMembers(memberId, meetingIds);
+//        TODO: 추방당한 멤버의 미팅에 참여한다는 스케쥴을 모두 삭제하기
     }
 }
