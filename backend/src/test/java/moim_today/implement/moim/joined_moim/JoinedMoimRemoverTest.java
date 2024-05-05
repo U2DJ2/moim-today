@@ -20,8 +20,8 @@ class JoinedMoimRemoverTest extends ImplementTest {
     @Test
     void deleteJoinedMoimsByMoimIdTest(){
         //given
-        long moimId1 = Long.parseLong(MOIM_ID.value());
-        long moimId2 = Long.parseLong(MOIM_ID.value()) + 1L;
+        long moimId1 = MOIM_ID.longValue();
+        long moimId2 = MOIM_ID.longValue() + 1L;
 
         JoinedMoimJpaEntity joinedMoimJpaEntity1 = JoinedMoimJpaEntity.builder()
                 .moimId(moimId1)

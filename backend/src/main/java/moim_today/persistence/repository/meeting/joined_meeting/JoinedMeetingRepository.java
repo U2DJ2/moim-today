@@ -8,7 +8,7 @@ public interface JoinedMeetingRepository {
 
     void deleteAllByMeetingIdIn(final List<Long> meetingIds);
 
-    void save(final JoinedMeetingJpaEntity joinedMeetingJpaEntity);
+    JoinedMeetingJpaEntity save(final JoinedMeetingJpaEntity joinedMeetingJpaEntity);
 
     void saveAll(final List<JoinedMeetingJpaEntity> joinedMeetingJpaEntities);
 
@@ -19,4 +19,6 @@ public interface JoinedMeetingRepository {
     long count();
 
     void deleteAllByMemberInMeeting(final long memberId, final List<Long> meetingIds);
+
+    JoinedMeetingJpaEntity findById(final long joinedMeetingId);
 }

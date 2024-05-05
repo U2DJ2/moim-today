@@ -19,8 +19,8 @@ class TodoRemoverTest extends ImplementTest {
     @Test
     void deleteTodosByMoimIdTest(){
         //given
-        long moimId1 = Long.parseLong(MOIM_ID.value());
-        long moimId2 = Long.parseLong(MOIM_ID.value()) + 1L;
+        long moimId1 = MOIM_ID.longValue();
+        long moimId2 = MOIM_ID.longValue() + 1L;
 
         TodoJpaEntity todoJpaEntity1 = TodoJpaEntity.builder()
                 .moimId(moimId1)

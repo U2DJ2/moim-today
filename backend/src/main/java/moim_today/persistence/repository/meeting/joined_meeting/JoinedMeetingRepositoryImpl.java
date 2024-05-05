@@ -26,8 +26,8 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
     }
 
     @Override
-    public void save(final JoinedMeetingJpaEntity joinedMeetingJpaEntity) {
-        joinedMeetingJpaRepository.save(joinedMeetingJpaEntity);
+    public JoinedMeetingJpaEntity save(final JoinedMeetingJpaEntity joinedMeetingJpaEntity) {
+        return joinedMeetingJpaRepository.save(joinedMeetingJpaEntity);
     }
 
     @Override
@@ -59,5 +59,10 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
                 .where(joinedMeetingJpaEntity.memberId.eq(memberId)
                         .and(joinedMeetingJpaEntity.meetingId.in(meetingIds)))
                 .execute();
+    }
+
+    @Override
+    public JoinedMeetingJpaEntity findById(final long joinedMeetingId) {
+        return joinedMeetingJpaRepository.findById(joinedMeetingId);
     }
 }
