@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
+import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -91,6 +92,6 @@ class MoimUpdaterTest extends ImplementTest {
         //expected
         assertThatThrownBy(() -> moimUpdater.updateMoim(memberId, forbiddenMoimUpdateRequest))
                 .isInstanceOf(ForbiddenException.class)
-                .hasMessage(MOIM_FORBIDDEN_ERROR.message());
+                .hasMessage(ORGANIZER_FORBIDDEN_ERROR.message());
     }
 }

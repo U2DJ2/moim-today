@@ -4,6 +4,7 @@ import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
 import moim_today.dto.moim.moim_notice.MoimNoticeDetailResponse;
 import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
+import moim_today.dto.moim.moim_notice.MoimNoticeUpdateRequest;
 import moim_today.global.error.ForbiddenException;
 
 import java.time.LocalDateTime;
@@ -60,5 +61,10 @@ public class FakeMoimNoticeService implements MoimNoticeService {
                 .createdAt(LocalDateTime.now())
                 .lastModifiedAt(LocalDateTime.now())
                 .build();
+    }
+
+    @Override
+    public void updateMoimNotice(final long memberId, final MoimNoticeUpdateRequest moimNoticeUpdateRequest) {
+
     }
 }

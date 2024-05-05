@@ -51,14 +51,4 @@ public class MoimNoticeRepositoryImpl implements MoimNoticeRepository {
         return moimNoticeJpaRepository.findById(moimNoticeId)
                 .orElseThrow(() -> new NotFoundException(NOTICE_NOT_FOUND_ERROR.message()));
     }
-
-    @Override
-    public long getMoimIdById(final long moimNoticeId) {
-        return queryFactory
-                .select(moimNoticeJpaEntity.moimId)
-                .from(moimNoticeJpaEntity)
-                .where(moimNoticeJpaEntity.id.eq(moimNoticeId))
-                .stream().findAny()
-                .orElseThrow(() -> new NotFoundException(NOTICE_NOT_FOUND_ERROR.message()));
-    }
 }

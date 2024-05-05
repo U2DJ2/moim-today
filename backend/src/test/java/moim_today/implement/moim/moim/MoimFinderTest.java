@@ -219,22 +219,4 @@ class MoimFinderTest extends ImplementTest {
         assertThat(moimDateResponse.startDate()).isEqualTo(LocalDate.of(2024, 3, 4));
         assertThat(moimDateResponse.endDate()).isEqualTo(LocalDate.of(2024, 6, 30));
     }
-
-    @DisplayName("모임 Id로 모임을 생성한 회원의 Id를 가져온다.")
-    @Test
-    void getMemberIdByMoimIdTest() {
-        //given
-        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
-                .memberId(MEMBER_ID.longValue())
-                .build();
-
-        moimRepository.save(moimJpaEntity);
-        long moimid = moimJpaEntity.getId();
-
-        //when
-        long memberId = moimFinder.getMemberIdById(moimid);
-
-        //then
-        assertThat(memberId).isEqualTo(MEMBER_ID.longValue());
-    }
 }

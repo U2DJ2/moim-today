@@ -7,6 +7,7 @@ import moim_today.dto.moim.moim.*;
 import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
 import moim_today.dto.moim.moim_notice.MoimNoticeDetailResponse;
 import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
+import moim_today.dto.moim.moim_notice.MoimNoticeUpdateRequest;
 import moim_today.global.annotation.Login;
 import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;
@@ -84,5 +85,11 @@ public class MoimController {
     public MoimNoticeDetailResponse getMoimNoticeDetail(@Login final MemberSession memberSession,
                                                         @RequestParam final long moimNoticeId) {
         return moimNoticeService.getMoimNoticeDetail(memberSession.id(), moimNoticeId);
+    }
+
+    @PatchMapping("/notices")
+    public void updateMoimNotice(@Login final MemberSession memberSession,
+                                 @RequestBody final MoimNoticeUpdateRequest moimNoticeUpdateRequest) {
+        moimNoticeService.updateMoimNotice(memberSession.id(), moimNoticeUpdateRequest);
     }
 }
