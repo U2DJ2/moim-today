@@ -28,8 +28,8 @@ public class MoimController {
 
     @PostMapping
     public void createMoim(@Login final MemberSession memberSession,
-                           @RequestBody final MoimAppendRequest moimAppendRequest) {
-        moimService.createMoim(memberSession.id(), memberSession.universityId(), moimAppendRequest);
+                           @RequestBody final MoimCreateRequest moimCreateRequest) {
+        moimService.createMoim(memberSession.id(), memberSession.universityId(), moimCreateRequest);
     }
 
     @PostMapping("/image")

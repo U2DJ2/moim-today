@@ -14,7 +14,7 @@ import static moim_today.global.constant.NumberConstant.DEFAULT_MOIM_CURRENT_COU
 import static moim_today.global.constant.NumberConstant.DEFAULT_MOIM_VIEWS;
 
 @Builder
-public record MoimAppendRequest(
+public record MoimCreateRequest(
         String title,
         String contents,
         int capacity,

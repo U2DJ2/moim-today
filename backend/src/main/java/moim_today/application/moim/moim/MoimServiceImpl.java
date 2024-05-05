@@ -1,5 +1,9 @@
 package moim_today.application.moim.moim;
 
+import moim_today.dto.moim.moim.MoimCreateRequest;
+import moim_today.dto.moim.moim.MoimDetailResponse;
+import moim_today.dto.moim.moim.MoimImageResponse;
+import moim_today.dto.moim.moim.MoimUpdateRequest;
 import moim_today.dto.moim.moim.*;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
@@ -71,8 +75,8 @@ public class MoimServiceImpl implements MoimService{
 
     @Override
     public void createMoim(final long memberId, final long universityId,
-                           final MoimAppendRequest moimAppendRequest) {
-        MoimJpaEntity moim = moimAppender.createMoim(memberId, universityId, moimAppendRequest);
+                           final MoimCreateRequest moimCreateRequest) {
+        MoimJpaEntity moim = moimAppender.createMoim(memberId, universityId, moimCreateRequest);
         joinedMoimAppender.createJoinedMoim(memberId, moim.getId());
     }
 

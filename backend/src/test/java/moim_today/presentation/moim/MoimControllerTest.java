@@ -4,7 +4,7 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.moim.MoimAppendRequest;
+import moim_today.dto.moim.moim.MoimCreateRequest;
 import moim_today.dto.moim.moim.MoimDeleteRequest;
 import moim_today.dto.moim.moim.MoimMemberDeleteRequest;
 import moim_today.dto.moim.moim.MoimUpdateRequest;
@@ -47,7 +47,7 @@ class MoimControllerTest extends ControllerTest {
         LocalDate startDate = LocalDate.of(2024, 3, 1);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
-        MoimAppendRequest moimAppendRequest = new MoimAppendRequest(
+        MoimCreateRequest moimCreateRequest = new MoimCreateRequest(
                 MOIM_TITLE.value(),
                 MOIM_CONTENTS.value(),
                 Integer.parseInt(CAPACITY.value()),
@@ -61,7 +61,7 @@ class MoimControllerTest extends ControllerTest {
 
         mockMvc.perform(post("/api/moims")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(moimAppendRequest))
+                        .content(objectMapper.writeValueAsString(moimCreateRequest))
                 )
                 .andExpect(status().isOk())
                 .andDo(document("모임 생성 성공",

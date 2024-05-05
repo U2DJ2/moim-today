@@ -2,7 +2,7 @@ package moim_today.implement.moim.moim;
 
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.moim.MoimAppendRequest;
+import moim_today.dto.moim.moim.MoimCreateRequest;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;
@@ -32,7 +32,7 @@ class MoimAppenderTest extends ImplementTest {
         LocalDate startDate = LocalDate.of(2024, 3, 1);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
-        MoimAppendRequest moimAppendRequest = new MoimAppendRequest(
+        MoimCreateRequest moimCreateRequest = new MoimCreateRequest(
                 MOIM_TITLE.value(),
                 MOIM_CONTENTS.value(),
                 capacity,
@@ -48,7 +48,7 @@ class MoimAppenderTest extends ImplementTest {
         MoimJpaEntity moimJpaEntity = moimAppender.createMoim(
                 memberId,
                 universityId,
-                moimAppendRequest
+                moimCreateRequest
         );
 
         //then
