@@ -7,18 +7,22 @@ import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
 import static moim_today.global.constant.exception.MoimExceptionConstant.NOTICE_NOT_FOUND_ERROR;
 import static moim_today.util.TestConstant.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class MoimNoticeFinderTest extends ImplementTest {
 
     @Autowired
     private MoimNoticeFinder moimNoticeFinder;
+
+    @Autowired
+    private CacheManager cacheManager;
 
     @DisplayName("모임Id로 모든 공지를 찾는다.")
     @Test
@@ -82,5 +86,60 @@ class MoimNoticeFinderTest extends ImplementTest {
         assertThatThrownBy(() -> moimNoticeFinder.getById(notFoundNoticeId))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(NOTICE_NOT_FOUND_ERROR.message());
+    }
+
+    @DisplayName("모임의 모든 공지를 조회하면 캐시에 저장된다.")
+    @Test
+    void NoticesCachingTest() {
+        //given
+        long moimId = MOIM_ID.longValue();
+
+        //given
+        MoimNoticeJpaEntity moimNoticeJpaEntity1 = MoimNoticeJpaEntity
+                .builder()
+                .moimId(moimId)
+                .build();
+
+        //given
+        MoimNoticeJpaEntity moimNoticeJpaEntity2 = MoimNoticeJpaEntity
+                .builder()
+                .moimId(moimId)
+                .build();
+
+        moimNoticeRepository.save(moimNoticeJpaEntity1);
+        moimNoticeRepository.save(moimNoticeJpaEntity2);
+
+        //when
+        assertThatCode(() -> moimNoticeFinder.findAllMoimNotice(moimId))
+                .doesNotThrowAnyException();
+
+        //then
+        Object noticesCacheObject = requireNonNull(cacheManager.getCache("moimNotices")).get(moimId, Object.class);
+        assertThat(noticesCacheObject).isNotNull();
+    }
+
+    @DisplayName("공지 정보를 조회하면 캐시에 저장된다.")
+    @Test
+    void NoticeCachingTest() {
+        //given
+        long moimId = MOIM_ID.longValue();
+
+        //given
+        MoimNoticeJpaEntity moimNoticeJpaEntity = MoimNoticeJpaEntity
+                .builder()
+                .moimId(moimId)
+                .title(NOTICE_TITLE.value())
+                .build();
+
+        moimNoticeRepository.save(moimNoticeJpaEntity);
+        long noticeId = moimNoticeJpaEntity.getId();
+
+        //when
+        assertThatCode(() -> moimNoticeFinder.getById(noticeId))
+                .doesNotThrowAnyException();
+
+        //then
+        Object noticeCacheObject = requireNonNull(cacheManager.getCache("moimNotice")).get(noticeId, Object.class);
+        assertThat(noticeCacheObject).isNotNull();
     }
 }

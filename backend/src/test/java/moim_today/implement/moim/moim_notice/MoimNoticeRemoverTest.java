@@ -7,7 +7,9 @@ import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 
+import static java.util.Objects.requireNonNull;
 import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.MEMBER_ID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,6 +19,12 @@ class MoimNoticeRemoverTest extends ImplementTest {
 
     @Autowired
     private MoimNoticeRemover moimNoticeRemover;
+
+    @Autowired
+    private MoimNoticeFinder moimNoticeFinder;
+
+    @Autowired
+    private CacheManager cacheManager;
     
     @DisplayName("공지를 삭제한다.")
     @Test
@@ -73,5 +81,45 @@ class MoimNoticeRemoverTest extends ImplementTest {
         assertThatCode(() -> moimNoticeRemover.deleteMoimNotice(forbiddenMemberId, moimId, noticeId))
                 .isInstanceOf(ForbiddenException.class)
                 .hasMessage(ORGANIZER_FORBIDDEN_ERROR.message());
+    }
+
+    @DisplayName("공지를 삭제하면 캐시가 삭제된다.")
+    @Test
+    void deleteMoimNoticeCachingTest(){
+        //given
+        long memberId = MEMBER_ID.longValue();
+
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .memberId(memberId)
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+        long moimId = moimJpaEntity.getId();
+
+        //given
+        MoimNoticeJpaEntity noticeJpaEntity = MoimNoticeJpaEntity.builder()
+                .moimId(moimId)
+                .build();
+
+        moimNoticeRepository.save(noticeJpaEntity);
+        long noticeId = noticeJpaEntity.getId();
+
+        //given
+        clearCache();
+        moimNoticeFinder.findAllMoimNotice(moimId);
+        moimNoticeFinder.getById(noticeId);
+        Object noticesCacheObject = requireNonNull(cacheManager.getCache("moimNotices")).get(moimId, Object.class);
+        Object noticeCacheObject = requireNonNull(cacheManager.getCache("moimNotice")).get(noticeId, Object.class);
+        assertThat(noticesCacheObject).isNotNull();
+        assertThat(noticeCacheObject).isNotNull();
+
+        assertThatCode(() -> moimNoticeRemover.deleteMoimNotice(memberId, moimId, noticeId))
+                .doesNotThrowAnyException();
+
+        //then
+        noticesCacheObject = requireNonNull(cacheManager.getCache("moimNotices")).get(moimId, Object.class);
+        noticeCacheObject = requireNonNull(cacheManager.getCache("moimNotice")).get(noticeId, Object.class);
+        assertThat(noticesCacheObject).isNull();
+        assertThat(noticeCacheObject).isNull();
     }
 }
