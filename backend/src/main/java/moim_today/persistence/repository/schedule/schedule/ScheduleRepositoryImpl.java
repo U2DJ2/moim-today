@@ -2,11 +2,11 @@ package moim_today.persistence.repository.schedule.schedule;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.domain.schedule.Schedule;
-import moim_today.dto.schedule.QScheduleResponse;
-import moim_today.dto.schedule.ScheduleResponse;
-import moim_today.dto.schedule.ScheduleUpdateRequest;
-import moim_today.dto.schedule.TimeTableSchedulingTask;
+import moim_today.dto.moim.moim.QMoimMemberResponse;
+import moim_today.dto.schedule.*;
 import moim_today.global.error.NotFoundException;
+import moim_today.persistence.entity.member.QMemberJpaEntity;
+import moim_today.persistence.entity.schedule.schedule.QScheduleJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,6 +21,7 @@ import java.util.List;
 
 import static moim_today.global.constant.NumberConstant.SCHEDULE_MEETING_ID;
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCHEDULE_NOT_FOUND;
+import static moim_today.persistence.entity.member.QMemberJpaEntity.*;
 import static moim_today.persistence.entity.schedule.schedule.QScheduleJpaEntity.scheduleJpaEntity;
 
 
@@ -66,6 +67,30 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                 .from(scheduleJpaEntity)
                 .where(
                         scheduleJpaEntity.memberId.eq(memberId)
+                                .and(scheduleJpaEntity.startDateTime.goe(startDateTime))
+                                .and(scheduleJpaEntity.startDateTime.loe(endDateTime))
+                                .and(scheduleJpaEntity.endDateTime.goe(startDateTime))
+                                .and(scheduleJpaEntity.endDateTime.loe(endDateTime))
+                )
+                .fetch();
+    }
+
+    @Override
+    public List<MoimScheduleResponse> findAllInMoimByWeekly(final List<Long> memberIds, final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
+        return queryFactory.select(
+                        new QMoimScheduleResponse(
+                                scheduleJpaEntity.id,
+                                scheduleJpaEntity.meetingId,
+                                scheduleJpaEntity.memberId,
+                                memberJpaEntity.username,
+                                scheduleJpaEntity.scheduleName,
+                                scheduleJpaEntity.startDateTime,
+                                scheduleJpaEntity.endDateTime
+                        ))
+                .from(scheduleJpaEntity)
+                .join(memberJpaEntity).on(scheduleJpaEntity.memberId.eq(memberJpaEntity.id))
+                .where(
+                        scheduleJpaEntity.memberId.in(memberIds)
                                 .and(scheduleJpaEntity.startDateTime.goe(startDateTime))
                                 .and(scheduleJpaEntity.startDateTime.loe(endDateTime))
                                 .and(scheduleJpaEntity.endDateTime.goe(startDateTime))

@@ -1,10 +1,8 @@
 package moim_today.application.schedule;
 
 import moim_today.domain.schedule.TimeTableProcessor;
-import moim_today.dto.schedule.ScheduleCreateRequest;
-import moim_today.dto.schedule.ScheduleResponse;
-import moim_today.dto.schedule.ScheduleUpdateRequest;
-import moim_today.dto.schedule.TimeTableRequest;
+import moim_today.dto.schedule.*;
+import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import moim_today.implement.schedule.schedule.*;
 import moim_today.implement.schedule.schedule_color.ScheduleColorManager;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 
 import static moim_today.global.constant.NumberConstant.SCHEDULE_COLOR_NEXT_COUNT;
@@ -24,22 +23,31 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleAppender scheduleAppender;
     private final ScheduleUpdater scheduleUpdater;
     private final ScheduleRemover scheduleRemover;
+    private final JoinedMoimFinder joinedMoimFinder;
     private final ScheduleColorManager scheduleColorManager;
 
     public ScheduleServiceImpl(final ScheduleManager scheduleManager, final ScheduleFinder scheduleFinder,
                                final ScheduleAppender scheduleAppender, final ScheduleUpdater scheduleUpdater,
-                               final ScheduleRemover scheduleRemover, final ScheduleColorManager scheduleColorManager) {
+                               final ScheduleRemover scheduleRemover, final JoinedMoimFinder joinedMoimFinder,
+                               final ScheduleColorManager scheduleColorManager) {
         this.scheduleManager = scheduleManager;
         this.scheduleFinder = scheduleFinder;
         this.scheduleAppender = scheduleAppender;
         this.scheduleUpdater = scheduleUpdater;
         this.scheduleRemover = scheduleRemover;
+        this.joinedMoimFinder = joinedMoimFinder;
         this.scheduleColorManager = scheduleColorManager;
     }
 
     @Override
     public List<ScheduleResponse> findAllByWeekly(final long memberId, final LocalDate startDate) {
         return scheduleFinder.findAllByWeekly(memberId, startDate);
+    }
+
+    @Override
+    public List<MoimScheduleResponse> findWeeklyAvailableTime(final long moimId, final LocalDate startDate) {
+        List<Long> memberIds = joinedMoimFinder.findAllJoinedMemberId(moimId);
+        return scheduleFinder.findAllInMoimByWeekly(memberIds, startDate);
     }
 
     @Override

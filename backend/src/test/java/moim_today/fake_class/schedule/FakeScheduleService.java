@@ -2,10 +2,7 @@ package moim_today.fake_class.schedule;
 
 import moim_today.application.schedule.ScheduleService;
 import moim_today.domain.schedule.enums.ColorHex;
-import moim_today.dto.schedule.ScheduleCreateRequest;
-import moim_today.dto.schedule.ScheduleResponse;
-import moim_today.dto.schedule.ScheduleUpdateRequest;
-import moim_today.dto.schedule.TimeTableRequest;
+import moim_today.dto.schedule.*;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
 import moim_today.global.error.NotFoundException;
@@ -52,6 +49,11 @@ public class FakeScheduleService implements ScheduleService {
                 .build();
 
         return List.of(scheduleResponse1, scheduleResponse2, scheduleResponse3);
+    }
+
+    @Override
+    public List<MoimScheduleResponse> findWeeklyAvailableTime(final long moimId, final LocalDate startDate) {
+        return List.of();
     }
 
     @Override

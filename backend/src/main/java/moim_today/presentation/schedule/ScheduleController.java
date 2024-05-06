@@ -36,6 +36,14 @@ public class ScheduleController {
         return CollectionResponse.of(scheduleResponses);
     }
 
+    @GetMapping("/schedules/weekly/available-time/{moimId}")
+    public CollectionResponse<List<MoimScheduleResponse>> findWeeklyAvailableTime(
+            @PathVariable final long moimId,
+            @RequestParam final LocalDate startDate) {
+        List<MoimScheduleResponse> moimScheduleResponses = scheduleService.findWeeklyAvailableTime(moimId, startDate);
+        return CollectionResponse.of(moimScheduleResponses);
+    }
+
     @GetMapping("/schedules/monthly")
     public CollectionResponse<List<ScheduleResponse>> findAllByMonthly(@Login final MemberSession memberSession,
                                                                        @RequestParam final YearMonth yearMonth) {
