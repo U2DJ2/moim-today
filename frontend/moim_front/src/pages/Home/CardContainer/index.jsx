@@ -7,7 +7,7 @@ function CardContainer({ image, category, title, capacity, currentCount }) {
         alt="cardContainer"
         className=" w-[360px] h-[100px] object-cover rounded-t-3xl"
       />
-      <div className="bg-white w-[360px] h-auto drop-shadow rounded-b-3xl flex flex-col gap-5 py-3 px-16 ">
+      <div className="bg-white w-auto h-auto drop-shadow rounded-b-3xl flex flex-col gap-5 py-3 px-16  ">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col justify-items-center">
             <div className=" font-Pretendard_Normal text-base text-[#A1A3A5]">

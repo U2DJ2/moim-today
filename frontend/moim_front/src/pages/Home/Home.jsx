@@ -108,7 +108,7 @@ function Home() {
         <SearchBar />
       </main>
       <FilterBar />
-      <div className="grid grid-cols-3 gap-10 mt-20 mx-auto md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-10 mt-20 mx-auto md:grid-cols-3 lg:grid-cols-4">
         <CardContainer
           image={cardImage}
           category={"# category"}
