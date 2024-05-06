@@ -44,14 +44,14 @@ public class MoimNoticeServiceImpl implements MoimNoticeService{
 
     @Override
     public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long memberId, final long moimId) {
-        joinedMoimFinder.validateJoinedMember(memberId, moimId);
+        joinedMoimFinder.validateMemberInMoim(moimId, memberId);
         return moimNoticeFinder.findAllMoimNotice(moimId);
     }
 
     @Override
     public MoimNoticeDetailResponse getMoimNoticeDetail(final long memberId, final long moimNoticeId) {
         MoimNoticeJpaEntity moimNoticeJpaEntity = moimNoticeFinder.getById(moimNoticeId);
-        joinedMoimFinder.validateJoinedMember(memberId, moimNoticeJpaEntity.getMoimId());
+        joinedMoimFinder.validateMemberInMoim(moimNoticeJpaEntity.getMoimId(), memberId);
         return MoimNoticeDetailResponse.from(moimNoticeJpaEntity);
     }
 

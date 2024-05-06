@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_IS_EMPTY;
-import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_NOT_FOUNT;
+import static moim_today.global.constant.exception.MoimExceptionConstant.JOINED_MOIM_MEMBER_IS_EMPTY;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.MEMBER_ID;
 import static moim_today.util.TestConstant.MOIM_ID;
@@ -103,7 +102,8 @@ class JoinedMoimFinderTest extends ImplementTest {
 
         // expected
         assertThatThrownBy(() -> joinedMoimFinder.validateMemberInMoim(savedMoim.getId(),2L))
-                .hasMessageMatching(JOINED_MOIM_MEMBER_NOT_FOUNT.message());
+                .isInstanceOf(ForbiddenException.class)
+                .hasMessageMatching(MOIM_FORBIDDEN_ERROR.message());
     }
 
     @DisplayName("모임에 참여한 멤버일 경우 에러를 발생하지 않는다")
@@ -138,7 +138,7 @@ class JoinedMoimFinderTest extends ImplementTest {
         joinedMoimRepository.save(joinedMoimJpaEntity);
 
         //expected
-        assertThatCode(() -> joinedMoimFinder.validateJoinedMember(memberId, moimId))
+        assertThatCode(() -> joinedMoimFinder.validateMemberInMoim(moimId, memberId))
                 .doesNotThrowAnyException();
     }
 
@@ -150,7 +150,7 @@ class JoinedMoimFinderTest extends ImplementTest {
         long memberId = MEMBER_ID.longValue();
 
         //expected
-        assertThatThrownBy(() -> joinedMoimFinder.validateJoinedMember(memberId, moimId))
+        assertThatThrownBy(() -> joinedMoimFinder.validateMemberInMoim(moimId, memberId))
                 .isInstanceOf(ForbiddenException.class)
                 .hasMessage(MOIM_FORBIDDEN_ERROR.message());
     }

@@ -3,10 +3,6 @@ package moim_today.fake_class.moim;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.moim.MoimCreateRequest;
-import moim_today.dto.moim.moim.MoimDetailResponse;
-import moim_today.dto.moim.moim.MoimUpdateRequest;
-import moim_today.dto.moim.moim.MoimImageResponse;
 import moim_today.dto.moim.moim.*;
 import moim_today.global.error.ForbiddenException;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN;
+import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
 
 public class FakeMoimService implements MoimService {
@@ -91,7 +87,7 @@ public class FakeMoimService implements MoimService {
         long moimHostId = MEMBER_ID.longValue();
         // 실제 로직과 다름
         if (moimMemberDeleteRequest.memberId() != moimHostId) {
-            throw new ForbiddenException(MOIM_FORBIDDEN.message());
+            throw new ForbiddenException(MOIM_FORBIDDEN_ERROR.message());
         }
     }
 }
