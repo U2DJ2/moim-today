@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN;
+import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_HOST_ERROR;
 import static moim_today.util.TestConstant.*;
 
 public class FakeMoimService implements MoimService {
@@ -82,11 +83,23 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public void deleteMember(long id, MoimMemberDeleteRequest moimMemberDeleteRequest) {
+    public void forceDeleteMember(long id, MoimMemberForceDeleteRequest moimMemberForceDeleteRequest) {
         long moimHostId = MEMBER_ID.longValue();
         // 실제 로직과 다름
-        if (moimMemberDeleteRequest.memberId() != moimHostId) {
+        if (moimMemberForceDeleteRequest.moimId() != moimHostId) {
             throw new ForbiddenException(MOIM_FORBIDDEN.message());
+        }
+        if(moimMemberForceDeleteRequest.deleteMemberId() == moimHostId){
+            throw new ForbiddenException(MOIM_HOST_ERROR.message());
+        }
+    }
+
+    @Override
+    public void deleteMember(final long requestMemberId, final long moimId) {
+        long moimHostId = MEMBER_ID.longValue();
+        // 실제 로직과 다름
+        if (moimId == moimHostId) {
+            throw new ForbiddenException(MOIM_HOST_ERROR.message());
         }
     }
 }

@@ -155,8 +155,8 @@ class MoimFinderTest extends ImplementTest {
         joinedMoimJpaEntities.add(joinedMoimRepository.save(joinedMoimJpaEntity3));
 
         // expected
-        assertThat(moimFinder.isHost(savedMoim.getMemberId(), 1L)).isTrue();
-        assertThat(moimFinder.isHost(savedMoim.getMemberId(), 2L)).isFalse();
+        assertThat(moimFinder.isHost(savedMoim.getId(), 1L)).isTrue();
+        assertThat(moimFinder.isHost(savedMoim.getId(), 2L)).isFalse();
     }
 
     private MemberJpaEntity saveRandomMember() {

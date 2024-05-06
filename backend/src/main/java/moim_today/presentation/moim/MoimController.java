@@ -52,9 +52,15 @@ public class MoimController {
         moimService.deleteMoim(memberSession.id(), moimDeleteRequest.moimId());
     }
 
+    @DeleteMapping("/members/force")
+    public void forceDeleteMember(@Login final MemberSession memberSession,
+                             @RequestBody final MoimMemberForceDeleteRequest moimMemberForceDeleteRequest){
+        moimService.forceDeleteMember(memberSession.id(), moimMemberForceDeleteRequest);
+    }
+
     @DeleteMapping("/members")
     public void deleteMember(@Login final MemberSession memberSession,
                              @RequestBody final MoimMemberDeleteRequest moimMemberDeleteRequest){
-        moimService.deleteMember(memberSession.id(), moimMemberDeleteRequest);
+        moimService.deleteMember(memberSession.id(), moimMemberDeleteRequest.moimId());
     }
 }

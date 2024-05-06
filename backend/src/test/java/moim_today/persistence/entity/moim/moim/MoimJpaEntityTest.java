@@ -30,7 +30,7 @@ class MoimJpaEntityTest {
                 .build();
 
         //expected
-        assertThatCode(() -> moimJpaEntity.validateMember(memberId))
+        assertThatCode(() -> moimJpaEntity.validateHostMember(memberId))
                 .doesNotThrowAnyException();
     }
 
@@ -47,7 +47,7 @@ class MoimJpaEntityTest {
                 .build();
 
         //expected
-        assertThatCode(() -> moimJpaEntity.validateMember(forbiddenMemberId))
+        assertThatCode(() -> moimJpaEntity.validateHostMember(forbiddenMemberId))
                 .isInstanceOf(ForbiddenException.class)
                 .hasMessage(MOIM_FORBIDDEN.message());
     }

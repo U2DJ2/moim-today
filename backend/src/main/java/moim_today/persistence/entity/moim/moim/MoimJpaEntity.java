@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN;
+import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_HOST_ERROR;
 
 @Getter
 @Table(name = "moim")
@@ -79,9 +80,15 @@ public class MoimJpaEntity extends BaseTimeEntity {
         this.endDate = endDate;
     }
 
-    public void validateMember(final long memberId) {
+    public void validateHostMember(final long memberId) {
         if (this.memberId != memberId) {
             throw new ForbiddenException(MOIM_FORBIDDEN.message());
+        }
+    }
+
+    public void validateNotHostMember(final long requestMemberId) {
+        if (this.memberId != memberId) {
+            throw new ForbiddenException(MOIM_HOST_ERROR.message());
         }
     }
 
