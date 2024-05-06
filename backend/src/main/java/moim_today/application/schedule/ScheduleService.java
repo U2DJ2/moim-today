@@ -11,7 +11,7 @@ public interface ScheduleService {
 
     List<ScheduleResponse> findAllByWeekly(final long memberId, final LocalDate startDate);
 
-    List<MoimScheduleResponse> findWeeklyAvailableTime(final long moimId, final LocalDate startDate);
+    List<AvailableTimeResponse> findWeeklyAvailableTime(final long moimId, final LocalDate startDate);
 
     List<ScheduleResponse> findAllByMonthly(final long memberId, final YearMonth yearMonth);
 

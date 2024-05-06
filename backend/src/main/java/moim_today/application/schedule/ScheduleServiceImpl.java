@@ -1,5 +1,6 @@
 package moim_today.application.schedule;
 
+import moim_today.domain.schedule.AvailableTime;
 import moim_today.domain.schedule.TimeTableProcessor;
 import moim_today.dto.schedule.*;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.ArrayList;
 import java.util.List;
 
 import static moim_today.global.constant.NumberConstant.SCHEDULE_COLOR_NEXT_COUNT;
@@ -45,9 +45,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public List<MoimScheduleResponse> findWeeklyAvailableTime(final long moimId, final LocalDate startDate) {
+    public List<AvailableTimeResponse> findWeeklyAvailableTime(final long moimId, final LocalDate startDate) {
         List<Long> memberIds = joinedMoimFinder.findAllJoinedMemberId(moimId);
-        return scheduleFinder.findAllInMoimByWeekly(memberIds, startDate);
+        List<MoimScheduleResponse> moimScheduleResponses = scheduleFinder.findAllInMoimByWeekly(memberIds, startDate);
+
+        return AvailableTime.calculateAvailableTimes(moimScheduleResponses);
     }
 
     @Override

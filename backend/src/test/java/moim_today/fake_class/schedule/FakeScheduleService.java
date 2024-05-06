@@ -52,7 +52,7 @@ public class FakeScheduleService implements ScheduleService {
     }
 
     @Override
-    public List<MoimScheduleResponse> findWeeklyAvailableTime(final long moimId, final LocalDate startDate) {
+    public List<AvailableTimeResponse> findWeeklyAvailableTime(final long moimId, final LocalDate startDate) {
         return List.of();
     }
 

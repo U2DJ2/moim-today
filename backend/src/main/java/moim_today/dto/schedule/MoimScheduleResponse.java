@@ -10,6 +10,7 @@ public record MoimScheduleResponse(
         long meetingId,
         long memberId,
         String username,
+        String memberProfileImageUrl,
         String scheduleName,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")

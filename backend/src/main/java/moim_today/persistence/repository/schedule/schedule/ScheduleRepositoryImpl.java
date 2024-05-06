@@ -83,6 +83,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                                 scheduleJpaEntity.meetingId,
                                 scheduleJpaEntity.memberId,
                                 memberJpaEntity.username,
+                                memberJpaEntity.memberProfileImageUrl,
                                 scheduleJpaEntity.scheduleName,
                                 scheduleJpaEntity.startDateTime,
                                 scheduleJpaEntity.endDateTime
