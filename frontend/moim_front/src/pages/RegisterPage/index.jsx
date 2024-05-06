@@ -13,6 +13,8 @@ import axios from "axios";
 import Modal from "../../components/Modal/ModalTest.jsx";
 import ConfirmModal from "./ConfirmModal/index.jsx";
 
+axios.defaults.withCredentials = true; // withCredentials 전역 설정
+
 function RegisterPage() {
   const navigate = useNavigate();
 
@@ -42,6 +44,7 @@ function RegisterPage() {
 
   const client = axios.create({
     baseURL: "https://api.moim.today/",
+    withCredentials: true,
   });
   const emailBody = {
     email: email,
@@ -58,6 +61,8 @@ function RegisterPage() {
   };
   const everytimeInfo = {
     everytimeUrl: everytimeUrl,
+    startDate: "2024-03-04",
+    endDate: "2024-06-30",
   };
   const nextClick = async () => {
     if (step === 0) {
@@ -93,7 +98,9 @@ function RegisterPage() {
         });
     } else if (step === 3) {
       client
-        .post("api/sign-up", userData)
+        .post("api/sign-up", userData, {
+          withCredentials: true,
+        })
         .then((res) => {
           console.log(res.data);
           setStep(step + 1);
@@ -105,7 +112,10 @@ function RegisterPage() {
         });
     } else if (step === 5) {
       client
-        .post("api/schedules/timetable", everytimeInfo)
+        .post("api/schedules/timetable", everytimeInfo, {
+          withCredentials: true,
+        })
+
         .then((res) => {
           console.log(res.data);
           navigate("/");

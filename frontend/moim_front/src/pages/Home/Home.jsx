@@ -8,6 +8,10 @@ import Filter from "../../components/Dropdown/Filter";
 
 // Icons
 import SearchIcon from "@mui/icons-material/Search";
+import CardContainer from "./CardContainer";
+
+//temporary image
+import cardImage from "../../assets/svg/card-image.svg";
 
 /**
  * SearchBar Component
@@ -104,6 +108,7 @@ function Home() {
         <SearchBar />
       </main>
       <FilterBar />
+      <CardContainer image={cardImage} />
     </div>
   );
 }

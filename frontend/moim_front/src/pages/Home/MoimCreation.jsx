@@ -148,7 +148,6 @@ function ImageUploader() {
 
 export default function MoimCreation() {
   // Check box 커스터마이징
-
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
@@ -240,14 +239,13 @@ export default function MoimCreation() {
           setTitle={setTitle}
         />
         <div className="mt-2.5 text-sm font-semibold leading-5 text-stone-500 max-md:max-w-full">
-          {" "}
-          이미지 올리세요{" "}
+          이미지 올리세요
         </div>
         <ImageUploader />
         <InputField
           label="운영 기간"
           placeholder="이거 클릭하면 Date Picker 떠야 됨"
-        />{" "}
+        />
         <DatePicker
           selected={startDate}
           onChange={(date) => setStartDate(date)}
@@ -262,15 +260,13 @@ export default function MoimCreation() {
           className="mt-10 text-lg font-Pretendard_SemiBold leading-7 text-gray-400"
           onClick={handleCancel}
         >
-          {" "}
-          취소하기{" "}
+          취소하기
         </button>
         <button
           className="mt-10 text-lg font-Pretendard_SemiBold leading-7 text-rose-600"
           onClick={onClickHandler}
         >
-          {" "}
-          생성하기{" "}
+          생성하기
         </button>
       </footer>
     </div>

@@ -5,7 +5,6 @@ const fetchWrap = async ({ method, url, body, auth }) => {
   try {
     const config = {
       baseURL: properties.baseURL,
-
       withCredentials: true,
     };
 
