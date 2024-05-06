@@ -5,6 +5,7 @@ import moim_today.dto.schedule.MoimScheduleResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -16,6 +17,12 @@ public record Member(
 
     public static Member toDomain(final long memberId, final String username, final String memberProfileImageUrl) {
         return new Member(memberId, username, memberProfileImageUrl);
+    }
+
+    public static Map<Long, List<MoimScheduleResponse>> groupSchedulesByMember(final List<MoimScheduleResponse> moimScheduleResponses) {
+
+        return moimScheduleResponses.stream()
+                .collect(Collectors.groupingBy(MoimScheduleResponse::memberId));
     }
 
     public static List<Member> filterByDateTime(final Map<Long, List<MoimScheduleResponse>> schedulesByMember,
