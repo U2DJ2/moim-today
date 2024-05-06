@@ -12,7 +12,7 @@ function CardContainer({
 
   return (
     <div
-      className="card-container hover:cursor-pointer"
+      className="card-container hover:cursor-pointer hover:animate-pulse"
       onClick={() => navigate(`/detailed/${moimId}`)}
     >
       <img

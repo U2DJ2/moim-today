@@ -1,7 +1,12 @@
 import React from "react";
+import Header from "../../components/Header";
 
 function MoimDetailPage() {
-  return <div>MoimDetailPage</div>;
+  return (
+    <div>
+      <Header />
+    </div>
+  );
 }
 
 export default MoimDetailPage;
