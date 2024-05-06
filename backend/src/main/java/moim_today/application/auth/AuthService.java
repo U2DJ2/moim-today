@@ -1,7 +1,7 @@
 package moim_today.application.auth;
 
-import moim_today.dto.auth.MemberLoginRequest;
 import jakarta.servlet.http.HttpServletRequest;
+import moim_today.dto.auth.MemberLoginRequest;
 import moim_today.dto.auth.MemberSignUpRequest;
 
 public interface AuthService {
