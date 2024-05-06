@@ -199,7 +199,7 @@ class MoimControllerTest extends ControllerTest {
         mockMvc.perform(get("/api/moims/members")
                         .param("moimId", MEMBER_ID.value()))
                 .andExpect(status().isOk())
-                .andDo(document("모임 멤버 조회 성공",
+                .andDo(document("모임 멤버 조회",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
                                 .summary("모임에서 멤버 조회 성공")
@@ -276,7 +276,7 @@ class MoimControllerTest extends ControllerTest {
     void deleteForceMoimMemberHostFailTest() throws Exception {
         MoimMemberForceDeleteRequest moimMemberForceDeleteRequest = MoimMemberForceDeleteRequest.builder()
                 .deleteMemberId(MEMBER_ID.longValue())
-                .moimId(MOIM_ID.longValue() + 1L)
+                .moimId(MOIM_ID.longValue())
                 .build();
 
         mockMvc.perform(delete("/api/moims/members/force")
