@@ -265,7 +265,12 @@ class MoimControllerTest extends ControllerTest {
                                 .requestFields(
                                         fieldWithPath("moimId").type(NUMBER).description("추방이 일어날 모임 ID"),
                                         fieldWithPath("memberId").type(NUMBER).description("추방시킬 멤버 ID")
-                                ).build()
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
                         )));
     }
 }

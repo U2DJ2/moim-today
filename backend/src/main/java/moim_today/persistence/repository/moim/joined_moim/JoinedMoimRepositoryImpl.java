@@ -55,7 +55,7 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
     }
 
     @Override
-    public void deleteMoimMember(long moimId, long memberId) {
+    public void deleteMoimMember(final long moimId, final long memberId) {
         joinedMoimJpaRepository.deleteByMoimIdAndMemberId(moimId,memberId);
     }
 
