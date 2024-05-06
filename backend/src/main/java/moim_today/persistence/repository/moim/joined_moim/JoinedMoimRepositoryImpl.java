@@ -1,14 +1,14 @@
 package moim_today.persistence.repository.moim.joined_moim;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
-import moim_today.persistence.entity.moim.joined_moim.QJoinedMoimJpaEntity;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static moim_today.persistence.entity.moim.joined_moim.QJoinedMoimJpaEntity.*;
+import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_IS_EMPTY;
+import static moim_today.persistence.entity.moim.joined_moim.QJoinedMoimJpaEntity.joinedMoimJpaEntity;
 
 @Repository
 public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
@@ -36,12 +36,36 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
     }
 
     @Override
-    public void save(final JoinedMoimJpaEntity joinedMoimJpaEntity) {
-        joinedMoimJpaRepository.save(joinedMoimJpaEntity);
+    public long count() {
+        return joinedMoimJpaRepository.count();
     }
 
     @Override
-    public long count() {
-        return joinedMoimJpaRepository.count();
+    public JoinedMoimJpaEntity save(final JoinedMoimJpaEntity joinedMoimJpaEntity) {
+        return joinedMoimJpaRepository.save(joinedMoimJpaEntity);
+    }
+
+    @Override
+    public List<JoinedMoimJpaEntity> findJoinMembersByMoimId(final long moimId) {
+        List<JoinedMoimJpaEntity> membersByMoimId = joinedMoimJpaRepository.findMembersByMoimId(moimId);
+        if(membersByMoimId.isEmpty()){
+            throw new NotFoundException(JOINED_MOIM_MEMBER_IS_EMPTY.message());
+        }
+        return membersByMoimId;
+    }
+
+    @Override
+    public void deleteMoimMember(final long moimId, final long memberId) {
+        joinedMoimJpaRepository.deleteByMoimIdAndMemberId(moimId,memberId);
+    }
+
+    @Override
+    public boolean isJoining(final long moimId, final long memberId) {
+        return joinedMoimJpaRepository.existsByMoimIdAndMemberId(moimId,memberId);
+    }
+
+    @Override
+    public boolean existsByMoimIdAndMemberId(final long moimId, final long memberId) {
+        return joinedMoimJpaRepository.existsByMoimIdAndMemberId(moimId, memberId);
     }
 }

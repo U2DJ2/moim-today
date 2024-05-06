@@ -10,7 +10,15 @@ public interface JoinedMoimRepository {
 
     void deleteAllByMoimId(final long moimId);
 
-    void save(final JoinedMoimJpaEntity joinedMoimJpaEntity);
-
     long count();
+
+    JoinedMoimJpaEntity save(final JoinedMoimJpaEntity joinedMoimJpaEntity);
+
+    List<JoinedMoimJpaEntity> findJoinMembersByMoimId(final long moimId);
+
+    void deleteMoimMember(final long moimId, final long memberId);
+
+    boolean isJoining(final long moimId2, final long memberId1);
+
+    boolean existsByMoimIdAndMemberId(final long moimId, final long memberId);
 }

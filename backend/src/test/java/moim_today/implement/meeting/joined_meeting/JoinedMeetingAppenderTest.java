@@ -69,7 +69,7 @@ class JoinedMeetingAppenderTest extends ImplementTest {
         // given 2
         JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
                 .moimId(moimJpaEntity.getId())
-                .memberId(MEMBER_ID.intValue())
+                .memberId(MEMBER_ID.longValue())
                 .build();
 
         joinedMoimRepository.save(joinedMoimJpaEntity);

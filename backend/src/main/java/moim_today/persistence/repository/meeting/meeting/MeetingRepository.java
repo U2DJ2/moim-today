@@ -13,4 +13,5 @@ public interface MeetingRepository {
     MeetingJpaEntity save(final MeetingJpaEntity meetingJpaEntity);
 
     long count();
+
 }

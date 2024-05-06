@@ -2,12 +2,11 @@ package moim_today.persistence.repository.meeting.joined_meeting;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
-import moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.*;
+import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.joinedMeetingJpaEntity;
 
 @Repository
 public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
@@ -27,8 +26,8 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
     }
 
     @Override
-    public void save(final JoinedMeetingJpaEntity joinedMeetingJpaEntity) {
-        joinedMeetingJpaRepository.save(joinedMeetingJpaEntity);
+    public JoinedMeetingJpaEntity save(final JoinedMeetingJpaEntity joinedMeetingJpaEntity) {
+        return joinedMeetingJpaRepository.save(joinedMeetingJpaEntity);
     }
 
     @Override
@@ -52,5 +51,18 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
     @Override
     public long count() {
         return joinedMeetingJpaRepository.count();
+    }
+
+    @Override
+    public void deleteAllByMemberInMeeting(final long memberId, final List<Long> meetingIds) {
+        queryFactory.delete(joinedMeetingJpaEntity)
+                .where(joinedMeetingJpaEntity.memberId.eq(memberId)
+                        .and(joinedMeetingJpaEntity.meetingId.in(meetingIds)))
+                .execute();
+    }
+
+    @Override
+    public JoinedMeetingJpaEntity findById(final long joinedMeetingId) {
+        return joinedMeetingJpaRepository.findById(joinedMeetingId);
     }
 }

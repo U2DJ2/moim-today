@@ -21,7 +21,7 @@ class MeetingAppenderTest extends ImplementTest {
     void saveMeeting() {
         // given
         MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
-                .moimId(MOIM_ID.intValue())
+                .moimId(MOIM_ID.longValue())
                 .agenda(MEETING_AGENDA.value())
                 .startDateTime(LocalDateTime.of(2024,3,4, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024,6,30, 10, 0, 0))

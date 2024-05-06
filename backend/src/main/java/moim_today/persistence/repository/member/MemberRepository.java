@@ -1,8 +1,10 @@
 package moim_today.persistence.repository.member;
 
 import moim_today.dto.member.MemberProfileResponse;
+import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository {
@@ -20,4 +22,8 @@ public interface MemberRepository {
     MemberJpaEntity getById(final long memberId);
 
     MemberProfileResponse getMemberProfile(final long memberId);
+
+    List<MemberJpaEntity> findByIdIn(final List<Long> memberIds);
+
+    List<MoimMemberResponse> findMembersWithJoinInfo(final List<Long> joinedMoimMemberIds, final long hostId);
 }

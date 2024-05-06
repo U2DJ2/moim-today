@@ -21,4 +21,11 @@ public class JoinedMeetingRemover {
             joinedMeetingRepository.deleteAllByMeetingIdIn(meetingIds);
         }
     }
+
+    @Transactional
+    public void deleteAllByMemberInMeeting(final long memberId, final List<Long> meetingIds) {
+        if(!meetingIds.isEmpty()){
+            joinedMeetingRepository.deleteAllByMemberInMeeting(memberId, meetingIds);
+        }
+    }
 }
