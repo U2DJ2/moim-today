@@ -108,7 +108,43 @@ function Home() {
         <SearchBar />
       </main>
       <FilterBar />
-      <CardContainer image={cardImage} />
+      <div className="grid grid-cols-3 gap-10 mt-20 mx-auto md:grid-cols-3 lg:grid-cols-4">
+        <CardContainer
+          image={cardImage}
+          category={"# category"}
+          title={"{GatheringTitle}"}
+          capacity={12}
+          currentCount={4}
+        />
+        <CardContainer
+          image={cardImage}
+          category={"# category"}
+          title={"{GatheringTitle}"}
+          capacity={12}
+          currentCount={4}
+        />
+        <CardContainer
+          image={cardImage}
+          category={"# category"}
+          title={"{GatheringTitle}"}
+          capacity={12}
+          currentCount={4}
+        />
+        <CardContainer
+          image={cardImage}
+          category={"# category"}
+          title={"{GatheringTitle}"}
+          capacity={12}
+          currentCount={4}
+        />
+        <CardContainer
+          image={cardImage}
+          category={"# category"}
+          title={"{GatheringTitle}"}
+          capacity={12}
+          currentCount={4}
+        />
+      </div>
     </div>
   );
 }
