@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import static moim_today.global.constant.FileTypeConstant.PROFILE_IMAGE;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/files")
 public class FileController {
 
     private final FileService fileService;
@@ -20,13 +20,13 @@ public class FileController {
         this.fileService = fileService;
     }
 
-    @PostMapping(value = "/files")
+    @PostMapping
     public FileInfoResponse uploadFile(@Login final MemberSession memberSession,
-                                       @RequestPart final MultipartFile file) {
+                                       @RequestParam final MultipartFile file) {
         return fileService.uploadFile(PROFILE_IMAGE.value(), file);
     }
 
-    @DeleteMapping("/files")
+    @DeleteMapping
     public void deleteFile(@Login final MemberSession memberSession,
                            @RequestBody final FileDeleteRequest fileDeleteRequest){
         fileService.deleteFile(memberSession, fileDeleteRequest);

@@ -10,7 +10,7 @@ public class FakeFileService implements FileService {
 
     @Override
     public FileInfoResponse uploadFile(final String fileType, final MultipartFile multipartFile) {
-        return new FileInfoResponse("testUploadFileUrl");
+        return new FileInfoResponse("fileUrl");
     }
 
     @Override
