@@ -2,9 +2,11 @@ package moim_today.dto.schedule;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
+@Builder
 public record MoimScheduleResponse(
         long scheduleId,
         long meetingId,

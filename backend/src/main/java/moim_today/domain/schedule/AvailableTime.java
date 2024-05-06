@@ -3,12 +3,16 @@ package moim_today.domain.schedule;
 import moim_today.domain.member.Member;
 import moim_today.dto.schedule.MoimScheduleResponse;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static moim_today.global.constant.TimeConstant.SIX_DAY;
 
 
 public record AvailableTime(
@@ -22,13 +26,22 @@ public record AvailableTime(
         return new AvailableTime(members, startDateTime, endDateTime);
     }
 
-    public static List<AvailableTime> calculateAvailableTimes(final List<MoimScheduleResponse> moimScheduleResponses) {
+    public static List<AvailableTime> calculateAvailableTimes(final List<MoimScheduleResponse> moimScheduleResponses,
+                                                              final LocalDate startDate) {
+        // 시작 날짜의 자정
+        LocalDateTime start = startDate.atStartOfDay();
+
+        // 시작 날짜로부터 7일 후의 자정 전
+        LocalDateTime end
+                = startDate.plusDays(SIX_DAY.time())
+                .atTime(23, 59, 59, 999999999);
+
         // 회원별로 일정을 그룹화하기 위해 Map을 사용
         Map<Long, List<MoimScheduleResponse>> schedulesByMember = moimScheduleResponses.stream()
                 .collect(Collectors.groupingBy(MoimScheduleResponse::memberId));
 
         // 모든 시작 및 종료 시간을 모아 정렬된 고유 리스트 생성
-        List<LocalDateTime> allTimes = getAllTimes(moimScheduleResponses);
+        List<LocalDateTime> allTimes = getAllTimes(moimScheduleResponses, start, end);
         List<AvailableTime> availableTimes = new ArrayList<>();
 
         // 연속된 기간에 대해 반복
@@ -48,11 +61,22 @@ public record AvailableTime(
         return availableTimes;
     }
 
-    private static List<LocalDateTime> getAllTimes(final List<MoimScheduleResponse> moimScheduleResponses) {
-        return moimScheduleResponses.stream()
+    private static List<LocalDateTime> getAllTimes(final List<MoimScheduleResponse> moimScheduleResponses,
+                                                   final LocalDateTime startTime,
+                                                   final LocalDateTime endTime) {
+        // 모든 시작 및 종료 시간을 모아 고유 리스트 생성
+        List<LocalDateTime> times = moimScheduleResponses.stream()
                 .flatMap(schedule -> Stream.of(schedule.startDateTime(), schedule.endDateTime()))
                 .distinct()
                 .sorted()
                 .toList();
+
+        // 시작 시간과 끝 시간을 추가하고 정렬된 리스트를 반환
+        List<LocalDateTime> allTimes = new ArrayList<>(times);
+        allTimes.add(0, startTime); // 첫 번째 행에 시작 시간 삽입
+        allTimes.add(endTime); // 마지막 행에 끝 시간 삽입
+        Collections.sort(allTimes); // 다시 정렬
+
+        return allTimes;
     }
 }
