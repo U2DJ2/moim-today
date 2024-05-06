@@ -212,8 +212,9 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("moimMembers[].memberId").type(NUMBER).description("멤버 ID"),
                                         fieldWithPath("moimMembers[].memberName").type(STRING).description("멤버 이름"),
                                         fieldWithPath("moimMembers[].joinedDate").type(STRING).description("참여 날짜")
-                                                .attributes(key("format").value("yyyy-MM-dd'T'HH:mm:ss"),
-                                                        key("timezone").value("Asia/Seoul"))
+                                                        .attributes(key("format").value("yyyy-MM-dd'T'HH:mm:ss"),
+                                                key("timezone").value("Asia/Seoul")),
+                                        fieldWithPath("moimMembers[].profileImageUrl").type(STRING).description("프로필 이미지 URL")
                                 )
                                 .build()
                         )));

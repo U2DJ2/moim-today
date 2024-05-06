@@ -139,4 +139,9 @@ public class MoimServiceImpl implements MoimService{
 
         moimManager.deleteMemberFromMoim(moimId, requestMemberId);
     }
+
+    @Override
+    public void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest) {
+        moimManager.appendMemberToMoim(requestMemberId, moimJoinRequest);
+    }
 }

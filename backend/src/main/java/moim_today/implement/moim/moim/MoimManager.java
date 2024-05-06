@@ -1,5 +1,6 @@
 package moim_today.implement.moim.moim;
 
+import moim_today.dto.moim.moim.MoimJoinRequest;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
 import moim_today.implement.meeting.meeting.MeetingFinder;
@@ -51,5 +52,10 @@ public class MoimManager {
         joinedMeetingRemover.deleteAllByMemberInMeeting(memberId, meetingIds);
         meetingCommentUpdater.updateDeletedMembers(memberId, meetingIds);
         scheduleRemover.deleteAllByMemberInMeeting(memberId, meetingIds);
+    }
+
+    @Transactional
+    public void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest) {
+        
     }
 }

@@ -12,7 +12,8 @@ public record MoimMemberResponse(
         long memberId,
         String memberName,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-        LocalDateTime joinedDate
+        LocalDateTime joinedDate,
+        String profileImageUrl
 ) {
 
     @QueryProjection

@@ -60,18 +60,21 @@ public class FakeMoimService implements MoimService {
                 .memberId(MEMBER_ID.longValue())
                 .memberName("kim")
                 .joinedDate(LocalDateTime.of(2024, 3, 5, 15, 30, 45))
+                .profileImageUrl(PROFILE_IMAGE_URL.value())
                 .build();
         MoimMemberResponse m2 = MoimMemberResponse.builder()
                 .isHost(false)
                 .memberId(MEMBER_ID.longValue() + 1L)
                 .memberName("yang")
                 .joinedDate(LocalDateTime.of(2024, 4, 5, 15, 30, 45))
+                .profileImageUrl(PROFILE_IMAGE_URL.value())
                 .build();
         MoimMemberResponse m3 = MoimMemberResponse.builder()
                 .isHost(true)
                 .memberId(MEMBER_ID.longValue() + 2L)
                 .memberName("jung")
                 .joinedDate(LocalDateTime.of(2024, 5, 5, 15, 30, 45))
+                .profileImageUrl(PROFILE_IMAGE_URL.value())
                 .build();
 
         List<MoimMemberResponse> moimMemberResponses = List.of(m1,m2,m3);
@@ -101,5 +104,10 @@ public class FakeMoimService implements MoimService {
         if (moimId == moimHostId) {
             throw new ForbiddenException(MOIM_HOST_ERROR.message());
         }
+    }
+
+    @Override
+    public void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest) {
+
     }
 }
