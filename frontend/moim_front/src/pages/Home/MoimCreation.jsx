@@ -78,7 +78,11 @@ function InputField({ label, placeholder, setTitle, setContents }) {
   const onChange = (e) => {
     if (label === "모임명") {
       setTitle(e.target.value);
-    } else if (label === "상세 설명") setContents(e.target.value);
+      console.log(e.target.value);
+    } else if (label === "상세 설명") {
+      setContents(e.target.value);
+      console.log(e.target.value);
+    }
   };
   return (
     <>
@@ -86,7 +90,7 @@ function InputField({ label, placeholder, setTitle, setContents }) {
         {label}
       </div>
       <div className="justify-center px-4 py-2.5 mt-2 text-sm font-Pretendard_Medium leading-7 rounded-xl bg-neutral-50 text-black max-md:max-w-full">
-        <input
+        <textarea
           type="text"
           className={`w-full bg-transparent outline-none`}
           placeholder={placeholder}
