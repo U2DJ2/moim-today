@@ -13,9 +13,6 @@ import moim_today.persistence.repository.member.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
-import static moim_today.global.constant.NumberConstant.ONE_DAYS_IN_SECONDS;
-import static moim_today.global.constant.NumberConstant.THIRTY_DAYS_IN_SECONDS;
 import static moim_today.global.constant.exception.MemberExceptionConstant.EMAIL_PASSWORD_ERROR;
 
 @Implement
@@ -54,6 +51,7 @@ public class AuthManager {
         }
     }
 
+    @Transactional
     public void signUp(final MemberRegisterRequest memberRegisterRequest, final HttpServletRequest request) {
         String encodedPassword = passwordEncode(memberRegisterRequest.password());
         MemberJpaEntity saveMember = memberRepository.save(memberRegisterRequest.toEntity(encodedPassword));
