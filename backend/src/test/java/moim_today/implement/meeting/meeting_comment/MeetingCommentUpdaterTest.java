@@ -80,8 +80,8 @@ class MeetingCommentUpdaterTest extends ImplementTest {
                 .meetingId(meetingId2)
                 .build();
 
-        MeetingCommentJpaEntity savedMeetingComment1 = meetingCommentRepository.save(meetingCommentJpaEntity1);
-        MeetingCommentJpaEntity savedMeetingComment2 = meetingCommentRepository.save(meetingCommentJpaEntity2);
+        meetingCommentRepository.save(meetingCommentJpaEntity1);
+        meetingCommentRepository.save(meetingCommentJpaEntity2);
         MeetingCommentJpaEntity savedMeetingComment3 = meetingCommentRepository.save(meetingCommentJpaEntity3);
         MeetingCommentJpaEntity savedMeetingComment4 = meetingCommentRepository.save(meetingCommentJpaEntity4);
 
@@ -91,13 +91,12 @@ class MeetingCommentUpdaterTest extends ImplementTest {
         meetingCommentUpdater.updateDeletedMembers(forcedOutMemberId, meetingIds);
 
         // then
-        assertThat(meetingCommentRepository
-                .findById(savedMeetingComment3.getId())
-                .getMemberId())
-                .isEqualTo(stillInMemberId1);
-        assertThat(meetingCommentRepository
-                .findById(savedMeetingComment4.getId())
-                .getMemberId())
-                .isEqualTo(stillInMemberId2);
+        long findMeetingCommentId1 = meetingCommentRepository.findById(savedMeetingComment3.getId())
+                .getMemberId();
+        assertThat(findMeetingCommentId1).isEqualTo(stillInMemberId1);
+
+        long findMeetingCommentId2 = meetingCommentRepository.findById(savedMeetingComment4.getId())
+                .getMemberId();
+        assertThat(findMeetingCommentId2).isEqualTo(stillInMemberId2);
     }
 }

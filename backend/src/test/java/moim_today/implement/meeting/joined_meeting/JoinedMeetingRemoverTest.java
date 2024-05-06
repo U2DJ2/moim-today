@@ -131,13 +131,16 @@ class JoinedMeetingRemoverTest extends ImplementTest {
         joinedMeetingRemover.deleteAllByMemberInMeeting(forcedOutMemberId, meetingIds);
 
         // then
-        assertThat(joinedMeetingRepository.findById(stillMeeting1.getId()).getMeetingId())
-                .isEqualTo(stillMeeting1.getMeetingId());
-        assertThat(joinedMeetingRepository.findById(stillMeeting2.getId()).getMeetingId())
-                .isEqualTo(stillMeeting2.getMeetingId());
-        assertThat(joinedMeetingRepository.findById(stillMeeting1.getId()).getMemberId())
-                .isEqualTo(stillInMemberId);
-        assertThat(joinedMeetingRepository.findById(stillMeeting2.getId()).getMemberId())
-                .isEqualTo(stillInMemberId);
+        long findMeetingId1 = joinedMeetingRepository.findById(stillMeeting1.getId()).getMeetingId();
+        assertThat(findMeetingId1).isEqualTo(stillMeeting1.getMeetingId());
+
+        long findMeetingId2 = joinedMeetingRepository.findById(stillMeeting1.getId()).getMeetingId();
+        assertThat(findMeetingId2).isEqualTo(stillMeeting2.getMeetingId());
+
+        long findMeetingId3 = joinedMeetingRepository.findById(stillMeeting1.getId()).getMeetingId();
+        assertThat(findMeetingId3).isEqualTo(stillInMemberId);
+
+        long findMeetingId4 = joinedMeetingRepository.findById(stillMeeting1.getId()).getMeetingId();
+        assertThat(findMeetingId4).isEqualTo(stillInMemberId);
     }
 }

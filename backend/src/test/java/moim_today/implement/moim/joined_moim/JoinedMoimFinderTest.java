@@ -1,10 +1,8 @@
 package moim_today.implement.moim.joined_moim;
 
-import moim_today.implement.moim.moim.MoimAppender;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
-import moim_today.util.ImplementTest;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
-import org.assertj.core.api.Assertions;
+import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,9 @@ import java.util.List;
 
 import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_IS_EMPTY;
 import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_NOT_FOUNT;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.*;
 
 class JoinedMoimFinderTest extends ImplementTest {
 
@@ -47,7 +46,7 @@ class JoinedMoimFinderTest extends ImplementTest {
         List<JoinedMoimJpaEntity> membersByMoimId = joinedMoimFinder.findByMoimId(savedMoim.getId());
 
         // then
-        Assertions.assertThat(membersByMoimId.size()).isEqualTo(MOIM_MEMBER_SIZE);
+        assertThat(membersByMoimId.size()).isEqualTo(MOIM_MEMBER_SIZE);
     }
 
     @DisplayName("모임의 멤버를 조회할 때 아무도 없으면 에러를 발생시킨다")
