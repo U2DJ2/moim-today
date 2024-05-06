@@ -1,7 +1,7 @@
 package moim_today.presentation.university;
 
 import moim_today.application.university.UniversityService;
-import moim_today.dto.university.UniversityDetailResponse;
+import moim_today.dto.university.UniversityResponse;
 import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +26,7 @@ public class UniversityController {
     }
 
     @GetMapping
-    public CollectionResponse<List<UniversityDetailResponse>> getUniversity(){
+    public CollectionResponse<List<UniversityResponse>> getUniversity(){
         return CollectionResponse.of(universityService.getUniversities());
     }
 }

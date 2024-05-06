@@ -1,6 +1,6 @@
 package moim_today.implement.department;
 
-import moim_today.dto.department.DepartmentDetailResponse;
+import moim_today.dto.department.DepartmentResponse;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
 import moim_today.util.ImplementTest;
@@ -62,7 +62,7 @@ class DepartmentFinderTest extends ImplementTest {
         DepartmentJpaEntity saveDepart = departmentRepository.save(departmentJpaEntity);
 
         // when
-        List<DepartmentDetailResponse> allDepartmentByUniversityName = departmentFinder.getAllDepartmentByUniversityName(UNIV_NAME);
+        List<DepartmentResponse> allDepartmentByUniversityName = departmentFinder.getAllDepartmentByUniversityName(UNIV_NAME);
 
         // then
         assertThat(allDepartmentByUniversityName.size()).isEqualTo(1);
@@ -85,7 +85,7 @@ class DepartmentFinderTest extends ImplementTest {
         DepartmentJpaEntity saveDepart = departmentRepository.save(departmentJpaEntity);
 
         // when
-        List<DepartmentDetailResponse> allDepartmentByUniversityId = departmentFinder.getAllDepartmentById(saveUniv.getId());
+        List<DepartmentResponse> allDepartmentByUniversityId = departmentFinder.getAllDepartmentById(saveUniv.getId());
 
         // then
         assertThat(allDepartmentByUniversityId.size()).isEqualTo(1);

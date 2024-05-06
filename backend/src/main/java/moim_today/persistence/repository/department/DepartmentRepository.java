@@ -1,6 +1,6 @@
 package moim_today.persistence.repository.department;
 
-import moim_today.dto.department.DepartmentDetailResponse;
+import moim_today.dto.department.DepartmentResponse;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
 
 import java.util.List;
@@ -11,7 +11,7 @@ public interface DepartmentRepository {
 
     DepartmentJpaEntity getById(final long departmentId);
 
-    List<DepartmentDetailResponse> findAllDepartmentOfUniversity(final long universityId);
+    List<DepartmentResponse> findAllDepartmentOfUniversity(final long universityId);
 
     void batchUpdate(List<DepartmentJpaEntity> departmentJpaEntities);
 }

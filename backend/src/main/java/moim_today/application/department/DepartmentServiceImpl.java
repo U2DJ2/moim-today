@@ -1,6 +1,6 @@
 package moim_today.application.department;
 
-import moim_today.dto.department.DepartmentDetailResponse;
+import moim_today.dto.department.DepartmentResponse;
 import moim_today.implement.department.DepartmentAppender;
 import moim_today.implement.department.DepartmentFinder;
 import org.springframework.stereotype.Service;
@@ -24,12 +24,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<DepartmentDetailResponse> getAllDepartmentByUniversityName(final String universityName) {
+    public List<DepartmentResponse> getAllDepartmentByUniversityName(final String universityName) {
         return departmentFinder.getAllDepartmentByUniversityName(universityName);
     }
 
     @Override
-    public List<DepartmentDetailResponse> getAllDepartmentById(final long universityId) {
+    public List<DepartmentResponse> getAllDepartmentById(final long universityId) {
         return departmentFinder.getAllDepartmentById(universityId);
     }
 }

@@ -1,6 +1,6 @@
 package moim_today.application.university;
 
-import moim_today.dto.university.UniversityDetailResponse;
+import moim_today.dto.university.UniversityResponse;
 
 import java.util.List;
 
@@ -8,5 +8,5 @@ public interface UniversityService {
 
     void fetchAllUniversity();
 
-    List<UniversityDetailResponse> getUniversities();
+    List<UniversityResponse> getUniversities();
 }
