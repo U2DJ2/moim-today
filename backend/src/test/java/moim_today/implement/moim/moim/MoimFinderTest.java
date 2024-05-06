@@ -2,6 +2,7 @@ package moim_today.implement.moim.moim;
 
 import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.dto.moim.moim.MoimDateResponse;
+import moim_today.dto.moim.moim.MoimSimpleResponse;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
@@ -194,6 +195,31 @@ class MoimFinderTest extends ImplementTest {
         // then
         assertThat(moimDateResponse.startDate()).isEqualTo(LocalDate.of(2024, 3, 4));
         assertThat(moimDateResponse.endDate()).isEqualTo(LocalDate.of(2024, 6, 30));
+    }
+
+    @DisplayName("모임 리스트를 최신 생성 순으로 가져온다.")
+    @Test
+    void findAllMoimOrderByCreatedAt() {
+        // given
+        MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .title(FIRST_CREATED_MOIM_TITLE.value())
+                .build();
+
+        moimRepository.save(firstCreatedMoimJpaEntity);
+
+        MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .title(FIRST_CREATED_MOIM_TITLE.value())
+                .build();
+
+        moimRepository.save(secondCreatedMoimJpaEntity);
+
+        // when
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllOrderByCreatedAt();
+
+        // then
+        assertThat(moimSimpleResponses.size()).isEqualTo(2);
+        assertThat(moimSimpleResponses.get(0).title()).isEqualTo(FIRST_CREATED_MOIM_TITLE.value());
+        assertThat(moimSimpleResponses.get(1).title()).isEqualTo(SECOND_CREATED_MOIM_TITLE.value());
     }
 
     @DisplayName("모임에 여석이 있는지 검사하고, 꽉 차면 에러를 발생시킨다.")

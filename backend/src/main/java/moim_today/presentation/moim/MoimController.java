@@ -32,14 +32,18 @@ public class MoimController {
     }
 
     @PostMapping("/image")
-    public MoimImageResponse uploadMoimImage(@Login final MemberSession memberSession,
-                                             @RequestPart final MultipartFile file) {
+    public MoimImageResponse uploadMoimImage(@RequestPart final MultipartFile file) {
         return moimService.uploadMoimImage(file);
     }
 
     @GetMapping("/detail")
     public MoimDetailResponse getMoimDetail(@RequestParam final long moimId) {
         return moimService.getMoimDetail(moimId);
+    }
+
+    @GetMapping("/simple")
+    public CollectionResponse<List<MoimSimpleResponse>> findAllMoimResponseOrderByCreatedAt() {
+        return CollectionResponse.of(moimService.findAllMoimResponseOrderByCreatedAt());
     }
 
     @PatchMapping
@@ -50,7 +54,7 @@ public class MoimController {
 
     @GetMapping("/members/{moimId}")
     public MoimMemberTabResponse findMoimMembers(@Login final MemberSession memberSession,
-                                               @PathVariable final long moimId){
+                                                 @PathVariable final long moimId){
         return moimService.findMoimMembers(memberSession.id(), moimId);
     }
 
@@ -74,7 +78,7 @@ public class MoimController {
 
     @DeleteMapping("/members")
     public void deleteMember(@Login final MemberSession memberSession,
-                             @RequestBody final MoimMemberDeleteRequest moimMemberDeleteRequest){
+                             @RequestBody final MoimMemberDeleteRequest moimMemberDeleteRequest) {
         moimService.deleteMember(memberSession.id(), moimMemberDeleteRequest);
     }
 

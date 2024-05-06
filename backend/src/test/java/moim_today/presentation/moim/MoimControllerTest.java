@@ -12,6 +12,7 @@ import moim_today.dto.moim.moim_notice.MoimNoticeUpdateRequest;
 import moim_today.fake_class.moim.FakeMoimNoticeService;
 import moim_today.fake_class.moim.FakeMoimService;
 import moim_today.util.ControllerTest;
+import moim_today.util.EnumDocsUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -137,6 +138,31 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("views").type(NUMBER).description("조회수"),
                                         fieldWithPath("startDate").type(STRING).description("시작 일자"),
                                         fieldWithPath("endDate").type(STRING).description("종료 일자")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임리스트를 최신 생성 기준으로 조회한다.")
+    @Test
+    void findAllMoimSimpleResponseTest() throws Exception {
+
+        mockMvc.perform(get("/api/moims/simple"))
+                .andExpect(status().isOk())
+                .andDo(document("모임 리스트 조회 성공 - 최신 생성 순",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("모임 리스트 조회 - 최신 생성 순")
+                                .responseFields(
+                                        fieldWithPath("data[0].moimId").type(NUMBER).description("모임 Id"),
+                                        fieldWithPath("data[0].title").type(STRING).description("모임명"),
+                                        fieldWithPath("data[0].capacity").type(NUMBER).description("모집 인원"),
+                                        fieldWithPath("data[0].currentCount").type(NUMBER).description("현재 인원"),
+                                        fieldWithPath("data[0].imageUrl").type(STRING).description("모임 사진 URL"),
+                                        fieldWithPath("data[0].moimCategory").type(VARIES).description(String.format("카테고리 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
+                                        fieldWithPath("data[0].displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
+                                                EnumDocsUtils.getEnumNames(DisplayStatus.class)))
                                 )
                                 .build()
                         )));

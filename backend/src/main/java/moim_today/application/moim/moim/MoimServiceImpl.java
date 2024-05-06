@@ -146,4 +146,9 @@ public class MoimServiceImpl implements MoimService{
 
         moimManager.appendMemberToMoim(requestMemberId, enterMoimId);
     }
+
+    @Override
+    public List<MoimSimpleResponse> findAllMoimResponseOrderByCreatedAt() {
+        return moimFinder.findAllOrderByCreatedAt();
+    }
 }

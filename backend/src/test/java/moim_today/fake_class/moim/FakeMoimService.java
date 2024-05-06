@@ -124,4 +124,29 @@ public class FakeMoimService implements MoimService {
             throw new BadRequestException(MOIM_CAPACITY_ERROR.message());
         }
     }
+
+    @Override
+    public List<MoimSimpleResponse> findAllMoimResponseOrderByCreatedAt() {
+        MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
+                .moimId(1L)
+                .title(TITLE.value())
+                .capacity(CAPACITY.intValue())
+                .currentCount(CURRENT_COUNT.intValue())
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PUBLIC)
+                .build();
+
+        MoimSimpleResponse moimSimpleResponse2 = MoimSimpleResponse.builder()
+                .moimId(2L)
+                .title(TITLE.value())
+                .capacity(CAPACITY.intValue())
+                .currentCount(CURRENT_COUNT.intValue())
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PUBLIC)
+                .build();
+
+        return List.of(moimSimpleResponse1, moimSimpleResponse2);
+    }
 }

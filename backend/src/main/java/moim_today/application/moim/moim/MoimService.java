@@ -7,6 +7,8 @@ import moim_today.dto.moim.moim.MoimImageResponse;
 import moim_today.dto.moim.moim.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public interface MoimService {
 
     void createMoim(final long memberId, final long universityId,
@@ -27,4 +29,6 @@ public interface MoimService {
     void deleteMember(final long memberId, final MoimMemberDeleteRequest moimMemberDeleteRequest);
 
     void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest);
+
+    List<MoimSimpleResponse> findAllMoimResponseOrderByCreatedAt();
 }
