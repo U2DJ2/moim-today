@@ -1,7 +1,20 @@
 import people from "../../../assets/svg/personIcon.svg";
-function CardContainer({ image, category, title, capacity, currentCount }) {
+import { useNavigate } from "react-router";
+function CardContainer({
+  image,
+  category,
+  title,
+  capacity,
+  currentCount,
+  moimId,
+}) {
+  const navigate = useNavigate();
+
   return (
-    <div className="card-container hover:cursor-pointer">
+    <div
+      className="card-container hover:cursor-pointer"
+      onClick={() => navigate(`/detailed/${moimId}`)}
+    >
       <img
         src={image}
         alt="cardContainer"

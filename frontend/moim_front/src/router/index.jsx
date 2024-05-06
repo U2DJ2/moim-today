@@ -13,6 +13,9 @@ import Manage from "../pages/Manage/Manage";
 import RegisterPage from "../pages/RegisterPage";
 import Schedule from "../pages/Schedule";
 
+// Page : Moim Detail Page
+import MoimDetailPage from "../pages/MoimDetailPage";
+
 // Components
 import Calendar from "../components/Calendar";
 import TimeTable from "../pages/RegisterPage/TimeTable";
@@ -31,6 +34,7 @@ function Router() {
       <Route path="/manage" element={<Manage />} />
       <Route path="/calendar" element={<Calendar />} />
       <Route path="/schedule" element={<Schedule />} />
+      <Route path="/detailed/:MoimId" element={<MoimDetailPage />} />
     </Routes>
   );
 }

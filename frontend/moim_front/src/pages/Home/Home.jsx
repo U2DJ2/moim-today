@@ -115,6 +115,7 @@ function Home() {
           title={"{GatheringTitle}"}
           capacity={12}
           currentCount={4}
+          moimId={1}
         />
         <CardContainer
           image={cardImage}
@@ -122,6 +123,7 @@ function Home() {
           title={"{GatheringTitle}"}
           capacity={12}
           currentCount={4}
+          moimId={2}
         />
         <CardContainer
           image={cardImage}
