@@ -49,7 +49,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<Long> memberIds = joinedMoimFinder.findAllJoinedMemberId(moimId);
         List<MoimScheduleResponse> moimScheduleResponses = scheduleFinder.findAllInMoimByWeekly(memberIds, startDate);
 
-        return AvailableTime.calculateAvailableTimes(moimScheduleResponses);
+        List<AvailableTime> availableTimes = AvailableTime.calculateAvailableTimes(moimScheduleResponses);
+
+        return null;
     }
 
     @Override
