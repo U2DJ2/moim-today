@@ -40,9 +40,21 @@ public class MoimController {
         moimService.updateMoim(memberSession.id(), moimUpdateRequest);
     }
 
+    @GetMapping("/members")
+    public MoimMemberTabResponse findMoimMembers(@Login final MemberSession memberSession,
+                                               @RequestParam final long moimId){
+        return moimService.findMoimMembers(memberSession.id(), moimId);
+    }
+
     @DeleteMapping
     public void deleteMoim(@Login final MemberSession memberSession,
                            @RequestBody final MoimDeleteRequest moimDeleteRequest) {
         moimService.deleteMoim(memberSession.id(), moimDeleteRequest.moimId());
+    }
+
+    @DeleteMapping("/members")
+    public void deleteMember(@Login final MemberSession memberSession,
+                             @RequestBody final MoimMemberDeleteRequest moimMemberDeleteRequest){
+        moimService.deleteMember(memberSession.id(), moimMemberDeleteRequest);
     }
 }

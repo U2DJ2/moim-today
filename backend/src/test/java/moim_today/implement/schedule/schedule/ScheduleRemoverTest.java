@@ -14,6 +14,7 @@ import java.util.List;
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCHEDULE_FORBIDDEN;
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCHEDULE_NOT_FOUND;
 import static moim_today.util.TestConstant.MEETING_ID;
+import static moim_today.util.TestConstant.MEMBER_ID;
 import static org.assertj.core.api.Assertions.*;
 
 class ScheduleRemoverTest extends ImplementTest {
@@ -102,5 +103,94 @@ class ScheduleRemoverTest extends ImplementTest {
 
         //then
         assertThat(scheduleRepository.count()).isEqualTo(1L);
+    }
+
+    @DisplayName("한 멤버의 미팅에 참여하는 기록들을 삭제한다")
+    @Test
+    void deleteAllByMemberInMeeting() {
+        // given
+        long meetingId1 = MEETING_ID.longValue();
+        long meetingId2 = MEETING_ID.longValue() + 1L;
+        long meetingId3 = MEETING_ID.longValue() + 2L;
+
+        long forcedOutMemberId = MEMBER_ID.longValue() + 1L;
+
+        ScheduleJpaEntity scheduleJpaEntity1 = ScheduleJpaEntity.builder()
+                .memberId(forcedOutMemberId)
+                .meetingId(meetingId1)
+                .build();
+
+        ScheduleJpaEntity scheduleJpaEntity2 = ScheduleJpaEntity.builder()
+                .memberId(forcedOutMemberId)
+                .meetingId(meetingId2)
+                .build();
+
+        ScheduleJpaEntity scheduleJpaEntity3 = ScheduleJpaEntity.builder()
+                .memberId(forcedOutMemberId)
+                .meetingId(meetingId3)
+                .build();
+
+        ScheduleJpaEntity savedSchedule = scheduleRepository.save(scheduleJpaEntity1);
+        scheduleRepository.save(scheduleJpaEntity2);
+        scheduleRepository.save(scheduleJpaEntity3);
+
+        List<Long> meetings = List.of(meetingId1, meetingId2, meetingId3);
+
+        // when
+        scheduleRepository.deleteAllByMemberInMeeting(forcedOutMemberId, meetings);
+
+        // then
+        assertThat(scheduleRepository.count()).isEqualTo(0L);
+        assertThatThrownBy(() -> scheduleRepository.getById(savedSchedule.getId()))
+                .hasMessage(SCHEDULE_NOT_FOUND.message());
+    }
+
+    @DisplayName("한 사람의 미팅 스케쥴들을 삭제할 때, 다른 미팅의 스케쥴과 다른 사람의 미팅 스케쥴은 삭제하지 않는다")
+    @Test
+    void deleteOnlySpecifiedMemberOfMeetingSchedule(){
+        // given
+        long meetingId1 = MEETING_ID.longValue();
+        long meetingId2 = MEETING_ID.longValue() + 1L;
+        long meetingId3 = MEETING_ID.longValue() + 3L;
+
+        long forcedOutMemberId = MEMBER_ID.longValue();
+        long stillInMemberId = MEMBER_ID.longValue() + 1L;
+
+        ScheduleJpaEntity scheduleJpaEntity1 = ScheduleJpaEntity.builder()
+                .memberId(forcedOutMemberId)
+                .meetingId(meetingId1)
+                .build();
+
+        ScheduleJpaEntity scheduleJpaEntity2 = ScheduleJpaEntity.builder()
+                .memberId(forcedOutMemberId)
+                .meetingId(meetingId2)
+                .build();
+
+        ScheduleJpaEntity scheduleJpaEntity3 = ScheduleJpaEntity.builder()
+                .memberId(forcedOutMemberId)
+                .meetingId(meetingId3)
+                .build();
+
+        ScheduleJpaEntity scheduleJpaEntity4 = ScheduleJpaEntity.builder()
+                .memberId(stillInMemberId)
+                .meetingId(meetingId1)
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity1);
+        scheduleRepository.save(scheduleJpaEntity2);
+        ScheduleJpaEntity savedSchedule1 = scheduleRepository.save(scheduleJpaEntity3);
+        ScheduleJpaEntity savedSchedule2 = scheduleRepository.save(scheduleJpaEntity4);
+
+        List<Long> meetings = List.of(meetingId1, meetingId2);
+
+        // when
+        scheduleRepository.deleteAllByMemberInMeeting(forcedOutMemberId, meetings);
+
+        // then
+        assertThat(scheduleRepository.count()).isEqualTo(2L);
+        assertThatCode(() -> scheduleRepository.getById(savedSchedule1.getId()))
+                .doesNotThrowAnyException();
+        assertThatCode(() -> scheduleRepository.getById(savedSchedule2.getId()))
+                .doesNotThrowAnyException();
     }
 }

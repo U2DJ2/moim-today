@@ -1,6 +1,7 @@
 package moim_today.fake_class.schedule;
 
 import moim_today.application.schedule.ScheduleService;
+import moim_today.domain.schedule.enums.ColorHex;
 import moim_today.dto.schedule.ScheduleCreateRequest;
 import moim_today.dto.schedule.ScheduleResponse;
 import moim_today.dto.schedule.ScheduleUpdateRequest;
@@ -25,6 +26,7 @@ public class FakeScheduleService implements ScheduleService {
                 .meetingId(0L)
                 .scheduleName("스케줄명 1")
                 .dayOfWeek(DayOfWeek.MONDAY)
+                .colorHex(ColorHex.getHexByCount(0).value())
                 .startDateTime(LocalDateTime.of(2024, 03, 04, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 03, 04, 12, 0, 0))
                 .build();
@@ -34,6 +36,7 @@ public class FakeScheduleService implements ScheduleService {
                 .meetingId(0L)
                 .scheduleName("스케줄명 2")
                 .dayOfWeek(DayOfWeek.TUESDAY)
+                .colorHex(ColorHex.getHexByCount(1).value())
                 .startDateTime(LocalDateTime.of(2024, 03, 05, 12, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 03, 05, 13, 15, 0))
                 .build();
@@ -43,6 +46,7 @@ public class FakeScheduleService implements ScheduleService {
                 .meetingId(1L)
                 .scheduleName("스케줄명 3")
                 .dayOfWeek(DayOfWeek.WEDNESDAY)
+                .colorHex(ColorHex.getHexByCount(3).value())
                 .startDateTime(LocalDateTime.of(2024, 03, 06, 12, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 03, 06, 13, 15, 0))
                 .build();
@@ -57,6 +61,7 @@ public class FakeScheduleService implements ScheduleService {
                 .meetingId(0L)
                 .scheduleName("스케줄명 1")
                 .dayOfWeek(DayOfWeek.MONDAY)
+                .colorHex(ColorHex.getHexByCount(0).value())
                 .startDateTime(LocalDateTime.of(2024, 03, 04, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 03, 04, 12, 0, 0))
                 .build();
@@ -66,6 +71,7 @@ public class FakeScheduleService implements ScheduleService {
                 .meetingId(0L)
                 .scheduleName("스케줄명 2")
                 .dayOfWeek(DayOfWeek.TUESDAY)
+                .colorHex(ColorHex.getHexByCount(1).value())
                 .startDateTime(LocalDateTime.of(2024, 03, 05, 12, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 03, 05, 13, 15, 0))
                 .build();
@@ -75,6 +81,7 @@ public class FakeScheduleService implements ScheduleService {
                 .meetingId(1L)
                 .scheduleName("스케줄명 3")
                 .dayOfWeek(DayOfWeek.WEDNESDAY)
+                .colorHex(ColorHex.getHexByCount(2).value())
                 .startDateTime(LocalDateTime.of(2024, 03, 06, 12, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 03, 06, 13, 15, 0))
                 .build();

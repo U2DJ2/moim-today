@@ -17,7 +17,7 @@ public interface ScheduleRepository {
 
     List<ScheduleResponse> findAllByDateTime(final long memberId, final LocalDateTime startDateTime, final LocalDateTime endDateTime);
 
-    void save(final ScheduleJpaEntity scheduleJpaEntity);
+    ScheduleJpaEntity save(final ScheduleJpaEntity scheduleJpaEntity);
 
     void batchUpdate(final TimeTableSchedulingTask timeTableSchedulingTask);
 
@@ -30,4 +30,6 @@ public interface ScheduleRepository {
     long count();
 
     void deleteAllByMeetingIdIn(final List<Long> meetingIds);
+
+    void deleteAllByMemberInMeeting(final long memberId, final List<Long> meetingIds);
 }

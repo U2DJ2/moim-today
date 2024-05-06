@@ -33,7 +33,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/universities",
                         "/api/universities/departments/**",
                         "/api/departments/university-name",
-                        "/api/departments/university-id"
+                        "/api/departments/university-id",
+                        "/api/departments"
                 );
     }
 
@@ -45,7 +46,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("**")
+                .allowedOriginPatterns("*")
                 .allowCredentials(true)
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")

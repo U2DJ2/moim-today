@@ -6,6 +6,7 @@ import moim_today.persistence.repository.certification.password.PasswordCertific
 import moim_today.persistence.repository.department.DepartmentRepository;
 import moim_today.persistence.repository.meeting.joined_meeting.JoinedMeetingRepository;
 import moim_today.persistence.repository.meeting.meeting.MeetingRepository;
+import moim_today.persistence.repository.meeting.meeting_comment.MeetingCommentRepository;
 import moim_today.persistence.repository.member.MemberRepository;
 import moim_today.persistence.repository.moim.joined_moim.JoinedMoimRepository;
 import moim_today.persistence.repository.moim.moim.MoimRepository;
@@ -43,6 +44,9 @@ public abstract class ImplementTest {
     protected DepartmentRepository departmentRepository;
 
     @Autowired
+    protected JoinedMoimRepository joinedMoimRepository;
+
+    @Autowired
     protected MoimRepository moimRepository;
 
     @Autowired
@@ -50,9 +54,6 @@ public abstract class ImplementTest {
 
     @Autowired
     protected ScheduleColorRepository scheduleColorRepository;
-
-    @Autowired
-    protected JoinedMoimRepository joinedMoimRepository;
 
     @Autowired
     protected JoinedMeetingRepository joinedMeetingRepository;
@@ -65,6 +66,9 @@ public abstract class ImplementTest {
 
     @Autowired
     protected PasswordEncoder passwordEncoder;
+
+    @Autowired
+    protected MeetingCommentRepository meetingCommentRepository;
 
     @BeforeEach
     void setUpDatabase() {

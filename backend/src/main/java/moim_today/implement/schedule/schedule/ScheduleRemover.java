@@ -29,4 +29,11 @@ public class ScheduleRemover {
             scheduleRepository.deleteAllByMeetingIdIn(meetingIds);
         }
     }
+
+    @Transactional
+    public void deleteAllByMemberInMeeting(final long memberId, final List<Long> meetingIds) {
+        if(!meetingIds.isEmpty()){
+            scheduleRepository.deleteAllByMemberInMeeting(memberId, meetingIds);
+        }
+    }
 }
