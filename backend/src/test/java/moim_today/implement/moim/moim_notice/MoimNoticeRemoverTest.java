@@ -1,6 +1,5 @@
 package moim_today.implement.moim.moim_notice;
 
-import moim_today.dto.moim.moim_notice.MoimNoticeDeleteRequest;
 import moim_today.global.error.ForbiddenException;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.entity.moim.moim_notice.MoimNoticeJpaEntity;
@@ -40,11 +39,8 @@ class MoimNoticeRemoverTest extends ImplementTest {
         moimNoticeRepository.save(noticeJpaEntity);
         long noticeId = noticeJpaEntity.getId();
 
-        //given
-        MoimNoticeDeleteRequest deleteRequest = new MoimNoticeDeleteRequest(noticeId);
-
         //when
-        assertThatCode(() -> moimNoticeRemover.deleteMoimNotice(memberId, deleteRequest))
+        assertThatCode(() -> moimNoticeRemover.deleteMoimNotice(memberId, moimId, noticeId))
                 .doesNotThrowAnyException();
 
         //then
@@ -73,11 +69,8 @@ class MoimNoticeRemoverTest extends ImplementTest {
         moimNoticeRepository.save(noticeJpaEntity);
         long noticeId = noticeJpaEntity.getId();
 
-        //given
-        MoimNoticeDeleteRequest deleteRequest = new MoimNoticeDeleteRequest(noticeId);
-
         //expected
-        assertThatCode(() -> moimNoticeRemover.deleteMoimNotice(forbiddenMemberId, deleteRequest))
+        assertThatCode(() -> moimNoticeRemover.deleteMoimNotice(forbiddenMemberId, moimId, noticeId))
                 .isInstanceOf(ForbiddenException.class)
                 .hasMessage(ORGANIZER_FORBIDDEN_ERROR.message());
     }

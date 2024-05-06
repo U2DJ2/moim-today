@@ -2,7 +2,6 @@ package moim_today.implement.moim.moim_notice;
 
 import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
 import moim_today.global.error.NotFoundException;
-import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim_notice.MoimNoticeJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;
@@ -26,14 +25,6 @@ class MoimNoticeFinderTest extends ImplementTest {
     void findAllMoimNoticeTest() {
         //given
         long moimId = MOIM_ID.longValue();
-        long memberId = MEMBER_ID.longValue();
-
-        JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
-                .moimId(moimId)
-                .memberId(memberId)
-                .build();
-
-        joinedMoimRepository.save(joinedMoimJpaEntity);
 
         //given
         MoimNoticeJpaEntity moimNoticeJpaEntity1 = MoimNoticeJpaEntity
@@ -52,7 +43,7 @@ class MoimNoticeFinderTest extends ImplementTest {
 
         //when
         List<MoimNoticeSimpleResponse> moimNoticeResponses = moimNoticeFinder
-                .findAllMoimNotice(memberId, moimId);
+                .findAllMoimNotice(moimId);
 
         //then
         assertThat(moimNoticeResponses.size()).isEqualTo(2);
@@ -63,14 +54,6 @@ class MoimNoticeFinderTest extends ImplementTest {
     void getMoimNoticeTest() {
         //given
         long moimId = MOIM_ID.longValue();
-        long memberId = MEMBER_ID.longValue();
-
-        JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
-                .moimId(moimId)
-                .memberId(memberId)
-                .build();
-
-        joinedMoimRepository.save(joinedMoimJpaEntity);
 
         //given
         MoimNoticeJpaEntity moimNoticeJpaEntity = MoimNoticeJpaEntity
@@ -83,7 +66,7 @@ class MoimNoticeFinderTest extends ImplementTest {
         long noticeId = moimNoticeJpaEntity.getId();
 
         //when
-        MoimNoticeJpaEntity findEntity = moimNoticeFinder.getById(memberId, noticeId);
+        MoimNoticeJpaEntity findEntity = moimNoticeFinder.getById(noticeId);
 
         //then
         assertThat(findEntity.getTitle()).isEqualTo(NOTICE_TITLE.value());
@@ -93,18 +76,10 @@ class MoimNoticeFinderTest extends ImplementTest {
     @Test
     void getMoimNoticeNotFoundTest() {
         //given
-        long moimId = MOIM_ID.longValue();
-        long memberId = MEMBER_ID.longValue();
-
-        JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
-                .moimId(moimId)
-                .memberId(memberId)
-                .build();
-
-        joinedMoimRepository.save(joinedMoimJpaEntity);
+        long notFoundNoticeId = NOT_FOUND_NOTICE_ID.longValue();
 
         //expected
-        assertThatThrownBy(() -> moimNoticeFinder.getById(memberId, NOTICE_ID.longValue()))
+        assertThatThrownBy(() -> moimNoticeFinder.getById(notFoundNoticeId))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(NOTICE_NOT_FOUND_ERROR.message());
     }

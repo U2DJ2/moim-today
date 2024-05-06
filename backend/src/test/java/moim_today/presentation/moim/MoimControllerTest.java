@@ -330,8 +330,8 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("contents").type(STRING).description("공지 내용")
                                 )
                                 .responseFields(
-                                        fieldWithPath("statusCode").type(STRING).description(FORBIDDEN.statusCode()),
-                                        fieldWithPath("message").type(STRING).description(MOIM_FORBIDDEN_ERROR.message())
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
                                 )
                                 .build()
                         )));
@@ -375,8 +375,8 @@ class MoimControllerTest extends ControllerTest {
                                         parameterWithName("moimId").description("접근 권한이 없는 모임 Id")
                                 )
                                 .responseFields(
-                                        fieldWithPath("statusCode").type(STRING).description(FORBIDDEN.statusCode()),
-                                        fieldWithPath("message").type(STRING).description(MOIM_FORBIDDEN_ERROR.message())
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
                                 )
                                 .build()
                         )));
@@ -422,8 +422,8 @@ class MoimControllerTest extends ControllerTest {
                                         parameterWithName("moimNoticeId").description("접근 권한이 없는 공지 Id")
                                 )
                                 .responseFields(
-                                        fieldWithPath("statusCode").type(STRING).description(FORBIDDEN.statusCode()),
-                                        fieldWithPath("message").type(STRING).description(MOIM_FORBIDDEN_ERROR.message())
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
                                 )
                                 .build()
                         )));
@@ -478,8 +478,8 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("contents").type(STRING).description("수정할 공지 내용")
                                 )
                                 .responseFields(
-                                        fieldWithPath("statusCode").type(STRING).description(FORBIDDEN.statusCode()),
-                                        fieldWithPath("message").type(STRING).description(ORGANIZER_FORBIDDEN_ERROR.message())
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
                                 )
                                 .build()
                         )));
@@ -522,8 +522,8 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("moimNoticeId").type(NUMBER).description("삭제할 공지 Id")
                                 )
                                 .responseFields(
-                                        fieldWithPath("statusCode").type(STRING).description(FORBIDDEN.statusCode()),
-                                        fieldWithPath("message").type(STRING).description(ORGANIZER_FORBIDDEN_ERROR.message())
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
                                 )
                                 .build()
                         )));

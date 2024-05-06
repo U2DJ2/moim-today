@@ -2,9 +2,9 @@ package moim_today.implement.moim.moim_notice;
 
 import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
 import moim_today.global.annotation.Implement;
-import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import moim_today.persistence.entity.moim.moim_notice.MoimNoticeJpaEntity;
 import moim_today.persistence.repository.moim.moim_notice.MoimNoticeRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -13,24 +13,20 @@ import java.util.List;
 public class MoimNoticeFinder {
 
     private final MoimNoticeRepository moimNoticeRepository;
-    private final JoinedMoimFinder joinedMoimFinder;
 
-    public MoimNoticeFinder(final MoimNoticeRepository moimNoticeRepository,
-                            final JoinedMoimFinder joinedMoimFinder) {
+    public MoimNoticeFinder(final MoimNoticeRepository moimNoticeRepository) {
         this.moimNoticeRepository = moimNoticeRepository;
-        this.joinedMoimFinder = joinedMoimFinder;
     }
 
+    @Cacheable(value = "moimNotices", key = "#moimId")
     @Transactional(readOnly = true)
-    public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long memberId, final long moimId) {
-        joinedMoimFinder.validateJoinedMember(memberId, moimId);
+    public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long moimId) {
         return moimNoticeRepository.findAllMoimNotice(moimId);
     }
 
+    @Cacheable(value = "moimNotice", key = "#moimNoticeId")
     @Transactional(readOnly = true)
-    public MoimNoticeJpaEntity getById(final long memberId, final long moimNoticeId) {
-        MoimNoticeJpaEntity moimNoticeJpaEntity = moimNoticeRepository.getById(moimNoticeId);
-        joinedMoimFinder.validateJoinedMember(memberId, moimNoticeJpaEntity.getMoimId());
-        return moimNoticeJpaEntity;
+    public MoimNoticeJpaEntity getById(final long moimNoticeId) {
+        return moimNoticeRepository.getById(moimNoticeId);
     }
 }

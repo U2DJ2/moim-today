@@ -50,7 +50,7 @@ class MoimNoticeUpdaterTest extends ImplementTest {
                 .build();
 
         //when
-        moimNoticeUpdater.updateMoimNotice(memberId, updateRequest);
+        moimNoticeUpdater.updateMoimNotice(memberId, moimId, updateRequest);
 
         //then
         MoimNoticeJpaEntity updateNoticeEntity = moimNoticeRepository.getById(noticeId);
@@ -88,27 +88,8 @@ class MoimNoticeUpdaterTest extends ImplementTest {
                 .build();
 
         //expected
-        assertThatThrownBy(() -> moimNoticeUpdater.updateMoimNotice(forbiddenMemberId, updateRequest))
+        assertThatThrownBy(() -> moimNoticeUpdater.updateMoimNotice(forbiddenMemberId, moimId, updateRequest))
                 .isInstanceOf(ForbiddenException.class)
                 .hasMessage(ORGANIZER_FORBIDDEN_ERROR.message());
-    }
-
-    @DisplayName("존재하지 않는 공지를 수정하려고 하면 예외가 발생한다..")
-    @Test
-    void updateMoimNoticeNotFoundTest(){
-        //given
-        long memberId = MEMBER_ID.longValue();
-
-        //given
-        MoimNoticeUpdateRequest updateRequest = MoimNoticeUpdateRequest.builder()
-                .moimNoticeId(NOTICE_ID.longValue())
-                .title(NOTICE_TITLE.value())
-                .contents(NOTICE_CONTENTS.value())
-                .build();
-
-        //expected
-        assertThatThrownBy(() -> moimNoticeUpdater.updateMoimNotice(memberId, updateRequest))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessage(NOTICE_NOT_FOUND_ERROR.message());
     }
 }
