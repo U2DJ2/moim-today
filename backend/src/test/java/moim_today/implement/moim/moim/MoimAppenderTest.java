@@ -2,7 +2,7 @@ package moim_today.implement.moim.moim;
 
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.moim.MoimAppendRequest;
+import moim_today.dto.moim.moim.MoimCreateRequest;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;
@@ -32,9 +32,9 @@ class MoimAppenderTest extends ImplementTest {
         LocalDate startDate = LocalDate.of(2024, 3, 1);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
-        MoimAppendRequest moimAppendRequest = new MoimAppendRequest(
-                TITLE.value(),
-                CONTENTS.value(),
+        MoimCreateRequest moimCreateRequest = new MoimCreateRequest(
+                MOIM_TITLE.value(),
+                MOIM_CONTENTS.value(),
                 capacity,
                 PASSWORD.value(),
                 MOIM_IMAGE_URL.value(),
@@ -48,7 +48,7 @@ class MoimAppenderTest extends ImplementTest {
         MoimJpaEntity moimJpaEntity = moimAppender.createMoim(
                 memberId,
                 universityId,
-                moimAppendRequest
+                moimCreateRequest
         );
 
         //then
@@ -56,8 +56,8 @@ class MoimAppenderTest extends ImplementTest {
         assertThat(count).isEqualTo(1);
         assertThat(moimJpaEntity.getMemberId()).isEqualTo(memberId);
         assertThat(moimJpaEntity.getUniversityId()).isEqualTo(universityId);
-        assertThat(moimJpaEntity.getTitle()).isEqualTo(TITLE.value());
-        assertThat(moimJpaEntity.getContents()).isEqualTo(CONTENTS.value());
+        assertThat(moimJpaEntity.getTitle()).isEqualTo(MOIM_TITLE.value());
+        assertThat(moimJpaEntity.getContents()).isEqualTo(MOIM_CONTENTS.value());
         assertThat(moimJpaEntity.getCapacity()).isEqualTo(capacity);
         assertThat(moimJpaEntity.getCurrentCount()).isEqualTo(DEFAULT_MOIM_CURRENT_COUNT.value());
         assertThat(moimJpaEntity.getImageUrl()).isEqualTo(MOIM_IMAGE_URL.value());

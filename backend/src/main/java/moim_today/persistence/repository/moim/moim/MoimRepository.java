@@ -16,4 +16,6 @@ public interface MoimRepository {
     MoimDateResponse findMoimDate(final long moimId);
 
     void deleteById(final long moimId);
+
+    long getMemberIdById(final long moimId);
 }

@@ -1,8 +1,6 @@
 name: Deploy Backend Application
 
 on:
-  pull_request:
-    branches: [ "main", "backend-main" ]
   workflow_dispatch:
 
 permissions:

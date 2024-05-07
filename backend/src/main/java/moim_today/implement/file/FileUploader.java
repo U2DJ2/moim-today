@@ -5,7 +5,6 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.extern.slf4j.Slf4j;
-import moim_today.dto.file.FileInfoResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.InternalServerException;

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import static moim_today.global.constant.MemberConstant.DEFAULT_PROFILE_URL;
 
 @Builder
-public record MemberRegisterRequest(
+public record MemberSignUpRequest(
         long universityId,
         long departmentId,
         @Email(message = INVALID_EMAIL_FORMAT) @NotBlank(message = NO_EMAIL) String email,
