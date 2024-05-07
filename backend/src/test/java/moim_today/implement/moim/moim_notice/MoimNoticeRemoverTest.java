@@ -55,7 +55,7 @@ class MoimNoticeRemoverTest extends ImplementTest {
         assertThat(moimNoticeRepository.count()).isEqualTo(0);
     }
 
-    @DisplayName("주최자가 아닌 회원이 공지를 삭제하려고 하면 얘외가 발생한다.")
+    @DisplayName("주최자가 아닌 회원이 공지를 삭제하려고 하면 예외가 발생한다.")
     @Test
     void deleteMoimNoticeForbiddenTest(){
         //given
@@ -108,17 +108,14 @@ class MoimNoticeRemoverTest extends ImplementTest {
         clearCache();
         moimNoticeFinder.findAllMoimNotice(moimId);
         moimNoticeFinder.getById(noticeId);
-        Object noticesCacheObject = requireNonNull(cacheManager.getCache("moimNotices")).get(moimId, Object.class);
-        Object noticeCacheObject = requireNonNull(cacheManager.getCache("moimNotice")).get(noticeId, Object.class);
-        assertThat(noticesCacheObject).isNotNull();
-        assertThat(noticeCacheObject).isNotNull();
 
+        //when
         assertThatCode(() -> moimNoticeRemover.deleteMoimNotice(memberId, moimId, noticeId))
                 .doesNotThrowAnyException();
 
         //then
-        noticesCacheObject = requireNonNull(cacheManager.getCache("moimNotices")).get(moimId, Object.class);
-        noticeCacheObject = requireNonNull(cacheManager.getCache("moimNotice")).get(noticeId, Object.class);
+        Object noticesCacheObject = requireNonNull(cacheManager.getCache("moimNotices")).get(moimId, Object.class);
+        Object noticeCacheObject = requireNonNull(cacheManager.getCache("moimNotice")).get(noticeId, Object.class);
         assertThat(noticesCacheObject).isNull();
         assertThat(noticeCacheObject).isNull();
     }

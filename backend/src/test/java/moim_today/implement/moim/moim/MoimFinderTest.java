@@ -31,7 +31,7 @@ class MoimFinderTest extends ImplementTest {
 
     private final int MOIM_MEMBER_SIZE = 3;
 
-    @DisplayName("getById로 모임을 조회하면 모임 엔티티를 반환한다.")
+    @DisplayName("모임을 조회하면 모임 엔티티를 반환한다.")
     @Test
     void getByIdTest() {
         //given

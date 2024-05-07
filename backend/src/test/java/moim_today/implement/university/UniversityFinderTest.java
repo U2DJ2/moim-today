@@ -32,7 +32,7 @@ class UniversityFinderTest extends ImplementTest {
                     .universityEmail(i+EMAIL.value())
                     .build();
             universityRepository.save(universityJpaEntity);
-            actualUnivs.add(UniversityResponse.of(universityJpaEntity));
+            actualUnivs.add(UniversityResponse.from(universityJpaEntity));
         }
 
         // when

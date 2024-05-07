@@ -25,7 +25,7 @@ public class UniversityFinder {
     public List<UniversityResponse> getAllUniversity() {
         List<UniversityJpaEntity> universityJpaEntities = universityRepository.findAll();
         return universityJpaEntities.stream()
-                .map(UniversityResponse::of)
+                .map(UniversityResponse::from)
                 .toList();
     }
 

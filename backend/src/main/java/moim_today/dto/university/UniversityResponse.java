@@ -9,7 +9,7 @@ public record UniversityResponse(
     String universityName,
     String universityEmail
 ){
-    public static UniversityResponse of(final UniversityJpaEntity universityJpaEntity){
+    public static UniversityResponse from(final UniversityJpaEntity universityJpaEntity){
         return UniversityResponse.builder()
                 .universityId(universityJpaEntity.getId())
                 .universityName(universityJpaEntity.getUniversityName())

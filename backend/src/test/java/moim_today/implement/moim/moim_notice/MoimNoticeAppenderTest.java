@@ -39,7 +39,7 @@ class MoimNoticeAppenderTest extends ImplementTest {
                 .doesNotThrowAnyException();
 
         //then
-        assertThat( moimNoticeRepository.count()).isEqualTo(1);
+        assertThat(moimNoticeRepository.count()).isEqualTo(1);
     }
 
     @DisplayName("공지 생성에 접근 권한이 없으면 예외가 발생한다.")
