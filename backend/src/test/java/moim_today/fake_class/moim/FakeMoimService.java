@@ -92,7 +92,7 @@ public class FakeMoimService implements MoimService {
         long moimHostId = MEMBER_ID.longValue();
         // 실제 로직과 다름
         if (moimMemberForceDeleteRequest.moimId() != moimHostId) {
-            throw new ForbiddenException(MOIM_FORBIDDEN.message());
+            throw new ForbiddenException(MOIM_MEMBER_DELETE_AUTHORIZED_ERROR.message());
         }
         else if(moimMemberForceDeleteRequest.deleteMemberId() == moimHostId){
             throw new ForbiddenException(MOIM_HOST_ERROR.message());

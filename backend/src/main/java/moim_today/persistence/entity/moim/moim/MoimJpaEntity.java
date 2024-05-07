@@ -87,7 +87,7 @@ public class MoimJpaEntity extends BaseTimeEntity {
     }
 
     public void validateNotHostMember(final long requestMemberId) {
-        if (this.memberId != memberId) {
+        if (this.memberId == requestMemberId) {
             throw new ForbiddenException(MOIM_HOST_ERROR.message());
         }
     }

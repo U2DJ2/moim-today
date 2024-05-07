@@ -20,7 +20,7 @@ public interface MoimService {
 
     void forceDeleteMember(final long requestMemberId, final MoimMemberForceDeleteRequest moimMemberForceDeleteRequest);
 
-    void deleteMember(final long moimId, final MoimMemberDeleteRequest moimMemberDeleteRequest);
+    void deleteMember(final long memberId, final MoimMemberDeleteRequest moimMemberDeleteRequest);
 
     void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest);
 }
