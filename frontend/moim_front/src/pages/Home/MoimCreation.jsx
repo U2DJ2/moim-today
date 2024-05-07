@@ -251,8 +251,10 @@ export default function MoimCreation() {
           운영 기간
         </div>
         <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
         />
         <InputField
           label="참여 인원"

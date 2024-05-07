@@ -4,9 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import { format } from "date-fns";
 
-function DatePicker() {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+function DatePicker({ startDate, setStartDate, endDate, setEndDate }) {
   return (
     <div className="flex">
       <div className="grid">
