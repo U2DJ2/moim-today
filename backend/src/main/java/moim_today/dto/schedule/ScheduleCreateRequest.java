@@ -8,6 +8,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 import static moim_today.global.constant.NumberConstant.SCHEDULE_MEETING_ID;
+import static moim_today.global.constant.NumberConstant.SCHEDULE_MOIM_ID;
 
 @Builder
 public record ScheduleCreateRequest(
@@ -23,6 +24,7 @@ public record ScheduleCreateRequest(
     public ScheduleJpaEntity toEntity(final long memberId, final String colorHex) {
         return ScheduleJpaEntity.builder()
                 .memberId(memberId)
+                .moimId(SCHEDULE_MOIM_ID.value())
                 .meetingId(SCHEDULE_MEETING_ID.value())
                 .scheduleName(scheduleName)
                 .dayOfWeek(dayOfWeek)

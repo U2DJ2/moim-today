@@ -67,8 +67,8 @@ public class MoimServiceImpl implements MoimService{
 
     @Override
     public void createMoim(final long memberId, final long universityId,
-                           final MoimAppendRequest moimAppendRequest) {
-        MoimJpaEntity moim = moimAppender.createMoim(memberId, universityId, moimAppendRequest);
+                           final MoimCreateRequest moimCreateRequest) {
+        MoimJpaEntity moim = moimAppender.createMoim(memberId, universityId, moimCreateRequest);
         joinedMoimAppender.createJoinedMoim(memberId, moim.getId());
     }
 

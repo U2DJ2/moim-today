@@ -78,4 +78,9 @@ public class MoimFinder {
         return memberIds;
     }
 
+
+    @Transactional(readOnly = true)
+    public long getMemberIdById(final long moimId) {
+        return moimRepository.getMemberIdById(moimId);
+    }
 }

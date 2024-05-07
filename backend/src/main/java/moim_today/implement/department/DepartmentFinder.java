@@ -1,6 +1,6 @@
 package moim_today.implement.department;
 
-import moim_today.dto.department.DepartmentInfoResponse;
+import moim_today.dto.department.DepartmentResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
@@ -32,7 +32,7 @@ public class DepartmentFinder {
         }
     }
 
-    public List<DepartmentInfoResponse> getAllDepartmentByUniversityName(final String universityName){
+    public List<DepartmentResponse> getAllDepartmentByUniversityName(final String universityName){
         if(!universityName.isEmpty()){
             long universityId = universityRepository.getByName(universityName).getId();
             return departmentRepository.findAllDepartmentOfUniversity(universityId);
@@ -40,7 +40,7 @@ public class DepartmentFinder {
         throw new BadRequestException(UNIVERSITY_SEARCH_CONDITIONS_INSUFFICIENT.message());
     }
 
-    public List<DepartmentInfoResponse> getAllDepartmentById(final long universityId){
+    public List<DepartmentResponse> getAllDepartmentById(final long universityId){
         if(universityId != Long.parseLong(NO_UNIVERSITY_ID)){
             return departmentRepository.findAllDepartmentOfUniversity(universityId);
         }

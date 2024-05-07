@@ -1,11 +1,10 @@
 package moim_today.fake_class.schedule;
 
 import moim_today.application.schedule.ScheduleService;
+import moim_today.domain.schedule.enums.AvailableColorHex;
 import moim_today.domain.schedule.enums.ColorHex;
-import moim_today.dto.schedule.ScheduleCreateRequest;
-import moim_today.dto.schedule.ScheduleResponse;
-import moim_today.dto.schedule.ScheduleUpdateRequest;
-import moim_today.dto.schedule.TimeTableRequest;
+import moim_today.dto.member.MemberSimpleResponse;
+import moim_today.dto.schedule.*;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
 import moim_today.global.error.NotFoundException;
@@ -55,6 +54,54 @@ public class FakeScheduleService implements ScheduleService {
     }
 
     @Override
+    public List<AvailableTimeResponse> findWeeklyAvailableTime(final long moimId, final LocalDate startDate) {
+        MemberSimpleResponse memberSimpleResponse1 = MemberSimpleResponse.builder()
+                .memberId(1)
+                .username(USERNAME.value())
+                .memberProfileImageUrl(PROFILE_IMAGE_URL.value())
+                .build();
+
+        MemberSimpleResponse memberSimpleResponse2 = MemberSimpleResponse.builder()
+                .memberId(2)
+                .username(USERNAME.value())
+                .memberProfileImageUrl(PROFILE_IMAGE_URL.value())
+                .build();
+
+        MemberSimpleResponse memberSimpleResponse3 = MemberSimpleResponse.builder()
+                .memberId(3)
+                .username(USERNAME.value())
+                .memberProfileImageUrl(PROFILE_IMAGE_URL.value())
+                .build();
+
+        List<MemberSimpleResponse> memberSimpleResponses1 = List.of(memberSimpleResponse1, memberSimpleResponse2);
+        List<MemberSimpleResponse> memberSimpleResponses2 = List.of(memberSimpleResponse1, memberSimpleResponse2, memberSimpleResponse3);
+        List<MemberSimpleResponse> memberSimpleResponses3 = List.of(memberSimpleResponse2);
+
+        AvailableTimeResponse availableTimeResponse1 = AvailableTimeResponse.builder()
+                .members(memberSimpleResponses1)
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
+                .colorHex(AvailableColorHex.getHexByCount(2))
+                .build();
+
+        AvailableTimeResponse availableTimeResponse2 = AvailableTimeResponse.builder()
+                .members(memberSimpleResponses2)
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 14, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 16, 0, 0))
+                .colorHex(AvailableColorHex.getHexByCount(3))
+                .build();
+
+        AvailableTimeResponse availableTimeResponse3 = AvailableTimeResponse.builder()
+                .members(memberSimpleResponses3)
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 18, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 20, 0, 0))
+                .colorHex(AvailableColorHex.getHexByCount(1))
+                .build();
+
+        return List.of(availableTimeResponse1, availableTimeResponse2, availableTimeResponse3);
+    }
+
+    @Override
     public List<ScheduleResponse> findAllByMonthly(final long memberId, final YearMonth yearMonth) {
         ScheduleResponse scheduleResponse1 = ScheduleResponse.builder()
                 .scheduleId(1L)
@@ -62,8 +109,8 @@ public class FakeScheduleService implements ScheduleService {
                 .scheduleName("스케줄명 1")
                 .dayOfWeek(DayOfWeek.MONDAY)
                 .colorHex(ColorHex.getHexByCount(0).value())
-                .startDateTime(LocalDateTime.of(2024, 03, 04, 10, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 03, 04, 12, 0, 0))
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
                 .build();
 
         ScheduleResponse scheduleResponse2 = ScheduleResponse.builder()
@@ -72,8 +119,8 @@ public class FakeScheduleService implements ScheduleService {
                 .scheduleName("스케줄명 2")
                 .dayOfWeek(DayOfWeek.TUESDAY)
                 .colorHex(ColorHex.getHexByCount(1).value())
-                .startDateTime(LocalDateTime.of(2024, 03, 05, 12, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 03, 05, 13, 15, 0))
+                .startDateTime(LocalDateTime.of(2024, 3, 5, 12, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 5, 13, 15, 0))
                 .build();
 
         ScheduleResponse scheduleResponse3 = ScheduleResponse.builder()
@@ -82,8 +129,8 @@ public class FakeScheduleService implements ScheduleService {
                 .scheduleName("스케줄명 3")
                 .dayOfWeek(DayOfWeek.WEDNESDAY)
                 .colorHex(ColorHex.getHexByCount(2).value())
-                .startDateTime(LocalDateTime.of(2024, 03, 06, 12, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 03, 06, 13, 15, 0))
+                .startDateTime(LocalDateTime.of(2024, 3, 6, 12, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 6, 13, 15, 0))
                 .build();
 
         return List.of(scheduleResponse1, scheduleResponse2, scheduleResponse3);

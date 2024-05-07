@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
-public class MemberRegisterRequestTest {
+public class MemberSignUpRequestTest {
 
     private static final long VALID_ID = 1L;
     private static final String VALID_EMAIL = "validEmail@example.com";
@@ -26,7 +26,7 @@ public class MemberRegisterRequestTest {
 
         assertThatThrownBy(
                 () -> {
-                    MemberRegisterRequest.builder()
+                    MemberSignUpRequest.builder()
                             .universityId(VALID_ID)
                             .departmentId(VALID_ID)
                             .email(VALID_EMAIL)
@@ -47,7 +47,7 @@ public class MemberRegisterRequestTest {
 
         assertThatCode(
                 () -> {
-                    MemberRegisterRequest.builder()
+                    MemberSignUpRequest.builder()
                             .universityId(VALID_ID)
                             .departmentId(VALID_ID)
                             .email(VALID_EMAIL)

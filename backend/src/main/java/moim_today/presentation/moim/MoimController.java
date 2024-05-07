@@ -1,26 +1,34 @@
 package moim_today.presentation.moim;
 
 import moim_today.application.moim.moim.MoimService;
+import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.moim.moim.*;
+import moim_today.dto.moim.moim_notice.*;
 import moim_today.global.annotation.Login;
+import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RequestMapping("/api/moims")
 @RestController
 public class MoimController {
 
     private final MoimService moimService;
+    private final MoimNoticeService moimNoticeService;
 
-    public MoimController(final MoimService moimService) {
+    public MoimController(final MoimService moimService,
+                          final MoimNoticeService moimNoticeService) {
         this.moimService = moimService;
+        this.moimNoticeService = moimNoticeService;
     }
 
     @PostMapping
     public void createMoim(@Login final MemberSession memberSession,
-                           @RequestBody final MoimAppendRequest moimAppendRequest) {
-        moimService.createMoim(memberSession.id(), memberSession.universityId(), moimAppendRequest);
+                           @RequestBody final MoimCreateRequest moimCreateRequest) {
+        moimService.createMoim(memberSession.id(), memberSession.universityId(), moimCreateRequest);
     }
 
     @PostMapping("/image")
@@ -40,9 +48,9 @@ public class MoimController {
         moimService.updateMoim(memberSession.id(), moimUpdateRequest);
     }
 
-    @GetMapping("/members")
+    @GetMapping("/members/{moimId}")
     public MoimMemberTabResponse findMoimMembers(@Login final MemberSession memberSession,
-                                               @RequestParam final long moimId){
+                                               @PathVariable final long moimId){
         return moimService.findMoimMembers(memberSession.id(), moimId);
     }
 
@@ -58,6 +66,12 @@ public class MoimController {
         moimService.forceDeleteMember(memberSession.id(), moimMemberForceDeleteRequest);
     }
 
+    @PostMapping("/notices")
+    public void createMoimNotice(@Login final MemberSession memberSession,
+                                 @RequestBody final MoimNoticeCreateRequest moimNoticeCreateRequest) {
+        moimNoticeService.createMoimNotice(memberSession.id(), moimNoticeCreateRequest);
+    }
+
     @DeleteMapping("/members")
     public void deleteMember(@Login final MemberSession memberSession,
                              @RequestBody final MoimMemberDeleteRequest moimMemberDeleteRequest){
@@ -68,5 +82,29 @@ public class MoimController {
     public void joinMoim(@Login final MemberSession memberSession,
                          @RequestBody final MoimJoinRequest moimJoinRequest){
         moimService.appendMemberToMoim(memberSession.id(), moimJoinRequest);
+    }
+
+    @GetMapping("/notices/simple")
+    public CollectionResponse<List<MoimNoticeSimpleResponse>> findAllMoimNotice(@Login final MemberSession memberSession,
+                                                                                @RequestParam final long moimId) {
+        return CollectionResponse.of(moimNoticeService.findAllMoimNotice(memberSession.id(), moimId));
+    }
+
+    @GetMapping("/notices/detail")
+    public MoimNoticeDetailResponse getMoimNoticeDetail(@Login final MemberSession memberSession,
+                                                        @RequestParam final long moimNoticeId) {
+        return moimNoticeService.getMoimNoticeDetail(memberSession.id(), moimNoticeId);
+    }
+
+    @PatchMapping("/notices")
+    public void updateMoimNotice(@Login final MemberSession memberSession,
+                                 @RequestBody final MoimNoticeUpdateRequest moimNoticeUpdateRequest) {
+        moimNoticeService.updateMoimNotice(memberSession.id(), moimNoticeUpdateRequest);
+    }
+
+    @DeleteMapping("/notices")
+    public void deleteMoimNotice(@Login final MemberSession memberSession,
+                                 @RequestBody final MoimNoticeDeleteRequest moimNoticeDeleteRequest) {
+        moimNoticeService.deleteMoimNotice(memberSession.id(), moimNoticeDeleteRequest);
     }
 }

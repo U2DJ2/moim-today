@@ -1,6 +1,6 @@
 package moim_today.implement.university;
 
-import moim_today.dto.university.UniversityInfoResponse;
+import moim_today.dto.university.UniversityResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
@@ -22,10 +22,10 @@ public class UniversityFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<UniversityInfoResponse> getAllUniversity() {
+    public List<UniversityResponse> getAllUniversity() {
         List<UniversityJpaEntity> universityJpaEntities = universityRepository.findAll();
         return universityJpaEntities.stream()
-                .map(UniversityInfoResponse::of)
+                .map(UniversityResponse::from)
                 .toList();
     }
 

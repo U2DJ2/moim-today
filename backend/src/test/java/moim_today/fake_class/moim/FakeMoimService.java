@@ -20,7 +20,7 @@ import static moim_today.util.TestConstant.*;
 public class FakeMoimService implements MoimService {
 
     @Override
-    public void createMoim(final long memberId, final long universityId, final MoimAppendRequest moimAppendRequest) {
+    public void createMoim(final long memberId, final long universityId, final MoimCreateRequest moimCreateRequest) {
 
     }
 
@@ -32,8 +32,9 @@ public class FakeMoimService implements MoimService {
     @Override
     public MoimDetailResponse getMoimDetail(final long moimId) {
         return MoimDetailResponse.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+                .moimId(moimId)
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(Integer.parseInt((CAPACITY.value())))
                 .currentCount(Integer.parseInt(CURRENT_COUNT.value()))
                 .imageUrl(MOIM_IMAGE_URL.value())
@@ -100,10 +101,9 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public void deleteMember(final long moimId, final MoimMemberDeleteRequest moimMemberDeleteRequest) {
-        long moimHostId = MEMBER_ID.longValue();
+    public void deleteMember(final long requestMemberId, final MoimMemberDeleteRequest moimMemberDeleteRequest) {
         // 실제 로직과 다름
-        if (moimId == moimHostId) {
+        if (requestMemberId == moimMemberDeleteRequest.moimId()) {
             throw new ForbiddenException(MOIM_HOST_ERROR.message());
         }
     }

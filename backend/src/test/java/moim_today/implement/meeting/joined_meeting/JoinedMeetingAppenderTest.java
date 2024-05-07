@@ -5,8 +5,6 @@ import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
-import moim_today.util.TestConstant;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,7 @@ class JoinedMeetingAppenderTest extends ImplementTest {
     void saveJoinedMeeting() {
         // given 1
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
-                .title(TITLE.value())
+                .title(MOIM_TITLE.value())
                 .build();
 
         moimRepository.save(moimJpaEntity);
@@ -61,7 +59,7 @@ class JoinedMeetingAppenderTest extends ImplementTest {
     void saveJoinedMeetingWithAttendance() {
         // given 1
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
-                .title(TITLE.value())
+                .title(MOIM_TITLE.value())
                 .build();
 
         moimRepository.save(moimJpaEntity);

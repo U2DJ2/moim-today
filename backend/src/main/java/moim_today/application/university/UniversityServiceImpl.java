@@ -1,6 +1,6 @@
 package moim_today.application.university;
 
-import moim_today.dto.university.UniversityInfoResponse;
+import moim_today.dto.university.UniversityResponse;
 import moim_today.implement.university.UniversityUpdater;
 import moim_today.implement.university.UniversityFinder;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class UniversityServiceImpl implements UniversityService{
     }
 
     @Override
-    public List<UniversityInfoResponse> getUniversities() {
+    public List<UniversityResponse> getUniversities() {
         return universityFinder.getAllUniversity();
     }
 }

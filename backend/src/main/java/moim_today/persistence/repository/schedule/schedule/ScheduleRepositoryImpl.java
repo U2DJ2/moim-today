@@ -2,11 +2,11 @@ package moim_today.persistence.repository.schedule.schedule;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.domain.schedule.Schedule;
-import moim_today.dto.schedule.QScheduleResponse;
-import moim_today.dto.schedule.ScheduleResponse;
-import moim_today.dto.schedule.ScheduleUpdateRequest;
-import moim_today.dto.schedule.TimeTableSchedulingTask;
+import moim_today.dto.moim.moim.QMoimMemberResponse;
+import moim_today.dto.schedule.*;
 import moim_today.global.error.NotFoundException;
+import moim_today.persistence.entity.member.QMemberJpaEntity;
+import moim_today.persistence.entity.schedule.schedule.QScheduleJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,6 +21,7 @@ import java.util.List;
 
 import static moim_today.global.constant.NumberConstant.SCHEDULE_MEETING_ID;
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCHEDULE_NOT_FOUND;
+import static moim_today.persistence.entity.member.QMemberJpaEntity.*;
 import static moim_today.persistence.entity.schedule.schedule.QScheduleJpaEntity.scheduleJpaEntity;
 
 
@@ -75,6 +76,31 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     }
 
     @Override
+    public List<MoimScheduleResponse> findAllInMembersByDateTime(final List<Long> memberIds, final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
+        return queryFactory.select(
+                        new QMoimScheduleResponse(
+                                scheduleJpaEntity.id,
+                                scheduleJpaEntity.meetingId,
+                                scheduleJpaEntity.memberId,
+                                memberJpaEntity.username,
+                                memberJpaEntity.memberProfileImageUrl,
+                                scheduleJpaEntity.scheduleName,
+                                scheduleJpaEntity.startDateTime,
+                                scheduleJpaEntity.endDateTime
+                        ))
+                .from(scheduleJpaEntity)
+                .join(memberJpaEntity).on(scheduleJpaEntity.memberId.eq(memberJpaEntity.id))
+                .where(
+                        scheduleJpaEntity.memberId.in(memberIds)
+                                .and(scheduleJpaEntity.startDateTime.goe(startDateTime))
+                                .and(scheduleJpaEntity.startDateTime.loe(endDateTime))
+                                .and(scheduleJpaEntity.endDateTime.goe(startDateTime))
+                                .and(scheduleJpaEntity.endDateTime.loe(endDateTime))
+                )
+                .fetch();
+    }
+
+    @Override
     public ScheduleJpaEntity save(final ScheduleJpaEntity scheduleJpaEntity) {
         return scheduleJpaRepository.save(scheduleJpaEntity);
     }
@@ -85,8 +111,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         LocalDateTime now = LocalDateTime.now();
         List<Schedule> schedules = timeTableSchedulingTask.schedules();
         long memberId = timeTableSchedulingTask.memberId();
-        String sql = "INSERT INTO schedule (member_id, meeting_id, schedule_name, day_of_week, color_hex, start_date_time, end_date_time, created_at, last_modified_at)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO schedule (member_id, moim_id, meeting_id, schedule_name, day_of_week, color_hex, start_date_time, end_date_time, created_at, last_modified_at)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 
@@ -95,14 +121,15 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                 Schedule schedule = schedules.get(i);
                 ScheduleJpaEntity entity = schedule.toEntity(memberId, SCHEDULE_MEETING_ID.value());
                 ps.setLong(1, entity.getMemberId());
-                ps.setLong(2, entity.getMeetingId());
-                ps.setString(3, entity.getScheduleName());
-                ps.setString(4, entity.getDayOfWeek().toString());
-                ps.setString(5, entity.getColorHex());
-                ps.setTimestamp(6, Timestamp.valueOf(entity.getStartDateTime()));
-                ps.setTimestamp(7, Timestamp.valueOf(entity.getEndDateTime()));
-                ps.setTimestamp(8, Timestamp.valueOf(now));
+                ps.setLong(2, entity.getMoimId());
+                ps.setLong(3, entity.getMeetingId());
+                ps.setString(4, entity.getScheduleName());
+                ps.setString(5, entity.getDayOfWeek().toString());
+                ps.setString(6, entity.getColorHex());
+                ps.setTimestamp(7, Timestamp.valueOf(entity.getStartDateTime()));
+                ps.setTimestamp(8, Timestamp.valueOf(entity.getEndDateTime()));
                 ps.setTimestamp(9, Timestamp.valueOf(now));
+                ps.setTimestamp(10, Timestamp.valueOf(now));
             }
 
             @Override

@@ -34,9 +34,6 @@ public class JoinedMoimFinder {
     @Transactional(readOnly = true)
     public void validateMemberInMoim(final long moimId, final long memberId) {
         boolean isMemberInMoim = joinedMoimRepository.existsByMoimIdAndMemberId(moimId, memberId);
-        System.out.println("moimId: "+moimId);
-        System.out.println("memberId: "+memberId);
-        System.out.println(isMemberInMoim);
         if(!isMemberInMoim){
             throw new NotFoundException(JOINED_MOIM_MEMBER_NOT_FOUND.message());
         }

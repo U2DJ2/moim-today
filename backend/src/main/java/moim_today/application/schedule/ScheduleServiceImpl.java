@@ -1,10 +1,9 @@
 package moim_today.application.schedule;
 
+import moim_today.domain.schedule.AvailableTime;
 import moim_today.domain.schedule.TimeTableProcessor;
-import moim_today.dto.schedule.ScheduleCreateRequest;
-import moim_today.dto.schedule.ScheduleResponse;
-import moim_today.dto.schedule.ScheduleUpdateRequest;
-import moim_today.dto.schedule.TimeTableRequest;
+import moim_today.dto.schedule.*;
+import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import moim_today.implement.schedule.schedule.*;
 import moim_today.implement.schedule.schedule_color.ScheduleColorManager;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
@@ -24,22 +23,34 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleAppender scheduleAppender;
     private final ScheduleUpdater scheduleUpdater;
     private final ScheduleRemover scheduleRemover;
+    private final JoinedMoimFinder joinedMoimFinder;
     private final ScheduleColorManager scheduleColorManager;
 
     public ScheduleServiceImpl(final ScheduleManager scheduleManager, final ScheduleFinder scheduleFinder,
                                final ScheduleAppender scheduleAppender, final ScheduleUpdater scheduleUpdater,
-                               final ScheduleRemover scheduleRemover, final ScheduleColorManager scheduleColorManager) {
+                               final ScheduleRemover scheduleRemover, final JoinedMoimFinder joinedMoimFinder,
+                               final ScheduleColorManager scheduleColorManager) {
         this.scheduleManager = scheduleManager;
         this.scheduleFinder = scheduleFinder;
         this.scheduleAppender = scheduleAppender;
         this.scheduleUpdater = scheduleUpdater;
         this.scheduleRemover = scheduleRemover;
+        this.joinedMoimFinder = joinedMoimFinder;
         this.scheduleColorManager = scheduleColorManager;
     }
 
     @Override
     public List<ScheduleResponse> findAllByWeekly(final long memberId, final LocalDate startDate) {
         return scheduleFinder.findAllByWeekly(memberId, startDate);
+    }
+
+    @Override
+    public List<AvailableTimeResponse> findWeeklyAvailableTime(final long moimId, final LocalDate startDate) {
+        List<Long> memberIds = joinedMoimFinder.findAllJoinedMemberId(moimId);
+        List<MoimScheduleResponse> moimScheduleResponses = scheduleFinder.findAllInMembersByWeekly(memberIds, startDate);
+        List<AvailableTime> availableTimes = AvailableTime.calculateAvailableTimes(moimScheduleResponses, startDate);
+
+        return AvailableTimeResponse.from(availableTimes);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package moim_today.persistence.repository.schedule.schedule;
 
+import moim_today.dto.schedule.MoimScheduleResponse;
 import moim_today.dto.schedule.ScheduleResponse;
 import moim_today.dto.schedule.ScheduleUpdateRequest;
 import moim_today.dto.schedule.TimeTableSchedulingTask;
@@ -16,6 +17,8 @@ public interface ScheduleRepository {
     List<ScheduleJpaEntity> findAllByMemberId(final long memberId);
 
     List<ScheduleResponse> findAllByDateTime(final long memberId, final LocalDateTime startDateTime, final LocalDateTime endDateTime);
+
+    List<MoimScheduleResponse> findAllInMembersByDateTime(final List<Long> memberIds, final LocalDateTime startDateTime, final LocalDateTime endDateTime);
 
     ScheduleJpaEntity save(final ScheduleJpaEntity scheduleJpaEntity);
 

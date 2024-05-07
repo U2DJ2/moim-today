@@ -10,6 +10,7 @@ import moim_today.persistence.repository.meeting.meeting_comment.MeetingCommentR
 import moim_today.persistence.repository.member.MemberRepository;
 import moim_today.persistence.repository.moim.joined_moim.JoinedMoimRepository;
 import moim_today.persistence.repository.moim.moim.MoimRepository;
+import moim_today.persistence.repository.moim.moim_notice.MoimNoticeRepository;
 import moim_today.persistence.repository.schedule.schedule.ScheduleRepository;
 import moim_today.persistence.repository.schedule.schedule_color.ScheduleColorRepository;
 import moim_today.persistence.repository.todo.TodoRepository;
@@ -17,6 +18,8 @@ import moim_today.persistence.repository.university.UniversityRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootTest
@@ -65,6 +68,9 @@ public abstract class ImplementTest {
     protected MeetingRepository meetingRepository;
 
     @Autowired
+    protected MoimNoticeRepository moimNoticeRepository;
+
+    @Autowired
     protected PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -73,5 +79,13 @@ public abstract class ImplementTest {
     @BeforeEach
     void setUpDatabase() {
         databaseCleaner.cleanUp();
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "moimNotices", allEntries = true),
+            @CacheEvict(value = "moimNotice", allEntries = true)
+    })
+    protected void clearCache() {
+
     }
 }

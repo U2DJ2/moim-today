@@ -91,6 +91,32 @@ class ScheduleControllerTest extends ControllerTest {
                         )));
     }
 
+    @DisplayName("해당 모임의 Weekly 스케줄에 대한 가용시간을 반환한다.")
+    @Test
+    void findWeeklyAvailableTime() throws Exception {
+        mockMvc.perform(get("/api/schedules/weekly/available-time/{moimId}", 1L)
+                        .param("startDate", "2024-03-04")
+                )
+                .andExpect(status().isOk())
+                .andDo(document("해당 모임의 Weekly 스케줄 가용시간 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("스케줄")
+                                .summary("해당 모임의 Weekly 스케줄 가용시간 조회")
+                                .queryParameters(
+                                        parameterWithName("startDate").description("연도 - 월 - 일 정보, ex) 2024-03-04")
+                                )
+                                .responseFields(
+                                        fieldWithPath("data[0].members[0].memberId").type(NUMBER).description("회원 id"),
+                                        fieldWithPath("data[0].members[0].username").type(STRING).description("이름"),
+                                        fieldWithPath("data[0].members[0].memberProfileImageUrl").type(STRING).description("프로필 이미지 url"),
+                                        fieldWithPath("data[0].startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("data[0].endDateTime").type(STRING).description("종료 시간"),
+                                        fieldWithPath("data[0].colorHex").type(STRING).description("색상")
+                                )
+                                .build()
+                        )));
+    }
+
     @DisplayName("로그인한 회원의 캘린더에 나타낼 Monthly 스케줄을 조회한다.")
     @Test
     void findAllByMonthly() throws Exception {
