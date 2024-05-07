@@ -29,13 +29,6 @@ public class ScheduleController {
         return CollectionResponse.of(scheduleResponses);
     }
 
-    @GetMapping("/schedules/weekly/{memberId}")
-    public CollectionResponse<List<ScheduleResponse>> findOtherByWeekly(@PathVariable final long memberId,
-                                                                        @RequestParam final LocalDate startDate) {
-        List<ScheduleResponse> scheduleResponses = scheduleService.findAllByWeekly(memberId, startDate);
-        return CollectionResponse.of(scheduleResponses);
-    }
-
     @GetMapping("/schedules/weekly/available-time/{moimId}")
     public CollectionResponse<List<AvailableTimeResponse>> findWeeklyAvailableTime(
             @PathVariable final long moimId,
@@ -48,13 +41,6 @@ public class ScheduleController {
     public CollectionResponse<List<ScheduleResponse>> findAllByMonthly(@Login final MemberSession memberSession,
                                                                        @RequestParam final YearMonth yearMonth) {
         List<ScheduleResponse> scheduleResponses = scheduleService.findAllByMonthly(memberSession.id(), yearMonth);
-        return CollectionResponse.of(scheduleResponses);
-    }
-
-    @GetMapping("/schedules/monthly/{memberId}")
-    public CollectionResponse<List<ScheduleResponse>> findOtherByMonthly(@PathVariable final long memberId,
-                                                                         @RequestParam final YearMonth yearMonth) {
-        List<ScheduleResponse> scheduleResponses = scheduleService.findAllByMonthly(memberId, yearMonth);
         return CollectionResponse.of(scheduleResponses);
     }
 
