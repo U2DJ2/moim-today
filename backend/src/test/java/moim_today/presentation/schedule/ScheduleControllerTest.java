@@ -66,8 +66,8 @@ class ScheduleControllerTest extends ControllerTest {
 
     @DisplayName("해당 모임의 Weekly 스케줄에 대한 가용시간을 반환한다.")
     @Test
-    void findWeeklyAvailableTime() throws Exception {
-        mockMvc.perform(get("/api/schedules/weekly/available-time/{moimId}", 1L)
+    void findAvailableTimeInMoim() throws Exception {
+        mockMvc.perform(get("/api/schedules/weekly/available-time/moims/{moimId}", 1L)
                         .param("startDate", "2024-03-04")
                 )
                 .andExpect(status().isOk())
@@ -75,6 +75,32 @@ class ScheduleControllerTest extends ControllerTest {
                         resource(ResourceSnippetParameters.builder()
                                 .tag("스케줄")
                                 .summary("해당 모임의 Weekly 스케줄 가용시간 조회")
+                                .queryParameters(
+                                        parameterWithName("startDate").description("연도 - 월 - 일 정보, ex) 2024-03-04")
+                                )
+                                .responseFields(
+                                        fieldWithPath("data[0].members[0].memberId").type(NUMBER).description("회원 id"),
+                                        fieldWithPath("data[0].members[0].username").type(STRING).description("이름"),
+                                        fieldWithPath("data[0].members[0].memberProfileImageUrl").type(STRING).description("프로필 이미지 url"),
+                                        fieldWithPath("data[0].startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("data[0].endDateTime").type(STRING).description("종료 시간"),
+                                        fieldWithPath("data[0].colorHex").type(STRING).description("색상")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("해당 회원의 Weekly 스케줄에 대한 가용시간을 반환한다.")
+    @Test
+    void findAvailableTimeForMember() throws Exception {
+        mockMvc.perform(get("/api/schedules/weekly/available-time/moims/{moimId}", 1L)
+                        .param("startDate", "2024-03-04")
+                )
+                .andExpect(status().isOk())
+                .andDo(document("해당 회원의 Weekly 스케줄 가용시간 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("스케줄")
+                                .summary("해당 회원의 Weekly 스케줄 가용시간 조회")
                                 .queryParameters(
                                         parameterWithName("startDate").description("연도 - 월 - 일 정보, ex) 2024-03-04")
                                 )
@@ -150,8 +176,8 @@ class ScheduleControllerTest extends ControllerTest {
     @DisplayName("요청 URL이 올바르지 않으면 예외가 발생한다.")
     @Test
     void fetchTimeTableFail() throws Exception {
-        LocalDate startDate = LocalDate.of(2024, 03, 04);
-        LocalDate endDate = LocalDate.of(2024, 06, 30);
+        LocalDate startDate = LocalDate.of(2024, 3, 4);
+        LocalDate endDate = LocalDate.of(2024, 6, 30);
 
         TimeTableRequest timeTableRequest = new TimeTableRequest(
                 WRONG_EVERY_TIME_ID.value(), startDate, endDate
