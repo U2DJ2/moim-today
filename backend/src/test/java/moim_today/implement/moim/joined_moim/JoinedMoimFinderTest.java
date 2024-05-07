@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_IS_EMPTY;
-import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_NOT_FOUNT;
+import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -99,7 +99,7 @@ class JoinedMoimFinderTest extends ImplementTest {
 
         // expected
         assertThatThrownBy(() -> joinedMoimFinder.validateMemberInMoim(savedMoim.getId(),2L))
-                .hasMessageMatching(JOINED_MOIM_MEMBER_NOT_FOUNT.message());
+                .hasMessageMatching(JOINED_MOIM_MEMBER_NOT_FOUND.message());
     }
 
     @DisplayName("모임에 참여한 멤버일 경우 에러를 발생하지 않는다")
