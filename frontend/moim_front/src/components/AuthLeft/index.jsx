@@ -34,18 +34,11 @@ function AuthLeft({
       email: email,
       password: password,
     };
-
+    console.log("clicked");
     POST("api/login", data)
       .then((res) => {
-        if (res.status === 404) {
-          console.log(res);
-          console.log("first");
-          alert("아이디 및 비밀번호를 다시 확인하시오.");
-          checkLoginFailed(true);
-        } else {
-          console.log(res.data);
-          navigation("/");
-        }
+        console.log(res.data);
+        navigation("/");
       })
       .catch((error) => {
         console.log(error.response.data.statusCode);
@@ -107,12 +100,14 @@ function AuthLeft({
           <p>로그인 정보 기억하기</p>
         </div>
         <div className="pt-7">
-          <Button
-            name={"로그인"}
-            textColor={"white"}
-            bgColor={"scarlet"}
+          <button
+            className={
+              "w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-white bg-scarlet whitespace-nowrap rounded-[50px] font-Pretendard_Black  hover:cursor-pointer  "
+            }
             onClick={onClick}
-          />
+          >
+            로그인
+          </button>
         </div>
         <div className="self-center items-center flex gap-3 flex-col pt-12">
           <img src={RegisterLabel} />
