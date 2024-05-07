@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 @Builder
 public record MoimDetailResponse(
+        long moimId,
         String title,
         String contents,
         int capacity,
@@ -27,6 +28,7 @@ public record MoimDetailResponse(
 
     public static MoimDetailResponse from(final MoimJpaEntity moimJpaEntity) {
         return MoimDetailResponse.builder()
+                .moimId(moimJpaEntity.getId())
                 .title(moimJpaEntity.getTitle())
                 .contents(moimJpaEntity.getContents())
                 .capacity(moimJpaEntity.getCapacity())

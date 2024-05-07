@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import moim_today.domain.member.MemberSession;
 import moim_today.domain.member.enums.Gender;
 import moim_today.dto.auth.MemberLoginRequest;
-import moim_today.dto.auth.MemberRegisterRequest;
+import moim_today.dto.auth.MemberSignUpRequest;
 import moim_today.fake_DB.FakeMemberSession;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
@@ -131,7 +131,7 @@ class AuthManagerTest extends ImplementTest {
         LocalDate birthDate = LocalDate.now();
         MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
 
-        MemberRegisterRequest memberRegisterRequest = MemberRegisterRequest.builder()
+        MemberSignUpRequest memberSignUpRequest = MemberSignUpRequest.builder()
                 .email(EMAIL.value())
                 .password(PASSWORD.value())
                 .universityId(Long.parseLong(UNIV_ID.value()))
@@ -143,7 +143,7 @@ class AuthManagerTest extends ImplementTest {
                 .build();
 
         // when
-        authManager.signUp(memberRegisterRequest, mockHttpServletRequest);
+        authManager.signUp(memberSignUpRequest, mockHttpServletRequest);
 
         // then
         HttpSession session = mockHttpServletRequest.getSession(false);

@@ -3,6 +3,7 @@ package moim_today.persistence.entity.moim.moim_notice;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import moim_today.dto.moim.moim_notice.MoimNoticeUpdateRequest;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
 
@@ -30,5 +31,10 @@ public class MoimNoticeJpaEntity extends BaseTimeEntity {
         this.moimId = moimId;
         this.title = title;
         this.contents = contents;
+    }
+
+    public void updateMoimNotice(final MoimNoticeUpdateRequest moimNoticeUpdateRequest) {
+        this.title = moimNoticeUpdateRequest.title();
+        this.contents = moimNoticeUpdateRequest.contents();
     }
 }

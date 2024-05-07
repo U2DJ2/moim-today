@@ -49,12 +49,20 @@ public enum TestConstant {
 
     // 모임
     MOIM_ID("1"),
-    TITLE("title"),
-    CONTENTS("contents"),
+    FORBIDDEN_MOIM_ID("9999"),
+    MOIM_TITLE("moim title"),
+    MOIM_CONTENTS("moim contents"),
     CAPACITY("5"),
     MOIM_IMAGE_URL("moimImageUrl"),
     CURRENT_COUNT("0"),
     VIEWS("10"),
+
+    //공지
+    NOTICE_ID("1"),
+    FORBIDDEN_NOTICE_ID("9999"),
+    NOT_FOUND_NOTICE_ID("0"),
+    NOTICE_TITLE("notice title"),
+    NOTICE_CONTENTS("notice contents"),
 
     
     // 스케줄
@@ -88,7 +96,7 @@ public enum TestConstant {
         return Integer.parseInt(value);
     }
 
-    public long longValue(){
+    public long longValue() {
         return Long.parseLong(value);
     }
 }

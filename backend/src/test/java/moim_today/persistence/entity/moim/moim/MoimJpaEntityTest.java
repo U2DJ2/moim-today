@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN;
+import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -49,7 +49,7 @@ class MoimJpaEntityTest {
         //expected
         assertThatCode(() -> moimJpaEntity.validateMember(forbiddenMemberId))
                 .isInstanceOf(ForbiddenException.class)
-                .hasMessage(MOIM_FORBIDDEN.message());
+                .hasMessage(ORGANIZER_FORBIDDEN_ERROR.message());
     }
 
     @DisplayName("수정시 공개 여부가 PUBLIC이라면 default password가 설정된다.")
@@ -65,8 +65,8 @@ class MoimJpaEntityTest {
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
         MoimUpdateRequest moimUpdateRequest = MoimUpdateRequest.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .moimCategory(MoimCategory.STUDY)
@@ -79,8 +79,8 @@ class MoimJpaEntityTest {
         assertThatCode(() -> moimJpaEntity.updateMoim(moimUpdateRequest))
                 .doesNotThrowAnyException();
 
-        assertThat(moimJpaEntity.getTitle()).isEqualTo(TITLE.value());
-        assertThat(moimJpaEntity.getContents()).isEqualTo(CONTENTS.value());
+        assertThat(moimJpaEntity.getTitle()).isEqualTo(MOIM_TITLE.value());
+        assertThat(moimJpaEntity.getContents()).isEqualTo(MOIM_CONTENTS.value());
         assertThat(moimJpaEntity.getCapacity()).isEqualTo(capacity);
         assertThat(moimJpaEntity.getImageUrl()).isEqualTo(MOIM_IMAGE_URL.value());
         assertThat(moimJpaEntity.getPassword()).isEqualTo(DEFAULT_MOIM_PASSWORD.value());
@@ -103,8 +103,8 @@ class MoimJpaEntityTest {
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
         MoimUpdateRequest moimUpdateRequest = MoimUpdateRequest.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .password(PASSWORD.value())
                 .imageUrl(MOIM_IMAGE_URL.value())
@@ -118,8 +118,8 @@ class MoimJpaEntityTest {
         assertThatCode(() -> moimJpaEntity.updateMoim(moimUpdateRequest))
                 .doesNotThrowAnyException();
 
-        assertThat(moimJpaEntity.getTitle()).isEqualTo(TITLE.value());
-        assertThat(moimJpaEntity.getContents()).isEqualTo(CONTENTS.value());
+        assertThat(moimJpaEntity.getTitle()).isEqualTo(MOIM_TITLE.value());
+        assertThat(moimJpaEntity.getContents()).isEqualTo(MOIM_CONTENTS.value());
         assertThat(moimJpaEntity.getCapacity()).isEqualTo(capacity);
         assertThat(moimJpaEntity.getImageUrl()).isEqualTo(MOIM_IMAGE_URL.value());
         assertThat(moimJpaEntity.getPassword()).isEqualTo(PASSWORD.value());
@@ -142,8 +142,8 @@ class MoimJpaEntityTest {
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
         MoimUpdateRequest moimUpdateRequest = MoimUpdateRequest.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .password(PASSWORD.value())
                 .moimCategory(MoimCategory.STUDY)
@@ -156,8 +156,8 @@ class MoimJpaEntityTest {
         assertThatCode(() -> moimJpaEntity.updateMoim(moimUpdateRequest))
                 .doesNotThrowAnyException();
 
-        assertThat(moimJpaEntity.getTitle()).isEqualTo(TITLE.value());
-        assertThat(moimJpaEntity.getContents()).isEqualTo(CONTENTS.value());
+        assertThat(moimJpaEntity.getTitle()).isEqualTo(MOIM_TITLE.value());
+        assertThat(moimJpaEntity.getContents()).isEqualTo(MOIM_CONTENTS.value());
         assertThat(moimJpaEntity.getCapacity()).isEqualTo(capacity);
         assertThat(moimJpaEntity.getImageUrl()).isEqualTo(DEFAULT_MOIM_IMAGE_URL.value());
         assertThat(moimJpaEntity.getPassword()).isEqualTo(PASSWORD.value());
@@ -180,8 +180,8 @@ class MoimJpaEntityTest {
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
         MoimUpdateRequest moimUpdateRequest = MoimUpdateRequest.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .password(PASSWORD.value())
                 .imageUrl(MOIM_IMAGE_URL.value())
@@ -195,8 +195,8 @@ class MoimJpaEntityTest {
         assertThatCode(() -> moimJpaEntity.updateMoim(moimUpdateRequest))
                 .doesNotThrowAnyException();
 
-        assertThat(moimJpaEntity.getTitle()).isEqualTo(TITLE.value());
-        assertThat(moimJpaEntity.getContents()).isEqualTo(CONTENTS.value());
+        assertThat(moimJpaEntity.getTitle()).isEqualTo(MOIM_TITLE.value());
+        assertThat(moimJpaEntity.getContents()).isEqualTo(MOIM_CONTENTS.value());
         assertThat(moimJpaEntity.getCapacity()).isEqualTo(capacity);
         assertThat(moimJpaEntity.getImageUrl()).isEqualTo(MOIM_IMAGE_URL.value());
         assertThat(moimJpaEntity.getPassword()).isEqualTo(PASSWORD.value());

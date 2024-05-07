@@ -11,13 +11,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN;
+import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
 
 public class FakeMoimService implements MoimService {
 
     @Override
-    public void createMoim(final long memberId, final long universityId, final MoimAppendRequest moimAppendRequest) {
+    public void createMoim(final long memberId, final long universityId, final MoimCreateRequest moimCreateRequest) {
 
     }
 
@@ -29,8 +29,9 @@ public class FakeMoimService implements MoimService {
     @Override
     public MoimDetailResponse getMoimDetail(final long moimId) {
         return MoimDetailResponse.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+                .moimId(moimId)
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(Integer.parseInt((CAPACITY.value())))
                 .currentCount(Integer.parseInt(CURRENT_COUNT.value()))
                 .imageUrl(MOIM_IMAGE_URL.value())
@@ -86,7 +87,7 @@ public class FakeMoimService implements MoimService {
         long moimHostId = MEMBER_ID.longValue();
         // 실제 로직과 다름
         if (moimMemberDeleteRequest.memberId() != moimHostId) {
-            throw new ForbiddenException(MOIM_FORBIDDEN.message());
+            throw new ForbiddenException(MOIM_FORBIDDEN_ERROR.message());
         }
     }
 }

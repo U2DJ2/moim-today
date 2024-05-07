@@ -13,7 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN;
+import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
+import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -42,8 +43,8 @@ class MoimUpdaterTest extends ImplementTest {
 
         MoimUpdateRequest moimUpdateRequest = MoimUpdateRequest.builder()
                 .moimId(moimId)
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .password(PASSWORD.value())
@@ -58,8 +59,8 @@ class MoimUpdaterTest extends ImplementTest {
                 .doesNotThrowAnyException();
 
         MoimJpaEntity updatedMoim = moimRepository.getById(moimId);
-        assertThat(updatedMoim.getTitle()).isEqualTo(TITLE.value());
-        assertThat(updatedMoim.getContents()).isEqualTo(CONTENTS.value());
+        assertThat(updatedMoim.getTitle()).isEqualTo(MOIM_TITLE.value());
+        assertThat(updatedMoim.getContents()).isEqualTo(MOIM_CONTENTS.value());
         assertThat(updatedMoim.getCapacity()).isEqualTo(capacity);
         assertThat(updatedMoim.getImageUrl()).isEqualTo(MOIM_IMAGE_URL.value());
         assertThat(updatedMoim.getPassword()).isEqualTo(PASSWORD.value());
@@ -91,6 +92,6 @@ class MoimUpdaterTest extends ImplementTest {
         //expected
         assertThatThrownBy(() -> moimUpdater.updateMoim(memberId, forbiddenMoimUpdateRequest))
                 .isInstanceOf(ForbiddenException.class)
-                .hasMessage(MOIM_FORBIDDEN.message());
+                .hasMessage(ORGANIZER_FORBIDDEN_ERROR.message());
     }
 }

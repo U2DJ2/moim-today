@@ -1,7 +1,7 @@
 package moim_today.application.auth;
 
 import moim_today.dto.auth.MemberLoginRequest;
-import moim_today.dto.auth.MemberRegisterRequest;
+import moim_today.dto.auth.MemberSignUpRequest;
 import moim_today.implement.department.DepartmentFinder;
 import moim_today.implement.member.AuthManager;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,11 +39,11 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public void signUp(final MemberRegisterRequest memberRegisterRequest,
+    public void signUp(final MemberSignUpRequest memberSignUpRequest,
                        final HttpServletRequest request) {
-        universityFinder.checkUniversityIdIsPresent(memberRegisterRequest.universityId());
-        departmentFinder.validateBelongToUniversity(memberRegisterRequest.universityId(), memberRegisterRequest.departmentId());
-        memberFinder.validateEmailNotExists(memberRegisterRequest.email());
-        authManager.signUp(memberRegisterRequest, request);
+        universityFinder.checkUniversityIdIsPresent(memberSignUpRequest.universityId());
+        departmentFinder.validateBelongToUniversity(memberSignUpRequest.universityId(), memberSignUpRequest.departmentId());
+        memberFinder.validateEmailNotExists(memberSignUpRequest.email());
+        authManager.signUp(memberSignUpRequest, request);
     }
 }

@@ -2,7 +2,6 @@ package moim_today.dto.moim.moim;
 
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.moim.MoimAppendRequest;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,7 @@ import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MoimAppendRequestTest {
+class MoimCreateRequestTest {
 
     @DisplayName("ImageUrl 값이 없다면 기본 URL을 가진 엔티티가 생성된다.")
     @Test
@@ -27,9 +26,9 @@ class MoimAppendRequestTest {
         LocalDate startDate = LocalDate.of(2024, 3, 1);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
-        MoimAppendRequest moimAppendRequest = MoimAppendRequest.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+        MoimCreateRequest moimCreateRequest = MoimCreateRequest.builder()
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .password(PASSWORD.value())
                 .moimCategory(MoimCategory.STUDY)
@@ -39,7 +38,7 @@ class MoimAppendRequestTest {
                 .build();
 
         //when
-        MoimJpaEntity entity = moimAppendRequest.toEntity(memberId, universityId);
+        MoimJpaEntity entity = moimCreateRequest.toEntity(memberId, universityId);
 
         //then
         assertThat((entity.getImageUrl())).isEqualTo(DEFAULT_MOIM_IMAGE_URL.value());
@@ -56,9 +55,9 @@ class MoimAppendRequestTest {
         LocalDate startDate = LocalDate.of(2024, 3, 1);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
-        MoimAppendRequest moimAppendRequest = MoimAppendRequest.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+        MoimCreateRequest moimCreateRequest = MoimCreateRequest.builder()
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .password(PASSWORD.value())
@@ -69,7 +68,7 @@ class MoimAppendRequestTest {
                 .build();
 
         //when
-        MoimJpaEntity entity = moimAppendRequest.toEntity(memberId, universityId);
+        MoimJpaEntity entity = moimCreateRequest.toEntity(memberId, universityId);
 
         //then
         assertThat((entity.getImageUrl())).isEqualTo(MOIM_IMAGE_URL.value());
@@ -86,9 +85,9 @@ class MoimAppendRequestTest {
         LocalDate startDate = LocalDate.of(2024, 3, 1);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
-        MoimAppendRequest moimAppendRequest = MoimAppendRequest.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+        MoimCreateRequest moimCreateRequest = MoimCreateRequest.builder()
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .password(PASSWORD.value())
                 .moimCategory(MoimCategory.STUDY)
@@ -98,7 +97,7 @@ class MoimAppendRequestTest {
                 .build();
 
         //when
-        MoimJpaEntity entity = moimAppendRequest.toEntity(memberId, universityId);
+        MoimJpaEntity entity = moimCreateRequest.toEntity(memberId, universityId);
 
         //then
         assertThat((entity.getPassword())).isEqualTo(DEFAULT_MOIM_PASSWORD.value());
@@ -115,9 +114,9 @@ class MoimAppendRequestTest {
         LocalDate startDate = LocalDate.of(2024, 3, 1);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
-        MoimAppendRequest moimAppendRequest = MoimAppendRequest.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+        MoimCreateRequest moimCreateRequest = MoimCreateRequest.builder()
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .password(PASSWORD.value())
@@ -128,7 +127,7 @@ class MoimAppendRequestTest {
                 .build();
 
         //when
-        MoimJpaEntity entity = moimAppendRequest.toEntity(memberId, universityId);
+        MoimJpaEntity entity = moimCreateRequest.toEntity(memberId, universityId);
 
         //then
         assertThat((entity.getPassword())).isEqualTo(PASSWORD.value());
@@ -145,9 +144,9 @@ class MoimAppendRequestTest {
         LocalDate startDate = LocalDate.of(2024, 3, 1);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
-        MoimAppendRequest moimAppendRequest = MoimAppendRequest.builder()
-                .title(TITLE.value())
-                .contents(CONTENTS.value())
+        MoimCreateRequest moimCreateRequest = MoimCreateRequest.builder()
+                .title(MOIM_TITLE.value())
+                .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .moimCategory(MoimCategory.STUDY)
@@ -157,7 +156,7 @@ class MoimAppendRequestTest {
                 .build();
 
         //when
-        MoimJpaEntity entity = moimAppendRequest.toEntity(memberId, universityId);
+        MoimJpaEntity entity = moimCreateRequest.toEntity(memberId, universityId);
 
         //then
         assertThat((entity.getPassword())).isEqualTo(DEFAULT_MOIM_PASSWORD.value());

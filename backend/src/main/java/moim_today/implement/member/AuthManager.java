@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.auth.MemberLoginRequest;
-import moim_today.dto.auth.MemberRegisterRequest;
+import moim_today.dto.auth.MemberSignUpRequest;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
@@ -52,9 +52,9 @@ public class AuthManager {
     }
 
     @Transactional
-    public void signUp(final MemberRegisterRequest memberRegisterRequest, final HttpServletRequest request) {
-        String encodedPassword = passwordEncode(memberRegisterRequest.password());
-        MemberJpaEntity saveMember = memberRepository.save(memberRegisterRequest.toEntity(encodedPassword));
+    public void signUp(final MemberSignUpRequest memberSignUpRequest, final HttpServletRequest request) {
+        String encodedPassword = passwordEncode(memberSignUpRequest.password());
+        MemberJpaEntity saveMember = memberRepository.save(memberSignUpRequest.toEntity(encodedPassword));
         MemberSession memberSession = MemberSession.from(saveMember);
         String memberSessionJson = memberSession.toJson(objectMapper);
         memberSession.setSession(request, memberSessionJson, false);
