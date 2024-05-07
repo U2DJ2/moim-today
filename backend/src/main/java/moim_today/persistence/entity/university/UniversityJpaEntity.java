@@ -1,9 +1,9 @@
 package moim_today.persistence.entity.university;
 
-import moim_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import moim_today.global.base_entity.BaseTimeEntity;
 
 @Getter
 @Table(name = "university")
@@ -16,11 +16,19 @@ public class UniversityJpaEntity extends BaseTimeEntity {
 
     private String universityName;
 
+    private String universityEmail;
+
     protected UniversityJpaEntity() {
     }
 
     @Builder
-    private UniversityJpaEntity(final String universityName) {
+    public UniversityJpaEntity(final long id, final String universityName, final String universityEmail) {
+        this.id = id;
         this.universityName = universityName;
+        this.universityEmail = universityEmail;
+    }
+
+    public void updateEmail(final String universityEmail){
+        this.universityEmail = universityEmail;
     }
 }

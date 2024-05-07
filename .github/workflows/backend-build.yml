@@ -1,8 +1,6 @@
 name: Backend Build with Gradle
 
 on:
-  push:
-    branches: [ "backend-main" ]
   pull_request:
     branches: [ "main", "backend-main" ]
   workflow_dispatch:
@@ -63,3 +61,6 @@ jobs:
 
       - name: SCP transfer
         run: scp backend/build/libs/*.jar ${{ secrets.SSH_USER }}@${{ secrets.BE_SERVER_IP }}:~/deploy
+
+      - name: Deploy Backend application
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.BE_SERVER_IP }} "bash /home/ubuntu/deploy/deploy.sh"

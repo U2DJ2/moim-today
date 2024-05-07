@@ -2,6 +2,7 @@ package moim_today.fake_class.auth;
 
 import moim_today.application.auth.AuthService;
 import moim_today.dto.auth.MemberLoginRequest;
+import moim_today.dto.auth.MemberSignUpRequest;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,5 +33,15 @@ public class FakeAuthService implements AuthService {
         }
 
         throw new NotFoundException(EMAIL_PASSWORD_ERROR.message());
+    }
+
+    @Override
+    public void signUp(final MemberSignUpRequest memberSignUpRequest, final HttpServletRequest request) {
+
+    }
+
+    @Override
+    public void logout(final HttpServletRequest request) {
+
     }
 }

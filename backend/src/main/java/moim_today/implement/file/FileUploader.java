@@ -5,8 +5,6 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.extern.slf4j.Slf4j;
-import moim_today.domain.member.MemberSession;
-import moim_today.dto.file.FileInfoResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.InternalServerException;
@@ -33,10 +31,9 @@ public class FileUploader {
         this.amazonS3 = amazonS3;
     }
 
-    public FileInfoResponse uploadFile(final MemberSession memberSession, final MultipartFile multipartFile) {
-        long memberId = memberSession.id();
-        long universityId = memberSession.universityId();
-        String uploadFolder = universityId+"/"+memberId;
+    public String uploadFile(final String fileType, final MultipartFile multipartFile) {
+
+        String uploadFolder = fileType;
 
         String originalFileName = multipartFile.getOriginalFilename();
         String uploadFileName = createFileName(originalFileName);
@@ -51,7 +48,7 @@ public class FileUploader {
                     new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead));
 //            TODO: 데이터베이스에 대학 ID와 학번 ID를 key 값으로, uploadFileName 을 Value 값으로 저장하기
-            return new FileInfoResponse(amazonS3.getUrl(bucketName, keyName).toString());
+            return amazonS3.getUrl(bucketName, keyName).toString();
         } catch (IOException e) {
             log.error("Exception [Err_Location]: {}", e.getStackTrace()[0]);
             throw new InternalServerException(FILE_UPLOAD_ERROR.message());

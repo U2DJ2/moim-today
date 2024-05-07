@@ -5,6 +5,7 @@ import moim_today.global.interceptor.MemberLoginInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,14 +22,34 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
-        registry.addInterceptor(new MemberLoginInterceptor(objectMapper))
+        registry.addInterceptor(new MemberLoginInterceptor())
                 .order(1)
-                .addPathPatterns("*")
-                .excludePathPatterns("/api/login");
+                .addPathPatterns("/api/**")
+                .excludePathPatterns(
+                        "/api/login",
+                        "/api/certification/**",
+                        "/api/moims/detail",
+                        "/api/sign-up",
+                        "/api/universities",
+                        "/api/universities/departments/**",
+                        "/api/departments/university-name",
+                        "/api/departments/university-id",
+                        "/api/departments"
+                );
     }
 
     @Override
     public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new MemberLoginArgumentResolver());
+        resolvers.add(new MemberLoginArgumentResolver(objectMapper));
+    }
+
+    @Override
+    public void addCorsMappings(final CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*")
+                .allowCredentials(true)
+                .allowedHeaders("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
+                .exposedHeaders("*");
     }
 }

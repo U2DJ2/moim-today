@@ -1,11 +1,12 @@
 package moim_today.persistence.entity.member;
 
-import moim_today.domain.member.enums.Gender;
-import moim_today.global.annotation.Association;
-import moim_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import moim_today.domain.member.enums.Gender;
+import moim_today.dto.member.ProfileUpdateRequest;
+import moim_today.global.annotation.Association;
+import moim_today.global.base_entity.BaseTimeEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
@@ -60,5 +61,10 @@ public class MemberJpaEntity extends BaseTimeEntity {
 
     public void updatePassword(final PasswordEncoder passwordEncoder, final String newPassword) {
         this.password = passwordEncoder.encode(newPassword);
+    }
+
+    public void updateProfile(final ProfileUpdateRequest profileUpdateRequest) {
+        this.departmentId = profileUpdateRequest.departmentId();
+        this.memberProfileImageUrl = profileUpdateRequest.imageUrl();
     }
 }

@@ -1,12 +1,18 @@
 package moim_today.application.member;
 
 import moim_today.domain.member.MemberSession;
-import moim_today.dto.member.PasswordRecoverRequest;
-import moim_today.dto.member.PasswordUpdateRequest;
+import moim_today.dto.member.*;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
 
     void updatePassword(final MemberSession memberSession, final PasswordUpdateRequest passwordUpdateRequest);
 
     void recoverPassword(final PasswordRecoverRequest passwordRecoverRequest);
+
+    MemberProfileResponse getMemberProfile(final MemberSession memberSession);
+
+    void updateProfile(final long memberId, final long universityId, final ProfileUpdateRequest profileUpdateRequest);
+
+    ProfileImageResponse uploadProfileImage(final long memberId, final MultipartFile file);
 }

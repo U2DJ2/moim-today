@@ -2,7 +2,13 @@ package moim_today.global.constant;
 
 public enum TimeConstant {
 
-    TEN_MINUTES(10);
+    TEN_MINUTES(10),
+    ONE_WEEK(1),
+    SIX_DAY(6),
+    DAYS_PER_WEEK(7),
+    WEEK_START_POINT(1),
+
+    FIVE_MINUTES_IN_SECONDS(300);
 
     private final int time;
 
