@@ -34,7 +34,7 @@ function SearchBar() {
           type="text"
           id="search"
           placeholder="Search"
-          className="flex-1 bg-zinc-50 my-auto text-lg tracking-tight leading-6 max-md:max-w-full outline-none"
+          className="flex-1 bg-zinc-50 my-auto text-lg tracking-tight leading-6 max-md:max-w-full focus:outline-none border-none"
           aria-label="Search"
         />
       </form>

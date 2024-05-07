@@ -1,6 +1,7 @@
 import React from "react";
 import icon from "../../assets/svg/personIcon.svg";
 import clock from "../../assets/svg/clockIcon.svg";
+
 function DetailedRight({ category, title, currentCount, capacity, contents }) {
   return (
     <div className="flex flex-col bg-white shadow-[0px_4px_12px_rgba(0,_0,_0,_0.06)] w-full rounded-3xl px-24 gap-8 h-full">
