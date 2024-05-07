@@ -142,9 +142,8 @@ public class MoimServiceImpl implements MoimService{
 
     @Override
     public void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest) {
-        long moimId = moimJoinRequest.moimId();
+        long enterMoimId = moimJoinRequest.moimId();
 
-        joinedMoimFinder.validateMemberNotInMoim(moimId, requestMemberId);
-        moimManager.appendMemberToMoim(requestMemberId, moimId);
+        moimManager.appendMemberToMoim(requestMemberId, enterMoimId);
     }
 }

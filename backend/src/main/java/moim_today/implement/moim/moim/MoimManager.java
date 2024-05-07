@@ -65,7 +65,6 @@ public class MoimManager {
     public void appendMemberToMoim(final long requestMemberId, final long moimId) {
         MoimJpaEntity enterMoimEntity = moimFinder.getById(moimId);
         moimFinder.validateCapacity(enterMoimEntity);
-        // TODO : 이미 참여중인 멤버인지 확인한다
         joinedMoimFinder.validateMemberNotInMoim(moimId, requestMemberId);
 
         joinedMoimAppender.createJoinedMoim(requestMemberId, moimId);
