@@ -1,7 +1,7 @@
 package moim_today.application.moim.moim;
 
 import moim_today.dto.moim.moim.*;
-import moim_today.dto.moim.moim.filter.MoimFilterRequest;
+import moim_today.dto.moim.moim.MoimFilterRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

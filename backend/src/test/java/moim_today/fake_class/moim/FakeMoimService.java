@@ -4,6 +4,7 @@ import moim_today.application.moim.moim.MoimService;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
+import moim_today.dto.moim.moim.MoimFilterRequest;
 import moim_today.dto.moim.moim.filter.MoimFilterRequest;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;

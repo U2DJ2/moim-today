@@ -4,7 +4,7 @@ import moim_today.application.moim.moim.MoimService;
 import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.moim.moim.*;
-import moim_today.dto.moim.moim.filter.MoimFilterRequest;
+import moim_today.dto.moim.moim.MoimFilterRequest;
 import moim_today.dto.moim.moim_notice.*;
 import moim_today.global.annotation.Login;
 import moim_today.global.response.CollectionResponse;
