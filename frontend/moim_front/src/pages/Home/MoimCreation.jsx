@@ -89,11 +89,7 @@ function InputField({ label, placeholder, setTitle, setContents }) {
       <div className="mt-2.5 text-xl font-Pretendard_Normal font-semibold leading-5 text-stone-500 max-md:max-w-full">
         {label}
       </div>
-<<<<<<< HEAD
-      <div className="justify-center px-4 py-2.5 mt-2 text-sm font-Pretendard_Medium leading-7 rounded-xl bg-neutral-50 text-black max-md:max-w-full">
-=======
       <div className="justify-center px-4 py-2.5 mt-2 text-xl font-Pretendard_Medium leading-7 rounded-xl bg-neutral-50 text-black max-md:max-w-full">
->>>>>>> fe/front/moim-creation
         <input
           type="text"
           className={`w-full bg-transparent outline-none`}
