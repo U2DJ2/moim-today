@@ -253,6 +253,9 @@ export default function MoimCreation() {
         <DatePicker
           selected={startDate}
           onChange={(date) => setStartDate(date)}
+          selectsStart
+          startDate={startDate}
+          endDate={endDate}
         />
         <InputField
           label="참여 인원"
