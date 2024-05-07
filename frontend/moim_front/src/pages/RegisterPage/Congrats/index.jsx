@@ -13,12 +13,12 @@ function Congrats({ setStep, step }) {
         titleColor={"white"}
         contentColor={"white"}
       />
-      <Button
-        name="바로 시작하기"
-        textColor={"white"}
-        bgColor={"black"}
+      <button
+        className="w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-white bg-black whitespace-nowrap rounded-[50px] font-Pretendard_Black font-black hover:cursor-pointer"
         onClick={() => setStep(step + 1)}
-      />
+      >
+        지금 시작하기
+      </button>
     </div>
   );
 }
