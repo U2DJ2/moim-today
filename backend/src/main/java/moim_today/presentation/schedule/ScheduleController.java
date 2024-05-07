@@ -12,7 +12,7 @@ import java.time.YearMonth;
 import java.util.List;
 
 
-@RequestMapping("/api")
+@RequestMapping("/api/schedules")
 @RestController
 public class ScheduleController {
 
@@ -22,61 +22,57 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
-    @GetMapping("/schedules/weekly")
+    @GetMapping("/weekly")
     public CollectionResponse<List<ScheduleResponse>> findAllByWeekly(@Login final MemberSession memberSession,
                                                                       @RequestParam final LocalDate startDate) {
         List<ScheduleResponse> scheduleResponses = scheduleService.findAllByWeekly(memberSession.id(), startDate);
         return CollectionResponse.of(scheduleResponses);
     }
 
-    @GetMapping("/schedules/weekly/{memberId}")
-    public CollectionResponse<List<ScheduleResponse>> findOtherByWeekly(@PathVariable final long memberId,
-                                                                        @RequestParam final LocalDate startDate) {
-        List<ScheduleResponse> scheduleResponses = scheduleService.findAllByWeekly(memberId, startDate);
-        return CollectionResponse.of(scheduleResponses);
-    }
-
-    @GetMapping("/schedules/weekly/available-time/{moimId}")
-    public CollectionResponse<List<AvailableTimeResponse>> findWeeklyAvailableTime(
+    @GetMapping("/weekly/available-time/moims/{moimId}")
+    public CollectionResponse<List<AvailableTimeInMoimResponse>> findAvailableTimeInMoim(
             @PathVariable final long moimId,
             @RequestParam final LocalDate startDate) {
-        List<AvailableTimeResponse> availableTimeResponses = scheduleService.findWeeklyAvailableTime(moimId, startDate);
-        return CollectionResponse.of(availableTimeResponses);
+        List<AvailableTimeInMoimResponse> availableTimeInMoimResponses =
+                scheduleService.findWeeklyAvailableTimeInMoim(moimId, startDate);
+        return CollectionResponse.of(availableTimeInMoimResponses);
     }
 
-    @GetMapping("/schedules/monthly")
+    @GetMapping("/weekly/available-time/members/{memberId}")
+    public CollectionResponse<List<AvailableTimeForMemberResponse>> findAvailableTimeForMember(
+            @PathVariable final long memberId,
+            @RequestParam final LocalDate startDate) {
+        List<AvailableTimeForMemberResponse> availableTimeInMoimResponses =
+                scheduleService.findWeeklyAvailableTimeForMember(memberId, startDate);
+        return CollectionResponse.of(availableTimeInMoimResponses);
+    }
+
+    @GetMapping("/monthly")
     public CollectionResponse<List<ScheduleResponse>> findAllByMonthly(@Login final MemberSession memberSession,
                                                                        @RequestParam final YearMonth yearMonth) {
         List<ScheduleResponse> scheduleResponses = scheduleService.findAllByMonthly(memberSession.id(), yearMonth);
         return CollectionResponse.of(scheduleResponses);
     }
 
-    @GetMapping("/schedules/monthly/{memberId}")
-    public CollectionResponse<List<ScheduleResponse>> findOtherByMonthly(@PathVariable final long memberId,
-                                                                         @RequestParam final YearMonth yearMonth) {
-        List<ScheduleResponse> scheduleResponses = scheduleService.findAllByMonthly(memberId, yearMonth);
-        return CollectionResponse.of(scheduleResponses);
-    }
-
-    @PostMapping("/schedules/timetable")
+    @PostMapping("/timetable")
     public void fetchTimeTable(@Login final MemberSession memberSession,
                                @RequestBody final TimeTableRequest timeTableRequest) {
         scheduleService.fetchTimeTable(memberSession.id(), timeTableRequest);
     }
 
-    @PostMapping("/schedules")
+    @PostMapping
     public void createSchedule(@Login final MemberSession memberSession,
                                @RequestBody final ScheduleCreateRequest scheduleCreateRequest) {
         scheduleService.createSchedule(memberSession.id(), scheduleCreateRequest);
     }
 
-    @PatchMapping("/schedules")
+    @PatchMapping
     public void updateSchedule(@Login final MemberSession memberSession,
                                @RequestBody final ScheduleUpdateRequest scheduleUpdateRequest) {
         scheduleService.updateSchedule(memberSession.id(), scheduleUpdateRequest);
     }
 
-    @DeleteMapping("/schedules")
+    @DeleteMapping
     public void deleteSchedule(@Login final MemberSession memberSession,
                                @RequestBody final ScheduleDeleteRequest scheduleDeleteRequest) {
         scheduleService.deleteSchedule(memberSession.id(), scheduleDeleteRequest.scheduleId());

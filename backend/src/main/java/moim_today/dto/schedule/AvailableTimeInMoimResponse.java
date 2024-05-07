@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Builder
-public record AvailableTimeResponse(
+public record AvailableTimeInMoimResponse(
         List<MemberSimpleResponse> members,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -23,20 +23,20 @@ public record AvailableTimeResponse(
         String colorHex
 ) {
 
-    public static List<AvailableTimeResponse> from(final List<AvailableTime> availableTimes) {
-        List<AvailableTimeResponse> availableTimeResponses = new ArrayList<>();
+    public static List<AvailableTimeInMoimResponse> from(final List<AvailableTime> availableTimes) {
+        List<AvailableTimeInMoimResponse> availableTimeInMoimResponses = new ArrayList<>();
 
         for (AvailableTime availableTime : availableTimes) {
             List<Member> members = availableTime.members();
-            AvailableTimeResponse availableTimeResponse = of(availableTime, members);
-            availableTimeResponses.add(availableTimeResponse);
+            AvailableTimeInMoimResponse availableTimeInMoimResponse = of(availableTime, members);
+            availableTimeInMoimResponses.add(availableTimeInMoimResponse);
         }
 
-        return availableTimeResponses;
+        return availableTimeInMoimResponses;
     }
 
-    private static AvailableTimeResponse of(final AvailableTime availableTime, final List<Member> members) {
-        return AvailableTimeResponse.builder()
+    private static AvailableTimeInMoimResponse of(final AvailableTime availableTime, final List<Member> members) {
+        return AvailableTimeInMoimResponse.builder()
                 .members(MemberSimpleResponse.of(members))
                 .startDateTime(availableTime.startDateTime())
                 .endDateTime(availableTime.endDateTime())
