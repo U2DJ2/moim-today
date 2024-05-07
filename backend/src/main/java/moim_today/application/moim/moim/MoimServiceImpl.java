@@ -1,6 +1,7 @@
 package moim_today.application.moim.moim;
 
 import moim_today.dto.moim.moim.*;
+import moim_today.dto.moim.moim.filter.MoimFilterRequest;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
 import moim_today.implement.meeting.meeting.MeetingFinder;
@@ -148,7 +149,7 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMoimResponseOrderByCreatedAt() {
-        return moimFinder.findAllOrderByCreatedAt();
+    public List<MoimSimpleResponse> findAllMoimResponse(final MoimFilterRequest moimFilterRequest) {
+        return moimFinder.findAllMoimResponse(moimFilterRequest);
     }
 }

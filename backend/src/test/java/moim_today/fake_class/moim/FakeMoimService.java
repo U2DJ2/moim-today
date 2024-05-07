@@ -4,6 +4,7 @@ import moim_today.application.moim.moim.MoimService;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
+import moim_today.dto.moim.moim.filter.MoimFilterRequest;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
 import moim_today.global.error.NotFoundException;
@@ -126,10 +127,10 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMoimResponseOrderByCreatedAt() {
+    public List<MoimSimpleResponse> findAllMoimResponse(final MoimFilterRequest moimFilterRequest) {
         MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
                 .moimId(1L)
-                .title(TITLE.value())
+                .title(MOIM_TITLE.value())
                 .capacity(CAPACITY.intValue())
                 .currentCount(CURRENT_COUNT.intValue())
                 .imageUrl(MOIM_IMAGE_URL.value())
@@ -139,7 +140,7 @@ public class FakeMoimService implements MoimService {
 
         MoimSimpleResponse moimSimpleResponse2 = MoimSimpleResponse.builder()
                 .moimId(2L)
-                .title(TITLE.value())
+                .title(MOIM_TITLE.value())
                 .capacity(CAPACITY.intValue())
                 .currentCount(CURRENT_COUNT.intValue())
                 .imageUrl(MOIM_IMAGE_URL.value())

@@ -5,6 +5,12 @@ import moim_today.application.moim.moim.MoimService;
 import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
+import moim_today.dto.moim.moim.MoimCreateRequest;
+import moim_today.dto.moim.moim.MoimDeleteRequest;
+import moim_today.dto.moim.moim.MoimMemberDeleteRequest;
+import moim_today.dto.moim.moim.MoimUpdateRequest;
+import moim_today.dto.moim.moim.filter.MoimFilterRequest;
+import moim_today.dto.moim.moim.filter.MoimSortedFilter;
 import moim_today.dto.moim.moim.*;
 import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
 import moim_today.dto.moim.moim_notice.MoimNoticeDeleteRequest;
@@ -143,16 +149,28 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("모임리스트를 최신 생성 기준으로 조회한다.")
+    @DisplayName("모임리스트를 조회한다.")
     @Test
     void findAllMoimSimpleResponseTest() throws Exception {
+        MoimFilterRequest moimFilterRequest = MoimFilterRequest.builder()
+                .moimCategory(MoimCategory.EXERCISE)
+                .moimSortedFilter(MoimSortedFilter.CREATED_AT)
+                .build();
 
-        mockMvc.perform(get("/api/moims/simple"))
+        mockMvc.perform(get("/api/moims/simple")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(moimFilterRequest)))
                 .andExpect(status().isOk())
-                .andDo(document("모임 리스트 조회 성공 - 최신 생성 순",
+                .andDo(document("모임 리스트 조회 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
-                                .summary("모임 리스트 조회 - 최신 생성 순")
+                                .summary("모임 리스트 조회")
+                                .requestFields(
+                                        fieldWithPath("moimCategory").type(VARIES).description(String.format("카테고리 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
+                                        fieldWithPath("moimSortedFilter").type(VARIES).description(String.format("정렬 기준 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimSortedFilter.class)))
+                                )
                                 .responseFields(
                                         fieldWithPath("data[0].moimId").type(NUMBER).description("모임 Id"),
                                         fieldWithPath("data[0].title").type(STRING).description("모임명"),

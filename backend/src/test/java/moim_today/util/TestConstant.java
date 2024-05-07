@@ -51,7 +51,7 @@ public enum TestConstant {
     MOIM_ID("1"),
     FORBIDDEN_MOIM_ID("9999"),
     FIRST_CREATED_MOIM_TITLE("first title"),
-    SECOND_CREATED_MOIM_TITLE("first title"),
+    SECOND_CREATED_MOIM_TITLE("second title"),
     MOIM_TITLE("moim title"),
     MOIM_CONTENTS("moim contents"),
     CAPACITY("5"),
