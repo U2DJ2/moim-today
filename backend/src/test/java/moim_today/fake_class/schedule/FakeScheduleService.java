@@ -54,7 +54,8 @@ public class FakeScheduleService implements ScheduleService {
     }
 
     @Override
-    public List<AvailableTimeResponse> findWeeklyAvailableTime(final long moimId, final LocalDate startDate) {
+    public List<AvailableTimeInMoimResponse> findWeeklyAvailableTimeInMoim(
+            final long moimId, final LocalDate startDate) {
         MemberSimpleResponse memberSimpleResponse1 = MemberSimpleResponse.builder()
                 .memberId(1)
                 .username(USERNAME.value())
@@ -77,28 +78,57 @@ public class FakeScheduleService implements ScheduleService {
         List<MemberSimpleResponse> memberSimpleResponses2 = List.of(memberSimpleResponse1, memberSimpleResponse2, memberSimpleResponse3);
         List<MemberSimpleResponse> memberSimpleResponses3 = List.of(memberSimpleResponse2);
 
-        AvailableTimeResponse availableTimeResponse1 = AvailableTimeResponse.builder()
+        AvailableTimeInMoimResponse availableTimeInMoimResponse1 = AvailableTimeInMoimResponse.builder()
                 .members(memberSimpleResponses1)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
                 .colorHex(AvailableColorHex.getHexByCount(2))
                 .build();
 
-        AvailableTimeResponse availableTimeResponse2 = AvailableTimeResponse.builder()
+        AvailableTimeInMoimResponse availableTimeInMoimResponse2 = AvailableTimeInMoimResponse.builder()
                 .members(memberSimpleResponses2)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 14, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 16, 0, 0))
                 .colorHex(AvailableColorHex.getHexByCount(3))
                 .build();
 
-        AvailableTimeResponse availableTimeResponse3 = AvailableTimeResponse.builder()
+        AvailableTimeInMoimResponse availableTimeInMoimResponse3 = AvailableTimeInMoimResponse.builder()
                 .members(memberSimpleResponses3)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 18, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 20, 0, 0))
                 .colorHex(AvailableColorHex.getHexByCount(1))
                 .build();
 
-        return List.of(availableTimeResponse1, availableTimeResponse2, availableTimeResponse3);
+        return List.of(availableTimeInMoimResponse1, availableTimeInMoimResponse2, availableTimeInMoimResponse3);
+    }
+
+    @Override
+    public List<AvailableTimeForMemberResponse> findWeeklyAvailableTimeForMember(
+            final long memberId, final LocalDate startDate) {
+
+        AvailableTimeForMemberResponse availableTimeForMemberResponse1 = AvailableTimeForMemberResponse.builder()
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
+                .colorHex(AvailableColorHex.getHexByCount(0))
+                .build();
+
+        AvailableTimeForMemberResponse availableTimeForMemberResponse2 = AvailableTimeForMemberResponse.builder()
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 14, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 16, 0, 0))
+                .colorHex(AvailableColorHex.getHexByCount(0))
+                .build();
+
+        AvailableTimeForMemberResponse availableTimeForMemberResponse3 = AvailableTimeForMemberResponse.builder()
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 18, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 20, 0, 0))
+                .colorHex(AvailableColorHex.getHexByCount(1))
+                .build();
+
+        return List.of(
+                availableTimeForMemberResponse1,
+                availableTimeForMemberResponse2,
+                availableTimeForMemberResponse3
+        );
     }
 
     @Override
