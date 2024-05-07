@@ -24,6 +24,7 @@
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
     "axios": "^1.6.8",
+    "date-fns": "^3.6.0",
     "little-state-machine": "^4.8.0",
     "npm": "^10.6.0",
     "prop-types": "^15.8.1",
