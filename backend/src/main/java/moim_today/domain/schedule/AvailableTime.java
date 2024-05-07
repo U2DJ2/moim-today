@@ -30,22 +30,17 @@ public record AvailableTime(
         LocalDateTime start = scheduleLocalDate.atWeeklyStartDateTime();
         LocalDateTime end = scheduleLocalDate.atWeeklyEndDateTime();
 
-        // 회원별로 일정을 그룹화하기 위해 Map을 사용
         Map<Long, List<MoimScheduleResponse>> schedulesByMember = Member.groupSchedulesByMember(moimScheduleResponses);
 
-        // 모든 시작 및 종료 시간을 모아 정렬된 고유 리스트 생성
         List<LocalDateTime> allTimes = getAllTimes(moimScheduleResponses, start, end);
         List<AvailableTime> availableTimes = new ArrayList<>();
 
-        // 연속된 기간에 대해 반복
         for (int i = 0; i < allTimes.size() - 1; i++) {
             LocalDateTime startDateTime = allTimes.get(i);
             LocalDateTime endDateTime = allTimes.get(i + 1);
 
-            // 해당 기간에 스케줄이 없는 회원을 필터링하여 상세 정보 수집
             List<Member> availableMembers = Member.filterByDateTime(schedulesByMember, startDateTime, endDateTime);
 
-            // 해당 기간에 스케줄이 없는 회원이 있다면 AvailableTime 객체 추가
             if (!availableMembers.isEmpty()) {
                 availableTimes.add(AvailableTime.toDomain(availableMembers, startDateTime, endDateTime));
             }

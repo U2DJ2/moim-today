@@ -3,6 +3,7 @@ package moim_today.dto.schedule;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
+import moim_today.domain.member.Member;
 
 import java.time.LocalDateTime;
 
@@ -22,5 +23,13 @@ public record MoimScheduleResponse(
 ) {
         @QueryProjection
         public MoimScheduleResponse {
+        }
+
+        public Member toDomain() {
+                return Member.builder()
+                        .memberId(memberId)
+                        .username(username)
+                        .memberProfileImageUrl(memberProfileImageUrl)
+                        .build();
         }
 }
