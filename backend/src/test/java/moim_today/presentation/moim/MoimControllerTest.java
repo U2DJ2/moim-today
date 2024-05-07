@@ -347,4 +347,104 @@ class MoimControllerTest extends ControllerTest {
                                 .build()
                         )));
     }
+
+    @DisplayName("모임 참여에 성공한다")
+    @Test
+    void appendMoimMemberTest() throws Exception {
+        MoimJoinRequest moimJoinRequest = MoimJoinRequest.builder()
+                .moimId(MOIM_ID.longValue())
+                .build();
+
+        mockMvc.perform(post("/api/moims/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimJoinRequest)))
+                .andExpect(status().isOk())
+                .andDo(document("멤버가 모임에 참여 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("멤버가 모임에 참여")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("참여할 모임 ID")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("이미 모임에 참여한 멤버면 실패한다")
+    @Test
+    void appendMoimMemberAlreadyJoinedMoimFailTest() throws Exception {
+        MoimJoinRequest moimJoinRequest = MoimJoinRequest.builder()
+                .moimId(MOIM_ID.longValue() + 1L)
+                .build();
+
+        mockMvc.perform(post("/api/moims/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimJoinRequest)))
+                .andExpect(status().isBadRequest())
+                .andDo(document("이미 모임에 참여한 멤버여서 실패",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("멤버가 모임에 참여")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("참여할 모임 ID")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임이 없어서 참여에 실패한다")
+    @Test
+    void appendMoimMemberNotFoundMoimFailTest() throws Exception {
+        MoimJoinRequest moimJoinRequest = MoimJoinRequest.builder()
+                .moimId(MOIM_ID.longValue() + 2L)
+                .build();
+
+        mockMvc.perform(post("/api/moims/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimJoinRequest)))
+                .andExpect(status().isNotFound())
+                .andDo(document("없는 모임이어서 실패",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("멤버가 모임에 참여")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("참여할 모임 ID")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임의 여석이 없어서 실패")
+    @Test
+    void appendMoimMemberCapacityFullMoimFailTest() throws Exception {
+        MoimJoinRequest moimJoinRequest = MoimJoinRequest.builder()
+                .moimId(MOIM_ID.longValue() + 3L)
+                .build();
+
+        mockMvc.perform(post("/api/moims/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimJoinRequest)))
+                .andExpect(status().isBadRequest())
+                .andDo(document("이미 모임에 참여한 멤버여서 실패",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("멤버가 모임에 참여")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("참여할 모임 ID")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
 }

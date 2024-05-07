@@ -4,15 +4,17 @@ import moim_today.application.moim.moim.MoimService;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
+import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
+import moim_today.global.error.NotFoundException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN;
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_HOST_ERROR;
+import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.MEMBER_ALREADY_JOINED;
+import static moim_today.global.constant.exception.MoimExceptionConstant.*;
 import static moim_today.util.TestConstant.*;
 
 public class FakeMoimService implements MoimService {
@@ -92,13 +94,13 @@ public class FakeMoimService implements MoimService {
         if (moimMemberForceDeleteRequest.moimId() != moimHostId) {
             throw new ForbiddenException(MOIM_FORBIDDEN.message());
         }
-        if(moimMemberForceDeleteRequest.deleteMemberId() == moimHostId){
+        else if(moimMemberForceDeleteRequest.deleteMemberId() == moimHostId){
             throw new ForbiddenException(MOIM_HOST_ERROR.message());
         }
     }
 
     @Override
-    public void deleteMember(final long requestMemberId, final long moimId) {
+    public void deleteMember(final long moimId, final MoimMemberDeleteRequest moimMemberDeleteRequest) {
         long moimHostId = MEMBER_ID.longValue();
         // 실제 로직과 다름
         if (moimId == moimHostId) {
@@ -108,6 +110,18 @@ public class FakeMoimService implements MoimService {
 
     @Override
     public void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest) {
-
+        // MOIM_ID , 모임에 멤버 참여, 성공
+        // MOIM_ID + 1 , 모임에 이미 참여한 멤버, 실패
+        // MOIM_ID + 2 , 없는 모임, 실패
+        // MOIM_ID + 3 , 모임 정원이 가득 참, 실패
+        if(moimJoinRequest.moimId() == MOIM_ID.longValue() + 1L){
+            throw new BadRequestException(MEMBER_ALREADY_JOINED.message());
+        }
+        else if(moimJoinRequest.moimId() == MOIM_ID.longValue() + 2L){
+            throw new NotFoundException(MOIM_NOT_FOUND_ERROR.message());
+        }
+        else if(moimJoinRequest.moimId() == MOIM_ID.longValue() + 3L){
+            throw new BadRequestException(MOIM_CAPACITY_ERROR.message());
+        }
     }
 }

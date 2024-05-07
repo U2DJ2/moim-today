@@ -61,7 +61,7 @@ public class MoimController {
     @DeleteMapping("/members")
     public void deleteMember(@Login final MemberSession memberSession,
                              @RequestBody final MoimMemberDeleteRequest moimMemberDeleteRequest){
-        moimService.deleteMember(memberSession.id(), moimMemberDeleteRequest.moimId());
+        moimService.deleteMember(moimMemberDeleteRequest.moimId(), moimMemberDeleteRequest);
     }
 
     @PostMapping("/members")
