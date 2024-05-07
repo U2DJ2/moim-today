@@ -433,7 +433,7 @@ class MoimControllerTest extends ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(moimJoinRequest)))
                 .andExpect(status().isBadRequest())
-                .andDo(document("이미 모임에 참여한 멤버여서 실패",
+                .andDo(document("모임의 여석이 없어서 실패",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
                                 .summary("멤버가 모임에 참여")
