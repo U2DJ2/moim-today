@@ -54,7 +54,8 @@ public class FakeScheduleService implements ScheduleService {
     }
 
     @Override
-    public List<AvailableTimeInMoimResponse> findWeeklyAvailableTimeInMoim(final long moimId, final LocalDate startDate) {
+    public List<AvailableTimeInMoimResponse> findWeeklyAvailableTimeInMoim(
+            final long moimId, final LocalDate startDate) {
         MemberSimpleResponse memberSimpleResponse1 = MemberSimpleResponse.builder()
                 .memberId(1)
                 .username(USERNAME.value())
@@ -102,8 +103,32 @@ public class FakeScheduleService implements ScheduleService {
     }
 
     @Override
-    public List<AvailableTimeForMemberResponse> findWeeklyAvailableTimeForMember(final long memberId, final LocalDate startDate) {
-        return List.of();
+    public List<AvailableTimeForMemberResponse> findWeeklyAvailableTimeForMember(
+            final long memberId, final LocalDate startDate) {
+
+        AvailableTimeForMemberResponse availableTimeForMemberResponse1 = AvailableTimeForMemberResponse.builder()
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
+                .colorHex(AvailableColorHex.getHexByCount(0))
+                .build();
+
+        AvailableTimeForMemberResponse availableTimeForMemberResponse2 = AvailableTimeForMemberResponse.builder()
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 14, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 16, 0, 0))
+                .colorHex(AvailableColorHex.getHexByCount(0))
+                .build();
+
+        AvailableTimeForMemberResponse availableTimeForMemberResponse3 = AvailableTimeForMemberResponse.builder()
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 18, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 20, 0, 0))
+                .colorHex(AvailableColorHex.getHexByCount(1))
+                .build();
+
+        return List.of(
+                availableTimeForMemberResponse1,
+                availableTimeForMemberResponse2,
+                availableTimeForMemberResponse3
+        );
     }
 
     @Override
