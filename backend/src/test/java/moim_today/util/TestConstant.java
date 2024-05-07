@@ -57,6 +57,7 @@ public enum TestConstant {
     CURRENT_COUNT("0"),
     VIEWS("10"),
 
+
     //공지
     NOTICE_ID("1"),
     FORBIDDEN_NOTICE_ID("9999"),
@@ -64,8 +65,9 @@ public enum TestConstant {
     NOTICE_TITLE("notice title"),
     NOTICE_CONTENTS("notice contents"),
 
-    
+
     // 스케줄
+    SCHEDULE_ID("1"),
     SCHEDULE_NAME("scheduleName"),
     NEW_SCHEDULE_NAME("new scheduleName"),
     FORBIDDEN_SCHEDULE_ID("9999"),

@@ -1,6 +1,8 @@
 package moim_today.implement.schedule.schedule;
 
+import moim_today.dto.schedule.MoimScheduleResponse;
 import moim_today.dto.schedule.ScheduleResponse;
+import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;
@@ -92,7 +94,7 @@ class ScheduleFinderTest extends ImplementTest {
 
     @DisplayName("Weekly 스케줄 조회는 시작 날짜의 7일 후 자정전까지 조회된다.")
     @Test
-    void findAllByWeeklyUntilNextMonthMidNight() {
+    void findAllByWeeklyUntilNextWeekMidNight() {
         // given
         long memberId = 1L;
         LocalDate startDate = LocalDate.of(2024, 3, 1);
@@ -100,18 +102,19 @@ class ScheduleFinderTest extends ImplementTest {
         ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
                 .memberId(memberId)
                 .scheduleName("스케줄명 1")
-                .startDateTime(LocalDateTime.of(2024, 3, 6, 22, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 3, 6, 23, 59, 59))
+                .startDateTime(LocalDateTime.of(2024, 3, 7, 22, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 7, 23, 59, 59))
                 .build();
 
         ScheduleJpaEntity afterScheduleJpaEntity = ScheduleJpaEntity.builder()
                 .memberId(memberId)
                 .scheduleName("스케줄명 2")
-                .startDateTime(LocalDateTime.of(2024, 3, 7, 0, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 3, 7, 2, 0, 0))
+                .startDateTime(LocalDateTime.of(2024, 3, 8, 0, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 8, 2, 0, 0))
                 .build();
 
         scheduleRepository.save(scheduleJpaEntity);
+        scheduleRepository.save(afterScheduleJpaEntity);
 
         // when
         List<ScheduleResponse> scheduleResponses = scheduleFinder.findAllByWeekly(memberId, startDate);
@@ -157,6 +160,186 @@ class ScheduleFinderTest extends ImplementTest {
 
         // then
         assertThat(scheduleResponses.size()).isEqualTo(3);
+    }
+
+    @DisplayName("해당 목록의 회원이 아니면 Weekly 스케줄은 조회되지 않는다.")
+    @Test
+    void findAllInOnlyMembersByDateTime() {
+        // given 2
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        MemberJpaEntity otherMemberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        memberRepository.save(otherMemberJpaEntity);
+
+        // given 2
+        LocalDate startDate = LocalDate.of(2024, 3, 1);
+
+        ScheduleJpaEntity scheduleJpaEntity1 = ScheduleJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .scheduleName("스케줄명 1")
+                .startDateTime(LocalDateTime.of(2024, 3, 2, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 2, 12, 0, 0))
+                .build();
+
+        ScheduleJpaEntity scheduleJpaEntity2 = ScheduleJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .scheduleName("스케줄명 2")
+                .startDateTime(LocalDateTime.of(2024, 3, 3, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 3, 12, 0, 0))
+                .build();
+
+        ScheduleJpaEntity scheduleJpaEntity3 = ScheduleJpaEntity.builder()
+                .memberId(otherMemberJpaEntity.getId())
+                .scheduleName("스케줄명 3")
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 0, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 2, 0, 0))
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity1);
+        scheduleRepository.save(scheduleJpaEntity2);
+        scheduleRepository.save(scheduleJpaEntity3);
+
+        // when
+        List<MoimScheduleResponse> moimScheduleResponses =
+                scheduleFinder.findAllInMembersByWeekly(List.of(memberJpaEntity.getId()), startDate);
+
+        // then
+        assertThat(moimScheduleResponses.size()).isEqualTo(2);
+    }
+
+    @DisplayName("해당 회원 목록의 Weekly 스케줄 조회는 시작 날짜의 자정부터 조회된다.")
+    @Test
+    void findAllInMembersByDateTimeStartWithMidNight() {
+        // given 2
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        MemberJpaEntity otherMemberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        memberRepository.save(otherMemberJpaEntity);
+
+        // given 2
+        LocalDate startDate = LocalDate.of(2024, 3, 1);
+
+        ScheduleJpaEntity scheduleJpaEntity1 = ScheduleJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .scheduleName("스케줄명 1")
+                .startDateTime(LocalDateTime.of(2024, 2, 29, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 2, 29, 11, 59, 59))
+                .build();
+
+        ScheduleJpaEntity scheduleJpaEntity2 = ScheduleJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .scheduleName("스케줄명 2")
+                .startDateTime(LocalDateTime.of(2024, 3, 1, 0, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 1, 2, 0, 0))
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity1);
+        scheduleRepository.save(scheduleJpaEntity2);
+
+        // when
+        List<MoimScheduleResponse> moimScheduleResponses =
+                scheduleFinder.findAllInMembersByWeekly(List.of(memberJpaEntity.getId()), startDate);
+
+        // then
+        assertThat(moimScheduleResponses.size()).isEqualTo(1);
+    }
+
+    @DisplayName("해당 회원 목록의 Weekly 스케줄 조회는 7일 후의 자정전까지 조회된다.")
+    @Test
+    void findAllInMembersByDateTimeUntilNextWeekMidNight() {
+        // given 2
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        MemberJpaEntity otherMemberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        memberRepository.save(otherMemberJpaEntity);
+
+        // given 2
+        LocalDate startDate = LocalDate.of(2024, 3, 1);
+
+        ScheduleJpaEntity scheduleJpaEntity1 = ScheduleJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .scheduleName("스케줄명 1")
+                .startDateTime(LocalDateTime.of(2024, 3, 1, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 1, 12, 0, 0))
+                .build();
+
+        ScheduleJpaEntity scheduleJpaEntity2 = ScheduleJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .scheduleName("스케줄명 2")
+                .startDateTime(LocalDateTime.of(2024, 3, 8, 0, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 8, 2, 0, 0))
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity1);
+        scheduleRepository.save(scheduleJpaEntity2);
+
+        // when
+        List<MoimScheduleResponse> moimScheduleResponses =
+                scheduleFinder.findAllInMembersByWeekly(List.of(memberJpaEntity.getId()), startDate);
+
+        // then
+        assertThat(moimScheduleResponses.size()).isEqualTo(1);
+    }
+
+    @DisplayName("해당 목록 회원들의 Weekly 스케줄은 조회한다.")
+    @Test
+    void findAllInMembersByDateTime() {
+        // given 2
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        MemberJpaEntity otherMemberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        memberRepository.save(otherMemberJpaEntity);
+
+        // given 2
+        LocalDate startDate = LocalDate.of(2024, 3, 1);
+
+        ScheduleJpaEntity scheduleJpaEntity1 = ScheduleJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .scheduleName("스케줄명 1")
+                .startDateTime(LocalDateTime.of(2024, 3, 1, 0, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 1, 2, 0, 0))
+                .build();
+
+        ScheduleJpaEntity scheduleJpaEntity2 = ScheduleJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .scheduleName("스케줄명 2")
+                .startDateTime(LocalDateTime.of(2024, 3, 7, 22, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 7, 23, 59, 59))
+                .build();
+
+        ScheduleJpaEntity scheduleJpaEntity3 = ScheduleJpaEntity.builder()
+                .memberId(otherMemberJpaEntity.getId())
+                .scheduleName("스케줄명 3")
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 0, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 2, 0, 0))
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity1);
+        scheduleRepository.save(scheduleJpaEntity2);
+        scheduleRepository.save(scheduleJpaEntity3);
+
+        // when
+        List<MoimScheduleResponse> moimScheduleResponses =
+                scheduleFinder.findAllInMembersByWeekly(List.of(memberJpaEntity.getId()), startDate);
+
+        // then
+        assertThat(moimScheduleResponses.size()).isEqualTo(2);
     }
 
     @DisplayName("다른 회원의 Monthly 스케줄은 조회되지 않는다.")

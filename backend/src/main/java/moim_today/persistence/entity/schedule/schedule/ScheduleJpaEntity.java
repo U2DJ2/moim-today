@@ -27,6 +27,9 @@ public class ScheduleJpaEntity extends BaseTimeEntity {
     private long memberId;
 
     @Association
+    private long moimId;
+
+    @Association
     private long meetingId;
 
     private String scheduleName;
@@ -44,10 +47,12 @@ public class ScheduleJpaEntity extends BaseTimeEntity {
     }
 
     @Builder
-    private ScheduleJpaEntity(final long memberId, final long meetingId, final String scheduleName,
-                              final DayOfWeek dayOfWeek, final String colorHex,
-                              final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
+    private ScheduleJpaEntity(final long memberId, final long moimId, final long meetingId,
+                             final String scheduleName, final DayOfWeek dayOfWeek,
+                             final String colorHex, final LocalDateTime startDateTime,
+                             final LocalDateTime endDateTime) {
         this.memberId = memberId;
+        this.moimId = moimId;
         this.meetingId = meetingId;
         this.scheduleName = scheduleName;
         this.dayOfWeek = dayOfWeek;
@@ -60,6 +65,7 @@ public class ScheduleJpaEntity extends BaseTimeEntity {
                                              final MeetingJpaEntity meetingJpaEntity) {
         return ScheduleJpaEntity.builder()
                 .memberId(memberId)
+                .moimId(meetingJpaEntity.getMoimId())
                 .meetingId(meetingJpaEntity.getId())
                 .scheduleName(moimTitle)
                 .dayOfWeek(meetingJpaEntity.getStartDateTime().getDayOfWeek())
