@@ -340,7 +340,7 @@ class MoimControllerTest extends ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(moimMemberDeleteRequest)))
                 .andExpect(status().isForbidden())
-                .andDo(document("모임 멤버 삭제 실패",
+                .andDo(document("모임에서 삭제할 멤버가 호스트면 실패",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
                                 .summary("모임에서 멤버 삭제")
