@@ -33,12 +33,12 @@ public class ScheduleFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<MoimScheduleResponse> findAllInMoimByWeekly(final List<Long> memberIds, final LocalDate startDate) {
+    public List<MoimScheduleResponse> findAllInMembersByWeekly(final List<Long> memberIds, final LocalDate startDate) {
         ScheduleLocalDate scheduleLocalDate = ScheduleLocalDate.from(startDate);
         LocalDateTime startDateTime = scheduleLocalDate.atWeeklyStartDateTime();
         LocalDateTime endDateTime = scheduleLocalDate.atWeeklyEndDateTime();
 
-        return scheduleRepository.findAllInMoimByWeekly(memberIds, startDateTime, endDateTime);
+        return scheduleRepository.findAllInMembersByDateTime(memberIds, startDateTime, endDateTime);
     }
 
     @Transactional(readOnly = true)

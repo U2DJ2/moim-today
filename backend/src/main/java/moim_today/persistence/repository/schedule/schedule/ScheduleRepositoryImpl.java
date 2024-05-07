@@ -76,7 +76,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     }
 
     @Override
-    public List<MoimScheduleResponse> findAllInMoimByWeekly(final List<Long> memberIds, final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
+    public List<MoimScheduleResponse> findAllInMembersByDateTime(final List<Long> memberIds, final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         return queryFactory.select(
                         new QMoimScheduleResponse(
                                 scheduleJpaEntity.id,

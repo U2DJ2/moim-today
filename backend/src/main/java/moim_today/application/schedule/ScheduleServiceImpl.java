@@ -47,7 +47,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public List<AvailableTimeResponse> findWeeklyAvailableTime(final long moimId, final LocalDate startDate) {
         List<Long> memberIds = joinedMoimFinder.findAllJoinedMemberId(moimId);
-        List<MoimScheduleResponse> moimScheduleResponses = scheduleFinder.findAllInMoimByWeekly(memberIds, startDate);
+        List<MoimScheduleResponse> moimScheduleResponses = scheduleFinder.findAllInMembersByWeekly(memberIds, startDate);
         List<AvailableTime> availableTimes = AvailableTime.calculateAvailableTimes(moimScheduleResponses, startDate);
 
         return AvailableTimeResponse.from(availableTimes);

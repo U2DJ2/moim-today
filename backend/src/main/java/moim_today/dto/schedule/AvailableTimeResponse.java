@@ -1,5 +1,6 @@
 package moim_today.dto.schedule;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import moim_today.domain.member.Member;
 import moim_today.domain.schedule.AvailableTime;
@@ -13,8 +14,12 @@ import java.util.List;
 @Builder
 public record AvailableTimeResponse(
         List<MemberSimpleResponse> members,
+
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         LocalDateTime startDateTime,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         LocalDateTime endDateTime,
+
         String colorHex
 ) {
 

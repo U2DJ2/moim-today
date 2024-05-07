@@ -2,6 +2,7 @@ package moim_today.domain.schedule.enums;
 
 public enum AvailableColorHex {
 
+    WHITE("#FFFFFF"),
     VERY_LIGHT_RED("#FFC0CB"),
     LIGHT_RED("#FF9999"),
     PALE_RED("#FF6666"),
@@ -25,7 +26,7 @@ public enum AvailableColorHex {
 
     public static String getHexByCount(final int index) {
         AvailableColorHex[] colors = AvailableColorHex.values();
-        int safeIndex = Math.min(index, colors.length);
+        int safeIndex = Math.min(index, colors.length - 1);
         return colors[safeIndex].colorHex;
     }
 }

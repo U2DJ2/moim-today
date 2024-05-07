@@ -18,7 +18,7 @@ public interface ScheduleRepository {
 
     List<ScheduleResponse> findAllByDateTime(final long memberId, final LocalDateTime startDateTime, final LocalDateTime endDateTime);
 
-    List<MoimScheduleResponse> findAllInMoimByWeekly(final List<Long> memberIds, final LocalDateTime startDateTime, final LocalDateTime endDateTime);
+    List<MoimScheduleResponse> findAllInMembersByDateTime(final List<Long> memberIds, final LocalDateTime startDateTime, final LocalDateTime endDateTime);
 
     ScheduleJpaEntity save(final ScheduleJpaEntity scheduleJpaEntity);
 
