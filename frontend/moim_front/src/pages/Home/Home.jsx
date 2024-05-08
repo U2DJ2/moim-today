@@ -100,7 +100,6 @@ function FilterBar() {
 function Home() {
   return (
     <div className="flex flex-col justify-between pb-20 bg-white">
-      <Header />
       <main className="flex flex-col self-center px-5 mt-9 max-w-full whitespace-nowrap w-[700px]">
         <h1 className="self-center text-9xl text-center text-scarlet max-md:text-9xl font-Praise sm:text-9xl md:text-9xl lg:text-9xl xl:text-9xl">
           Moim
@@ -108,7 +107,7 @@ function Home() {
         <SearchBar />
       </main>
       <FilterBar />
-      <div className="grid grid-cols-1 gap-10 mt-20 mx-auto md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-10 mt-20 mx-auto md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         <CardContainer
           image={cardImage}
           category={"# category"}

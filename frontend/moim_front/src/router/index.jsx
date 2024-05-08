@@ -1,6 +1,8 @@
 // React
 import { Routes, Route } from "react-router-dom";
 
+import MainLayout from "../components/MainLayout";
+
 // Pages : Home
 import HomePage from "../pages/Home/Home";
 import MoimCreationPage from "../pages/Home/MoimCreation";
@@ -28,15 +30,18 @@ import MoimJoinPage from "../pages/MoimJoinPage";
 function Router() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/join/:MoimId" element={<MoimJoinPage />} />
+        <Route path="/manage" element={<Manage />} />
+        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/schedule" element={<Schedule />} />
+        <Route path="/detailed/:MoimId" element={<MoimDetailPage />} />
+      </Route>
+
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/creation" element={<MoimCreationPage />} />
-      <Route path="/manage" element={<Manage />} />
-      <Route path="/calendar" element={<Calendar />} />
-      <Route path="/schedule" element={<Schedule />} />
-      <Route path="/detailed/:MoimId" element={<MoimDetailPage />} />
-      <Route path="/join/:MoimId" element={<MoimJoinPage />} />
     </Routes>
   );
 }

@@ -9,22 +9,27 @@ function MoimContainer({
   category,
   title,
   contents,
+  joined,
 }) {
   return (
-    <div className="grid grid-flow-col gap-9 px-24 min-h-screen">
-      <DetailedLeft
-        userName={userName}
-        title={title}
-        currentCount={currentCount}
-        capacity={capacity}
-      />
-      <DetailedRight
-        category={category}
-        title={title}
-        currentCount={currentCount}
-        capacity={capacity}
-        contents={contents}
-      />
+    <div className="bg-gradient-to-b from-white to-[#F6F8FE] min-h-screen ">
+      <div className="grid grid-flow-col gap-9 px-24 min-h-screen">
+        <DetailedLeft
+          userName={userName}
+          title={title}
+          currentCount={currentCount}
+          capacity={capacity}
+          joined={joined}
+        />
+        <DetailedRight
+          category={category}
+          title={title}
+          currentCount={currentCount}
+          capacity={capacity}
+          contents={contents}
+          className={"pl-3"}
+        />
+      </div>
     </div>
   );
 }
