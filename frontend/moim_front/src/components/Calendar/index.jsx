@@ -21,8 +21,11 @@ export default function Calendar({ selectedDate }) {
     // Get current year
     const currentYear = new Date().getFullYear();
 
+    // Fetch all events on component mount
     fetchAllEvents(currentYear).catch(console.error);
-  }, []); // Fetch all events on component mount
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (calendarRef.current && selectedDate) {
