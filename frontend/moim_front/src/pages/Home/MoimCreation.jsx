@@ -9,7 +9,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { POST } from "../../utils/axios";
 
-import DatePicker from "react-datepicker";
+import DatePicker from "../../components/DatePicker";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -32,7 +32,7 @@ function Dropdown({ options, onSelect }) {
     <Menu as="div" className="relative w-full py-2.5 inline-block text-left">
       <div>
         <Menu.Button className="inline-flex w-full justify-between items-center gap-x-1.5 rounded-xl bg-neutral-50 px-4 py-3.5 text-sm font-Pretendard_Medium text-black hover:bg-gray-50">
-          <span>{selectedOption}</span>
+          <span className="text-xl">{selectedOption}</span>
           <ChevronDownIcon
             className="h-5 w-5 text-gray-400 ml-auto"
             aria-hidden="true"
@@ -86,10 +86,10 @@ function InputField({ label, placeholder, setTitle, setContents }) {
   };
   return (
     <>
-      <div className="mt-2.5 text-sm font-semibold leading-5 text-stone-500 max-md:max-w-full">
+      <div className="mt-2.5 text-xl font-Pretendard_Normal font-semibold leading-5 text-stone-500 max-md:max-w-full">
         {label}
       </div>
-      <div className="justify-center px-4 py-2.5 mt-2 text-sm font-Pretendard_Medium leading-7 rounded-xl bg-neutral-50 text-black max-md:max-w-full">
+      <div className="justify-center px-4 py-2.5 mt-2 text-xl font-Pretendard_Medium leading-7 rounded-xl bg-neutral-50 text-black max-md:max-w-full">
         <input
           type="text"
           className={`w-full bg-transparent outline-none`}
@@ -211,7 +211,7 @@ export default function MoimCreation() {
   return (
     <div className="flex flex-col justify-center p-8 bg-white rounded-[32px] max-md:px-5">
       <header className="flex gap-0 justify-between font-semibold text-black leading-[150%] max-md:flex-wrap items-center">
-        <h1 className="flex-1 text-3xl max-md:max-w-full">
+        <h1 className="flex-1 text-4xl max-md:max-w-full font-Pretendard_Black">
           모임을 생성해주세요
         </h1>
         <div className="flex gap-2 justify-center py-3 text-lg whitespace-nowrap items-center">
@@ -219,11 +219,11 @@ export default function MoimCreation() {
             onChange={handleVisibility}
             inputProps={{ "aria-label": "controlled" }}
           />
-          <div>공개</div>
+          <div className=" font-Pretendard_Normal text-2xl">공개</div>
         </div>
       </header>
       <main>
-        <div className="mt-10 text-sm font-semibold leading-5 text-stone-500 max-md:max-w-full">
+        <div className="mt-10 text-xl font-Pretendard_Normal font-semibold leading-5 text-stone-500 max-md:max-w-full">
           카테고리
         </div>
         <Dropdown
@@ -242,17 +242,19 @@ export default function MoimCreation() {
           setContents={setContents}
           setTitle={setTitle}
         />
-        <div className="mt-2.5 text-sm font-semibold leading-5 text-stone-500 max-md:max-w-full">
-          이미지 올리세요
+        <div className="mt-2.5 text-xl font-Pretendard_Normal font-semibold leading-5 text-stone-500 max-md:max-w-full">
+          이미지를 업로드 해주세요
         </div>
         <ImageUploader />
-        <InputField
-          label="운영 기간"
-          placeholder="이거 클릭하면 Date Picker 떠야 됨"
-        />
+
+        <div className=" mt-2.5 text-xl font-Pretendard_Normal font-semibold leading-5 text-stone-500 max-md:max-w-full">
+          운영 기간
+        </div>
         <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
         />
         <InputField
           label="참여 인원"

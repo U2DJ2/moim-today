@@ -19,6 +19,7 @@ import MoimDetailPage from "../pages/MoimDetailPage";
 // Components
 import Calendar from "../components/Calendar";
 import TimeTable from "../pages/RegisterPage/TimeTable";
+import MoimJoinPage from "../pages/MoimJoinPage";
 
 /**
  * Basic Router
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/calendar" element={<Calendar />} />
       <Route path="/schedule" element={<Schedule />} />
       <Route path="/detailed/:MoimId" element={<MoimDetailPage />} />
+      <Route path="/join/:MoimId" element={<MoimJoinPage />} />
     </Routes>
   );
 }

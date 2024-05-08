@@ -26,6 +26,7 @@
     "@mui/x-date-pickers": "^7.3.2",
     "axios": "^1.6.8",
     "dayjs": "^1.11.11",
+    "date-fns": "^3.6.0",
     "little-state-machine": "^4.8.0",
     "npm": "^10.6.0",
     "prop-types": "^15.8.1",
