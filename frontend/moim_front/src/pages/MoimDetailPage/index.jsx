@@ -12,6 +12,7 @@ function MoimDetailPage() {
           title={"컴구 스터디 구합니다"}
           currentCount={7}
           capacity={10}
+          joined={false}
         />
         <DetailedRight
           category={"스터디"}
