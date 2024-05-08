@@ -152,8 +152,8 @@ function ImageUploader() {
 
 export default function MoimCreation() {
   // Check box 커스터마이징
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   /* moim 생성 data */
   const [title, setTitle] = useState("");
