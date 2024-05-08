@@ -1,13 +1,18 @@
 import React from "react";
 
-function CardComponent({ date, dday, title }) {
+function CardComponent({ date, dday, title, btn }) {
   return (
-    <div className=" w-60 justify-items-start p-4 grid font-Pretendard_Medium text-xl gap-4 bg-white shadow-[0px_1px_4px_rgba(0,_0,_0,_0.25)] rounded-3xl hover:cursor-pointer">
+    <div className="py-8 w-fit justify-items-start p-4 grid font-Pretendard_Medium text-xl gap-4 bg-white shadow-[0px_1px_4px_rgba(0,_0,_0,_0.25)] rounded-3xl hover:cursor-pointer">
       <div className="flex gap-3">
         <div className=" ">{date}</div>
         <div className=" text-scarlet">{dday}</div>
+        {btn && (
+          <button className="text-black bg-scarlet rounded-xl text-lg font-Pretendard_Medium px-2">
+            참석하기
+          </button>
+        )}
       </div>
-      <div className="">{title}</div>
+      <div className=" font-Pretendard_SemiBold">{title}</div>
     </div>
   );
 }
