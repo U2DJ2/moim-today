@@ -1,5 +1,9 @@
 // React
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+
+// Dayjs
+import dayjs from 'dayjs';
 
 // Icons
 import HomeIcon from '@mui/icons-material/Home';
@@ -9,6 +13,10 @@ import PersonalSection from "./PersonalSection";
 
 // CSS
 import "./style.css";
+
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 
 function SidebarElementIcon() {
     return (
@@ -27,8 +35,26 @@ function SidebarElementLink({ icon, text, color, onClick }) {
     );
 }
 
+function MiniCalendar({ onSelectDate }) {
+    // Get current date
+    var today = new Date();
+
+    const [value, setValue] = useState(dayjs(today));
+
+    const handleDateChange = (newValue) => {
+        setValue(newValue);
+        onSelectDate(newValue); // 선택된 날짜를 상위 컴포넌트로 전달
+    };
+
+    return (
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateCalendar value={value} onChange={handleDateChange} />
+        </LocalizationProvider>
+    );
+}
+
 // Sidebar 컴포넌트
-function Sidebar() {
+function Sidebar({ onSelectMiniCalendarDate }) {
     const navigate = useNavigate();
 
     // 홈 버튼 클릭 시 메인 페이지로 이동
@@ -45,18 +71,25 @@ function Sidebar() {
                 </div>
                 <div className="flex gap-2.5 mt-5"></div>
                 <SidebarElementLink icon={<HomeIcon />} text="홈" color="text-gray-400" className="mt-16 max-md:mt-10" onClick={handleHome} />
+                <MiniCalendar onSelectDate={onSelectMiniCalendarDate} />
             </div>
         </aside>
     );
 }
 
 export default function Schedule() {
+    const [selectedDate, setSelectedDate] = useState(null);
+
+    const handleMiniCalendarDateSelect = (date) => {
+        setSelectedDate(date);
+    };
+
     return (
         <div className="justify-between pt-9 bg-white h-screen flex flex-col">
             <div className="flex-1 overflow-auto">
                 <div className="flex gap-5 h-full w-full max-md:flex-col max-md:gap-0">
-                    <Sidebar />
-                    <PersonalSection />
+                    <Sidebar onSelectMiniCalendarDate={handleMiniCalendarDateSelect} />
+                    <PersonalSection selectedDate={selectedDate} />
                 </div>
             </div>
         </div>

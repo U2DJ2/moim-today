@@ -1,10 +1,69 @@
+// React
+import { useState, useEffect, useRef } from "react";
+
+// Axios
+import axios from "axios";
+
+// Full Calendar
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { INITIAL_EVENTS, createEventId } from "./event-utils";
 
-export default function Calendar() {
+// Temporary event ID generator
+let eventGuid = 0;
+
+export default function Calendar({ selectedDate }) {
+  const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    // Get current year
+    const currentYear = new Date().getFullYear();
+
+    fetchAllEvents(currentYear).catch(console.error);
+  }, []); // Fetch all events on component mount
+
+  useEffect(() => {
+    if (calendarRef.current && selectedDate) {
+      calendarRef.current.getApi().gotoDate(selectedDate.toDate());
+    }
+  }, [selectedDate]);
+
+  async function fetchAllEvents(year) {
+    try {
+      let allEvents = [];
+      for (let month = 1; month <= 8; month++) {
+        const response = await axios.get(
+          `https://api.moim.today/api/schedules/monthly?yearMonth=${year}-${month < 10 ? '0' + month : month}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // Add any other necessary headers or configurations
+          }
+        );
+        allEvents = [...allEvents, ...response.data.data.map(mapEventData)];
+      }
+      setEvents(allEvents);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    }
+  }
+
+  // Function to map event data
+  function mapEventData(event) {
+    return {
+      id: event.scheduleId,
+      title: event.scheduleName,
+      start: event.startDateTime,
+      end: event.endDateTime,
+      allDay: false, // Assuming all events fetched are not all-day events
+      backgroundColor: event.colorHex,
+    };
+  }
+
+  // Function to handle date selection
   function handleDateSelect(selectInfo) {
     let title = prompt("Please enter a new title for your event");
     let calendarApi = selectInfo.view.calendar;
@@ -22,6 +81,7 @@ export default function Calendar() {
     }
   }
 
+  // Function to handle event click
   function handleEventClick(clickInfo) {
     if (
       confirm(
@@ -32,26 +92,33 @@ export default function Calendar() {
     }
   }
 
+  // Function to create unique event ID
+  function createEventId() {
+    return String(eventGuid++);
+  }
+
   return (
     <div className="demo-app">
       <div className="demo-app-main">
         <FullCalendar
+          ref={calendarRef} // 2. FullCalendar 컴포넌트에 ref 추가
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
             left: "prev,next today",
             center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay",
+            right: "dayGridMonth,timeGridWeek",
           }}
-          initialView="dayGridMonth"
+          initialView="timeGridWeek"
           editable={true}
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
+          events={events}
           select={handleDateSelect}
           eventContent={renderEventContent} // custom render function
           eventClick={handleEventClick}
-        /* you can update a remote database when these fire:
+        // you can update a remote database when these fire:
+        /*
         eventAdd={function(){}}
         eventChange={function(){}}
         eventRemove={function(){}}

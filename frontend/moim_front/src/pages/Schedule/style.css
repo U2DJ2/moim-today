@@ -2,3 +2,12 @@
     height: 100vh;
     /* 섹션을 화면의 높이만큼 채우도록 설정 */
 }
+
+.MuiDateCalendar-root {
+    flex: 1; /* 사이드바의 남은 공간을 차지하도록 flex 속성 추가 */
+    max-width: 100%; /* 최대 너비를 100%로 설정하여 부모 요소에 맞춤 */
+}
+
+.MuiPickersCalendarHeader-root
+{
+}
