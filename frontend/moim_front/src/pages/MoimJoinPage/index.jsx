@@ -1,9 +1,18 @@
 import React, { useState } from "react";
 import MoimContainer from "../../components/PageContainer/MoimContainer";
 import DetailedLeft from "../../components/DetailedLeft";
+import MoimHome from "./MoimHome";
+import AvailableTime from "./AvailableTime";
+import ToDo from "./ToDo";
+import Member from "./Member";
 
 function MoimJoinPage() {
   const [selected, setSelected] = useState("HOME");
+  const [step, setStep] = useState(0);
+  const tapClick = async () => {
+    if (selected === "HOME") {
+    }
+  };
   return (
     <div className="bg-gradient-to-b from-white to-[#F6F8FE] min-h-screen ">
       <div className="grid grid-flow-col gap-9 px-24 min-h-screen">
@@ -22,7 +31,7 @@ function MoimJoinPage() {
           <div className="flex justify-center items-center self-start px-16 font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
             <div className="flex gap-3">
               <div
-                className={`justify-center px-9 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
+                className={`justify-center px-9 py-3 rounded-[64px] text-xl max-md:px-5 cursor-pointer ${
                   selected === "HOME" ? "bg-gray-200" : ""
                 }`}
                 onClick={() => setSelected("HOME")}
@@ -30,7 +39,7 @@ function MoimJoinPage() {
                 HOME
               </div>
               <div
-                className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
+                className={`justify-center px-6 py-3 rounded-[64px] text-xl max-md:px-5 cursor-pointer ${
                   selected === "되는시간" ? "bg-gray-200" : ""
                 }`}
                 onClick={() => setSelected("되는시간")}
@@ -38,7 +47,7 @@ function MoimJoinPage() {
                 되는시간
               </div>
               <div
-                className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
+                className={`justify-center px-6 py-3 rounded-[64px] text-xl max-md:px-5 cursor-pointer ${
                   selected === "ToDo" ? "bg-gray-200" : ""
                 }`}
                 onClick={() => setSelected("ToDo")}
@@ -46,7 +55,7 @@ function MoimJoinPage() {
                 ToDo
               </div>
               <div
-                className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
+                className={`justify-center px-6 py-3 rounded-[64px] text-xl max-md:px-5 cursor-pointer ${
                   selected === "멤버" ? "bg-gray-200" : ""
                 }`}
                 onClick={() => setSelected("멤버")}
@@ -55,6 +64,15 @@ function MoimJoinPage() {
               </div>
             </div>
           </div>
+          {selected === "HOME" ? (
+            <MoimHome />
+          ) : selected === "되는시간" ? (
+            <AvailableTime />
+          ) : selected === "ToDo" ? (
+            <ToDo />
+          ) : selected === "멤버" ? (
+            <Member />
+          ) : null}
         </div>
       </div>
     </div>
