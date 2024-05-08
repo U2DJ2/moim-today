@@ -16,7 +16,10 @@ export default function Simple({ options, onSelect }) {
   };
 
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu
+      as="div"
+      className="relative inline-block text-left font-Pretendard_Normal"
+    >
       <div>
         <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-4 py-3 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50">
           {selectedOption}
