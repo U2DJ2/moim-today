@@ -8,49 +8,9 @@ import Member from "./Member";
 
 function MoimJoinPage() {
   const [selected, setSelected] = useState("HOME");
-  const [step, setStep] = useState(0);
-  const tapClick = async () => {
-    if (selected === "HOME") {
-    }
-  };
-  return (
-    //     <div className="w-full relative h-[808px] flex flex-row items-center justify-start py-0 px-9 box-border gap-[36px] text-center text-[32px] text-darkslategray font-headline-h5">
-    //       <div className="self-stretch w-[315px] flex flex-col items-center justify-start pt-0 px-0 pb-2.5 box-border">
-    //         <div className="self-stretch flex flex-col items-center justify-start">
-    //           <img
-    //             className="self-stretch rounded-t-xl rounded-b-none max-w-full overflow-hidden h-[241px] shrink-0 object-cover"
-    //             alt=""
-    //             src="card-image.png"
-    //           />
-    //         </div>
-    //         <div className="self-stretch flex flex-col items-center justify-start gap-[20px]">
-    //           <div className="w-56 h-[60px]" />
-    //         </div>
-    //       </div>
-    //       <div className="w-[939px] relative shadow-[0px_4px_12px_rgba(0,_0,_0,_0.06)] rounded-[30px] bg-white h-[808px] overflow-hidden shrink-0 text-left text-21xl text-black">
-    //         <div className="absolute top-[50px] left-[34px] flex flex-row items-start justify-start text-center font-roboto-flex">
-    //           <div className="flex flex-row items-center justify-center gap-[40px]">
-    //             <div className="flex flex-row items-center justify-center py-0 px-3.5">
-    //               <div className="relative font-semibold">HOME</div>
-    //             </div>
-    //             <div className="flex flex-row items-center justify-center py-0 px-1">
-    //               <div className="relative font-semibold">되는시간</div>
-    //             </div>
-    //             <div className="flex flex-col items-center justify-center py-1 px-0 text-crimson">
-    //               <div className="relative font-semibold">TODO</div>
-    //               <div className="w-[82px] relative box-border h-0.5 border-t-[2px] border-solid border-crimson" />
-    //             </div>
-    //             <div className="flex flex-row items-center justify-center py-0 px-[27px]">
-    //               <div className="relative font-semibold">멤버</div>
-    //             </div>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   );
-    // }
 
-    <div className="w-full bg-gradient-to-b from-white to-[#F6F8FE] grid grid-flow-col justify-start gap-9 px-24 min-h-screen">
+  return (
+    <div className="flex w-screen min-h-full screen bg-gradient-to-b from-white to-[#F6F8FE] justify-start gap-9 px-24">
       <DetailedLeft
         userName={"김유림"}
         title={"컴구 스터디 구합니다"}
@@ -62,7 +22,7 @@ function MoimJoinPage() {
         }
         joined={true}
       />
-      <div className="flex flex-col flex-1 bg-white shadow-[0px_4px_12px_rgba(0,_0,_0,_0.06)] w-full rounded-3xl px-24 gap-16 h-full">
+      <div className="flex flex-col basis-4/5 bg-white shadow-[0px_4px_12px_rgba(0,_0,_0,_0.06)] rounded-3xl px-24 gap-16 h-5/6 pb-16">
         <div className="flex justify-center items-center self-start px-16 font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
           <div className="flex gap-3">
             <div
