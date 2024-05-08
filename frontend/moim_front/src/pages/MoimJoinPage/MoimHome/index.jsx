@@ -5,10 +5,20 @@ function MoimHome() {
   const onSelect = (option) => {
     console.log(option);
   };
+  const noticeHandler = () => {};
   return (
     <div className="flex flex-col gap-24">
       <div className="grid gap-4">
-        <div className="text-4xl font-Pretendard_Black">공지사항</div>
+        <div className="flex gap-4 text-center">
+          <div className="text-4xl font-Pretendard_Black">공지사항</div>
+          <div
+            className="flex items-center font-Pretendard_Light hover:text-scarlet hover:cursor-pointer"
+            onClick={noticeHandler}
+          >
+            더보기
+          </div>
+        </div>
+
         <div className="flex gap-12">
           <CardComponent
             date={"4월 15일 (월)"}

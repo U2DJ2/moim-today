@@ -12,7 +12,7 @@ function CardContainer({
 
   return (
     <div
-      className="card-container hover:cursor-pointer hover:animate-pulse"
+      className=" w-full hover:cursor-pointer hover:animate-pulse"
       onClick={() => navigate(`/detailed/${moimId}`)}
     >
       <img
@@ -22,17 +22,17 @@ function CardContainer({
       />
       <div className="bg-white w-auto h-auto drop-shadow rounded-b-3xl flex flex-col gap-5 py-3 px-16  ">
         <div className="flex flex-col gap-5">
-          <div className="flex flex-col justify-items-center">
+          <div className="flex flex-col flex-wrap content-center">
             <div className=" font-Pretendard_Normal text-base text-[#A1A3A5]">
               {category}
             </div>
             <div className=" font-Pretendard_SemiBold text-3xl">{title}</div>
-          </div>
-          <div className="flex font-Pretendard_SemiBold text-[#6F6F6F] ">
-            <img src={people} />
-            <div>{currentCount}</div>
-            <div>/</div>
-            <div>{capacity}</div>
+            <div className="flex font-Pretendard_SemiBold text-[#6F6F6F] ">
+              <img src={people} />
+              <div>{currentCount}</div>
+              <div>/</div>
+              <div>{capacity}</div>
+            </div>
           </div>
         </div>
       </div>

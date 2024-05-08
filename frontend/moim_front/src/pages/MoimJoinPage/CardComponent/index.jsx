@@ -7,7 +7,7 @@ function CardComponent({ date, dday, title, btn }) {
         <div className=" ">{date}</div>
         <div className=" text-scarlet">{dday}</div>
         {btn && (
-          <button className="text-black bg-scarlet rounded-xl text-lg font-Pretendard_Medium px-2">
+          <button className="text-black bg-scarlet rounded-xl text-base font-Pretendard_Medium px-2 hover:text-white">
             참석하기
           </button>
         )}
