@@ -19,11 +19,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -42,7 +40,7 @@ class MemberControllerTest extends ControllerTest {
     @Test
     void recoverPassword() throws Exception {
         PasswordRecoverRequest passwordRecoverRequest =
-                new PasswordRecoverRequest(CERTIFICATION_TOKEN.value(),NEW_PASSWORD.value());
+                new PasswordRecoverRequest(CERTIFICATION_TOKEN.value(), NEW_PASSWORD.value());
         String json = objectMapper.writeValueAsString(passwordRecoverRequest);
 
         mockMvc.perform(post("/api/members/password-recovery")
@@ -66,7 +64,7 @@ class MemberControllerTest extends ControllerTest {
     @Test
     void recoverPasswordFail() throws Exception {
         PasswordRecoverRequest passwordRecoverRequest =
-                new PasswordRecoverRequest(WRONG_CERTIFICATION_TOKEN.value(),NEW_PASSWORD.value());
+                new PasswordRecoverRequest(WRONG_CERTIFICATION_TOKEN.value(), NEW_PASSWORD.value());
         String json = objectMapper.writeValueAsString(passwordRecoverRequest);
 
         mockMvc.perform(post("/api/members/password-recovery")
@@ -181,7 +179,7 @@ class MemberControllerTest extends ControllerTest {
                         requestParts(
                                 partWithName("file").description("프로필 이미지")
                         )
-                        ,resource(ResourceSnippetParameters.builder()
+                        , resource(ResourceSnippetParameters.builder()
                                 .tag("회원")
                                 .summary("프로필 이미지 업로드/수정")
                                 .responseFields(
@@ -191,4 +189,28 @@ class MemberControllerTest extends ControllerTest {
                         )
                 ));
     }
+
+    @DisplayName("멤버가 모임의 호스트인지 검사한다")
+    @Test
+    void isHostTest() throws Exception {
+        mockMvc.perform(
+                        get("/api/members/{moimId}/hosts", 1L)
+                                .param("moimId", MOIM_ID.value())
+                                .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("모임의 호스트인지 검사",
+                        pathParameters(
+                                parameterWithName("moimId").description("모임 id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("멤버")
+                                .summary("모임의 호스트인지 검사")
+                                .responseFields(
+                                        fieldWithPath("isHost").type(BOOLEAN).description("호스트 여부")
+                                )
+                                .build()
+                        )));
+    }
+
 }

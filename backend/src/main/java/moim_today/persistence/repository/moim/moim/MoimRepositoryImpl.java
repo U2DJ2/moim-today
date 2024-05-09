@@ -1,11 +1,13 @@
 package moim_today.persistence.repository.moim.moim;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.LockModeType;
 import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.dto.moim.moim.QMoimDateResponse;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_NOT_FOUND_ERROR;
 import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.*;
@@ -71,5 +73,15 @@ public class MoimRepositoryImpl implements MoimRepository {
                 .where(moimJpaEntity.id.eq(moimId))
                 .stream().findAny()
                 .orElseThrow(() -> new NotFoundException(MOIM_NOT_FOUND_ERROR.message()));
+    }
+
+    @Transactional
+    @Override
+    public MoimJpaEntity getByIdWithPessimisticLock(final long moimId) {
+        return queryFactory
+                .selectFrom(moimJpaEntity)
+                .where(moimJpaEntity.id.eq(moimId))
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+                .fetchFirst();
     }
 }

@@ -44,4 +44,10 @@ public class MemberController {
                                                    @RequestPart final MultipartFile file) {
         return memberService.uploadProfileImage(memberSession.id(), file);
     }
+
+    @GetMapping("/{moimId}/hosts")
+    public MemberHostResponse isHost(@Login final MemberSession memberSession,
+                          @PathVariable final long moimId){
+        return memberService.isHost(memberSession.id(), moimId);
+    }
 }

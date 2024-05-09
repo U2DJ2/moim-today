@@ -32,7 +32,7 @@ public class MoimNoticeUpdater {
                                  final MoimNoticeUpdateRequest moimNoticeUpdateRequest) {
         MoimNoticeJpaEntity moimNoticeJpaEntity = moimNoticeRepository.getById(moimNoticeUpdateRequest.moimNoticeId());
         MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
-        moimJpaEntity.validateMember(memberId);
+        moimJpaEntity.validateHostMember(memberId);
         moimNoticeJpaEntity.updateMoimNotice(moimNoticeUpdateRequest);
     }
 }

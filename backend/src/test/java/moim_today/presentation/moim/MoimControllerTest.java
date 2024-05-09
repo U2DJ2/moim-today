@@ -2,12 +2,10 @@ package moim_today.presentation.moim;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.moim.moim.MoimService;
+import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.moim.MoimCreateRequest;
-import moim_today.dto.moim.moim.MoimDeleteRequest;
-import moim_today.dto.moim.moim.MoimMemberDeleteRequest;
-import moim_today.dto.moim.moim.MoimUpdateRequest;
+import moim_today.dto.moim.moim.*;
 import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
 import moim_today.dto.moim.moim_notice.MoimNoticeDeleteRequest;
 import moim_today.dto.moim.moim_notice.MoimNoticeUpdateRequest;
@@ -22,9 +20,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import java.time.LocalDate;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
-import static moim_today.global.constant.StatusCodeConstant.FORBIDDEN;
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
-import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -37,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MoimControllerTest extends ControllerTest {
 
     private final MoimService fakeMoimService = new FakeMoimService();
-    private final FakeMoimNoticeService fakeMoimNoticeService = new FakeMoimNoticeService();
+    private final MoimNoticeService fakeMoimNoticeService = new FakeMoimNoticeService();
 
     @Override
     protected Object initController() {
@@ -208,16 +203,16 @@ class MoimControllerTest extends ControllerTest {
     @DisplayName("모임에서 멤버를 조회한다")
     @Test
     void showMoimMemberTest() throws Exception {
-        mockMvc.perform(get("/api/moims/members")
+        mockMvc.perform(get("/api/moims/members/{moimId}", 1L)
                         .param("moimId", MEMBER_ID.value()))
                 .andExpect(status().isOk())
-                .andDo(document("모임 멤버 조회 성공",
+                .andDo(document("모임 멤버 조회",
+                        pathParameters(
+                                parameterWithName("moimId").description("모임 ID")
+                        ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
                                 .summary("모임에서 멤버 조회 성공")
-                                .queryParameters(
-                                        parameterWithName("moimId").description("모임 ID")
-                                )
                                 .responseFields(
                                         fieldWithPath("isHostRequest").type(BOOLEAN).description("호스트의 요청 여부"),
                                         fieldWithPath("moimMembers[].isHost").type(BOOLEAN).description("해당 멤버가 호스트인지 여부"),
@@ -225,18 +220,98 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("moimMembers[].memberName").type(STRING).description("멤버 이름"),
                                         fieldWithPath("moimMembers[].joinedDate").type(STRING).description("참여 날짜")
                                                 .attributes(key("format").value("yyyy-MM-dd'T'HH:mm:ss"),
-                                                        key("timezone").value("Asia/Seoul"))
+                                                        key("timezone").value("Asia/Seoul")),
+                                        fieldWithPath("moimMembers[].profileImageUrl").type(STRING).description("프로필 이미지 URL")
                                 )
                                 .build()
                         )));
     }
 
-    @DisplayName("모임에서 멤버를 추방시킨다")
+    @DisplayName("모임에서 멤버를 강퇴시킨다")
+    @Test
+    void deleteForceMoimMemberTest() throws Exception {
+        MoimMemberKickRequest moimMemberKickRequest = MoimMemberKickRequest.builder()
+                .deleteMemberId(MEMBER_ID.longValue() + 1L)
+                .moimId(MOIM_ID.longValue())
+                .build();
+
+        mockMvc.perform(delete("/api/moims/members/kick")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimMemberKickRequest)))
+                .andExpect(status().isOk())
+                .andDo(document("모임 멤버 강제 퇴장 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("모임에서 멤버 강제 퇴장")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("강퇴가 일어날 모임 ID"),
+                                        fieldWithPath("deleteMemberId").type(NUMBER).description("강퇴시킬 멤버 ID")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임에서 멤버를 강퇴시킬 때 호스트가 아닌 경우 에러가 발생한다")
+    @Test
+    void deleteForceMoimMemberNotHostTest() throws Exception {
+        MoimMemberKickRequest moimMemberKickRequest = MoimMemberKickRequest.builder()
+                .deleteMemberId(MEMBER_ID.longValue() + 1L)
+                .moimId(MOIM_ID.longValue() + 1L)
+                .build();
+
+        mockMvc.perform(delete("/api/moims/members/kick")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimMemberKickRequest)))
+                .andExpect(status().isForbidden())
+                .andDo(document("모임에서 호스트가 아닐 경우 멤버 강제 퇴장 실패",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("모임에서 멤버 강제 퇴장")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("강퇴가 일어날 모임 ID"),
+                                        fieldWithPath("deleteMemberId").type(NUMBER).description("강퇴시킬 멤버 ID")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임에서 강퇴할 멤버가 호스트인 경우 에러가 발생한다")
+    @Test
+    void deleteForceMoimMemberHostFailTest() throws Exception {
+        MoimMemberKickRequest moimMemberKickRequest = MoimMemberKickRequest.builder()
+                .deleteMemberId(MEMBER_ID.longValue())
+                .moimId(MOIM_ID.longValue())
+                .build();
+
+        mockMvc.perform(delete("/api/moims/members/kick")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimMemberKickRequest)))
+                .andExpect(status().isForbidden())
+                .andDo(document("모임에서 강제 퇴장할 멤버가 호스트일 경우 실패",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("모임에서 멤버 강제 퇴장")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("강퇴가 일어날 모임 ID"),
+                                        fieldWithPath("deleteMemberId").type(NUMBER).description("강퇴시킬 멤버 ID")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임에서 멤버가 탈퇴한다")
     @Test
     void deleteMoimMemberTest() throws Exception {
         MoimMemberDeleteRequest moimMemberDeleteRequest = MoimMemberDeleteRequest.builder()
-                .memberId(MEMBER_ID.longValue())
-                .moimId(MOIM_ID.longValue())
+                .moimId(MOIM_ID.longValue() + 2L)
                 .build();
 
         mockMvc.perform(delete("/api/moims/members")
@@ -248,18 +323,16 @@ class MoimControllerTest extends ControllerTest {
                                 .tag("모임")
                                 .summary("모임에서 멤버 삭제")
                                 .requestFields(
-                                        fieldWithPath("moimId").type(NUMBER).description("추방이 일어날 모임 ID"),
-                                        fieldWithPath("memberId").type(NUMBER).description("추방시킬 멤버 ID")
+                                        fieldWithPath("moimId").type(NUMBER).description("탈퇴할 모임 ID")
                                 )
                                 .build()
                         )));
     }
 
-    @DisplayName("모임에서 멤버를 추방시킬 때 호스트가 아닌 경우 에러가 발생한다")
+    @DisplayName("모임에서 탈퇴할 멤버가 호스트면 실패한다")
     @Test
-    void deleteMoimMemberNotHostTest() throws Exception {
+    void deleteMoimMemberFailTest() throws Exception {
         MoimMemberDeleteRequest moimMemberDeleteRequest = MoimMemberDeleteRequest.builder()
-                .memberId(MEMBER_ID.longValue() + 1L)
                 .moimId(MOIM_ID.longValue())
                 .build();
 
@@ -267,13 +340,112 @@ class MoimControllerTest extends ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(moimMemberDeleteRequest)))
                 .andExpect(status().isForbidden())
-                .andDo(document("모임에서 호스트가 아닐 경우 멤버 삭제 실패",
+                .andDo(document("모임에서 삭제할 멤버가 호스트면 실패",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
                                 .summary("모임에서 멤버 삭제")
                                 .requestFields(
-                                        fieldWithPath("moimId").type(NUMBER).description("추방이 일어날 모임 ID"),
-                                        fieldWithPath("memberId").type(NUMBER).description("추방시킬 멤버 ID")
+                                        fieldWithPath("moimId").type(NUMBER).description("탈퇴할 모임 ID")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임 참여에 성공한다")
+    @Test
+    void appendMoimMemberTest() throws Exception {
+        MoimJoinRequest moimJoinRequest = MoimJoinRequest.builder()
+                .moimId(MOIM_ID.longValue())
+                .build();
+
+        mockMvc.perform(post("/api/moims/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimJoinRequest)))
+                .andExpect(status().isOk())
+                .andDo(document("멤버가 모임에 참여 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("멤버가 모임에 참여")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("참여할 모임 ID")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("이미 모임에 참여한 멤버면 실패한다")
+    @Test
+    void appendMoimMemberAlreadyJoinedMoimFailTest() throws Exception {
+        MoimJoinRequest moimJoinRequest = MoimJoinRequest.builder()
+                .moimId(MOIM_ID.longValue() + 1L)
+                .build();
+
+        mockMvc.perform(post("/api/moims/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimJoinRequest)))
+                .andExpect(status().isBadRequest())
+                .andDo(document("이미 모임에 참여한 멤버여서 실패",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("멤버가 모임에 참여")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("참여할 모임 ID")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임이 없어서 참여에 실패한다")
+    @Test
+    void appendMoimMemberNotFoundMoimFailTest() throws Exception {
+        MoimJoinRequest moimJoinRequest = MoimJoinRequest.builder()
+                .moimId(MOIM_ID.longValue() + 2L)
+                .build();
+
+        mockMvc.perform(post("/api/moims/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimJoinRequest)))
+                .andExpect(status().isNotFound())
+                .andDo(document("없는 모임이어서 실패",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("멤버가 모임에 참여")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("참여할 모임 ID")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임의 여석이 없어서 실패")
+    @Test
+    void appendMoimMemberCapacityFullMoimFailTest() throws Exception {
+        MoimJoinRequest moimJoinRequest = MoimJoinRequest.builder()
+                .moimId(MOIM_ID.longValue() + 3L)
+                .build();
+
+        mockMvc.perform(post("/api/moims/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimJoinRequest)))
+                .andExpect(status().isBadRequest())
+                .andDo(document("모임의 여석이 없어서 실패",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("멤버가 모임에 참여")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("참여할 모임 ID")
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),

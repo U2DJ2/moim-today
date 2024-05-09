@@ -3,7 +3,7 @@ package moim_today.dto.moim.moim;
 import lombok.Builder;
 
 @Builder
-public record MoimMemberDeleteRequest(
-        long moimId
+public record MoimJoinRequest(
+    long moimId
 ) {
 }

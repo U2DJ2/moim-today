@@ -18,7 +18,7 @@ public class MoimUpdater {
     @Transactional
     public void updateMoim(final long memberId, final MoimUpdateRequest moimUpdateRequest) {
         MoimJpaEntity moimJpaEntity = moimRepository.getById(moimUpdateRequest.moimId());
-        moimJpaEntity.validateMember(memberId);
+        moimJpaEntity.validateHostMember(memberId);
         moimJpaEntity.updateMoim(moimUpdateRequest);
     }
 }
