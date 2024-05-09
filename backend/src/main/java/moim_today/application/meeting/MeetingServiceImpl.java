@@ -1,5 +1,6 @@
 package moim_today.application.meeting;
 
+import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.MeetingCreateRequest;
 import moim_today.dto.meeting.MeetingSimpleResponse;
 import moim_today.implement.meeting.meeting.MeetingFinder;
@@ -7,6 +8,7 @@ import moim_today.implement.meeting.meeting.MeetingManager;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -26,8 +28,9 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public List<MeetingSimpleResponse> findAllByMoimId(final long moimId) {
-        List<MeetingJpaEntity> meetingJpaEntities = meetingFinder.findAllByMoimId(moimId);
+    public List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final MeetingStatus meetingStatus) {
+        List<MeetingJpaEntity> meetingJpaEntities =
+                meetingFinder.findAllByMoimId(moimId, meetingStatus, LocalDateTime.now());
         return MeetingSimpleResponse.toResponses(meetingJpaEntities);
     }
 }

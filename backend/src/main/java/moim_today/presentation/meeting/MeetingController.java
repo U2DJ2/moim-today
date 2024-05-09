@@ -1,6 +1,7 @@
 package moim_today.presentation.meeting;
 
 import moim_today.application.meeting.MeetingService;
+import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.MeetingCreateRequest;
 import moim_today.dto.meeting.MeetingSimpleResponse;
 import moim_today.global.response.CollectionResponse;
@@ -25,8 +26,10 @@ public class MeetingController {
     }
 
     @GetMapping("/{moimId}")
-    public CollectionResponse<List<MeetingSimpleResponse>> findMeetingsByMoimId(@PathVariable final long moimId) {
-        List<MeetingSimpleResponse> meetingSimpleResponses = meetingService.findAllByMoimId(moimId);
+    public CollectionResponse<List<MeetingSimpleResponse>> findAfterMeetingsByMoimId(
+            @PathVariable final long moimId,
+            @RequestParam final MeetingStatus meetingStatus) {
+        List<MeetingSimpleResponse> meetingSimpleResponses = meetingService.findAllByMoimId(moimId, meetingStatus);
         return CollectionResponse.of(meetingSimpleResponses);
     }
 }

@@ -1,6 +1,7 @@
 package moim_today.fake_class.meeting;
 
 import moim_today.application.meeting.MeetingService;
+import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.MeetingCreateRequest;
 import moim_today.dto.meeting.MeetingSimpleResponse;
 import moim_today.util.TestConstant;
@@ -17,7 +18,7 @@ public class FakeMeetingService implements MeetingService {
     }
 
     @Override
-    public List<MeetingSimpleResponse> findAllByMoimId(final long moimId) {
+    public List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final MeetingStatus meetingStatus) {
         MeetingSimpleResponse meetingSimpleResponse1 = MeetingSimpleResponse.builder()
                 .meetingId(TestConstant.MEETING_ID.longValue())
                 .agenda(TestConstant.MEETING_AGENDA.value())

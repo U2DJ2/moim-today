@@ -1,12 +1,11 @@
 package moim_today.persistence.repository.meeting.meeting;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import moim_today.global.constant.exception.MeetingExceptionConstant;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
-import moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static moim_today.global.constant.exception.MeetingExceptionConstant.*;
@@ -34,8 +33,19 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     }
 
     @Override
-    public List<MeetingJpaEntity> findAllByMoimId(final long moimId) {
-        return meetingJpaRepository.findAllByMoimId(moimId);
+    public List<MeetingJpaEntity> findAllUpcomingByMoimId(final long moimId, final LocalDateTime currentDateTime) {
+        return queryFactory.selectFrom(meetingJpaEntity)
+                .where(meetingJpaEntity.moimId.eq(moimId)
+                        .and(meetingJpaEntity.startDateTime.after(currentDateTime)))
+                .fetch();
+    }
+
+    @Override
+    public List<MeetingJpaEntity> findAllPastByMoimId(final long moimId, final LocalDateTime currentDateTime) {
+        return queryFactory.selectFrom(meetingJpaEntity)
+                .where(meetingJpaEntity.moimId.eq(moimId)
+                        .and(meetingJpaEntity.startDateTime.before(currentDateTime)))
+                .fetch();
     }
 
     @Override

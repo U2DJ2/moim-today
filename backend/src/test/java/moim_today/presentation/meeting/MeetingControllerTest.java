@@ -3,6 +3,7 @@ package moim_today.presentation.meeting;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.meeting.MeetingService;
 import moim_today.domain.meeting.enums.MeetingCategory;
+import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.meeting.MeetingCreateRequest;
 import moim_today.fake_class.meeting.FakeMeetingService;
@@ -14,7 +15,9 @@ import org.junit.jupiter.api.Test;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static moim_today.domain.meeting.enums.MeetingStatus.*;
 import static moim_today.util.TestConstant.*;
 import static moim_today.util.TestConstant.MEETING_PLACE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -104,16 +107,46 @@ class MeetingControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("모임내 미팅 정보를 반환한다.")
+    @DisplayName("모임내 다가오는 미팅 정보 조회한다.")
     @Test
-    void findMeetingsByMoimId() throws Exception {
+    void findAllUpcomingByMoimId() throws Exception {
         mockMvc.perform(get("/api/meetings/{moimId}", 1L)
+                        .param("meetingStatus", String.valueOf(UPCOMING))
                 )
                 .andExpect(status().isOk())
-                .andDo(document("모임내 미팅 정보 조회",
+                .andDo(document("모임내 다가오는 미팅 정보 조회",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("미팅")
                                 .summary("미팅 조회")
+                                .responseFields(
+                                        fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
+                                        fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
+                                        fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
+                                        fieldWithPath("data[0].dayOfWeek").type(VARIES).description(
+                                                String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(DayOfWeek.class))
+                                        ),
+                                        fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임내 이전 미팅 정보를 조회한다.")
+    @Test
+    void findAllPastByMoimId() throws Exception {
+        mockMvc.perform(get("/api/meetings/{moimId}", 1L)
+                        .param("meetingStatus", String.valueOf(PAST))
+                )
+                .andExpect(status().isOk())
+                .andDo(document("모임내 이전 미팅 정보 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅")
+                                .summary("미팅 조회")
+                                .queryParameters(
+                                        parameterWithName("meetingStatus").description(
+                                                String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(MeetingStatus.class))
+                                        )
+                                )
                                 .responseFields(
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
