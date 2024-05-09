@@ -27,11 +27,13 @@ function CardContainer({
               {category}
             </div>
             <div className=" font-Pretendard_SemiBold text-3xl">{title}</div>
-            <div className="flex font-Pretendard_SemiBold text-[#6F6F6F] pt-5">
+            <div className="flex font-Pretendard_SemiBold text-[#6F6F6F] pt-5 gap-2">
               <img src={people} />
-              <div>{currentCount}</div>
-              <div>/</div>
-              <div>{capacity}</div>
+              <div className="flex">
+                <div>{currentCount}</div>
+                <div>/</div>
+                <div>{capacity}</div>
+              </div>
             </div>
           </div>
         </div>
