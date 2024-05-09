@@ -7,19 +7,19 @@ import { Checkbox } from "@mui/material";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
-// Date
-import DateRangePicker from "../../components/DateRangePicker";
+// Date Picker
+import DateRangePicker from "../../components/DatePicker/Range";
 
 // Define label style
-const labelStyle = "mt-2.5 text-base font-Pretendard_SemiBold leading-5 text-stone-700 max-md:max-w-full";
+const labelStyle = "mt-2.5 mb-2.5 text-base font-Pretendard_SemiBold leading-5 text-stone-700 max-md:max-w-full";
 
 // Define common input style
-const commonInputStyle = "justify-center px-4 py-3.5 mt-2 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
+const commonInputStyle = "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-
 
 function Dropdown({ label, options, onSelect }) {
   const [selectedOption, setSelectedOption] = useState(options[0]);
@@ -34,7 +34,7 @@ function Dropdown({ label, options, onSelect }) {
       <div className={labelStyle}>
         {label}
       </div>
-      
+
       <Menu as="div" className="relative w-full inline-block text-left">
         <div>
           <Menu.Button className={`${commonInputStyle} inline-flex w-full justify-between items-center gap-x-1.5 px-4 hover:bg-gray-50`}>
@@ -97,7 +97,6 @@ function InputField({ label, placeholder }) {
     </>
   );
 }
-
 
 function ImageUploader() {
   const [image, setImage] = useState(null);
@@ -172,6 +171,10 @@ export default function MoimCreation() {
     navigate("/");
   };
 
+  const handleDateRange = (dateRange) => {
+    console.log(dateRange);
+  }
+
   return (
     <div className="flex flex-col justify-center p-8 bg-white rounded-[32px] max-md:px-5">
       <header className="flex gap-0 pb-8 justify-between font-semibold text-black leading-[150%] max-md:flex-wrap items-center">
@@ -198,11 +201,10 @@ export default function MoimCreation() {
         <InputField label="상세 설명" placeholder="모임 설명을 적어주세요." />
         <ImageUploader />
 
-        <InputField
-          label="운영 시간"
-          placeholder="이거 클릭하면 Date Picker 떠야 됨"
-        />
-        <DateRangePicker/>
+        <div className={labelStyle}>
+          {"운영 시간"}
+        </div>
+        <DateRangePicker onChange={handleDateRange} inputClassName={`w-full ${commonInputStyle}`} />
 
         <InputField
           label="참여 인원"

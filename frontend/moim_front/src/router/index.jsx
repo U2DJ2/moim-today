@@ -20,7 +20,6 @@ import MoimDetailPage from "../pages/MoimDetailPage";
 
 // Components
 import Calendar from "../components/Calendar";
-import TimeTable from "../pages/RegisterPage/TimeTable";
 import MoimJoinPage from "../pages/MoimJoinPage";
 
 /**
