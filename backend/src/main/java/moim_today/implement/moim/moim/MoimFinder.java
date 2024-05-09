@@ -4,10 +4,10 @@ import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
+import moim_today.implement.member.MemberFinder;
+import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
-import moim_today.persistence.repository.member.MemberRepository;
-import moim_today.persistence.repository.moim.joined_moim.JoinedMoimRepository;
 import moim_today.persistence.repository.moim.moim.MoimRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,20 +19,21 @@ import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_CA
 @Implement
 public class MoimFinder {
 
-    private final JoinedMoimRepository joinedMoimRepository;
+    private final JoinedMoimFinder joinedMoimFinder;
+    private final MemberFinder memberFinder;
     private final MoimRepository moimRepository;
-    private final MemberRepository memberRepository;
 
-    public MoimFinder(JoinedMoimRepository joinedMoimRepository, MoimRepository moimRepository, MemberRepository memberRepository) {
-        this.joinedMoimRepository = joinedMoimRepository;
+    public MoimFinder(final JoinedMoimFinder joinedMoimFinder,
+                      final MemberFinder memberFinder,
+                      final MoimRepository moimRepository) {
+        this.joinedMoimFinder = joinedMoimFinder;
+        this.memberFinder = memberFinder;
         this.moimRepository = moimRepository;
-        this.memberRepository = memberRepository;
     }
-
 
     @Transactional(readOnly = true)
     public List<JoinedMoimJpaEntity> findJoinedMoims(final long moimId) {
-        return joinedMoimRepository.findJoinMembersByMoimId(moimId);
+        return joinedMoimFinder.findByMoimId(moimId);
     }
 
     @Transactional(readOnly = true)
@@ -49,7 +50,7 @@ public class MoimFinder {
     public List<MoimMemberResponse> findMembersInMoim(final List<JoinedMoimJpaEntity> joinedMoimJpaEntities,
                                                       final long hostId) {
         List<Long> memberIds = extractMemberIds(joinedMoimJpaEntities);
-        return memberRepository.findMembersWithJoinInfo(memberIds, hostId);
+        return memberFinder.findMembersWithJoinedInfo(memberIds, hostId);
     }
 
     @Transactional(readOnly = true)
@@ -71,7 +72,7 @@ public class MoimFinder {
     @Transactional(readOnly = true)
     public void validateCapacity(final MoimJpaEntity moimJpaEntity){
         long moimId = moimJpaEntity.getId();
-        List<Long> participatingMemberIds = joinedMoimRepository.findAllJoinedMemberId(moimId);
+        List<Long> participatingMemberIds = joinedMoimFinder.findAllJoinedMemberId(moimId);
         if(participatingMemberIds.size() >= moimJpaEntity.getCapacity()){
             throw new BadRequestException(MOIM_CAPACITY_ERROR.message());
         }
@@ -81,11 +82,5 @@ public class MoimFinder {
         List<Long> memberIds = new ArrayList<>();
         joinedMoimJpaEntities.forEach(e -> memberIds.add(e.getMemberId()));
         return memberIds;
-    }
-
-
-    @Transactional(readOnly = true)
-    public long getMemberIdById(final long moimId) {
-        return moimRepository.getMemberIdById(moimId);
     }
 }

@@ -36,6 +36,7 @@ class MoimManagerTest extends ImplementTest {
         MoimJpaEntity savedMoim = moimRepository.save(moimJpaEntity);
         long savedMoimId = savedMoim.getId();
 
+        // when
         for (int i = 0; i < PARTICIPATION_PEOPLE; i++) {
             final long memberId = i + 1;
             executorService.submit(() -> {
@@ -49,6 +50,7 @@ class MoimManagerTest extends ImplementTest {
 
         latch.await();
 
+        // then
         long joinedMembersCount =  joinedMoimRepository.findAllJoinedMemberId(savedMoimId).size();
         assertThat(joinedMembersCount).isEqualTo(MOIM_MAXIMUM_PEOPLE);
     }
