@@ -146,9 +146,4 @@ public class MoimServiceImpl implements MoimService{
 
         moimManager.appendMemberToMoim(requestMemberId, enterMoimId);
     }
-
-    @Override
-    public boolean isHost(final long id, final long moimId) {
-        return moimFinder.isHost(id, moimId);
-    }
 }

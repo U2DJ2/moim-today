@@ -107,10 +107,4 @@ public class MoimController {
                                  @RequestBody final MoimNoticeDeleteRequest moimNoticeDeleteRequest) {
         moimNoticeService.deleteMoimNotice(memberSession.id(), moimNoticeDeleteRequest);
     }
-
-    @GetMapping("/hosts/{moimId}")
-    public boolean isHost(@Login final MemberSession memberSession,
-                          @PathVariable final long moimId){
-        return moimService.isHost(memberSession.id(), moimId);
-    }
 }

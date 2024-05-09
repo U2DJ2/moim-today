@@ -70,4 +70,9 @@ public class MoimManager {
 
         joinedMoimAppender.createJoinedMoim(requestMemberId, moimId);
     }
+
+    @Transactional(readOnly = true)
+    public boolean isHost(final long memberId, final long moimId){
+        return moimFinder.isHost(memberId, moimId);
+    }
 }

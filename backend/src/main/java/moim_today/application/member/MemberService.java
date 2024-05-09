@@ -15,4 +15,6 @@ public interface MemberService {
     void updateProfile(final long memberId, final long universityId, final ProfileUpdateRequest profileUpdateRequest);
 
     ProfileImageResponse uploadProfileImage(final long memberId, final MultipartFile file);
+
+    MemberHostResponse isHost(final long memberId, final long moimId);
 }

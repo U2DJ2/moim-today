@@ -124,9 +124,4 @@ public class FakeMoimService implements MoimService {
             throw new BadRequestException(MOIM_CAPACITY_ERROR.message());
         }
     }
-
-    @Override
-    public boolean isHost(final long id, final long moimId) {
-        return id == moimId;
-    }
 }
