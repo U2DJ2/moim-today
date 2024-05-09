@@ -6,7 +6,7 @@ function DetailedRight({ category, title, currentCount, capacity, contents }) {
   return (
     <div className="flex flex-col bg-white shadow-[0px_4px_12px_rgba(0,_0,_0,_0.06)] w-full rounded-3xl px-24 gap-8 h-full">
       <div>
-        <div className="bg-black font-Pretendard_Light text-lg rounded-full px-5 py-1 text-white justify-center items-center text-center w-fit mb-3">
+        <div className="bg-black font-Pretendard_Light text-lg rounded-full px-5 text-white justify-center items-center text-center w-fit mb-3">
           {category}
         </div>
         <div className=" font-Pretendard_Black text-4xl text-[#3F3F3F] mb-2">
@@ -29,7 +29,7 @@ function DetailedRight({ category, title, currentCount, capacity, contents }) {
           </div>
         </div>
       </div>
-      <div className="flex font-Pretendard_Light text-darkslategray text-3xl">
+      <div className="flex font-Pretendard_Light text-[#3F3F3F] text-3xl">
         {contents}
       </div>
     </div>

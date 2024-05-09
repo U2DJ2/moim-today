@@ -5,8 +5,8 @@ import DetailedRight from "../../components/DetailedRight";
 
 function MoimDetailPage() {
   return (
-    <div className="bg-gradient-to-b from-white to-[#F6F8FE] min-h-screen ">
-      <div className="grid grid-flow-col gap-9 px-24 min-h-screen">
+    <div className="bg-gradient-to-b from-white to-[#F6F8FE] h-screen ">
+      <div className="flex gap-9 pt-2 flex-1 overflow-auto">
         <DetailedLeft
           userName={"김유림"}
           title={"컴구 스터디 구합니다"}
