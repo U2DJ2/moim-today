@@ -1,12 +1,15 @@
 import React from "react";
 import CardComponent from "../CardComponent";
 import SimpleDrop from "../../../components/Dropdown/Simple";
+import { useNavigate, useParams } from "react-router";
 function MoimHome() {
+  const navigate = useNavigate();
+  const MoimId = useParams();
   const onSelect = (option) => {
     console.log(option);
   };
   const noticeHandler = () => {
-    
+    navigate(`${MoimId}/notice`);
   };
   return (
     <div className="flex flex-col gap-24">
