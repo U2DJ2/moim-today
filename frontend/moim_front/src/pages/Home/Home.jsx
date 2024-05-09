@@ -2,7 +2,6 @@
 import { useState } from "react";
 
 // Components
-import Header from "../../components/Header";
 import Dropdown from "../../components/Dropdown/Simple";
 import Filter from "../../components/Dropdown/Filter";
 

@@ -18,10 +18,11 @@ const DateRangePicker = ({ inputClassName, onChange }) => {
 
     return (
         <Datepicker
+            primaryColor="red"
+            minDate={new Date()}
             inputClassName={inputClassName}
             value={value}
             onChange={handleValueChange}
-            showShortcuts={true}
         />
     );
 };
