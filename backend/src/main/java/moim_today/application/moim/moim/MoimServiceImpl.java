@@ -119,13 +119,13 @@ public class MoimServiceImpl implements MoimService{
 
     @Transactional
     @Override
-    public void forceDeleteMember(final long requestMemberId, final MoimMemberForceDeleteRequest moimMemberForceDeleteRequest) {
-        long moimId = moimMemberForceDeleteRequest.moimId();
-        long deleteMemberId = moimMemberForceDeleteRequest.deleteMemberId();
+    public void kickMember(final long requestMemberId, final MoimMemberKickRequest moimMemberKickRequest) {
+        long moimId = moimMemberKickRequest.moimId();
+        long deleteMemberId = moimMemberKickRequest.deleteMemberId();
 
         MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
         moimJpaEntity.validateHostMember(requestMemberId);
-        moimJpaEntity.validateNotHostMember(moimMemberForceDeleteRequest.deleteMemberId());
+        moimJpaEntity.validateNotHostMember(moimMemberKickRequest.deleteMemberId());
 
         moimManager.deleteMemberFromMoim(deleteMemberId, moimId);
     }

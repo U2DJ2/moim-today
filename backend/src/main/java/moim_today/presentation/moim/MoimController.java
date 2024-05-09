@@ -62,8 +62,8 @@ public class MoimController {
 
     @DeleteMapping("/members/force")
     public void forceDeleteMember(@Login final MemberSession memberSession,
-                             @RequestBody final MoimMemberForceDeleteRequest moimMemberForceDeleteRequest){
-        moimService.forceDeleteMember(memberSession.id(), moimMemberForceDeleteRequest);
+                             @RequestBody final MoimMemberKickRequest moimMemberKickRequest){
+        moimService.kickMember(memberSession.id(), moimMemberKickRequest);
     }
 
     @PostMapping("/notices")

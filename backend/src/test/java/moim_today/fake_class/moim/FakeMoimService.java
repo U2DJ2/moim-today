@@ -89,13 +89,13 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public void forceDeleteMember(long id, MoimMemberForceDeleteRequest moimMemberForceDeleteRequest) {
+    public void kickMember(long id, MoimMemberKickRequest moimMemberKickRequest) {
         long moimHostId = MEMBER_ID.longValue();
         // 실제 로직과 다름
-        if (moimMemberForceDeleteRequest.moimId() != moimHostId) {
+        if (moimMemberKickRequest.moimId() != moimHostId) {
             throw new ForbiddenException(MOIM_MEMBER_DELETE_AUTHORIZED_ERROR.message());
         }
-        else if(moimMemberForceDeleteRequest.deleteMemberId() == moimHostId){
+        else if(moimMemberKickRequest.deleteMemberId() == moimHostId){
             throw new ForbiddenException(MOIM_HOST_ERROR.message());
         }
     }

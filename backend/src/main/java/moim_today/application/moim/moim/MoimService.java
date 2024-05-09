@@ -22,7 +22,7 @@ public interface MoimService {
 
     MoimMemberTabResponse findMoimMembers(final long memberId, final long moimId);
 
-    void forceDeleteMember(final long requestMemberId, final MoimMemberForceDeleteRequest moimMemberForceDeleteRequest);
+    void kickMember(final long requestMemberId, final MoimMemberKickRequest moimMemberKickRequest);
 
     void deleteMember(final long memberId, final MoimMemberDeleteRequest moimMemberDeleteRequest);
 
