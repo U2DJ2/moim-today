@@ -1,8 +1,25 @@
+import CardComponent from "../Home/CardContainer";
+
 function Overview() {
   const data = [
-    { id: 1, status: "신청 중", count: 6, icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/720c1ca45e519369b2e6a4ef49ba13891dab6bf813521c27420e80ccdd5b6238?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&" },
-    { id: 2, status: "진행 중", count: 12, icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/9f6d72af111237b40dbc9c87a58fd534ce36155aa7ac714e7ca1e4bd8f683743?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&" },
-    { id: 3, status: "완료 됨", count: 8, icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/9011c6a31110b1d66dd0ea1aa7077c3c448b229dbff2aa32eca37b71e373b39c?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&" },
+    {
+      id: 1,
+      status: "신청 중",
+      count: 6,
+      icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/720c1ca45e519369b2e6a4ef49ba13891dab6bf813521c27420e80ccdd5b6238?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&",
+    },
+    {
+      id: 2,
+      status: "진행 중",
+      count: 12,
+      icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/9f6d72af111237b40dbc9c87a58fd534ce36155aa7ac714e7ca1e4bd8f683743?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&",
+    },
+    {
+      id: 3,
+      status: "완료 됨",
+      count: 8,
+      icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/9011c6a31110b1d66dd0ea1aa7077c3c448b229dbff2aa32eca37b71e373b39c?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&",
+    },
   ];
 
   return (
@@ -11,13 +28,22 @@ function Overview() {
         Overview
       </h1>
       <nav className="flex gap-3 pr-20 mt-3 text-base font-semibold text-center text-black max-md:flex-wrap max-md:pr-5">
-        <a href="#" className="justify-center px-6 py-3 text-white whitespace-nowrap bg-black rounded-[64px] max-md:px-5">
+        <a
+          href="#"
+          className="justify-center px-6 py-3 text-white whitespace-nowrap bg-black rounded-[64px] max-md:px-5"
+        >
           전체
         </a>
-        <a href="#" className="justify-center px-6 py-3 rounded-[64px] max-md:px-5">
+        <a
+          href="#"
+          className="justify-center px-6 py-3 rounded-[64px] max-md:px-5"
+        >
           만든 모임
         </a>
-        <a href="#" className="justify-center px-6 py-3 rounded-[64px] max-md:px-5">
+        <a
+          href="#"
+          className="justify-center px-6 py-3 rounded-[64px] max-md:px-5"
+        >
           참여 모임
         </a>
       </nav>
@@ -49,7 +75,13 @@ function Overview() {
         </button>
       </div>
       <div className="flex flex-col mt-3 max-md:max-w-full">
-
+        <CardComponent
+          title={"titile"}
+          category={"# category"}
+          capacity={12}
+          currentCount={3}
+          moimId={1}
+        />
       </div>
     </section>
   );

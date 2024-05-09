@@ -5,7 +5,9 @@ function MoimHome() {
   const onSelect = (option) => {
     console.log(option);
   };
-  const noticeHandler = () => {};
+  const noticeHandler = () => {
+    
+  };
   return (
     <div className="flex flex-col gap-24">
       <div className="grid gap-4">

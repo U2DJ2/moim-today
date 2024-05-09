@@ -41,7 +41,7 @@ function DetailedLeft({ userName, title, currentCount, capacity, joined }) {
       <button
         className={`${
           joined ? "hidden" : "flex"
-        } w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-white bg-black whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer hover:bg-scarlet`}
+        } w-52 justify-center px-14 py-4 text-xl font-bold text-center text-white bg-black whitespace-nowrap rounded-[50px] font-Pretendard_Bold hover:cursor-pointer hover:bg-scarlet`}
         onClick={onClickHandler}
       >
         🏳️ 참여하기
