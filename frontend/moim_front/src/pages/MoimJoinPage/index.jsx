@@ -23,35 +23,43 @@ function MoimJoinPage() {
         joined={true}
       />
       <div className="flex flex-col basis-4/5 bg-white shadow-[0px_4px_12px_rgba(0,_0,_0,_0.06)] rounded-3xl px-24 gap-16 h-5/6 pb-16">
-        <div className="flex justify-center items-center self-start px-16 font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
-          <div className="flex gap-3">
+        <div className="flex justify-center items-center self-start font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
+          <div className="flex gap-12 font-semibold font-Roboto text-4xl">
             <div
-              className={`justify-center px-9 py-3 rounded-[64px] text-xl max-md:px-5 cursor-pointer ${
-                selected === "HOME" ? "bg-gray-200" : ""
+              className={`justify-center max-md:px-5 cursor-pointer ${
+                selected === "HOME"
+                  ? "text-scarlet border-b-2 border-scarlet"
+                  : ""
               }`}
               onClick={() => setSelected("HOME")}
             >
               HOME
             </div>
             <div
-              className={`justify-center px-6 py-3 rounded-[64px] text-xl max-md:px-5 cursor-pointer ${
-                selected === "되는시간" ? "bg-gray-200" : ""
+              className={`justify-center  max-md:px-5 cursor-pointer ${
+                selected === "되는시간"
+                  ? "text-scarlet border-b-2 border-scarlet"
+                  : ""
               }`}
               onClick={() => setSelected("되는시간")}
             >
               되는시간
             </div>
             <div
-              className={`justify-center px-6 py-3 rounded-[64px] text-xl max-md:px-5 cursor-pointer ${
-                selected === "ToDo" ? "bg-gray-200" : ""
+              className={`justify-center max-md:px-5 cursor-pointer ${
+                selected === "ToDo"
+                  ? "text-scarlet border-b-2 border-scarlet"
+                  : ""
               }`}
               onClick={() => setSelected("ToDo")}
             >
               ToDo
             </div>
             <div
-              className={`justify-center px-6 py-3 rounded-[64px] text-xl max-md:px-5 cursor-pointer ${
-                selected === "멤버" ? "bg-gray-200" : ""
+              className={`justify-center max-md:px-5 cursor-pointer ${
+                selected === "멤버"
+                  ? "text-scarlet border-b-2 border-scarlet"
+                  : ""
               }`}
               onClick={() => setSelected("멤버")}
             >
