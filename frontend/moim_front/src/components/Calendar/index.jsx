@@ -23,7 +23,7 @@ export default function Calendar({ selectedDate }) {
 
     // Fetch all events on component mount
     fetchAllEvents(currentYear).catch(console.error);
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -38,7 +38,9 @@ export default function Calendar({ selectedDate }) {
       let allEvents = [];
       for (let month = 1; month <= 8; month++) {
         const response = await axios.get(
-          `https://api.moim.today/api/schedules/monthly?yearMonth=${year}-${month < 10 ? '0' + month : month}`,
+          `https://api.moim.today/api/schedules/monthly?yearMonth=${year}-${
+            month < 10 ? "0" + month : month
+          }`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -120,8 +122,8 @@ export default function Calendar({ selectedDate }) {
           select={handleDateSelect}
           eventContent={renderEventContent} // custom render function
           eventClick={handleEventClick}
-        // you can update a remote database when these fire:
-        /*
+          // you can update a remote database when these fire:
+          /*
         eventAdd={function(){}}
         eventChange={function(){}}
         eventRemove={function(){}}

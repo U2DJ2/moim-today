@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
+import MiniCalendar from "../ToDo/MiniCalendar";
+import Calendar from "../../../components/Calendar";
 
 function AvailableTime() {
-  return <div>AvailableTime</div>;
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const handleMiniCalendarDateSelect = (date) => {
+    setSelectedDate(date);
+  };
+  return (
+    <div className="grid gap-5 h-full w-full">
+      <MiniCalendar onSelectDate={handleMiniCalendarDateSelect} />
+      <Calendar selectedDate={selectedDate} />
+    </div>
+  );
 }
 
 export default AvailableTime;
