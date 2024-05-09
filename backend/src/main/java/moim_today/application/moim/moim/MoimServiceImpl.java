@@ -4,14 +4,10 @@ import moim_today.dto.moim.moim.*;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
 import moim_today.implement.meeting.meeting.MeetingFinder;
-import moim_today.implement.meeting.meeting_comment.MeetingCommentUpdater;
 import moim_today.implement.moim.joined_moim.JoinedMoimAppender;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import moim_today.implement.moim.joined_moim.JoinedMoimRemover;
-import moim_today.implement.moim.moim.MoimAppender;
-import moim_today.implement.moim.moim.MoimFinder;
-import moim_today.implement.moim.moim.MoimRemover;
-import moim_today.implement.moim.moim.MoimUpdater;
+import moim_today.implement.moim.moim.*;
 import moim_today.implement.schedule.schedule.ScheduleRemover;
 import moim_today.implement.todo.TodoRemover;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
@@ -39,7 +35,7 @@ public class MoimServiceImpl implements MoimService{
     private final TodoRemover todoRemover;
     private final JoinedMoimRemover joinedMoimRemover;
     private final ScheduleRemover scheduleRemover;
-    private final MeetingCommentUpdater meetingCommentUpdater;
+    private final MoimManager moimManager;
 
     public MoimServiceImpl(final MoimAppender moimAppender,
                            final FileUploader fileUploader,
@@ -53,7 +49,7 @@ public class MoimServiceImpl implements MoimService{
                            final TodoRemover todoRemover,
                            final JoinedMoimRemover joinedMoimRemover,
                            final ScheduleRemover scheduleRemover,
-                           final MeetingCommentUpdater meetingCommentUpdater) {
+                           final MoimManager moimManager) {
         this.moimAppender = moimAppender;
         this.fileUploader = fileUploader;
         this.moimFinder = moimFinder;
@@ -66,7 +62,7 @@ public class MoimServiceImpl implements MoimService{
         this.todoRemover = todoRemover;
         this.joinedMoimRemover = joinedMoimRemover;
         this.scheduleRemover = scheduleRemover;
-        this.meetingCommentUpdater = meetingCommentUpdater;
+        this.moimManager = moimManager;
     }
 
     @Override
@@ -97,7 +93,7 @@ public class MoimServiceImpl implements MoimService{
     @Override
     public void deleteMoim(final long memberId, final long moimId) {
         MoimJpaEntity moimJpaEntity =  moimFinder.getById(moimId);
-        moimJpaEntity.validateMember(memberId);
+        moimJpaEntity.validateHostMember(memberId);
 
         joinedMoimRemover.deleteAllByMoimId(moimId);
         todoRemover.deleteAllByMoimId(moimId);
@@ -113,31 +109,41 @@ public class MoimServiceImpl implements MoimService{
     public MoimMemberTabResponse findMoimMembers(final long memberId, final long moimId) {
         MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
         long moimHostId = moimJpaEntity.getMemberId();
+        boolean isHostRequest = moimFinder.isHost(memberId, moimId);
 
         List<JoinedMoimJpaEntity> joinedMoimJpaEntities = joinedMoimFinder.findByMoimId(moimId);
         List<MoimMemberResponse> moimMemberResponses = moimFinder.findMembersInMoim(joinedMoimJpaEntities, moimHostId);
-        boolean isHostRequest = moimFinder.isHost(moimHostId, memberId);
 
         return MoimMemberTabResponse.of(isHostRequest, moimMemberResponses);
     }
 
     @Transactional
     @Override
-    public void deleteMember(final long requestMemberId, final MoimMemberDeleteRequest moimMemberDeleteRequest) {
-        long moimId = moimMemberDeleteRequest.moimId();
-        long memberId = moimMemberDeleteRequest.memberId();
+    public void kickMember(final long requestMemberId, final MoimMemberKickRequest moimMemberKickRequest) {
+        long moimId = moimMemberKickRequest.moimId();
+        long deleteMemberId = moimMemberKickRequest.deleteMemberId();
 
         MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
-        moimJpaEntity.validateMember(requestMemberId);
-        joinedMoimFinder.validateMemberInMoim(moimId, memberId);
+        moimJpaEntity.validateHostMember(requestMemberId);
+        moimJpaEntity.validateNotHostMember(moimMemberKickRequest.deleteMemberId());
 
-        joinedMoimRemover.deleteMoimMember(moimId, memberId);
-        todoRemover.deleteAllTodosCreatedByMemberInMoim(moimId, memberId);
+        moimManager.deleteMemberFromMoim(deleteMemberId, moimId);
+    }
 
-        List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId);
+    @Transactional
+    @Override
+    public void deleteMember(final long deleteMemberId, final MoimMemberDeleteRequest moimMemberDeleteRequest) {
+        long moimId = moimMemberDeleteRequest.moimId();
+        MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
 
-        joinedMeetingRemover.deleteAllByMemberInMeeting(memberId, meetingIds);
-        meetingCommentUpdater.updateDeletedMembers(memberId, meetingIds);
-        scheduleRemover.deleteAllByMemberInMeeting(memberId, meetingIds);
+        moimJpaEntity.validateNotHostMember(deleteMemberId);
+        moimManager.deleteMemberFromMoim(deleteMemberId, moimId);
+    }
+
+    @Override
+    public void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest) {
+        long enterMoimId = moimJoinRequest.moimId();
+
+        moimManager.appendMemberToMoim(requestMemberId, enterMoimId);
     }
 }

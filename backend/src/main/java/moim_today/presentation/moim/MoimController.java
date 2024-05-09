@@ -48,9 +48,9 @@ public class MoimController {
         moimService.updateMoim(memberSession.id(), moimUpdateRequest);
     }
 
-    @GetMapping("/members")
+    @GetMapping("/members/{moimId}")
     public MoimMemberTabResponse findMoimMembers(@Login final MemberSession memberSession,
-                                               @RequestParam final long moimId){
+                                               @PathVariable final long moimId){
         return moimService.findMoimMembers(memberSession.id(), moimId);
     }
 
@@ -58,6 +58,12 @@ public class MoimController {
     public void deleteMoim(@Login final MemberSession memberSession,
                            @RequestBody final MoimDeleteRequest moimDeleteRequest) {
         moimService.deleteMoim(memberSession.id(), moimDeleteRequest.moimId());
+    }
+
+    @DeleteMapping("/members/kick")
+    public void forceDeleteMember(@Login final MemberSession memberSession,
+                             @RequestBody final MoimMemberKickRequest moimMemberKickRequest){
+        moimService.kickMember(memberSession.id(), moimMemberKickRequest);
     }
 
     @PostMapping("/notices")
@@ -70,6 +76,12 @@ public class MoimController {
     public void deleteMember(@Login final MemberSession memberSession,
                              @RequestBody final MoimMemberDeleteRequest moimMemberDeleteRequest){
         moimService.deleteMember(memberSession.id(), moimMemberDeleteRequest);
+    }
+
+    @PostMapping("/members")
+    public void joinMoim(@Login final MemberSession memberSession,
+                         @RequestBody final MoimJoinRequest moimJoinRequest){
+        moimService.appendMemberToMoim(memberSession.id(), moimJoinRequest);
     }
 
     @GetMapping("/notices/simple")

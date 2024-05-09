@@ -18,4 +18,6 @@ public interface MoimRepository {
     void deleteById(final long moimId);
 
     long getMemberIdById(final long moimId);
+
+    MoimJpaEntity getByIdWithPessimisticLock(final long moimId);
 }

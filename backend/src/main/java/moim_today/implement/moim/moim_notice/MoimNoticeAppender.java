@@ -23,7 +23,7 @@ public class MoimNoticeAppender {
     @Transactional
     public void createMoimNotice(final long memberId, final MoimNoticeCreateRequest moimNoticeCreateRequest) {
         MoimJpaEntity moimJpaEntity = moimFinder.getById(moimNoticeCreateRequest.moimId());
-        moimJpaEntity.validateMember(memberId);
+        moimJpaEntity.validateHostMember(memberId);
         MoimNoticeJpaEntity moimNoticeJpaEntity = moimNoticeCreateRequest.toEntity();
         moimNoticeRepository.save(moimNoticeJpaEntity);
     }

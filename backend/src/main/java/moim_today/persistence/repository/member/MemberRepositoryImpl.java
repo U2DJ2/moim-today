@@ -99,7 +99,8 @@ public class MemberRepositoryImpl implements MemberRepository {
                         memberJpaEntity.id.eq(hostId),
                         memberJpaEntity.id,
                         memberJpaEntity.username,
-                        joinedMoimJpaEntity.createdAt
+                        joinedMoimJpaEntity.createdAt,
+                        memberJpaEntity.memberProfileImageUrl
                 )).from(memberJpaEntity)
                 .join(joinedMoimJpaEntity).on(joinedMoimJpaEntity.memberId.eq(memberJpaEntity.id))
                 .where(joinedMoimJpaEntity.memberId.in(joinedMoimMemberIds))

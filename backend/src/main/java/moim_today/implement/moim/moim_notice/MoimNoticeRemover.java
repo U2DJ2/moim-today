@@ -29,7 +29,7 @@ public class MoimNoticeRemover {
     public void deleteMoimNotice(final long memberId, final long moimId, final long moimNoticeId) {
         MoimNoticeJpaEntity moimNoticeJpaEntity = moimNoticeRepository.getById(moimNoticeId);
         MoimJpaEntity moimJpaEntity = moimFinder.getById(moimNoticeJpaEntity.getMoimId());
-        moimJpaEntity.validateMember(memberId);
+        moimJpaEntity.validateHostMember(memberId);
         moimNoticeRepository.deleteById(moimNoticeId);
     }
 }

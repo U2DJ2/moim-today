@@ -2,6 +2,7 @@ package moim_today.implement.moim.moim;
 
 import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.dto.moim.moim.MoimDateResponse;
+import moim_today.global.error.BadRequestException;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
@@ -17,10 +18,10 @@ import java.util.Random;
 
 import java.time.LocalDate;
 
+import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_CAPACITY_ERROR;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_NOT_FOUND_ERROR;
 import static moim_today.util.TestConstant.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class MoimFinderTest extends ImplementTest {
 
@@ -68,12 +69,12 @@ class MoimFinderTest extends ImplementTest {
         MemberJpaEntity savedMember4 = saveRandomMember();
 
         // given2
-        MoimJpaEntity savedMoim = saveRandomMoim(savedMember1.getId());
+        MoimJpaEntity savedMoim = saveMoim(savedMember1.getId());
 
         // given3
-        JoinedMoimJpaEntity saveJoinedMoim1 = saveRandomJoinedMoim(savedMoim.getId(), savedMember1.getId());
-        JoinedMoimJpaEntity saveJoinedMoim2 = saveRandomJoinedMoim(savedMoim.getId(), savedMember2.getId());
-        JoinedMoimJpaEntity saveJoinedMoim3 = saveRandomJoinedMoim(savedMoim.getId(), savedMember3.getId());
+        JoinedMoimJpaEntity saveJoinedMoim1 = saveJoinedMoim(savedMoim.getId(), savedMember1.getId());
+        JoinedMoimJpaEntity saveJoinedMoim2 = saveJoinedMoim(savedMoim.getId(), savedMember2.getId());
+        JoinedMoimJpaEntity saveJoinedMoim3 = saveJoinedMoim(savedMoim.getId(), savedMember3.getId());
 
 
         // when
@@ -101,13 +102,13 @@ class MoimFinderTest extends ImplementTest {
         MemberJpaEntity savedMember4 = saveRandomMember();
 
         // given2
-        MoimJpaEntity savedMoim = saveRandomMoim(savedMember1.getId());
+        MoimJpaEntity savedMoim = saveMoim(savedMember1.getId());
 
         // given3
         List<JoinedMoimJpaEntity> joinedMoimJpaEntities = new ArrayList<>();
-        joinedMoimJpaEntities.add(saveRandomJoinedMoim(savedMoim.getId(), savedMember1.getId()));
-        joinedMoimJpaEntities.add(saveRandomJoinedMoim(savedMoim.getId(), savedMember2.getId()));
-        joinedMoimJpaEntities.add(saveRandomJoinedMoim(savedMoim.getId(), savedMember3.getId()));
+        joinedMoimJpaEntities.add(saveJoinedMoim(savedMoim.getId(), savedMember1.getId()));
+        joinedMoimJpaEntities.add(saveJoinedMoim(savedMoim.getId(), savedMember2.getId()));
+        joinedMoimJpaEntities.add(saveJoinedMoim(savedMoim.getId(), savedMember3.getId()));
 
         // when
         List<MoimMemberResponse> moimMembers = moimFinder.findMembersInMoim(joinedMoimJpaEntities, savedMoim.getMemberId());
@@ -155,33 +156,8 @@ class MoimFinderTest extends ImplementTest {
         joinedMoimJpaEntities.add(joinedMoimRepository.save(joinedMoimJpaEntity3));
 
         // expected
-        assertThat(moimFinder.isHost(savedMoim.getMemberId(), 1L)).isTrue();
-        assertThat(moimFinder.isHost(savedMoim.getMemberId(), 2L)).isFalse();
-    }
-
-    private MemberJpaEntity saveRandomMember() {
-        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
-                .username(USERNAME + String.valueOf(random.nextInt(10)))
-                .build();
-
-        return memberRepository.save(memberJpaEntity);
-    }
-
-    private MoimJpaEntity saveRandomMoim(final long hostMemberId) {
-        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
-                .memberId(hostMemberId)
-                .build();
-
-        return moimRepository.save(moimJpaEntity);
-    }
-
-    private JoinedMoimJpaEntity saveRandomJoinedMoim(final long moimId, final long joinMemberId) {
-        JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
-                .memberId(joinMemberId)
-                .moimId(moimId)
-                .build();
-
-        return joinedMoimRepository.save(joinedMoimJpaEntity);
+        assertThat(moimFinder.isHost(1L, savedMoim.getId())).isTrue();
+        assertThat(moimFinder.isHost(2L, savedMoim.getId())).isFalse();
     }
 
     @DisplayName("모임 id로 모임명을 가져온다.")
@@ -218,5 +194,109 @@ class MoimFinderTest extends ImplementTest {
         // then
         assertThat(moimDateResponse.startDate()).isEqualTo(LocalDate.of(2024, 3, 4));
         assertThat(moimDateResponse.endDate()).isEqualTo(LocalDate.of(2024, 6, 30));
+    }
+
+    @DisplayName("모임에 여석이 있는지 검사하고, 꽉 차면 에러를 발생시킨다.")
+    @Test
+    void validateCapacityThrowError() {
+        // given1
+        MemberJpaEntity member1 = saveRandomMember();
+        MemberJpaEntity member2 = saveRandomMember();
+        MemberJpaEntity member3 = saveRandomMember();
+        long hostId = member1.getId();
+
+        // given2
+        MoimJpaEntity moimJpaEntity1 = MoimJpaEntity.builder()
+                .memberId(hostId)
+                .capacity(1)
+                .build();
+
+        MoimJpaEntity moimJpaEntity2 = MoimJpaEntity.builder()
+                .memberId(hostId)
+                .capacity(3)
+                .build();
+
+        MoimJpaEntity savedMoim1 = moimRepository.save(moimJpaEntity1);
+        MoimJpaEntity savedMoim2 = moimRepository.save(moimJpaEntity2);
+
+        // given3
+        JoinedMoimJpaEntity jm1 = saveJoinedMoim(savedMoim1.getId(), hostId);
+        JoinedMoimJpaEntity jm2 = saveJoinedMoim(savedMoim1.getId(), member2.getId());
+        JoinedMoimJpaEntity jm3 = saveJoinedMoim(savedMoim1.getId(), member3.getId());
+        JoinedMoimJpaEntity jm4 = saveJoinedMoim(savedMoim2.getId(), hostId);
+        JoinedMoimJpaEntity jm5 = saveJoinedMoim(savedMoim2.getId(), member2.getId());
+        JoinedMoimJpaEntity jm6 = saveJoinedMoim(savedMoim2.getId(), member3.getId());
+
+        // expected
+        assertThatThrownBy(() -> moimFinder.validateCapacity(savedMoim1))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(MOIM_CAPACITY_ERROR.message());
+        assertThatThrownBy(() -> moimFinder.validateCapacity(savedMoim2))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(MOIM_CAPACITY_ERROR.message());
+    }
+
+    @DisplayName("모임에 여석이 있는지 검사하고, 여석이 있으면 에러를 발생시키지 않는다.")
+    @Test
+    void validateCapacityDoesNotThrowError() {
+        // given1
+        MemberJpaEntity member1 = saveRandomMember();
+        MemberJpaEntity member2 = saveRandomMember();
+        MemberJpaEntity member3 = saveRandomMember();
+        long hostId = member1.getId();
+
+        // given2
+        MoimJpaEntity moimJpaEntity1 = MoimJpaEntity.builder()
+                .memberId(hostId)
+                .capacity(4)
+                .build();
+
+        MoimJpaEntity moimJpaEntity2 = MoimJpaEntity.builder()
+                .memberId(hostId)
+                .capacity(100)
+                .build();
+
+        MoimJpaEntity savedMoim1 = moimRepository.save(moimJpaEntity1);
+        MoimJpaEntity savedMoim2 = moimRepository.save(moimJpaEntity2);
+
+        // given3
+        JoinedMoimJpaEntity jm1 = saveJoinedMoim(savedMoim1.getId(), hostId);
+        JoinedMoimJpaEntity jm2 = saveJoinedMoim(savedMoim1.getId(), member2.getId());
+        JoinedMoimJpaEntity jm3 = saveJoinedMoim(savedMoim1.getId(), member3.getId());
+        JoinedMoimJpaEntity jm4 = saveJoinedMoim(savedMoim2.getId(), hostId);
+        JoinedMoimJpaEntity jm5 = saveJoinedMoim(savedMoim2.getId(), member2.getId());
+        JoinedMoimJpaEntity jm6 = saveJoinedMoim(savedMoim2.getId(), member3.getId());
+
+
+        // expected
+        assertThatCode(() -> moimFinder.validateCapacity(savedMoim1))
+                .doesNotThrowAnyException();
+        assertThatCode(() -> moimFinder.validateCapacity(savedMoim2))
+                .doesNotThrowAnyException();
+    }
+
+    private MemberJpaEntity saveRandomMember() {
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .username(USERNAME + String.valueOf(random.nextInt(10)))
+                .build();
+
+        return memberRepository.save(memberJpaEntity);
+    }
+
+    private MoimJpaEntity saveMoim(final long hostMemberId) {
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .memberId(hostMemberId)
+                .build();
+
+        return moimRepository.save(moimJpaEntity);
+    }
+
+    private JoinedMoimJpaEntity saveJoinedMoim(final long moimId, final long joinMemberId) {
+        JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
+                .memberId(joinMemberId)
+                .moimId(moimId)
+                .build();
+
+        return joinedMoimRepository.save(joinedMoimJpaEntity);
     }
 }

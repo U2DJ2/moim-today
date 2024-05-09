@@ -30,7 +30,7 @@ public class JoinedMoimJpaEntity extends BaseTimeEntity {
         this.memberId = memberId;
     }
 
-    public static JoinedMoimJpaEntity of(final long moimId, final long memberId) {
+    public static JoinedMoimJpaEntity of(final long memberId, final long moimId) {
         return JoinedMoimJpaEntity.builder()
                 .moimId(moimId)
                 .memberId(memberId)

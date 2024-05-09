@@ -23,12 +23,13 @@ class JoinedMoimAppenderTest extends ImplementTest {
 
         moimRepository.save(moimJpaEntity);
         long moimId = moimJpaEntity.getId();
-        long memberId = Long.parseLong(MEMBER_ID.value());
+        long memberId = MEMBER_ID.longValue();
 
         //when
         joinedMoimAppender.createJoinedMoim(memberId, moimId);
 
         //then
         assertThat(joinedMoimRepository.count()).isEqualTo(1L);
+        assertThat(joinedMoimRepository.isJoining(moimId, memberId)).isTrue();
     }
 }
