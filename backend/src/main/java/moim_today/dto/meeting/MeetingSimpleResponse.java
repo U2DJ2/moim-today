@@ -1,5 +1,6 @@
 package moim_today.dto.meeting;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import moim_today.domain.meeting.Meeting;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
@@ -14,12 +15,14 @@ import java.util.List;
 public record MeetingSimpleResponse(
         long meetingId,
         String agenda,
+
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate startDate,
         DayOfWeek dayOfWeek,
         long dDay
 ) {
 
-    public static List<MeetingSimpleResponse> toResponses(List<MeetingJpaEntity> meetingJpaEntities) {
+    public static List<MeetingSimpleResponse> toResponses(final List<MeetingJpaEntity> meetingJpaEntities) {
         LocalDate currentDate = LocalDate.now();
         List<MeetingSimpleResponse> meetingSimpleResponses = new ArrayList<>();
 

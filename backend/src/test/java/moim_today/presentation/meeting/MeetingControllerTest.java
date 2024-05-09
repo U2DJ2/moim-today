@@ -3,12 +3,15 @@ package moim_today.presentation.meeting;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.meeting.MeetingService;
 import moim_today.domain.meeting.enums.MeetingCategory;
+import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.meeting.MeetingCreateRequest;
 import moim_today.fake_class.meeting.FakeMeetingService;
 import moim_today.util.ControllerTest;
+import moim_today.util.EnumDocsUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
@@ -16,9 +19,9 @@ import static moim_today.util.TestConstant.*;
 import static moim_today.util.TestConstant.MEETING_PLACE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -96,6 +99,29 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("endDateTime").type(STRING).description("미팅 종료 시간"),
                                         fieldWithPath("place").type(STRING).description("미팅 장소"),
                                         fieldWithPath("meetingCategory").type(STRING).description("미팅 카테고리")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임내 미팅 정보를 반환한다.")
+    @Test
+    void findMeetingsByMoimId() throws Exception {
+        mockMvc.perform(get("/api/meetings/{moimId}", 1L)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("모임내 미팅 정보 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅")
+                                .summary("미팅 조회")
+                                .responseFields(
+                                        fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
+                                        fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
+                                        fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
+                                        fieldWithPath("data[0].dayOfWeek").type(VARIES).description(
+                                                String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(DayOfWeek.class))
+                                        ),
+                                        fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day")
                                 )
                                 .build()
                         )));

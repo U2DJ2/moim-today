@@ -163,7 +163,7 @@ class MemberControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("프로필 이미지를 업로드/수정하면 업로드/수정된 파일의 URL울 반환한다.")
+    @DisplayName("프로필 이미지를 업로드/수정하면 업로드/수정된 파일의 URL을 반환한다.")
     @Test
     void updateProfileImage() throws Exception {
         MockMultipartFile file = new MockMultipartFile(

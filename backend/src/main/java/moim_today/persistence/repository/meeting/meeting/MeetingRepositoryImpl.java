@@ -53,5 +53,4 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     public long count() {
         return meetingJpaRepository.count();
     }
-
 }

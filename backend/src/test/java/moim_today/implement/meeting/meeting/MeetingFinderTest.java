@@ -45,4 +45,35 @@ class MeetingFinderTest extends ImplementTest {
         //then
         assertThat(meetingIds.size()).isEqualTo(2);
     }
+
+    @DisplayName("하나의 모임에 생성된 모든 미팅의 엔티티 정보를 반환한다.")
+    @Test
+    void findAllByMoimId() {
+        // given
+        long moimId1 = Long.parseLong(MOIM_ID.value());
+        long moimId2 = Long.parseLong(MOIM_ID.value()) + 1L;
+
+        MeetingJpaEntity meetingJpaEntity1 = MeetingJpaEntity.builder()
+                .moimId(moimId1)
+                .build();
+
+        MeetingJpaEntity meetingJpaEntity2 = MeetingJpaEntity.builder()
+                .moimId(moimId1)
+                .build();
+
+        MeetingJpaEntity meetingJpaEntity3 = MeetingJpaEntity.builder()
+                .moimId(moimId2)
+                .build();
+
+        meetingRepository.save(meetingJpaEntity1);
+        meetingRepository.save(meetingJpaEntity2);
+        meetingRepository.save(meetingJpaEntity3);
+
+
+        // when
+        List<MeetingJpaEntity> meetingJpaEntities = meetingFinder.findAllByMoimId(moimId1);
+
+        // then
+        assertThat(meetingJpaEntities.size()).isEqualTo(2);
+    }
 }
