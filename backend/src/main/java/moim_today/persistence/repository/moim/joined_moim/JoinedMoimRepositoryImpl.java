@@ -1,6 +1,7 @@
 package moim_today.persistence.repository.moim.joined_moim;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.LockModeType;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import org.springframework.stereotype.Repository;
@@ -27,6 +28,7 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
         return queryFactory.select(joinedMoimJpaEntity.memberId)
                 .from(joinedMoimJpaEntity)
                 .where(joinedMoimJpaEntity.moimId.eq(moimId))
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                 .fetch();
     }
 
