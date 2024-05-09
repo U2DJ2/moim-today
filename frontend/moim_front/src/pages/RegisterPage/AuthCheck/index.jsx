@@ -11,7 +11,7 @@ function AuthCheck({ emailAuth, setEmailAuth, setActiveNext }) {
       <div>
         <AuthTitle
           className="flex flex-col w-full"
-          title={"Vertification"}
+          title={"Verification"}
           firstContent={"메일함을 확인해주세요."}
           secondContent={"이메일 인증을 완료한 후 다음 버튼을 클릭해주세요!"}
           titleColor={"white"}
