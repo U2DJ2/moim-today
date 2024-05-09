@@ -105,6 +105,10 @@ public class MoimJpaEntity extends BaseTimeEntity {
         updateImageUrl(moimUpdateRequest.imageUrl());
     }
 
+    public void updateCurrentCount(final int plusCount){
+        this.currentCount += plusCount;
+    }
+
     private void updateImageUrl(final String updateImageUrl) {
         if (updateImageUrl == null) {
             this.imageUrl = DEFAULT_MOIM_IMAGE_URL.value();

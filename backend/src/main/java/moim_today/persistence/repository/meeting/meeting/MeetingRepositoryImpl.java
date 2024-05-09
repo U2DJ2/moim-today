@@ -1,16 +1,15 @@
 package moim_today.persistence.repository.meeting.meeting;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import moim_today.global.constant.exception.MeetingExceptionConstant;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
-import moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static moim_today.global.constant.exception.MeetingExceptionConstant.*;
-import static moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity.*;
+import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_NOT_FOUND_ERROR;
+import static moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity.meetingJpaEntity;
 
 @Repository
 public class MeetingRepositoryImpl implements MeetingRepository {
@@ -24,6 +23,7 @@ public class MeetingRepositoryImpl implements MeetingRepository {
         this.queryFactory = queryFactory;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Long> findAllByMoimId(final long moimId) {
         return queryFactory

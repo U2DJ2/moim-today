@@ -64,7 +64,7 @@ public class MoimManager {
 
     @Transactional
     public void appendMemberToMoim(final long requestMemberId, final long moimId) {
-        MoimJpaEntity enterMoimEntity = moimFinder.getById(moimId);
+        MoimJpaEntity enterMoimEntity = moimFinder.getByIdWithPessimisticLock(moimId);
         moimFinder.validateCapacity(enterMoimEntity);
         joinedMoimFinder.validateMemberNotInMoim(moimId, requestMemberId);
 

@@ -40,6 +40,11 @@ public class MoimFinder {
         return moimRepository.getById(moimId);
     }
 
+    @Transactional
+    public MoimJpaEntity getByIdWithPessimisticLock(final long moimId){
+        return moimRepository.getByIdWithPessimisticLock(moimId);
+    }
+
     @Transactional(readOnly = true)
     public List<MoimMemberResponse> findMembersInMoim(final List<JoinedMoimJpaEntity> joinedMoimJpaEntities,
                                                       final long hostId) {

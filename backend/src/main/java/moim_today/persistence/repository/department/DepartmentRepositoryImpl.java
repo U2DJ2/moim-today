@@ -6,6 +6,7 @@ import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -36,6 +37,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
                 .toList();
     }
 
+    @Transactional
     @Override
     public void batchUpdate(final List<DepartmentJpaEntity> departmentJpaEntities) {
         String sql = "INSERT INTO department (university_id, department_name) VALUES (?, ?)";
