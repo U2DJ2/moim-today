@@ -235,7 +235,7 @@ class MoimControllerTest extends ControllerTest {
                 .moimId(MOIM_ID.longValue())
                 .build();
 
-        mockMvc.perform(delete("/api/moims/members/force")
+        mockMvc.perform(delete("/api/moims/members/kick")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(moimMemberKickRequest)))
                 .andExpect(status().isOk())
@@ -259,7 +259,7 @@ class MoimControllerTest extends ControllerTest {
                 .moimId(MOIM_ID.longValue() + 1L)
                 .build();
 
-        mockMvc.perform(delete("/api/moims/members/force")
+        mockMvc.perform(delete("/api/moims/members/kick")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(moimMemberKickRequest)))
                 .andExpect(status().isForbidden())
@@ -287,7 +287,7 @@ class MoimControllerTest extends ControllerTest {
                 .moimId(MOIM_ID.longValue())
                 .build();
 
-        mockMvc.perform(delete("/api/moims/members/force")
+        mockMvc.perform(delete("/api/moims/members/kick")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(moimMemberKickRequest)))
                 .andExpect(status().isForbidden())

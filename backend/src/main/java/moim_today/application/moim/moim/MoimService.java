@@ -27,4 +27,6 @@ public interface MoimService {
     void deleteMember(final long memberId, final MoimMemberDeleteRequest moimMemberDeleteRequest);
 
     void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest);
+
+    boolean isHost(final long id, final long moimId);
 }

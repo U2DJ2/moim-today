@@ -109,7 +109,7 @@ public class MoimServiceImpl implements MoimService{
     public MoimMemberTabResponse findMoimMembers(final long memberId, final long moimId) {
         MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
         long moimHostId = moimJpaEntity.getMemberId();
-        boolean isHostRequest = moimFinder.isHost(moimId, memberId);
+        boolean isHostRequest = moimFinder.isHost(memberId, moimId);
 
         List<JoinedMoimJpaEntity> joinedMoimJpaEntities = joinedMoimFinder.findByMoimId(moimId);
         List<MoimMemberResponse> moimMemberResponses = moimFinder.findMembersInMoim(joinedMoimJpaEntities, moimHostId);
@@ -145,5 +145,10 @@ public class MoimServiceImpl implements MoimService{
         long enterMoimId = moimJoinRequest.moimId();
 
         moimManager.appendMemberToMoim(requestMemberId, enterMoimId);
+    }
+
+    @Override
+    public boolean isHost(final long id, final long moimId) {
+        return moimFinder.isHost(id, moimId);
     }
 }

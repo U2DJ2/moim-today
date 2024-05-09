@@ -156,8 +156,8 @@ class MoimFinderTest extends ImplementTest {
         joinedMoimJpaEntities.add(joinedMoimRepository.save(joinedMoimJpaEntity3));
 
         // expected
-        assertThat(moimFinder.isHost(savedMoim.getId(), 1L)).isTrue();
-        assertThat(moimFinder.isHost(savedMoim.getId(), 2L)).isFalse();
+        assertThat(moimFinder.isHost(1L, savedMoim.getId())).isTrue();
+        assertThat(moimFinder.isHost(2L, savedMoim.getId())).isFalse();
     }
 
     @DisplayName("모임 id로 모임명을 가져온다.")

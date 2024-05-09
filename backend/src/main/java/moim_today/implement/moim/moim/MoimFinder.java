@@ -58,7 +58,7 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
-    public boolean isHost(final long moimId, final long memberId) {
+    public boolean isHost(final long memberId, final long moimId) {
         MoimJpaEntity moimJpaEntity = moimRepository.getById(moimId);
         return moimJpaEntity.getMemberId() == memberId;
     }

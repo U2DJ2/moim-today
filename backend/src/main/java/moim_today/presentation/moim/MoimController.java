@@ -60,7 +60,7 @@ public class MoimController {
         moimService.deleteMoim(memberSession.id(), moimDeleteRequest.moimId());
     }
 
-    @DeleteMapping("/members/force")
+    @DeleteMapping("/members/kick")
     public void forceDeleteMember(@Login final MemberSession memberSession,
                              @RequestBody final MoimMemberKickRequest moimMemberKickRequest){
         moimService.kickMember(memberSession.id(), moimMemberKickRequest);
@@ -106,5 +106,11 @@ public class MoimController {
     public void deleteMoimNotice(@Login final MemberSession memberSession,
                                  @RequestBody final MoimNoticeDeleteRequest moimNoticeDeleteRequest) {
         moimNoticeService.deleteMoimNotice(memberSession.id(), moimNoticeDeleteRequest);
+    }
+
+    @GetMapping("/hosts/{moimId}")
+    public boolean isHost(@Login final MemberSession memberSession,
+                          @PathVariable final long moimId){
+        return moimService.isHost(memberSession.id(), moimId);
     }
 }
