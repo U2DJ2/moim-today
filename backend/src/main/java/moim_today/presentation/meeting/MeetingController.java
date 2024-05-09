@@ -26,7 +26,7 @@ public class MeetingController {
     }
 
     @GetMapping("/{moimId}")
-    public CollectionResponse<List<MeetingSimpleResponse>> findAfterMeetingsByMoimId(
+    public CollectionResponse<List<MeetingSimpleResponse>> findAllByMoimId(
             @PathVariable final long moimId,
             @RequestParam final MeetingStatus meetingStatus) {
         List<MeetingSimpleResponse> meetingSimpleResponses = meetingService.findAllByMoimId(moimId, meetingStatus);
