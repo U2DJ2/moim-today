@@ -2,7 +2,6 @@ package moim_today.implement.meeting.meeting;
 
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.util.ImplementTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,7 @@ class MeetingFinderTest extends ImplementTest {
         meetingRepository.save(meetingJpaEntity3);
 
         //when
-        List<Long> meetingIds = meetingFinder.findAllByMoimId(moimId1);
+        List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId1);
 
         //then
         assertThat(meetingIds.size()).isEqualTo(2);

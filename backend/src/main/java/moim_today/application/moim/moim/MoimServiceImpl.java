@@ -103,7 +103,7 @@ public class MoimServiceImpl implements MoimService{
         todoRemover.deleteAllByMoimId(moimId);
         moimRemover.deleteById(moimId);
 
-        List<Long> meetingIds = meetingFinder.findAllByMoimId(moimId);
+        List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId);
 
         joinedMeetingRemover.deleteAllByMeetingIdIn(meetingIds);
         scheduleRemover.deleteAllByMeetingIdIn(meetingIds);
@@ -134,7 +134,7 @@ public class MoimServiceImpl implements MoimService{
         joinedMoimRemover.deleteMoimMember(moimId, memberId);
         todoRemover.deleteAllTodosCreatedByMemberInMoim(moimId, memberId);
 
-        List<Long> meetingIds = meetingFinder.findAllByMoimId(moimId);
+        List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId);
 
         joinedMeetingRemover.deleteAllByMemberInMeeting(memberId, meetingIds);
         meetingCommentUpdater.updateDeletedMembers(memberId, meetingIds);

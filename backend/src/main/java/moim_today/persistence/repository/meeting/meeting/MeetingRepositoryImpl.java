@@ -25,12 +25,17 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     }
 
     @Override
-    public List<Long> findAllByMoimId(final long moimId) {
+    public List<Long> findMeetingIdsByMoimId(final long moimId) {
         return queryFactory
                 .select(meetingJpaEntity.id)
                 .from(meetingJpaEntity)
                 .where(meetingJpaEntity.moimId.eq(moimId))
                 .fetch();
+    }
+
+    @Override
+    public List<MeetingJpaEntity> findAllByMoimId(final long moimId) {
+        return meetingJpaRepository.findAllByMoimId(moimId);
     }
 
     @Override

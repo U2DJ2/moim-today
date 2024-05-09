@@ -17,8 +17,12 @@ public class MeetingFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<Long> findAllByMoimId(final long moimId) {
-        return meetingRepository.findAllByMoimId(moimId);
+    public List<Long> findMeetingIdsByMoimId(final long moimId) {
+        return meetingRepository.findMeetingIdsByMoimId(moimId);
     }
 
+    @Transactional(readOnly = true)
+    public List<MeetingJpaEntity> findAllByMoimId(final long moimId) {
+        return meetingRepository.findAllByMoimId(moimId);
+    }
 }
