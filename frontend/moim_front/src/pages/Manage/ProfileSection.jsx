@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 
 // Material UI
-import { Slide } from "@material-ui/core";
-import MuiAlert from "@material-ui/lab/Alert";
+import { Slide } from '@mui/material';
+import MuiAlert from "@mui/material/Alert";
 
 // Icons
 import EditIcon from '@mui/icons-material/Edit';

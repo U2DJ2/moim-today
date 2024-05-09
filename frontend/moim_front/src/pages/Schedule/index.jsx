@@ -2,6 +2,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
+// Material-UI
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+
 // Dayjs
 import dayjs from 'dayjs';
 
@@ -14,9 +19,6 @@ import PersonalSection from "./PersonalSection";
 // CSS
 import "./style.css";
 
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 
 function SidebarElementIcon() {
     return (
