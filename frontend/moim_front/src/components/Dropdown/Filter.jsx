@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { Fragment } from 'react';
+// React
+import { useState, Fragment } from 'react';
+
+// UI
 import { Menu, Transition } from '@headlessui/react';
 
 
