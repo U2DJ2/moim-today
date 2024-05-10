@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 import static moim_today.global.constant.exception.TodoExceptionConstant.TODO_START_TIME_AFTER_END_TIME_ERROR;
 import static moim_today.util.TestConstant.MEMBER_ID;
 import static moim_today.util.TestConstant.MOIM_ID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class TodoAppenderTest extends ImplementTest {
 
@@ -39,19 +38,27 @@ class TodoAppenderTest extends ImplementTest {
         assertThat(todoSize).isEqualTo(1);
     }
 
-    @DisplayName("투두를 추가할 때 시작 시간이 끝나는 시간보다 앞일 경우 에러가 발생한다")
+    @DisplayName("투두를 추가할 때 시작 시간이 끝나는 시간보다 앞일 경우만 에러가 발생한다")
     @Test
     void createTodoStartTimeError() {
         // given
-        TodoCreateRequest todoCreateRequest = TodoCreateRequest.builder()
+        TodoCreateRequest todoCreateRequest1 = TodoCreateRequest.builder()
                 .moimId(MOIM_ID.longValue())
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 1, 0, 0))
                 .build();
 
+        TodoCreateRequest todoCreateRequest2 = TodoCreateRequest.builder()
+                .moimId(MOIM_ID.longValue())
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
+                .build();
+
         // expected
-        assertThatThrownBy(() -> todoAppender.createTodo(MEMBER_ID.longValue(), todoCreateRequest))
+        assertThatThrownBy(() -> todoAppender.createTodo(MEMBER_ID.longValue(), todoCreateRequest1))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage(TODO_START_TIME_AFTER_END_TIME_ERROR.message());
+        assertThatCode(() -> todoAppender.createTodo(MEMBER_ID.longValue(), todoCreateRequest2))
+                .doesNotThrowAnyException();
     }
 }

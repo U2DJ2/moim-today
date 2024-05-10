@@ -1,6 +1,7 @@
 package moim_today.dto.todo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import moim_today.domain.todo.enums.TodoProgress;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
@@ -12,8 +13,11 @@ public record TodoCreateRequest(
         long moimId,
         String contents,
 
+        @NotNull
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         LocalDateTime startDateTime,
+
+        @NotNull
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         LocalDateTime endDateTime
 ) {
@@ -29,7 +33,7 @@ public record TodoCreateRequest(
                 .build();
     }
 
-    public boolean isStartBeforeEnd(){
-        return startDateTime.isBefore(endDateTime);
+    public boolean isStartBeforeOrEqualEnd(){
+        return !startDateTime.isAfter(endDateTime);
     }
 }

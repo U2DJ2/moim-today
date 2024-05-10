@@ -18,7 +18,7 @@ public class TodoAppender {
     }
 
     public TodoJpaEntity createTodo(final long memberId, final TodoCreateRequest todoCreateRequest){
-        if(!todoCreateRequest.isStartBeforeEnd()){
+        if(!todoCreateRequest.isStartBeforeOrEqualEnd()){
             throw new BadRequestException(TODO_START_TIME_AFTER_END_TIME_ERROR.message());
         }
         TodoJpaEntity todoJpaEntity = todoCreateRequest.toEntity(memberId);
