@@ -3,11 +3,12 @@ package moim_today.presentation.todo;
 import moim_today.application.todo.TodoService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.todo.TodoCreateRequest;
+import moim_today.dto.todo.TodoResponse;
 import moim_today.global.annotation.Login;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import moim_today.global.response.CollectionResponse;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/api/todos")
 @RestController
@@ -25,5 +26,9 @@ public class TodoController {
         todoService.createTodo(memberSession.id(), todoCreateRequest);
     }
 
-    @GetMapping("")
+    @GetMapping("/{moimId}")
+    public CollectionResponse<List<TodoResponse>> findAllByMember(final @Login MemberSession memberSession,
+                                                                  final @PathVariable long moimId){
+        return CollectionResponse.of(todoService.findAll(memberSession.id(), moimId));
+    }
 }
