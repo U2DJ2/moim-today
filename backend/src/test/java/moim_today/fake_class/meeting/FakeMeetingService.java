@@ -3,6 +3,7 @@ package moim_today.fake_class.meeting;
 import moim_today.application.meeting.MeetingService;
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.MeetingCreateRequest;
+import moim_today.dto.meeting.MeetingDetailResponse;
 import moim_today.dto.meeting.MeetingSimpleResponse;
 import moim_today.util.TestConstant;
 
@@ -44,5 +45,10 @@ public class FakeMeetingService implements MeetingService {
                 .build();
 
         return List.of(meetingSimpleResponse1, meetingSimpleResponse2, meetingSimpleResponse3);
+    }
+
+    @Override
+    public MeetingDetailResponse findDetailsById(final long moimId) {
+        return null;
     }
 }

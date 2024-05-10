@@ -3,6 +3,7 @@ package moim_today.presentation.meeting;
 import moim_today.application.meeting.MeetingService;
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.MeetingCreateRequest;
+import moim_today.dto.meeting.MeetingDetailResponse;
 import moim_today.dto.meeting.MeetingSimpleResponse;
 import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;
@@ -31,5 +32,10 @@ public class MeetingController {
             @RequestParam final MeetingStatus meetingStatus) {
         List<MeetingSimpleResponse> meetingSimpleResponses = meetingService.findAllByMoimId(moimId, meetingStatus);
         return CollectionResponse.of(meetingSimpleResponses);
+    }
+
+    @GetMapping("/detail/{meetingId}")
+    public MeetingDetailResponse findDetailsByMoimId(@PathVariable final long meetingId) {
+        return meetingService.findDetailsById(meetingId);
     }
 }

@@ -1,12 +1,15 @@
 package moim_today.persistence.repository.meeting.joined_meeting;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import moim_today.dto.member.MemberSimpleResponse;
+import moim_today.dto.member.QMemberSimpleResponse;
 import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.joinedMeetingJpaEntity;
+import static moim_today.persistence.entity.member.QMemberJpaEntity.memberJpaEntity;
 
 @Repository
 public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
@@ -64,5 +67,19 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
     @Override
     public JoinedMeetingJpaEntity findById(final long joinedMeetingId) {
         return joinedMeetingJpaRepository.findById(joinedMeetingId);
+    }
+
+    @Override
+    public List<MemberSimpleResponse> findMembersJoinedMeeting(final long meetingId) {
+        return queryFactory.select(
+                        new QMemberSimpleResponse(
+                                memberJpaEntity.id,
+                                memberJpaEntity.username,
+                                memberJpaEntity.memberProfileImageUrl)
+                )
+                .from(joinedMeetingJpaEntity)
+                .join(memberJpaEntity).on(memberJpaEntity.id.eq(joinedMeetingJpaEntity.memberId))
+                .where(joinedMeetingJpaEntity.meetingId.eq(meetingId))
+                .fetch();
     }
 }
