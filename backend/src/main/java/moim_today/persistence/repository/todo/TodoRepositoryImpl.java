@@ -20,8 +20,8 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    public void save(final TodoJpaEntity todoJpaEntity) {
-        todoJpaRepository.save(todoJpaEntity);
+    public TodoJpaEntity save(final TodoJpaEntity todoJpaEntity) {
+        return todoJpaRepository.save(todoJpaEntity);
     }
 
     @Override

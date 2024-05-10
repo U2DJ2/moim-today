@@ -7,7 +7,7 @@ import java.util.List;
 public interface TodoRepository {
     void deleteAllByMoimId(final long moimId);
 
-    void save(final TodoJpaEntity todoJpaEntity);
+    TodoJpaEntity save(final TodoJpaEntity todoJpaEntity);
 
     long count();
 
