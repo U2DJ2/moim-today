@@ -10,7 +10,7 @@ function MoimJoinPage() {
   const [selected, setSelected] = useState("HOME");
 
   return (
-    <div className="flex w-screen min-h-full screen bg-gradient-to-b from-white to-[#F6F8FE] justify-start gap-9 px-24">
+    <MoimContainer>
       <DetailedLeft
         userName={"김유림"}
         title={"컴구 스터디 구합니다"}
@@ -22,7 +22,7 @@ function MoimJoinPage() {
         }
         joined={true}
       />
-      <div className="flex flex-col basis-4/5 bg-white shadow-[0px_4px_12px_rgba(0,_0,_0,_0.06)] rounded-3xl px-24 gap-8 h-5/6 pb-16 ">
+      <div className="flex flex-col basis-4/5 bg-white shadow-[0px_4px_12px_rgba(0,_0,_0,_0.06)] overflow-hidden rounded-3xl px-24 gap-8 min-h-[600px] h-fit">
         <div className="flex justify-center items-center self-start font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
           <div className="flex gap-12 font-semibold font-Roboto lg:text-xl lg:gap-8 xl:text-3xl 2xl:text-4xl">
             <div
@@ -77,7 +77,7 @@ function MoimJoinPage() {
           <Member />
         ) : null}
       </div>
-    </div>
+    </MoimContainer>
   );
 }
 
