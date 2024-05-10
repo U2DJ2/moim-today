@@ -204,7 +204,7 @@ class MemberControllerTest extends ControllerTest {
                                 parameterWithName("moimId").description("모임 id")
                         ),
                         resource(ResourceSnippetParameters.builder()
-                                .tag("멤버")
+                                .tag("회원")
                                 .summary("모임의 호스트인지 검사")
                                 .responseFields(
                                         fieldWithPath("isHost").type(BOOLEAN).description("호스트 여부")
