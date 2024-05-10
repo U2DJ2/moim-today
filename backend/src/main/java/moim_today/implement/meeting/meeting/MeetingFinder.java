@@ -26,7 +26,9 @@ public class MeetingFinder {
     @Transactional(readOnly = true)
     public List<MeetingJpaEntity> findAllByMoimId(final long moimId, final MeetingStatus meetingStatus,
                                                   final LocalDateTime currentDateTime) {
-        if (meetingStatus.equals(MeetingStatus.PAST)) {
+        if (meetingStatus.equals(MeetingStatus.ALL)) {
+            return meetingRepository.findAllByMoimId(moimId, currentDateTime);
+        } else if(meetingStatus.equals(MeetingStatus.PAST)) {
             return meetingRepository.findAllPastByMoimId(moimId, currentDateTime);
         }
 

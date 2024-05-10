@@ -9,6 +9,8 @@ public interface MeetingRepository {
 
     List<Long> findMeetingIdsByMoimId(final long moimId);
 
+    List<MeetingJpaEntity> findAllByMoimId(final long moimId, final LocalDateTime currentDateTime);
+
     List<MeetingJpaEntity> findAllUpcomingByMoimId(final long moimId, final LocalDateTime currentDateTime);
 
     List<MeetingJpaEntity> findAllPastByMoimId(final long moimId, final LocalDateTime currentDateTime);

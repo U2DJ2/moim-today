@@ -35,6 +35,13 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     }
 
     @Override
+    public List<MeetingJpaEntity> findAllByMoimId(final long moimId, final LocalDateTime currentDateTime) {
+        return queryFactory.selectFrom(meetingJpaEntity)
+                .where(meetingJpaEntity.moimId.eq(moimId))
+                .fetch();
+    }
+
+    @Override
     public List<MeetingJpaEntity> findAllUpcomingByMoimId(final long moimId, final LocalDateTime currentDateTime) {
         return queryFactory.selectFrom(meetingJpaEntity)
                 .where(meetingJpaEntity.moimId.eq(moimId)
