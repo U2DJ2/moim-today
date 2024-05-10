@@ -28,4 +28,8 @@ public record TodoCreateRequest(
                 .endDateTime(endDateTime)
                 .build();
     }
+
+    public boolean isStartBeforeEnd(){
+        return startDateTime.isBefore(endDateTime);
+    }
 }

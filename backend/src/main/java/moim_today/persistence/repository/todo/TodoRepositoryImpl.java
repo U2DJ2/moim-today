@@ -30,12 +30,17 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    public void deleteAllTodosCreatedByMemberInMoim(final long moimId, final long memberId) {
+    public void deleteAllCreatedByMemberInMoim(final long memberId, final long moimId) {
         todoJpaRepository.deleteAllByMoimIdAndMemberId(moimId,memberId);
     }
 
     @Override
-    public List<TodoJpaEntity> getAllTodosByMemberId(final long memberId) {
+    public List<TodoJpaEntity> getAllByMemberId(final long memberId) {
         return todoJpaRepository.findAllByMemberId(memberId);
+    }
+
+    @Override
+    public List<TodoJpaEntity> getAllByMemberIdAndMoimId(final long memberId, final long moimId) {
+        return todoJpaRepository.findAllByMemberIdAndMoimId(memberId, moimId);
     }
 }

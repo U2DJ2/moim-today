@@ -11,7 +11,9 @@ public interface TodoRepository {
 
     long count();
 
-    void deleteAllTodosCreatedByMemberInMoim(final long moimId, final long memberId);
+    void deleteAllCreatedByMemberInMoim(final long memberId, final long moimId);
 
-    List<TodoJpaEntity> getAllTodosByMemberId(final long memberId);
+    List<TodoJpaEntity> getAllByMemberId(final long memberId);
+
+    List<TodoJpaEntity> getAllByMemberIdAndMoimId(final long memberId, final long moimId);
 }
