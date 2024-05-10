@@ -4,7 +4,7 @@ import clock from "../../assets/svg/clockIcon.svg";
 
 function DetailedRight({ category, title, currentCount, capacity, contents }) {
   return (
-    <div className="flex flex-col bg-white shadow-[0px_4px_12px_rgba(0,_0,_0,_0.06)] overflow-hidden max-w-[900px] rounded-3xl px-24 gap-8 min-h-[600px] h-fit">
+    <div className="flex flex-col bg-white shadow-[0px_4px_12px_rgba(0,_0,_0,_0.06)] overflow-hidden rounded-3xl px-24 gap-8 min-h-[600px] h-fit">
       <div>
         <div className="bg-black font-Pretendard_Light text-lg rounded-full px-5 text-white justify-center items-center text-center w-fit mb-3">
           {category}

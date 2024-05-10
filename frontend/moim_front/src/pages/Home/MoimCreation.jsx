@@ -227,4 +227,4 @@ export default function MoimCreation() {
       </footer>
     </div>
   );
-}
+} 
