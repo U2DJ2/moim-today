@@ -13,6 +13,12 @@ public class JoinedMeetingServiceImpl implements JoinedMeetingService {
     }
 
     @Override
+    public void acceptanceJoinMeeting(final long memberId, final long meetingId) {
+        boolean attendance = true;
+        joinedMeetingUpdater.updateAttendance(memberId, meetingId, attendance);
+    }
+
+    @Override
     public void refuseJoinMeeting(final long memberId, final long meetingId) {
         boolean attendance = false;
         joinedMeetingUpdater.updateAttendance(memberId, meetingId, attendance);

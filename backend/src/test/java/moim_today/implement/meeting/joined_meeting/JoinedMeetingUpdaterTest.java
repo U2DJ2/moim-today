@@ -38,7 +38,7 @@ class JoinedMeetingUpdaterTest extends ImplementTest {
 
         // then
         JoinedMeetingJpaEntity findEntity = joinedMeetingRepository.getById(joinedMeetingJpaEntity.getId());
-        assertThat(findEntity.isAttendance()).isTrue();
+        assertThat(findEntity.isAttendance()).isEqualTo(newAttendanceStatus);
         assertThat(findEntity.getMemberId()).isEqualTo(memberId);
         assertThat(findEntity.getMeetingId()).isEqualTo(meetingId);
     }
