@@ -20,21 +20,18 @@ public class MoimNoticeServiceImpl implements MoimNoticeService{
     private final MoimNoticeUpdater moimNoticeUpdater;
     private final MoimNoticeRemover moimNoticeRemover;
     private final JoinedMoimFinder joinedMoimFinder;
-    private final MoimFinder moimFinder;
 
 
     public MoimNoticeServiceImpl(final MoimNoticeAppender moimNoticeAppender,
                                  final MoimNoticeFinder moimNoticeFinder,
                                  final MoimNoticeUpdater moimNoticeUpdater,
                                  final MoimNoticeRemover moimNoticeRemover,
-                                 final JoinedMoimFinder joinedMoimFinder,
-                                 final MoimFinder moimFinder) {
+                                 final JoinedMoimFinder joinedMoimFinder) {
         this.moimNoticeAppender = moimNoticeAppender;
         this.moimNoticeFinder = moimNoticeFinder;
         this.moimNoticeUpdater = moimNoticeUpdater;
         this.moimNoticeRemover = moimNoticeRemover;
         this.joinedMoimFinder = joinedMoimFinder;
-        this.moimFinder = moimFinder;
     }
 
     @Override
