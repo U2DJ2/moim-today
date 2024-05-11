@@ -17,11 +17,13 @@ import moim_today.util.EnumDocsUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockCookie;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.time.LocalDate;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static moim_today.global.constant.MoimConstant.VIEWED_MOIM_COOKIE_NAME;
 import static moim_today.util.TestConstant.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;

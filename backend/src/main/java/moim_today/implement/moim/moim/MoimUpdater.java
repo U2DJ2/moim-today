@@ -16,10 +16,14 @@ public class MoimUpdater {
 
     private final MoimRepository moimRepository;
     private final ObjectMapper objectMapper;
+    private final MoimFinder moimFinder;
 
-    public MoimUpdater(final MoimRepository moimRepository, final ObjectMapper objectMapper) {
+    public MoimUpdater(final MoimRepository moimRepository,
+                       final ObjectMapper objectMapper,
+                       final MoimFinder moimFinder) {
         this.moimRepository = moimRepository;
         this.objectMapper = objectMapper;
+        this.moimFinder = moimFinder;
     }
 
     @Transactional
@@ -30,20 +34,23 @@ public class MoimUpdater {
     }
 
     @Transactional
-    public void updateMoimViews(final MoimJpaEntity moimJpaEntity, final String viewedMoimsCookieByUrlEncoded, final HttpServletResponse response) {
-        ViewedMoimsCookie viewedMoimsCookie = ViewedMoimsCookie.getViewedMoimsCookieOrDefault(
+    public void updateMoimViews(final long moimId, final String viewedMoimsCookieByUrlEncoded, final HttpServletResponse response) {
+        MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
+
+        ViewedMoimsCookie viewedMoimsCookie = ViewedMoimsCookie.createViewedMoimsCookieOrDefault(
                 viewedMoimsCookieByUrlEncoded, new ArrayList<>(), objectMapper);
 
-        if (!viewedMoimsCookie.existsInViewedMoims(moimJpaEntity.getId())) {
+        if (!viewedMoimsCookie.existsInViewedMoims(moimId)) {
             moimJpaEntity.updateMoimViews();
-            viewedMoimsCookie.createAndAddViewedMoim(moimJpaEntity.getId());
+            viewedMoimsCookie.createAndAddViewedMoim(moimId);
             viewedMoimsCookie.addViewedMoimsCookieInCookie(response, objectMapper);
             return;
         }
 
-        if (viewedMoimsCookie.isExpired(moimJpaEntity.getId())) {
-            viewedMoimsCookie.removeViewedMoim(moimJpaEntity.getId());
-            viewedMoimsCookie.createAndAddViewedMoim(moimJpaEntity.getId());
+        if (viewedMoimsCookie.isExpired(moimId)) {
+            moimJpaEntity.updateMoimViews();
+            viewedMoimsCookie.removeViewedMoim(moimId);
+            viewedMoimsCookie.createAndAddViewedMoim(moimId);
             viewedMoimsCookie.addViewedMoimsCookieInCookie(response, objectMapper);
         }
     }

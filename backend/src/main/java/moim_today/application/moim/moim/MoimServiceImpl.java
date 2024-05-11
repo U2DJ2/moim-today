@@ -80,13 +80,12 @@ public class MoimServiceImpl implements MoimService{
         return MoimImageResponse.from(imageUrl);
     }
 
-    @Transactional
     @Override
     public MoimDetailResponse getMoimDetail(final long moimId,
                                             final String viewedMoimsCookieByUrlEncoded,
                                             final HttpServletResponse response) {
         MoimJpaEntity moimJpaEntity =  moimFinder.getById(moimId);
-        moimUpdater.updateMoimViews(moimJpaEntity, viewedMoimsCookieByUrlEncoded, response);
+        moimUpdater.updateMoimViews(moimId, viewedMoimsCookieByUrlEncoded, response);
         return MoimDetailResponse.from(moimJpaEntity);
     }
 

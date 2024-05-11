@@ -1,5 +1,6 @@
 package moim_today.domain.moim;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ public record ViewedMoim(
                 .build();
     }
 
+    @JsonIgnore
     public boolean isExpired() {
         return expiredTime.isBefore(LocalDateTime.now());
     }
