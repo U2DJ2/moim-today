@@ -1,38 +1,44 @@
 package moim_today.application.todo;
 
+import moim_today.dto.todo.MemberTodoResponse;
 import moim_today.dto.todo.TodoCreateRequest;
-import moim_today.dto.todo.TodoFinder;
-import moim_today.dto.todo.TodoResponse;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import moim_today.implement.todo.TodoAppender;
+import moim_today.implement.todo.TodoManager;
 import org.springframework.stereotype.Service;
 
+import java.time.YearMonth;
 import java.util.List;
 
 @Service
 public class TodoServiceImpl implements TodoService{
 
     private final TodoAppender todoAppender;
-    private final TodoFinder todoFinder;
+    private final TodoManager todoManager;
     private final JoinedMoimFinder joinedMoimFinder;
 
     public TodoServiceImpl(final TodoAppender todoAppender,
-                           final TodoFinder todoFinder,
+                           final TodoManager todoManager,
                            final JoinedMoimFinder joinedMoimFinder) {
         this.todoAppender = todoAppender;
-        this.todoFinder = todoFinder;
+        this.todoManager = todoManager;
         this.joinedMoimFinder = joinedMoimFinder;
     }
 
     @Override
     public void createTodo(final long memberId, final TodoCreateRequest todoCreateRequest) {
-        joinedMoimFinder.validateMemberInMoim(todoCreateRequest.moimId(), memberId);
+        joinedMoimFinder.validateMemberInMoim(memberId, todoCreateRequest.moimId());
 
         todoAppender.createTodo(memberId, todoCreateRequest);
     }
 
     @Override
-    public List<TodoResponse> findAll(final long memberId, final long moimId) {
-        return todoFinder.findAll(memberId, moimId);
+    public List<MemberTodoResponse> findAllMembersTodosInMoim(final long memberId,
+                                                              final long moimId,
+                                                              final YearMonth startDate,
+                                                              final int months) {
+        joinedMoimFinder.validateMemberInMoim(memberId, moimId);
+        return todoManager.findAllMembersTodosInMoim(memberId, moimId, startDate, months);
     }
+
 }

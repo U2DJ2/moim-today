@@ -50,7 +50,7 @@ public class MoimManager {
     @Transactional
     public void deleteMemberFromMoim(final long memberId, final long moimId) {
 
-        joinedMoimFinder.validateMemberInMoim(moimId, memberId);
+        joinedMoimFinder.validateMemberInMoim(memberId, moimId);
 
         joinedMoimRemover.deleteMoimMember(moimId, memberId);
         todoRemover.deleteAllTodosCreatedByMemberInMoim(moimId, memberId);
