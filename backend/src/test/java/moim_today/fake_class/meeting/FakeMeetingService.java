@@ -1,6 +1,6 @@
 package moim_today.fake_class.meeting;
 
-import moim_today.application.meeting.MeetingService;
+import moim_today.application.meeting.meeting.MeetingService;
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.MeetingCreateRequest;
 import moim_today.dto.meeting.MeetingDetailResponse;

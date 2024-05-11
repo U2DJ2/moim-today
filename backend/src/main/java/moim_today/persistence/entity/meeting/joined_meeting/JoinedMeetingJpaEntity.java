@@ -41,4 +41,8 @@ public class JoinedMeetingJpaEntity extends BaseTimeEntity {
                 .attendance(attendance)
                 .build();
     }
+
+    public void updateAttendance(final boolean attendance) {
+        this.attendance = attendance;
+    }
 }
