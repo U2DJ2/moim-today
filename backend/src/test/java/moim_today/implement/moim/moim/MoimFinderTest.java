@@ -1,11 +1,11 @@
 package moim_today.implement.moim.moim;
 
+import moim_today.domain.moim.MoimSortedFilter;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.MoimDateResponse;
+import moim_today.dto.moim.moim.MoimFilterRequest;
 import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.dto.moim.moim.MoimSimpleResponse;
-import moim_today.dto.moim.moim.filter.MoimFilterRequest;
-import moim_today.dto.moim.moim.filter.MoimSortedFilter;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
