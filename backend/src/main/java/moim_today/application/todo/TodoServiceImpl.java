@@ -38,7 +38,7 @@ public class TodoServiceImpl implements TodoService{
                                                               final YearMonth startDate,
                                                               final int months) {
         joinedMoimFinder.validateMemberInMoim(memberId, moimId);
-        return todoManager.findAllMembersTodosInMoim(memberId, moimId, startDate, months);
+        return todoManager.findAllMembersTodosInMoim(moimId, startDate, months);
     }
 
 }
