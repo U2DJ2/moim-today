@@ -23,7 +23,7 @@ public interface JoinedMeetingRepository {
 
     void deleteAllByMemberInMeeting(final long memberId, final List<Long> meetingIds);
 
-    JoinedMeetingJpaEntity findById(final long joinedMeetingId);
+    JoinedMeetingJpaEntity getById(final long joinedMeetingId);
 
     List<MemberSimpleResponse> findMembersJoinedMeeting(final long meetingId);
 }

@@ -3,11 +3,13 @@ package moim_today.persistence.repository.meeting.joined_meeting;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.dto.member.QMemberSimpleResponse;
+import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static moim_today.global.constant.exception.MeetingExceptionConstant.JOINED_MEETING_NOT_FOUND_ERROR;
 import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.joinedMeetingJpaEntity;
 import static moim_today.persistence.entity.member.QMemberJpaEntity.memberJpaEntity;
 
@@ -70,8 +72,9 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
     }
 
     @Override
-    public JoinedMeetingJpaEntity findById(final long joinedMeetingId) {
-        return joinedMeetingJpaRepository.findById(joinedMeetingId);
+    public JoinedMeetingJpaEntity getById(final long joinedMeetingId) {
+        return joinedMeetingJpaRepository.findById(joinedMeetingId)
+                .orElseThrow(() -> new NotFoundException(JOINED_MEETING_NOT_FOUND_ERROR.message()));
     }
 
     @Override

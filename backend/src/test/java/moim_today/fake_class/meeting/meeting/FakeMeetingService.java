@@ -1,4 +1,4 @@
-package moim_today.fake_class.meeting;
+package moim_today.fake_class.meeting.meeting;
 
 import moim_today.application.meeting.meeting.MeetingService;
 import moim_today.domain.meeting.enums.MeetingStatus;
