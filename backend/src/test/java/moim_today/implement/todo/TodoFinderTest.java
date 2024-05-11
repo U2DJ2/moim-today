@@ -22,18 +22,29 @@ class TodoFinderTest extends ImplementTest {
     @DisplayName("모임에 있는 멤버의 시작 시간 ~ 끝나는 시간 사이의 모든 Todo를 가져온다")
     @Test
     void findAllByDateRange() {
+
+        List<LocalDateTime> startDateTimes = List.of(
+                LocalDateTime.of(2024, 5, 11, 0, 0, 0),
+                LocalDateTime.of(2024, 5, 10, 0, 0, 0)
+        );
+
+        List<LocalDateTime> endDateTimes = List.of(
+                LocalDateTime.of(2024, 5, 11, 0, 0, 0),
+                LocalDateTime.of(2024, 5, 12, 0, 0, 0)
+        );
+
         TodoJpaEntity todoJpa1 = TodoJpaEntity.builder()
                 .memberId(MEMBER_ID.longValue())
                 .moimId((MOIM_ID.longValue()))
-                .startDateTime(LocalDateTime.of(2024, 5, 11, 0, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 5, 11, 0, 0, 0))
+                .startDateTime(startDateTimes.get(0))
+                .endDateTime(endDateTimes.get(0))
                 .build();
 
         TodoJpaEntity todoJpa2 = TodoJpaEntity.builder()
                 .memberId(MEMBER_ID.longValue())
                 .moimId((MOIM_ID.longValue()))
-                .startDateTime(LocalDateTime.of(2024, 5, 10, 0, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 5, 12, 0, 0, 0))
+                .startDateTime(startDateTimes.get(1))
+                .endDateTime(endDateTimes.get(1))
                 .build();
 
         TodoJpaEntity todoJpa3 = TodoJpaEntity.builder()
@@ -53,6 +64,10 @@ class TodoFinderTest extends ImplementTest {
                 testStartTime, testEndTime);
 
         assertThat(todoResponses.size()).isEqualTo(2);
+        todoResponses.forEach(todoResponse -> {
+            assertThat(todoResponse.startDateTime()).isIn(startDateTimes);
+            assertThat(todoResponse.endDateTime()).isIn(endDateTimes);
+        });
     }
 
     @DisplayName("다른 모임이나 다른 멤버의 Todo는 가져오지 않는다")
@@ -67,13 +82,13 @@ class TodoFinderTest extends ImplementTest {
 
         TodoJpaEntity todoJpa2 = TodoJpaEntity.builder()
                 .memberId(MEMBER_ID.longValue())
-                .moimId((MOIM_ID.longValue()+1L))
+                .moimId((MOIM_ID.longValue() + 1L))
                 .startDateTime(LocalDateTime.of(2024, 5, 10, 0, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 5, 12, 0, 0, 0))
                 .build();
 
         TodoJpaEntity todoJpa3 = TodoJpaEntity.builder()
-                .memberId(MEMBER_ID.longValue()+1L)
+                .memberId(MEMBER_ID.longValue() + 1L)
                 .moimId((MOIM_ID.longValue()))
                 .startDateTime(LocalDateTime.of(2024, 5, 10, 0, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 5, 12, 0, 0, 0))

@@ -7,6 +7,7 @@ import moim_today.implement.moim.joined_moim.JoinedMoimManager;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 import static moim_today.global.constant.TimeConstant.MONTH_START_POINT;
@@ -24,18 +25,21 @@ public class TodoManager {
         this.joinedMoimManager = joinedMoimManager;
     }
 
-    public List<MemberTodoResponse> findAllMembersTodosInMoim(final long memberId,
-                                                              final long moimId,
+    public List<MemberTodoResponse> findAllMembersTodosInMoim(final long moimId,
                                                               final YearMonth startDate,
                                                               final int months) {
         LocalDateTime startDateTime = startDate.atDay(MONTH_START_POINT.time()).atStartOfDay();
-        LocalDateTime endDateTime = startDateTime.plusMonths(months);
+        LocalDateTime endDateTime = startDateTime.plusMonths(months)
+                .with(TemporalAdjusters.lastDayOfMonth())
+                .withHour(23)
+                .withMinute(59)
+                .withSecond(59);
 
         List<Long> moimMemberIds = joinedMoimManager.findAllJoinedMemberId(moimId);
 
         return moimMemberIds.stream().map(m -> {
-            List<TodoResponse> todoResponses = todoFinder.findAllByDateRange(memberId, moimId, startDateTime, endDateTime);
-            return MemberTodoResponse.of(memberId, todoResponses);
+            List<TodoResponse> todoResponses = todoFinder.findAllByDateRange(m, moimId, startDateTime, endDateTime);
+            return MemberTodoResponse.of(m, todoResponses);
         }).toList();
     }
 }
