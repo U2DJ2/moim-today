@@ -22,6 +22,21 @@ class JoinedMeetingControllerTest extends ControllerTest {
         return new JoinedMeetingController(joinedMeetingService);
     }
 
+    @DisplayName("회원이 특정 미팅 참여를 수락한다.")
+    @Test
+    void acceptanceJoinMeeting() throws Exception {
+        mockMvc.perform(
+                        post("/api/members/meetings/{meetingId}/acceptance", 1L)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("미팅 참여를 수락한다.",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅")
+                                .summary("미팅 참여 수락")
+                                .build()
+                        )));
+    }
+
     @DisplayName("회원이 특정 미팅 참여를 거절한다.")
     @Test
     void refuseJoinMeeting() throws Exception {
