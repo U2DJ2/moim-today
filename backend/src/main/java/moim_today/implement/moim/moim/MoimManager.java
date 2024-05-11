@@ -55,7 +55,7 @@ public class MoimManager {
         joinedMoimRemover.deleteMoimMember(moimId, memberId);
         todoRemover.deleteAllTodosCreatedByMemberInMoim(moimId, memberId);
 
-        List<Long> meetingIds = meetingFinder.findAllByMoimId(moimId);
+        List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId);
 
         joinedMeetingRemover.deleteAllByMemberInMeeting(memberId, meetingIds);
         meetingCommentUpdater.updateDeletedMembers(memberId, meetingIds);

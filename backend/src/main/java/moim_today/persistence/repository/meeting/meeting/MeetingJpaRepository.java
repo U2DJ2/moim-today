@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface MeetingJpaRepository extends JpaRepository<MeetingJpaEntity, Long> {
 
+    List<MeetingJpaEntity> findAllByMoimId(final long moimId);
 }

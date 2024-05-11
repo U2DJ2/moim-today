@@ -6,6 +6,7 @@ import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_NOT_FOUND_ERROR;
@@ -25,11 +26,34 @@ public class MeetingRepositoryImpl implements MeetingRepository {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Long> findAllByMoimId(final long moimId) {
+    public List<Long> findMeetingIdsByMoimId(final long moimId) {
         return queryFactory
                 .select(meetingJpaEntity.id)
                 .from(meetingJpaEntity)
                 .where(meetingJpaEntity.moimId.eq(moimId))
+                .fetch();
+    }
+
+    @Override
+    public List<MeetingJpaEntity> findAllByMoimId(final long moimId, final LocalDateTime currentDateTime) {
+        return queryFactory.selectFrom(meetingJpaEntity)
+                .where(meetingJpaEntity.moimId.eq(moimId))
+                .fetch();
+    }
+
+    @Override
+    public List<MeetingJpaEntity> findAllUpcomingByMoimId(final long moimId, final LocalDateTime currentDateTime) {
+        return queryFactory.selectFrom(meetingJpaEntity)
+                .where(meetingJpaEntity.moimId.eq(moimId)
+                        .and(meetingJpaEntity.startDateTime.after(currentDateTime)))
+                .fetch();
+    }
+
+    @Override
+    public List<MeetingJpaEntity> findAllPastByMoimId(final long moimId, final LocalDateTime currentDateTime) {
+        return queryFactory.selectFrom(meetingJpaEntity)
+                .where(meetingJpaEntity.moimId.eq(moimId)
+                        .and(meetingJpaEntity.startDateTime.before(currentDateTime)))
                 .fetch();
     }
 
@@ -48,5 +72,4 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     public long count() {
         return meetingJpaRepository.count();
     }
-
 }
