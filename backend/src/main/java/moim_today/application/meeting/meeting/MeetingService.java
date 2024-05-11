@@ -11,7 +11,7 @@ public interface MeetingService {
 
     void createMeeting(final MeetingCreateRequest meetingCreateRequest);
 
-    List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final MeetingStatus meetingStatus);
+    List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final long memberId, final MeetingStatus meetingStatus);
 
     MeetingDetailResponse findDetailsById(final long meetingId);
 }

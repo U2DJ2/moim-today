@@ -124,7 +124,8 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].dayOfWeek").type(VARIES).description(
                                                 String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(DayOfWeek.class))
                                         ),
-                                        fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day")
+                                        fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
+                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
                                 )
                                 .build()
                         )));
@@ -153,7 +154,8 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].dayOfWeek").type(VARIES).description(
                                                 String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(DayOfWeek.class))
                                         ),
-                                        fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day")
+                                        fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
+                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
                                 )
                                 .build()
                         )));
@@ -182,7 +184,8 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].dayOfWeek").type(VARIES).description(
                                                 String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(DayOfWeek.class))
                                         ),
-                                        fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day")
+                                        fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
+                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
                                 )
                                 .build()
                         )));

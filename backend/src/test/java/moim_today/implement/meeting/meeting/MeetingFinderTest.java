@@ -2,6 +2,7 @@ package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.MeetingDetailResponse;
+import moim_today.dto.meeting.MeetingSimpleDao;
 import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
@@ -83,12 +84,37 @@ class MeetingFinderTest extends ImplementTest {
         meetingRepository.save(meetingJpaEntity2);
         meetingRepository.save(meetingJpaEntity3);
 
+        // given 2
+        long memberId = MEMBER_ID.longValue();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity1.getId())
+                .attendance(true)
+                .build();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity2 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity2.getId())
+                .attendance(true)
+                .build();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity3 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity3.getId())
+                .attendance(false)
+                .build();
+
+        joinedMeetingRepository.save(joinedMeetingJpaEntity1);
+        joinedMeetingRepository.save(joinedMeetingJpaEntity2);
+        joinedMeetingRepository.save(joinedMeetingJpaEntity3);
+
         // when
-        List<MeetingJpaEntity> meetingJpaEntities =
-                meetingFinder.findAllByMoimId(moimId, MeetingStatus.UPCOMING, currentDateTime);
+        List<MeetingSimpleDao> meetingSimpleDaos =
+                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.UPCOMING, currentDateTime);
 
         // then
-        assertThat(meetingJpaEntities.size()).isEqualTo(2);
+        assertThat(meetingSimpleDaos.size()).isEqualTo(2);
     }
 
     @DisplayName("하나의 모임에 생성된 이후에 이전 미팅의 엔티티 정보를 반환한다.")
@@ -119,12 +145,37 @@ class MeetingFinderTest extends ImplementTest {
         meetingRepository.save(meetingJpaEntity2);
         meetingRepository.save(meetingJpaEntity3);
 
+        // given 2
+        long memberId = MEMBER_ID.longValue();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity1.getId())
+                .attendance(true)
+                .build();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity2 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity2.getId())
+                .attendance(true)
+                .build();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity3 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity3.getId())
+                .attendance(false)
+                .build();
+
+        joinedMeetingRepository.save(joinedMeetingJpaEntity1);
+        joinedMeetingRepository.save(joinedMeetingJpaEntity2);
+        joinedMeetingRepository.save(joinedMeetingJpaEntity3);
+
         // when
-        List<MeetingJpaEntity> meetingJpaEntities =
-                meetingFinder.findAllByMoimId(moimId, MeetingStatus.PAST, currentDateTime);
+        List<MeetingSimpleDao> meetingSimpleDaos =
+                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.PAST, currentDateTime);
 
         // then
-        assertThat(meetingJpaEntities.size()).isEqualTo(2);
+        assertThat(meetingSimpleDaos.size()).isEqualTo(2);
     }
 
     @DisplayName("하나의 모임의 모든 미팅의 엔티티 정보를 반환한다.")
@@ -155,12 +206,37 @@ class MeetingFinderTest extends ImplementTest {
         meetingRepository.save(meetingJpaEntity2);
         meetingRepository.save(meetingJpaEntity3);
 
+        // given 2
+        long memberId = MEMBER_ID.longValue();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity1.getId())
+                .attendance(true)
+                .build();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity2 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity2.getId())
+                .attendance(true)
+                .build();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity3 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity3.getId())
+                .attendance(false)
+                .build();
+
+        joinedMeetingRepository.save(joinedMeetingJpaEntity1);
+        joinedMeetingRepository.save(joinedMeetingJpaEntity2);
+        joinedMeetingRepository.save(joinedMeetingJpaEntity3);
+
         // when
-        List<MeetingJpaEntity> meetingJpaEntities =
-                meetingFinder.findAllByMoimId(moimId, MeetingStatus.ALL, currentDateTime);
+        List<MeetingSimpleDao> meetingSimpleDaos =
+                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.ALL, currentDateTime);
 
         // then
-        assertThat(meetingJpaEntities.size()).isEqualTo(3);
+        assertThat(meetingSimpleDaos.size()).isEqualTo(3);
     }
 
     @DisplayName("미팅 id로 해당 미팅의 상세 정보를 가져온다.")

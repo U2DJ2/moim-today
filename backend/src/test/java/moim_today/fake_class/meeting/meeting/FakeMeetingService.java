@@ -22,7 +22,8 @@ public class FakeMeetingService implements MeetingService {
     }
 
     @Override
-    public List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final MeetingStatus meetingStatus) {
+    public List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final long memberId,
+                                                       final MeetingStatus meetingStatus) {
         MeetingSimpleResponse meetingSimpleResponse1 = MeetingSimpleResponse.builder()
                 .meetingId(MEETING_ID.longValue())
                 .agenda(MEETING_AGENDA.value())

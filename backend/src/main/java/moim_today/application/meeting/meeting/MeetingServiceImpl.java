@@ -3,6 +3,7 @@ package moim_today.application.meeting.meeting;
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.MeetingCreateRequest;
 import moim_today.dto.meeting.MeetingDetailResponse;
+import moim_today.dto.meeting.MeetingSimpleDao;
 import moim_today.dto.meeting.MeetingSimpleResponse;
 import moim_today.implement.meeting.meeting.MeetingFinder;
 import moim_today.implement.meeting.meeting.MeetingManager;
@@ -29,10 +30,11 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final MeetingStatus meetingStatus) {
-        List<MeetingJpaEntity> meetingJpaEntities =
-                meetingFinder.findAllByMoimId(moimId, meetingStatus, LocalDateTime.now());
-        return MeetingSimpleResponse.toResponses(meetingJpaEntities);
+    public List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final long memberId,
+                                                       final MeetingStatus meetingStatus) {
+        List<MeetingSimpleDao> meetingSimpleDaos =
+                meetingFinder.findAllByMoimId(moimId, memberId, meetingStatus, LocalDateTime.now());
+        return MeetingSimpleResponse.toResponses(meetingSimpleDaos);
     }
 
     @Override
