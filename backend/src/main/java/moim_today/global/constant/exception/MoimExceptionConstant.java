@@ -9,7 +9,9 @@ public enum MoimExceptionConstant {
     MOIM_FORBIDDEN_ERROR("해당 모임에 대한 접근 권한이 없습니다."),
     NOTICE_NOT_FOUND_ERROR("존재하지 않거나 삭제된 공지입니다."),
     ORGANIZER_FORBIDDEN_ERROR("모임장만 접근할 수 있습니다."),
-    JOINED_MOIM_MEMBER_IS_EMPTY("모임에 참여한 멤버가 없습니다.");
+    JOINED_MOIM_MEMBER_IS_EMPTY("모임에 참여한 멤버가 없습니다."),
+    VIEWED_MOIM_JSON_PROCESSING_ERROR("서버 내부 오류가 발생했습니다. 조회수를 처리하는 중 문제가 발생했습니다.");
+
 
     private final String message;
 

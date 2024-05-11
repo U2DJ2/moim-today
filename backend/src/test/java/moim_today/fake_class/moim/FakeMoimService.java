@@ -1,5 +1,6 @@
 package moim_today.fake_class.moim;
 
+import jakarta.servlet.http.HttpServletResponse;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
@@ -30,7 +31,9 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public MoimDetailResponse getMoimDetail(final long moimId) {
+    public MoimDetailResponse getMoimDetail(final long moimId,
+                                            final String viewedMoimsCookieByUrlEncoded,
+                                            final HttpServletResponse response) {
         return MoimDetailResponse.builder()
                 .moimId(moimId)
                 .title(MOIM_TITLE.value())
