@@ -1,7 +1,9 @@
 package moim_today.persistence.repository.todo;
 
+import moim_today.dto.todo.TodoResponse;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TodoRepository {
@@ -15,5 +17,6 @@ public interface TodoRepository {
 
     List<TodoJpaEntity> getAllByMemberId(final long memberId);
 
-    List<TodoJpaEntity> getAllByMemberIdAndMoimId(final long memberId, final long moimId);
+    List<TodoResponse> findAllByDateRange(final long memberId, final long moimId,
+                                          final LocalDateTime startDateTime, final LocalDateTime endDateTime);
 }
