@@ -11,11 +11,12 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import DateRangePicker from "../../components/DatePicker/Range";
 
 // Define label style
-const labelStyle = "mt-2.5 mb-2.5 text-base font-Pretendard_SemiBold leading-5 text-stone-700 max-md:max-w-full";
+const labelStyle =
+  "mt-2.5 mb-2.5 text-base font-Pretendard_SemiBold leading-5 text-stone-700 max-md:max-w-full";
 
 // Define common input style
-const commonInputStyle = "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
-
+const commonInputStyle =
+  "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -31,13 +32,13 @@ function Dropdown({ label, options, onSelect }) {
 
   return (
     <>
-      <div className={labelStyle}>
-        {label}
-      </div>
+      <div className={labelStyle}>{label}</div>
 
       <Menu as="div" className="relative w-full inline-block text-left">
         <div>
-          <Menu.Button className={`${commonInputStyle} inline-flex w-full justify-between items-center gap-x-1.5 px-4 hover:bg-gray-50`}>
+          <Menu.Button
+            className={`${commonInputStyle} inline-flex w-full justify-between items-center gap-x-1.5 px-4 hover:bg-gray-50`}
+          >
             <span>{selectedOption}</span>
             <ChevronDownIcon
               className="h-5 w-5 text-gray-400 ml-auto"
@@ -84,9 +85,7 @@ function Dropdown({ label, options, onSelect }) {
 function InputField({ label, placeholder }) {
   return (
     <>
-      <div className={labelStyle}>
-        {label}
-      </div>
+      <div className={labelStyle}>{label}</div>
       <div className={`${commonInputStyle} max-md:max-w-full`}>
         <input
           type="text"
@@ -121,10 +120,7 @@ function ImageUploader() {
 
   return (
     <>
-      <div className={labelStyle}>
-        {" "}
-        이미지 올리세요{" "}
-      </div>
+      <div className={labelStyle}> 이미지 올리세요 </div>
       <div className="flex justify-center items-center px-4 py-4 mt-2 rounded-xl border border-dashed border-neutral-400 max-md:px-5 max-md:max-w-full">
         {image ? (
           <img
@@ -173,11 +169,11 @@ export default function MoimCreation() {
 
   const handleDateRange = (dateRange) => {
     console.log(dateRange);
-  }
+  };
 
   return (
     <div className="flex flex-col justify-center p-8 bg-white rounded-[32px] max-md:px-5">
-      <header className="flex gap-0 pb-8 justify-between font-semibold text-black leading-[150%] max-md:flex-wrap items-center">
+      <header className="flex gap-0 pb-8 justify-between font-Pretendard_Black font-semibold text-black leading-[150%] max-md:flex-wrap items-center">
         <h1 className="flex-1 text-3xl max-md:max-w-full">
           모임을 생성해주세요
         </h1>
@@ -190,7 +186,6 @@ export default function MoimCreation() {
         </div>
       </header>
       <main>
-
         <Dropdown
           label={"카테고리"}
           options={["스터디", "팀 프로젝트", "취미활동", "기타"]}
@@ -201,16 +196,16 @@ export default function MoimCreation() {
         <InputField label="상세 설명" placeholder="모임 설명을 적어주세요." />
         <ImageUploader />
 
-        <div className={labelStyle}>
-          {"운영 시간"}
-        </div>
-        <DateRangePicker onChange={handleDateRange} inputClassName={`w-full ${commonInputStyle}`} />
+        <div className={labelStyle}>{"운영 시간"}</div>
+        <DateRangePicker
+          onChange={handleDateRange}
+          inputClassName={`w-full ${commonInputStyle}`}
+        />
 
         <InputField
           label="참여 인원"
           placeholder="참여 인원을 숫자만 입력해주세요!"
         />
-
       </main>
       <footer className="flex justify-center gap-12">
         <button
@@ -227,4 +222,4 @@ export default function MoimCreation() {
       </footer>
     </div>
   );
-} 
+}
