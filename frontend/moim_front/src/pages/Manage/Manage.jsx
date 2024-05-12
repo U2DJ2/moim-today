@@ -115,7 +115,7 @@ export default function Manage() {
   }, [location.state?.componentName]);
 
   return (
-    <div className="justify-between pt-9 bg-white h-screen flex flex-col">
+    <div className="justify-between bg-white h-screen flex flex-col">
       <div className="flex-1 overflow-auto">
         <div className="flex gap-5 h-full w-full max-md:flex-col max-md:gap-0">
           <Sidebar

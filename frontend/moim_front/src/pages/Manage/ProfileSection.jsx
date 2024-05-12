@@ -1,5 +1,5 @@
 // React
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // Material UI
 import { Slide } from "@mui/material";
@@ -42,7 +42,7 @@ function InputField({ label, value, editable }) {
       <div className="mt-5 max-md:max-w-full font-Pretendard_Normal">
         {label}
       </div>
-      <div className="flex gap-2.5 px-4 py-3.5 mt-2 leading-5 font-Pretendard_Light rounded-3xl border border-solid border-zinc-300 text-zinc-800 max-md:flex-wrap max-md:pr-5">
+      <div className="flex gap-2.5 px-4 py-3.5 mt-2  leading-5 font-Pretendard_Light rounded-3xl border border-solid border-zinc-300 text-zinc-800 max-md:flex-wrap max-md:pr-5">
         <div>{value}</div>
         {editable ? <EditIcon /> : null}
       </div>
@@ -57,6 +57,55 @@ function InputField({ label, value, editable }) {
   );
 }
 
+function ImageInputer() {
+  const [image, setImage] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setImage(reader.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  return (
+    <div className="flex justify-center items-center px-4 py-4 mt-2 rounded-xl border border-dashed border-neutral-400 max-md:px-5 max-md:max-w-full">
+      {image ? (
+        <img
+          loading="lazy"
+          src={image}
+          className="my-3 max-w-full max-h-96 object-contain cursor-pointer"
+          onClick={handleImageClick}
+        />
+      ) : (
+        <img
+          loading="lazy"
+          src="https://cdn.builder.io/api/v1/image/assets/TEMP/6bf0157b2a958fbe906dbd51a7e42975c058c0ecf274028bbcdbf686001a61ed?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&"
+          className="my-3 w-14 aspect-square fill-zinc-300 cursor-pointer"
+          onClick={handleImageClick}
+        />
+      )}
+      <input
+        ref={fileInputRef}
+        id="upload"
+        type="file"
+        className="hidden"
+        onChange={handleImageChange}
+      />
+    </div>
+  );
+}
+
 export default function ProfileSection({ name, major }) {
   console.log(name);
   return (
@@ -65,7 +114,10 @@ export default function ProfileSection({ name, major }) {
         <h1 className="text-6xl font-Roboto_Bold text-black max-md:max-w-full max-md:text-4xl">
           Profile
         </h1>
-        <InputField label="프로필 이미지" value={name} editable={false} />
+        <div className="mt-5 max-md:max-w-full font-Pretendard_Normal">
+          프로필 이미지
+        </div>
+        <ImageInputer />
         <InputField label="이름" value={name} editable={false} />
         <InputField label="학과" value={major} editable={true} />
       </div>
