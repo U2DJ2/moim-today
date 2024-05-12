@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MiniCalendar from "./MiniCalendar";
 import Calendar from "../../../components/Calendar";
+import MonthlyTodo from "./MonthlyTodo";
 function ToDo() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selected, setSelected] = useState("김유림");
@@ -46,9 +47,10 @@ function ToDo() {
           김유림
         </div>
       </div>
-      <div className="grid gap-5 h-full w-full">
-        <MiniCalendar onSelectDate={handleMiniCalendarDateSelect} />
-        <Calendar selectedDate={selectedDate} />
+      <div className="flex gap-5 h-full w-full">
+        <div className=" w-full">
+          <MonthlyTodo />
+        </div>
       </div>
     </div>
   );

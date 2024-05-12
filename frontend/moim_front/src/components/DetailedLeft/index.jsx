@@ -21,7 +21,7 @@ function DetailedLeft({ userName, title, currentCount, capacity, joined }) {
   };
   return (
     <div className="flex flex-col basis-1/5 gap-4 items-center h-full min-h-screen md:basis-1/6">
-      <div className="bg-black w-96 h-60 rounded-t-2xl"></div>
+      <div className="bg-black w-72 h-60 rounded-t-2xl"></div>
       <div className=" font-Pretendard_Normal ">{userName}</div>
       <div className=" font-Pretendard_Black text-3xl text-[#3F3F3F]">
         {title}
