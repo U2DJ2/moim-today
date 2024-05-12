@@ -17,7 +17,7 @@ function InputField({ label, value, editable }) {
   const [open, setOpen] = useState(false);
 
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+    setInputValue("수정이 완료됐습니다");
   };
 
   const handleInputBlur = () => {
@@ -63,6 +63,7 @@ export default function ProfileSection({ name, major }) {
         <h1 className="text-6xl font-roboto text-black max-md:max-w-full max-md:text-4xl">
           Profile
         </h1>
+        <InputField label="프로필 이미지" value={name} editable={false} />
         <InputField label="이름" value={name} editable={false} />
         <InputField label="학과" value={major} editable={true} />
       </div>
