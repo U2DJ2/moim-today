@@ -9,6 +9,8 @@ import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_NOT_FOUND_ERROR;
 import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.*;
 
@@ -78,10 +80,11 @@ public class MoimRepositoryImpl implements MoimRepository {
     @Transactional
     @Override
     public MoimJpaEntity getByIdWithPessimisticLock(final long moimId) {
-        return queryFactory
+        return Optional.ofNullable(queryFactory
                 .selectFrom(moimJpaEntity)
                 .where(moimJpaEntity.id.eq(moimId))
                 .setLockMode(LockModeType.PESSIMISTIC_WRITE)
-                .fetchFirst();
+                .fetchFirst())
+                .orElseThrow(() -> new NotFoundException(MOIM_NOT_FOUND_ERROR.message()));
     }
 }
