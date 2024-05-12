@@ -101,7 +101,7 @@ class JoinedMoimFinderTest extends ImplementTest {
         MoimJpaEntity savedMoim = moimRepository.save(moimJpaEntity);
 
         // expected
-        assertThatThrownBy(() -> joinedMoimFinder.validateMemberInMoim(savedMoim.getId(),2L))
+        assertThatThrownBy(() -> joinedMoimFinder.validateMemberInMoim(2L, savedMoim.getId()))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageMatching(JOINED_MOIM_MEMBER_NOT_FOUND.message());
     }
@@ -119,7 +119,7 @@ class JoinedMoimFinderTest extends ImplementTest {
 
         // expected
         assertThatCode(() ->
-                joinedMoimFinder.validateMemberInMoim(savedJoined.getMoimId(), 1L))
+                joinedMoimFinder.validateMemberInMoim(1L, savedJoined.getMoimId()))
                 .doesNotThrowAnyException();
     }
 
@@ -138,7 +138,7 @@ class JoinedMoimFinderTest extends ImplementTest {
         joinedMoimRepository.save(joinedMoimJpaEntity);
 
         //expected
-        assertThatCode(() -> joinedMoimFinder.validateMemberInMoim(moimId, memberId))
+        assertThatCode(() -> joinedMoimFinder.validateMemberInMoim(memberId, moimId))
                 .doesNotThrowAnyException();
     }
 
@@ -150,7 +150,7 @@ class JoinedMoimFinderTest extends ImplementTest {
         long memberId = MEMBER_ID.longValue();
 
         //expected
-        assertThatThrownBy(() -> joinedMoimFinder.validateMemberInMoim(moimId, memberId))
+        assertThatThrownBy(() -> joinedMoimFinder.validateMemberInMoim(memberId, moimId))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(JOINED_MOIM_MEMBER_NOT_FOUND.message());
     }
