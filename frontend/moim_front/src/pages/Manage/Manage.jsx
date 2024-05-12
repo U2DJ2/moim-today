@@ -35,7 +35,9 @@ function SidebarElementLink({ icon, text, color, onClick }) {
       onClick={onClick}
     >
       {icon}
-      <div className="flex-1 flex items-center justify-between">{text}</div>
+      <div className="flex-1 flex items-center justify-between font-Pretendard_SemiBold">
+        {text}
+      </div>
     </div>
   );
 }
@@ -53,7 +55,7 @@ function Sidebar({ activeSection, setActiveSection }) {
     <aside className="flex flex-col w-[30%] max-md:ml-0 max-md:w-full">
       <div className="flex flex-col grow items-start self-stretch py-4 pr-3 pl-16 max-md:pl-5 max-md:mt-6">
         <SidebarElementIcon />
-        <div className="mt-3 text-base font-semibold text-center text-zinc-500">
+        <div className="mt-3 text-3xl font-Pretendard_Black font-semibold text-center text-zinc-500">
           모임 대시보드{" "}
         </div>
         <div className="flex gap-2.5 mt-5"></div>
@@ -68,7 +70,7 @@ function Sidebar({ activeSection, setActiveSection }) {
           icon={<ArticleIcon />}
           text="모임 관리"
           color={
-            activeSection === "overview" ? "text-red-600" : "text-gray-400"
+            activeSection === "overview" ? "text-scarlet" : "text-gray-400"
           }
           className="mt-16 max-md:mt-10"
           onClick={() => setActiveSection("overview")}
@@ -76,7 +78,7 @@ function Sidebar({ activeSection, setActiveSection }) {
         <SidebarElementLink
           icon={<PersonIcon />}
           text="프로필 설정"
-          color={activeSection === "profile" ? "text-red-600" : "text-gray-400"}
+          color={activeSection === "profile" ? "text-scarlet" : "text-gray-400"}
           className="mt-2.5"
           onClick={() => setActiveSection("profile")}
         />
@@ -115,7 +117,7 @@ export default function Manage() {
   }, [location.state?.componentName]);
 
   return (
-    <div className="justify-between bg-white h-screen flex flex-col">
+    <div className="justify-between pt-6 bg-white h-screen flex flex-col">
       <div className="flex-1 overflow-auto">
         <div className="flex gap-5 h-full w-full max-md:flex-col max-md:gap-0">
           <Sidebar
