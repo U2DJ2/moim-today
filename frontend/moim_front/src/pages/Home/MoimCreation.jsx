@@ -10,6 +10,8 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 // Date Picker
 import DateRangePicker from "../../components/DatePicker/Range";
 
+import { POST } from "../../utils/axios";
+
 // Define label style
 const labelStyle =
   "mt-2.5 mb-2.5 text-base font-Pretendard_SemiBold leading-5 text-stone-700 max-md:max-w-full";
@@ -97,7 +99,7 @@ function InputField({ label, placeholder }) {
   );
 }
 
-function ImageUploader() {
+function ImageUploader({ setUploadFile }) {
   const [image, setImage] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -111,9 +113,27 @@ function ImageUploader() {
 
     if (file) {
       reader.readAsDataURL(file);
+      convertAndSendImage(file);
     }
   };
 
+  const convertAndSendImage = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      POST("api/moims/image", formData)
+        .then((res) => {
+          setUploadFile(res.imageUrl);
+          console.log(res.imageUrl);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.error("이미지 전송 중 오류:", error);
+    }
+  };
   const handleImageClick = () => {
     fileInputRef.current.click();
   };
@@ -150,6 +170,8 @@ function ImageUploader() {
 }
 
 export default function MoimCreation() {
+  const [uploadFileUrl, setUploadFile] = useState(null);
+
   const navigate = useNavigate();
 
   const handleVisibility = (event) => {
@@ -171,6 +193,9 @@ export default function MoimCreation() {
     console.log(dateRange);
   };
 
+  const onClickHandler = () => {
+    console.log("first");
+  };
   return (
     <div className="flex flex-col justify-center p-8 bg-white rounded-[32px] max-md:px-5">
       <header className="flex gap-0 pb-8 justify-between font-Pretendard_Black font-semibold text-black leading-[150%] max-md:flex-wrap items-center">
@@ -194,7 +219,7 @@ export default function MoimCreation() {
 
         <InputField label="모임명" placeholder="모임 이름을 적어주세요." />
         <InputField label="상세 설명" placeholder="모임 설명을 적어주세요." />
-        <ImageUploader />
+        <ImageUploader setUploadFile={setUploadFile} />
 
         <div className={labelStyle}>{"운영 시간"}</div>
         <DateRangePicker
@@ -212,12 +237,13 @@ export default function MoimCreation() {
           className="mt-10 text-lg font-Pretendard_SemiBold leading-7 text-gray-400"
           onClick={handleCancel}
         >
-          {" "}
-          취소하기{" "}
+          취소하기
         </button>
-        <button className="mt-10 text-lg font-Pretendard_SemiBold leading-7 text-rose-600">
-          {" "}
-          생성하기{" "}
+        <button
+          className="mt-10 text-lg font-Pretendard_SemiBold leading-7 text-rose-600"
+          onClick={onClickHandler}
+        >
+          생성하기
         </button>
       </footer>
     </div>

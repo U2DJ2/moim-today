@@ -93,11 +93,6 @@ function ImageInputer() {
       const formData = new FormData();
       formData.append("file", file);
 
-      /*const response = await fetch("your-server-url", {
-        method: "POST",
-        body: formData,
-      });*/
-
       POST("api/members/profile-image", formData)
         .then((res) => console.log(res))
         .catch((error) => {
