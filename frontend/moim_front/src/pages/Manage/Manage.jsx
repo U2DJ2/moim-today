@@ -56,7 +56,7 @@ function Sidebar({ activeSection, setActiveSection }) {
       <div className="flex flex-col grow items-start self-stretch py-4 pr-3 pl-16 max-md:pl-5 max-md:mt-6">
         <SidebarElementIcon />
         <div className="mt-3 text-3xl font-Pretendard_Black font-semibold text-center text-zinc-500">
-          모임 대시보드{" "}
+          대시보드
         </div>
         <div className="flex gap-2.5 mt-5"></div>
         <SidebarElementLink

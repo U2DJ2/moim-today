@@ -8,6 +8,8 @@ import MuiAlert from "@mui/material/Alert";
 // Icons
 import EditIcon from "@mui/icons-material/Edit";
 
+import { POST } from "../../utils/axios";
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -42,9 +44,15 @@ function InputField({ label, value, editable }) {
       <div className="mt-5 max-md:max-w-full font-Pretendard_Normal">
         {label}
       </div>
-      <div className="flex gap-2.5 px-4 py-3.5 mt-2  leading-5 font-Pretendard_Light rounded-3xl border border-solid border-zinc-300 text-zinc-800 max-md:flex-wrap max-md:pr-5">
-        <div>{value}</div>
-        {editable ? <EditIcon /> : null}
+      <div className="flex justify-between gap-2.5 px-4 py-3.5 mt-2  leading-5 font-Pretendard_Light rounded-3xl border border-solid border-zinc-300 text-zinc-800 max-md:flex-wrap max-md:pr-5">
+        <div className="text-[#333333] font-Pretendard_SemiBold font-semibold">
+          {value}
+        </div>
+        {editable ? (
+          <div className="hover:cursor-pointer">
+            <EditIcon />
+          </div>
+        ) : null}
       </div>
       <Slide direction="up" in={open} mountOnEnter unmountOnExit>
         <div style={{ position: "fixed", bottom: 20, right: 20 }}>
@@ -67,10 +75,12 @@ function ImageInputer() {
 
     reader.onloadend = () => {
       setImage(reader.result);
+      console.log(image);
     };
 
     if (file) {
       reader.readAsDataURL(file);
+      convertAndSendImage(file);
     }
   };
 
@@ -78,6 +88,25 @@ function ImageInputer() {
     fileInputRef.current.click();
   };
 
+  const convertAndSendImage = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      /*const response = await fetch("your-server-url", {
+        method: "POST",
+        body: formData,
+      });*/
+
+      POST("api/members/profile-image", formData)
+        .then((res) => console.log(res))
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.error("이미지 전송 중 오류:", error);
+    }
+  };
   return (
     <div className="flex justify-center items-center px-4 py-4 mt-2 rounded-xl border border-dashed border-neutral-400 max-md:px-5 max-md:max-w-full">
       {image ? (
@@ -111,7 +140,7 @@ export default function ProfileSection({ name, major }) {
   return (
     <section className="flex flex-col w-full max-md:ml-0 max-md:w-full h-full">
       <div className="flex flex-col self-stretch p-12 text-sm font-semibold leading-5 whitespace-nowrap bg-slate-50 rounded-[64px_64px_0px_0px] text-stone-500 max-md:px-5 max-md:mt-6 max-md:max-w-full h-full flex-grow">
-        <h1 className="text-6xl font-Roboto_Bold text-black max-md:max-w-full max-md:text-4xl">
+        <h1 className="text-6xl font-Pretendard_Black text-black max-md:max-w-full max-md:text-4xl">
           Profile
         </h1>
         <div className="mt-5 max-md:max-w-full font-Pretendard_Normal">
@@ -119,7 +148,7 @@ export default function ProfileSection({ name, major }) {
         </div>
         <ImageInputer />
         <InputField label="이름" value={name} editable={false} />
-        <InputField label="학과" value={major} editable={true} />
+        <InputField label="학과" value={major} editable={false} />
       </div>
     </section>
   );
