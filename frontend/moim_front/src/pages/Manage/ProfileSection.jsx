@@ -39,8 +39,10 @@ function InputField({ label, value, editable }) {
 
   return (
     <>
-      <div className="mt-5 max-md:max-w-full">{label}</div>
-      <div className="flex gap-2.5 px-4 py-3.5 mt-2 leading-5 rounded-3xl border border-solid border-zinc-300 text-zinc-800 max-md:flex-wrap max-md:pr-5">
+      <div className="mt-5 max-md:max-w-full font-Pretendard_Normal">
+        {label}
+      </div>
+      <div className="flex gap-2.5 px-4 py-3.5 mt-2 leading-5 font-Pretendard_Light rounded-3xl border border-solid border-zinc-300 text-zinc-800 max-md:flex-wrap max-md:pr-5">
         <div>{value}</div>
         {editable ? <EditIcon /> : null}
       </div>
@@ -60,7 +62,7 @@ export default function ProfileSection({ name, major }) {
   return (
     <section className="flex flex-col w-full max-md:ml-0 max-md:w-full h-full">
       <div className="flex flex-col self-stretch p-12 text-sm font-semibold leading-5 whitespace-nowrap bg-slate-50 rounded-[64px_64px_0px_0px] text-stone-500 max-md:px-5 max-md:mt-6 max-md:max-w-full h-full flex-grow">
-        <h1 className="text-6xl font-roboto text-black max-md:max-w-full max-md:text-4xl">
+        <h1 className="text-6xl font-Roboto_Bold text-black max-md:max-w-full max-md:text-4xl">
           Profile
         </h1>
         <InputField label="프로필 이미지" value={name} editable={false} />
