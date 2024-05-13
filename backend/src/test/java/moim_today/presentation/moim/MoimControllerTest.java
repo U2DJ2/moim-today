@@ -74,8 +74,10 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("capacity").type(NUMBER).description("모집 인원"),
                                         fieldWithPath("password").type(STRING).description("모임 비밀번호(공개 여부가 PUBLIC일 경우 Nullable)"),
                                         fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL(Nullable)"),
-                                        fieldWithPath("moimCategory").type(VARIES).description("카테고리"),
-                                        fieldWithPath("displayStatus").type(VARIES).description("공개 여부"),
+                                        fieldWithPath("moimCategory").type(VARIES).description(String.format("카테고리 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
+                                        fieldWithPath("displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
+                                                EnumDocsUtils.getEnumNames(DisplayStatus.class))),
                                         fieldWithPath("startDate").type(STRING).description("시작 일자"),
                                         fieldWithPath("endDate").type(STRING).description("종료 일자")
                                 )
@@ -132,8 +134,10 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("capacity").type(NUMBER).description("모집 인원"),
                                         fieldWithPath("currentCount").type(NUMBER).description("현재 인원"),
                                         fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL"),
-                                        fieldWithPath("moimCategory").type(VARIES).description("카테고리"),
-                                        fieldWithPath("displayStatus").type(VARIES).description("공개여부"),
+                                        fieldWithPath("moimCategory").type(VARIES).description(String.format("카테고리 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
+                                        fieldWithPath("displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
+                                                EnumDocsUtils.getEnumNames(DisplayStatus.class))),
                                         fieldWithPath("views").type(NUMBER).description("조회수"),
                                         fieldWithPath("startDate").type(STRING).description("시작 일자"),
                                         fieldWithPath("endDate").type(STRING).description("종료 일자")
@@ -210,8 +214,10 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("capacity").type(NUMBER).description("수정한 모집 인원"),
                                         fieldWithPath("imageUrl").type(STRING).description("수정한 모임 사진 URL"),
                                         fieldWithPath("password").type(STRING).description("수정한 비밀번호"),
-                                        fieldWithPath("moimCategory").type(VARIES).description("수정한 카테고리"),
-                                        fieldWithPath("displayStatus").type(VARIES).description("수정한 공개여부"),
+                                        fieldWithPath("moimCategory").type(VARIES).description(String.format("수정한 카테고리 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
+                                        fieldWithPath("displayStatus").type(VARIES).description(String.format("수정한 공개 여부 - %s",
+                                                EnumDocsUtils.getEnumNames(DisplayStatus.class))),
                                         fieldWithPath("startDate").type(STRING).description("수정한 시작일자"),
                                         fieldWithPath("endDate").type(STRING).description("수정한 종료일자")
                                 ).build()
