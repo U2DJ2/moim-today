@@ -149,10 +149,6 @@ class TodoManagerTest extends ImplementTest {
     @Test
     void updateTodoNotTodoOnwerErrorTest() {
         // given1
-        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest(TODO_ID.longValue(), MOIM_ID.longValue(),
-                UPDATE_AFTER_CONTENT.value(), TodoProgress.ACTIVE, UPDATE_AFTER_START_TIME, UPDATE_AFTER_END_TIME);
-
-        // given2
         TodoJpaEntity originalTodo = TodoJpaEntity.builder()
                 .memberId(MEMBER_ID.longValue())
                 .moimId(MOIM_ID.longValue())
@@ -163,6 +159,10 @@ class TodoManagerTest extends ImplementTest {
                 .build();
 
         todoRepository.save(originalTodo);
+
+        // given2
+        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest(originalTodo.getId(), MOIM_ID.longValue(),
+                UPDATE_AFTER_CONTENT.value(), TodoProgress.ACTIVE, UPDATE_AFTER_START_TIME, UPDATE_AFTER_END_TIME);
 
         // expected
         assertThatThrownBy(() -> todoManager.updateTodo(MEMBER_ID.longValue()+1L, todoUpdateRequest))
@@ -267,5 +267,37 @@ class TodoManagerTest extends ImplementTest {
         assertThatThrownBy(() -> todoManager.deleteTodo(MEMBER_ID.longValue()+1L, todoRemoveRequest))
                 .isInstanceOf(ForbiddenException.class)
                 .hasMessage(TODO_NOT_OWNER_ERROR.message());
+    }
+
+    @DisplayName("투두 id로 투두를 조회한다")
+    @Test
+    void getById() {
+        // given
+        TodoJpaEntity originalTodo = TodoJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .moimId(MOIM_ID.longValue())
+                .contents(UPDATE_BEFORE_CONTENT.value())
+                .todoProgress(TodoProgress.PENDING)
+                .startDateTime(LocalDateTime.of(1000, 1, 1, 1, 1, 1))
+                .endDateTime(LocalDateTime.of(1500, 5, 5, 5, 5, 5))
+                .build();
+
+        todoRepository.save(originalTodo);
+
+        // when
+        TodoJpaEntity findTodo = todoManager.getById(originalTodo.getId());
+
+        // then
+        assertThat(findTodo.getMemberId()).isEqualTo(originalTodo.getMemberId());
+        assertThat(findTodo.getContents()).isEqualTo(originalTodo.getContents());
+    }
+
+    @DisplayName("없는 투두면 에러를 발생시킨다")
+    @Test
+    void getByIdNoTodoError() {
+        // expected
+        assertThatThrownBy(() -> todoManager.getById(TODO_ID.longValue()))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage(TODO_NOT_FOUND_ERROR.message());
     }
 }

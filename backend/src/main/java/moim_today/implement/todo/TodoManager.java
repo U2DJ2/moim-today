@@ -82,4 +82,8 @@ public class TodoManager {
             throw new BadRequestException(TODO_START_TIME_AFTER_END_TIME_ERROR.message());
         }
     }
+
+    public TodoJpaEntity getById(final long todoId) {
+        return todoFinder.getById(todoId);
+    }
 }

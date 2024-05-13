@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TodoService {
 
-    void createTodo(final long memberId, final TodoCreateRequest todoCreateRequest);
+    TodoCreateResponse createTodo(final long memberId, final TodoCreateRequest todoCreateRequest);
 
     List<MemberTodoResponse> findAllMembersTodosInMoim(final long memberId,
                                                        final long moimId,
@@ -17,4 +17,6 @@ public interface TodoService {
     TodoUpdateResponse updateTodo(final long memberId, final TodoUpdateRequest todoUpdateRequest);
 
     void deleteTodo(final long id, final TodoRemoveRequest todoRemoveRequest);
+
+    TodoDetailResponse getById(final long todoId);
 }

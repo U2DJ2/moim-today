@@ -6,6 +6,7 @@ import moim_today.dto.todo.*;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
 import moim_today.global.error.NotFoundException;
+import moim_today.persistence.entity.todo.TodoJpaEntity;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -28,7 +29,7 @@ public class FakeTodoService implements TodoService {
             LocalDateTime.of(1, 1, 1, 1, 11, 1);
 
     @Override
-    public void createTodo(final long memberId, final TodoCreateRequest todoCreateRequest) {
+    public TodoCreateResponse createTodo(final long memberId, final TodoCreateRequest todoCreateRequest) {
         long moimId = todoCreateRequest.moimId();
 
         if(moimId == MOIM_ID.longValue()+1L){
@@ -36,6 +37,8 @@ public class FakeTodoService implements TodoService {
         }else if(moimId == MOIM_ID.longValue()+2L){
             throw new BadRequestException(TODO_START_TIME_AFTER_END_TIME_ERROR.message());
         }
+
+        return TodoCreateResponse.of(TODO_ID.longValue());
     }
 
     @Override
@@ -117,5 +120,19 @@ public class FakeTodoService implements TodoService {
         }else if(todoId == MOIM_ID.longValue() + 2L){
             throw new ForbiddenException(TODO_NOT_OWNER_ERROR.message());
         }
+    }
+
+    @Override
+    public TodoDetailResponse getById(final long todoId) {
+        TodoJpaEntity originalTodo = TodoJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .moimId(MOIM_ID.longValue())
+                .contents(UPDATE_BEFORE_CONTENT.value())
+                .todoProgress(TodoProgress.PENDING)
+                .startDateTime(LocalDateTime.of(2024, 1, 1, 1, 1, 1))
+                .endDateTime(LocalDateTime.of(2024, 5, 5, 5, 5, 5))
+                .build();
+
+        return TodoDetailResponse.of(originalTodo);
     }
 }

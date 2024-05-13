@@ -22,13 +22,13 @@ public class TodoController {
     }
 
     @PostMapping
-    public void createTodo(final @Login MemberSession memberSession,
+    public TodoCreateResponse createTodo(final @Login MemberSession memberSession,
                       final @RequestBody @Valid TodoCreateRequest todoCreateRequest){
-        todoService.createTodo(memberSession.id(), todoCreateRequest);
+        return todoService.createTodo(memberSession.id(), todoCreateRequest);
     }
 
 
-    @GetMapping("/{moimId}")
+    @GetMapping("moim/{moimId}")
     public CollectionResponse<List<MemberTodoResponse>> findAllMembersTodosInMoim(
             final @Login MemberSession memberSession,
             final @PathVariable long moimId,
@@ -36,6 +36,11 @@ public class TodoController {
             final @RequestParam int months) {
 
         return CollectionResponse.of(todoService.findAllMembersTodosInMoim(memberSession.id(), moimId, startDate, months));
+    }
+
+    @GetMapping("/{todoId}")
+    public TodoDetailResponse findTodoById(final @PathVariable long todoId){
+        return todoService.getById(todoId);
     }
 
     @PatchMapping

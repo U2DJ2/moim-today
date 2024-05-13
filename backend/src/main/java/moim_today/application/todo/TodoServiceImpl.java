@@ -4,6 +4,7 @@ import moim_today.dto.todo.*;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import moim_today.implement.todo.TodoAppender;
 import moim_today.implement.todo.TodoManager;
+import moim_today.persistence.entity.todo.TodoJpaEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.YearMonth;
@@ -25,9 +26,10 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public void createTodo(final long memberId, final TodoCreateRequest todoCreateRequest) {
+    public TodoCreateResponse createTodo(final long memberId, final TodoCreateRequest todoCreateRequest) {
         joinedMoimFinder.validateMemberInMoim(memberId, todoCreateRequest.moimId());
-        todoAppender.createTodo(memberId, todoCreateRequest);
+        TodoJpaEntity todo = todoAppender.createTodo(memberId, todoCreateRequest);
+        return TodoCreateResponse.of(todo.getId());
     }
 
     @Override
@@ -48,5 +50,11 @@ public class TodoServiceImpl implements TodoService{
     @Override
     public void deleteTodo(final long memberId, final TodoRemoveRequest todoRemoveRequest) {
         todoManager.deleteTodo(memberId, todoRemoveRequest);
+    }
+
+    @Override
+    public TodoDetailResponse getById(final long todoId) {
+        TodoJpaEntity todo = todoManager.getById(todoId);
+        return TodoDetailResponse.of(todo);
     }
 }

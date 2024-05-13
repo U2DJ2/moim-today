@@ -64,10 +64,10 @@ public class TodoControllerTest extends ControllerTest {
                                 .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("투두 생성",
+                .andDo(document("투두 생성 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
-                                .summary("투두 생성 성공")
+                                .summary("투두 생성")
                                 .requestHeaders(
                                         headerWithName("Content-Type").description("application/json")
                                 )
@@ -80,6 +80,9 @@ public class TodoControllerTest extends ControllerTest {
                                         fieldWithPath("endDateTime").type(NUMBER).description("투두 끝나는 시간")
                                                 .attributes(key("format").value("yyyy-MM-dd'T'HH:mm:ss"),
                                                         key("timezone").value("Asia/Seoul"))
+                                )
+                                .responseFields(
+                                        fieldWithPath("todoId").type(STRING).description("생성된 투두 id")
                                 )
                                 .build()
                         ))
@@ -100,10 +103,10 @@ public class TodoControllerTest extends ControllerTest {
                                 .content(json)
                 )
                 .andExpect(status().isNotFound())
-                .andDo(document("투두 생성",
+                .andDo(document("모임에 없는 멤버라 투두 생성 실패",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
-                                .summary("모임에 없는 멤버라 투두 생성 실패")
+                                .summary("투두 생성")
                                 .requestHeaders(
                                         headerWithName("Content-Type").description("application/json")
                                 )
@@ -139,10 +142,10 @@ public class TodoControllerTest extends ControllerTest {
                                 .content(json)
                 )
                 .andExpect(status().isBadRequest())
-                .andDo(document("투두 생성",
+                .andDo(document("날짜 설정 오류로 인한 투두 생성 실패",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
-                                .summary("날짜 설정 오류로 인한 투두 생성 실패")
+                                .summary("투두 생성")
                                 .requestHeaders(
                                         headerWithName("Content-Type").description("application/json")
                                 )
@@ -172,7 +175,7 @@ public class TodoControllerTest extends ControllerTest {
         final String TWO_MONTHS = "2";
 
         mockMvc.perform(
-                        get("/api/todos/{moimId}", MOIM_ID.longValue())
+                        get("/api/todos/moim/{moimId}", MOIM_ID.longValue())
                                 .contentType(APPLICATION_JSON)
                                 .queryParam("startDate", String.valueOf(
                                         YearMonth.of(2024, 05)
@@ -180,13 +183,13 @@ public class TodoControllerTest extends ControllerTest {
                                 .queryParam("months", TWO_MONTHS)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("투두 조회",
+                .andDo(document("모임 안에 모든 투두 조회",
                         pathParameters(
                                 parameterWithName("moimId").description("모임 ID")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
-                                .summary("모임 안에 모든 투두 조회")
+                                .summary("투두 조회")
                                 .queryParameters(
                                         parameterWithName("startDate").description("투두 시작 시간")
                                                 .attributes(key("format").value("yyyy-MM-dd"),
@@ -214,7 +217,7 @@ public class TodoControllerTest extends ControllerTest {
         final String TWO_MONTHS = "2";
 
         mockMvc.perform(
-                        get("/api/todos/{moimId}", MOIM_ID.longValue() + 1L)
+                        get("/api/todos/moim/{moimId}", MOIM_ID.longValue() + 1L)
                                 .contentType(APPLICATION_JSON)
                                 .queryParam("startDate", String.valueOf(
                                         YearMonth.of(2024, 5)
@@ -222,13 +225,13 @@ public class TodoControllerTest extends ControllerTest {
                                 .queryParam("months", TWO_MONTHS)
                 )
                 .andExpect(status().isNotFound())
-                .andDo(document("투두 조회",
+                .andDo(document("모임에 참여한 멤버가 아니어서 투두 조회 실패",
                         pathParameters(
                                 parameterWithName("moimId").description("모임 ID")
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
-                                .summary("모임에 참여한 멤버가 아니어서 투두 조회 실패")
+                                .summary("투두 조회")
                                 .queryParameters(
                                         parameterWithName("startDate").description("투두 시작 시간")
                                                 .attributes(key("format").value("yyyy-MM-dd"),
@@ -258,10 +261,10 @@ public class TodoControllerTest extends ControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("투두 업데이트",
+                .andDo(document("투두 업데이트 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
-                                .summary("투두 업데이트 성공")
+                                .summary("투두 업데이트")
                                 .requestHeaders(
                                         headerWithName("Content-Type").description("application/json")
                                 )
@@ -310,10 +313,10 @@ public class TodoControllerTest extends ControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isNotFound())
-                .andDo(document("투두 업데이트",
+                .andDo(document("투두에 참여하지 않은 멤버라 투두 업데이트 실패",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
-                                .summary("투두에 참여하지 않은 멤버라 투두 업데이트 실패")
+                                .summary("투두 업데이트")
                                 .requestHeaders(
                                         headerWithName("Content-Type").description("application/json")
                                 )
@@ -354,10 +357,10 @@ public class TodoControllerTest extends ControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isBadRequest())
-                .andDo(document("투두 업데이트",
+                .andDo(document("투두 시작 날짜 설정 오류로 에러",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
-                                .summary("투두 시작 날짜 설정 오류로 에러")
+                                .summary("투두 업데이트")
                                 .requestHeaders(
                                         headerWithName("Content-Type").description("application/json")
                                 )
@@ -398,10 +401,10 @@ public class TodoControllerTest extends ControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isForbidden())
-                .andDo(document("투두 업데이트",
+                .andDo(document("투두 주인이 아니라 업데이트 실패",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
-                                .summary("투두 주인이 아니라 업데이트 실패")
+                                .summary("투두 업데이트")
                                 .requestHeaders(
                                         headerWithName("Content-Type").description("application/json")
                                 )
@@ -440,10 +443,10 @@ public class TodoControllerTest extends ControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("투두 삭제",
+                .andDo(document("투두 삭제 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
-                                .summary("투두 삭제 성공")
+                                .summary("투두 삭제")
                                 .requestHeaders(
                                         headerWithName("Content-Type").description("application/json")
                                 )
@@ -467,10 +470,10 @@ public class TodoControllerTest extends ControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isNotFound())
-                .andDo(document("투두 삭제",
+                .andDo(document("이미 삭제되거나 없는 투두여서 삭제 실패",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
-                                .summary("이미 삭제되거나 없는 투두여서 삭제 실패")
+                                .summary("투두 삭제")
                                 .requestHeaders(
                                         headerWithName("Content-Type").description("application/json")
                                 )
@@ -498,10 +501,10 @@ public class TodoControllerTest extends ControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isForbidden())
-                .andDo(document("투두 삭제",
+                .andDo(document("투두의 주인이 아니라서 삭제 실패",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
-                                .summary("투두의 주인이 아니라서 삭제 실패")
+                                .summary("투두 삭제")
                                 .requestHeaders(
                                         headerWithName("Content-Type").description("application/json")
                                 )
@@ -511,6 +514,40 @@ public class TodoControllerTest extends ControllerTest {
                                 .responseFields(
                                         fieldWithPath("statusCode").type(JsonFieldType.STRING).description("상태 코드"),
                                         fieldWithPath("message").type(JsonFieldType.STRING).description("오류 메세지")
+                                )
+                                .build()
+                        ))
+                );
+    }
+
+    @DisplayName("하나의 Todo를 조회한다")
+    @Test
+    void getTodoById() throws Exception{
+
+
+        mockMvc.perform(get("/api/todos/{todoId}", TODO_ID.longValue())
+                        .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("투두 조회 성공",
+                        pathParameters(
+                                parameterWithName("todoId").description("조회할 투두 id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("투두")
+                                .summary("투두 조회")
+                                .requestHeaders(
+                                        headerWithName("Content-Type").description("application/json")
+                                )
+                                .responseFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("모임 id"),
+                                        fieldWithPath("contents").type(NUMBER).description("투두 내용"),
+                                        fieldWithPath("todoProgress").type(NUMBER).description(
+                                                String.format("투두 진행 - %s",
+                                                        EnumDocsUtils.getEnumNames(TodoProgress.class))
+                                        ),
+                                        fieldWithPath("startDateTime").type(NUMBER).description("투두 시작 시간"),
+                                        fieldWithPath("endDateTime").type(NUMBER).description("투두 끝나는 시간")
                                 )
                                 .build()
                         ))
