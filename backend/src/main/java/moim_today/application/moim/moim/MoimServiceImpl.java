@@ -1,5 +1,6 @@
 package moim_today.application.moim.moim;
 
+import jakarta.servlet.http.HttpServletResponse;
 import moim_today.dto.moim.moim.*;
 import moim_today.dto.moim.moim.MoimFilterRequest;
 import moim_today.implement.file.FileUploader;
@@ -80,8 +81,11 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public MoimDetailResponse getMoimDetail(final long moimId) {
+    public MoimDetailResponse getMoimDetail(final long moimId,
+                                            final String viewedMoimsCookieByUrlEncoded,
+                                            final HttpServletResponse response) {
         MoimJpaEntity moimJpaEntity =  moimFinder.getById(moimId);
+        moimUpdater.updateMoimViews(moimId, viewedMoimsCookieByUrlEncoded, response);
         return MoimDetailResponse.from(moimJpaEntity);
     }
 

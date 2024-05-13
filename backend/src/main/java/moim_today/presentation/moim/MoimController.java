@@ -1,5 +1,6 @@
 package moim_today.presentation.moim;
 
+import jakarta.servlet.http.HttpServletResponse;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.domain.member.MemberSession;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import static moim_today.global.constant.MoimConstant.VIEWED_MOIM_COOKIE_NAME;
 
 @RequestMapping("/api/moims")
 @RestController
@@ -37,9 +40,11 @@ public class MoimController {
         return moimService.uploadMoimImage(file);
     }
 
-    @GetMapping("/detail")
-    public MoimDetailResponse getMoimDetail(@RequestParam final long moimId) {
-        return moimService.getMoimDetail(moimId);
+    @GetMapping("/detail/{moimId}")
+    public MoimDetailResponse getMoimDetail(@PathVariable final long moimId,
+                                            @CookieValue(value = VIEWED_MOIM_COOKIE_NAME, required = false) final String viewedMoimsCookieByUrlEncoded,
+                                            final HttpServletResponse response) {
+        return moimService.getMoimDetail(moimId, viewedMoimsCookieByUrlEncoded, response);
     }
 
     @GetMapping("/simple")

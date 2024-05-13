@@ -116,15 +116,13 @@ class MoimControllerTest extends ControllerTest {
     @Test
     void getMoimDetailTest() throws Exception {
 
-        mockMvc.perform(get("/api/moims/detail")
-                        .param("moimId", "1")
-                )
+        mockMvc.perform(get("/api/moims/detail/{moimId}", 1))
                 .andExpect(status().isOk())
                 .andDo(document("모임 정보 조회 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
                                 .summary("모임 정보 조회")
-                                .queryParameters(
+                                .pathParameters(
                                         parameterWithName("moimId").description("모임 ID")
                                 )
                                 .responseFields(
@@ -242,8 +240,7 @@ class MoimControllerTest extends ControllerTest {
     @DisplayName("모임에서 멤버를 조회한다")
     @Test
     void showMoimMemberTest() throws Exception {
-        mockMvc.perform(get("/api/moims/members/{moimId}", 1L)
-                        .param("moimId", MEMBER_ID.value()))
+        mockMvc.perform(get("/api/moims/members/{moimId}", 1L))
                 .andExpect(status().isOk())
                 .andDo(document("모임 멤버 조회",
                         pathParameters(
