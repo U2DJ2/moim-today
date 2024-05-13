@@ -44,10 +44,7 @@ public class MoimUpdater {
             moimJpaEntity.updateMoimViews();
             viewedMoimsCookie.createAndAddViewedMoim(moimId);
             viewedMoimsCookie.addViewedMoimsCookieInCookie(response, objectMapper);
-            return;
-        }
-
-        if (viewedMoimsCookie.isExpired(moimId)) {
+        } else if (viewedMoimsCookie.isExpired(moimId)) {
             moimJpaEntity.updateMoimViews();
             viewedMoimsCookie.removeViewedMoim(moimId);
             viewedMoimsCookie.createAndAddViewedMoim(moimId);
