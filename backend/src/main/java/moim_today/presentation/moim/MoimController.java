@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.domain.member.MemberSession;
+import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
 import moim_today.dto.moim.moim.MoimFilterRequest;
 import moim_today.dto.moim.moim_notice.*;
@@ -121,5 +122,10 @@ public class MoimController {
     @GetMapping("/search")
     public CollectionResponse<List<MoimSimpleResponse>> searchMoim(@RequestParam final String searchParam) {
         return CollectionResponse.of(moimService.searchMoim(searchParam));
+    }
+
+    @GetMapping("/categories")
+    public CollectionResponse<MoimCategory[]> getMoimCategories() {
+        return CollectionResponse.of(MoimCategory.values());
     }
 }

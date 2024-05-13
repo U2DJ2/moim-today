@@ -771,4 +771,22 @@ class MoimControllerTest extends ControllerTest {
                                 .build()
                         )));
     }
+
+    @DisplayName("모임 카테고리 전체 리스트를 반환한다.")
+    @Test
+    void returnCategoriesTest() throws Exception {
+
+        mockMvc.perform(get("/api/moims/categories"))
+                .andExpect(status().isOk())
+                .andDo(document("전체 카테고리 리스트 조회 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("전체 카테고리 리스트 조회")
+                                .responseFields(
+                                        fieldWithPath("data[]").type(ARRAY).description(String.format("카테고리 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class)))
+                                )
+                                .build()
+                        )));
+    }
 }
