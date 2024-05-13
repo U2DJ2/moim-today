@@ -4,6 +4,7 @@ import moim_today.application.moim.moim.MoimService;
 import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.moim.moim.*;
+import moim_today.dto.moim.moim.MoimFilterRequest;
 import moim_today.dto.moim.moim_notice.*;
 import moim_today.global.annotation.Login;
 import moim_today.global.response.CollectionResponse;
@@ -32,14 +33,18 @@ public class MoimController {
     }
 
     @PostMapping("/image")
-    public MoimImageResponse uploadMoimImage(@Login final MemberSession memberSession,
-                                             @RequestPart final MultipartFile file) {
+    public MoimImageResponse uploadMoimImage(@RequestPart final MultipartFile file) {
         return moimService.uploadMoimImage(file);
     }
 
     @GetMapping("/detail")
     public MoimDetailResponse getMoimDetail(@RequestParam final long moimId) {
         return moimService.getMoimDetail(moimId);
+    }
+
+    @GetMapping("/simple")
+    public CollectionResponse<List<MoimSimpleResponse>> findAllMoimResponse(@RequestBody final MoimFilterRequest moimFilterRequest) {
+        return CollectionResponse.of(moimService.findAllMoimResponse(moimFilterRequest));
     }
 
     @PatchMapping
@@ -50,7 +55,7 @@ public class MoimController {
 
     @GetMapping("/members/{moimId}")
     public MoimMemberTabResponse findMoimMembers(@Login final MemberSession memberSession,
-                                               @PathVariable final long moimId){
+                                                 @PathVariable final long moimId){
         return moimService.findMoimMembers(memberSession.id(), moimId);
     }
 
@@ -74,7 +79,7 @@ public class MoimController {
 
     @DeleteMapping("/members")
     public void deleteMember(@Login final MemberSession memberSession,
-                             @RequestBody final MoimMemberDeleteRequest moimMemberDeleteRequest){
+                             @RequestBody final MoimMemberDeleteRequest moimMemberDeleteRequest) {
         moimService.deleteMember(memberSession.id(), moimMemberDeleteRequest);
     }
 

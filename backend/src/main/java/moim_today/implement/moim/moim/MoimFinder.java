@@ -2,6 +2,8 @@ package moim_today.implement.moim.moim;
 
 import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.dto.moim.moim.MoimMemberResponse;
+import moim_today.dto.moim.moim.MoimSimpleResponse;
+import moim_today.dto.moim.moim.MoimFilterRequest;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
 import moim_today.implement.member.MemberFinder;
@@ -61,6 +63,11 @@ public class MoimFinder {
     @Transactional(readOnly = true)
     public MoimDateResponse findMoimDate(final long moimId) {
         return moimRepository.findMoimDate(moimId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MoimSimpleResponse> findAllMoimResponse(final MoimFilterRequest moimFilterRequest) {
+        return moimRepository.findAllMoimResponse(moimFilterRequest);
     }
 
     @Transactional(readOnly = true)

@@ -1,11 +1,10 @@
 package moim_today.application.moim.moim;
 
-import moim_today.dto.moim.moim.MoimCreateRequest;
-import moim_today.dto.moim.moim.MoimDetailResponse;
-import moim_today.dto.moim.moim.MoimUpdateRequest;
-import moim_today.dto.moim.moim.MoimImageResponse;
 import moim_today.dto.moim.moim.*;
+import moim_today.dto.moim.moim.MoimFilterRequest;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface MoimService {
 
@@ -27,4 +26,6 @@ public interface MoimService {
     void deleteMember(final long memberId, final MoimMemberDeleteRequest moimMemberDeleteRequest);
 
     void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest);
+
+    List<MoimSimpleResponse> findAllMoimResponse(final MoimFilterRequest moimFilterRequest);
 }
