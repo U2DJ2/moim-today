@@ -189,8 +189,8 @@ function ImageUploader({ setUploadFile }) {
 
 export default function MoimCreation() {
   const [uploadFileUrl, setUploadFile] = useState(null);
-  const [displayStatus, setDisplay] = useState("");
-  const [category, setCategory] = useState("스터디");
+  const [displayStatus, setDisplay] = useState("PRIVATE");
+  const [category, setCategory] = useState("STUDY");
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const [password, setPassword] = useState("");
@@ -240,7 +240,7 @@ export default function MoimCreation() {
     title: title,
     contents: contents,
     capacity: capacity,
-    password: "",
+    password: password,
     imageUrl: uploadFileUrl,
     moimCategory: category,
     displayStatus: displayStatus,
@@ -255,6 +255,7 @@ export default function MoimCreation() {
       POST("api/moims", data)
         .then((res) => {
           console.log(res);
+          navigate("/");
         })
         .catch((error) => {
           console.log(error);

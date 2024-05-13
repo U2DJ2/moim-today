@@ -1,5 +1,5 @@
 // React
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Components
 import Dropdown from "../../components/Dropdown/Simple";
@@ -11,6 +11,8 @@ import CardContainer from "./CardContainer";
 
 //temporary image
 import cardImage from "../../assets/svg/card-image.svg";
+
+import { GET } from "../../utils/axios";
 
 /**
  * SearchBar Component
@@ -96,7 +98,24 @@ function FilterBar() {
   );
 }
 
-function Home() {
+export default function Home() {
+  const data = {
+    moimCategory: "EXERCISE",
+    moimSortedFilter: "CREATED_AT",
+  };
+  useEffect(() => {
+    try {
+      GET("api/moims/simple", data)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   return (
     <div className="flex flex-col justify-between pb-20 bg-white">
       <main className="flex flex-col self-center px-5 mt-9 max-w-full whitespace-nowrap w-[700px]">
@@ -148,5 +167,3 @@ function Home() {
     </div>
   );
 }
-
-export default Home;

@@ -32,6 +32,11 @@ function Router() {
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/join/:MoimId" element={<MoimJoinPage />} />
+        <Route
+          path="/join/meeting/:MoimId/:meetingId"
+          element={<MoimMeetingPage />}
+        />
+
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/detailed/:MoimId" element={<MoimDetailPage />} />
       </Route>

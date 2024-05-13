@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CardComponent from "../CardComponent";
 import SimpleDrop from "../../../components/Dropdown/Simple";
 import { useNavigate, useParams } from "react-router";
+import { GET } from "../../../utils/axios";
 function MoimHome() {
   const navigate = useNavigate();
+
   let noticeId = 1,
     meetingId = 1;
   const onSelect = (option) => {
@@ -15,6 +17,7 @@ function MoimHome() {
   const cardClickHandler = () => {
     navigate(`meeting/${meetingId}`);
   };
+
   return (
     <div className="flex flex-col gap-24">
       <div className="grid gap-4">
