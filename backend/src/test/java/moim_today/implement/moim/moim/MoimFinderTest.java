@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -401,6 +400,43 @@ class MoimFinderTest extends ImplementTest {
                 .doesNotThrowAnyException();
         assertThatCode(() -> moimFinder.validateCapacity(savedMoim2))
                 .doesNotThrowAnyException();
+    }
+
+    @DisplayName("검색어로 모임을 검색한다.")
+    @Test
+    void searchMoimBySearchParam() {
+        // given1
+        MoimJpaEntity moimA = MoimJpaEntity.builder()
+                .title("appleMango")
+                .build();
+
+        // given2
+        MoimJpaEntity moimB = MoimJpaEntity.builder()
+                .title(" " + "apple" + " " + "mango" + " ")
+                .build();
+
+        // given3
+        MoimJpaEntity moimC = MoimJpaEntity.builder()
+                .title("apple" + " " + "mango")
+                .build();
+
+        moimRepository.save(moimA);
+        moimRepository.save(moimB);
+        moimRepository.save(moimC);
+
+        //when
+        List<MoimSimpleResponse> appleResponses = moimFinder.searchMoim("apple");
+        List<MoimSimpleResponse> mangoResponses = moimFinder.searchMoim("mango");
+        List<MoimSimpleResponse> blankResponses = moimFinder.searchMoim(" ");
+        List<MoimSimpleResponse> noneResponses = moimFinder.searchMoim("none");
+        List<MoimSimpleResponse> applemangoResponses = moimFinder.searchMoim("apple mango");
+
+        //then
+        assertThat(appleResponses.size()).isEqualTo(3);
+        assertThat(mangoResponses.size()).isEqualTo(3);
+        assertThat(blankResponses.size()).isEqualTo(3);
+        assertThat(noneResponses.size()).isEqualTo(0);
+        assertThat(applemangoResponses.size()).isEqualTo(2);
     }
 
     private MemberJpaEntity saveRandomMember() {

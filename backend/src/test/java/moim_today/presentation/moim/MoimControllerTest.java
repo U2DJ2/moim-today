@@ -736,4 +736,33 @@ class MoimControllerTest extends ControllerTest {
                                 .build()
                         )));
     }
+
+    @DisplayName("모임을 검색한다.")
+    @Test
+    void searchMoimTest() throws Exception {
+
+        mockMvc.perform(get("/api/moims/search")
+                        .queryParam("searchParam", "검색어"))
+                .andExpect(status().isOk())
+                .andDo(document("모임 검색 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("모임 검색")
+                                .queryParameters(
+                                        parameterWithName("searchParam").description("검색어")
+                                )
+                                .responseFields(
+                                        fieldWithPath("data[0].moimId").type(NUMBER).description("모임 Id"),
+                                        fieldWithPath("data[0].title").type(STRING).description("모임명"),
+                                        fieldWithPath("data[0].capacity").type(NUMBER).description("모집 인원"),
+                                        fieldWithPath("data[0].currentCount").type(NUMBER).description("현재 인원"),
+                                        fieldWithPath("data[0].imageUrl").type(STRING).description("모임 사진 URL"),
+                                        fieldWithPath("data[0].moimCategory").type(VARIES).description(String.format("카테고리 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
+                                        fieldWithPath("data[0].displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
+                                                EnumDocsUtils.getEnumNames(DisplayStatus.class)))
+                                )
+                                .build()
+                        )));
+    }
 }

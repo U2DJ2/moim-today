@@ -155,6 +155,26 @@ public class FakeMoimService implements MoimService {
 
     @Override
     public List<MoimSimpleResponse> searchMoim(final String searchParam) {
-        return List.of();
+        MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
+                .moimId(1L)
+                .title(MOIM_TITLE.value())
+                .capacity(CAPACITY.intValue())
+                .currentCount(CURRENT_COUNT.intValue())
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PUBLIC)
+                .build();
+
+        MoimSimpleResponse moimSimpleResponse2 = MoimSimpleResponse.builder()
+                .moimId(2L)
+                .title(MOIM_TITLE.value())
+                .capacity(CAPACITY.intValue())
+                .currentCount(CURRENT_COUNT.intValue())
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PUBLIC)
+                .build();
+
+        return List.of(moimSimpleResponse1, moimSimpleResponse2);
     }
 }
