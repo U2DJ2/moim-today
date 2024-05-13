@@ -1,7 +1,10 @@
 package moim_today.implement.moim.moim;
 
+import moim_today.domain.moim.MoimSortedFilter;
+import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.dto.moim.moim.MoimMemberResponse;
+import moim_today.dto.moim.moim.MoimSimpleResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
 import moim_today.implement.member.MemberFinder;
@@ -64,6 +67,11 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
+    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategory moimCategory, final MoimSortedFilter moimSortedFilter) {
+        return moimRepository.findAllMoimResponse(moimCategory, moimSortedFilter);
+    }
+
+    @Transactional(readOnly = true)
     public boolean isHost(final long memberId, final long moimId) {
         MoimJpaEntity moimJpaEntity = moimRepository.getById(moimId);
         return moimJpaEntity.getMemberId() == memberId;
@@ -76,6 +84,11 @@ public class MoimFinder {
         if(participatingMemberIds.size() >= moimJpaEntity.getCapacity()){
             throw new BadRequestException(MOIM_CAPACITY_ERROR.message());
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<MoimSimpleResponse> searchMoim(final String searchParam) {
+        return moimRepository.searchMoimBySearchParam(searchParam);
     }
 
     private List<Long> extractMemberIds(final List<JoinedMoimJpaEntity> joinedMoimJpaEntities){

@@ -1,7 +1,10 @@
 package moim_today.implement.moim.moim;
 
-import moim_today.dto.moim.moim.MoimMemberResponse;
+import moim_today.domain.moim.MoimSortedFilter;
+import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.MoimDateResponse;
+import moim_today.dto.moim.moim.MoimMemberResponse;
+import moim_today.dto.moim.moim.MoimSimpleResponse;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
@@ -12,11 +15,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import java.time.LocalDate;
 
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_CAPACITY_ERROR;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_NOT_FOUND_ERROR;
@@ -196,6 +198,125 @@ class MoimFinderTest extends ImplementTest {
         assertThat(moimDateResponse.endDate()).isEqualTo(LocalDate.of(2024, 6, 30));
     }
 
+    @DisplayName("필터가 없으면 모든 카테고리의 모임 리스트를 최신 생성 순으로 가져온다.")
+    @Test
+    void findAllMoim() {
+        // given
+        MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .title(FIRST_CREATED_MOIM_TITLE.value())
+                .moimCategory(MoimCategory.TEAM_PROJECT)
+                .build();
+
+        moimRepository.save(firstCreatedMoimJpaEntity);
+
+        MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .title(SECOND_CREATED_MOIM_TITLE.value())
+                .moimCategory(MoimCategory.STUDY)
+                .build();
+
+        moimRepository.save(secondCreatedMoimJpaEntity);
+
+        MoimCategory moimCategory = null;
+        MoimSortedFilter moimSortedFilter = null;
+
+        // when
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategory, moimSortedFilter);
+
+        // then
+        assertThat(moimSimpleResponses.size()).isEqualTo(2);
+        assertThat(moimSimpleResponses.get(0).title()).isEqualTo(SECOND_CREATED_MOIM_TITLE.value());
+        assertThat(moimSimpleResponses.get(1).title()).isEqualTo(FIRST_CREATED_MOIM_TITLE.value());
+    }
+
+    @DisplayName("모임 리스트를 최신 생성 순으로 가져온다.")
+    @Test
+    void findAllMoimOrderByCreatedAt() {
+        // given
+        MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .title(FIRST_CREATED_MOIM_TITLE.value())
+                .moimCategory(MoimCategory.TEAM_PROJECT)
+                .build();
+
+        moimRepository.save(firstCreatedMoimJpaEntity);
+
+        MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .title(SECOND_CREATED_MOIM_TITLE.value())
+                .moimCategory(MoimCategory.STUDY)
+                .build();
+
+        moimRepository.save(secondCreatedMoimJpaEntity);
+
+        MoimCategory moimCategory = null;
+        MoimSortedFilter moimSortedFilter = MoimSortedFilter.CREATED_AT;
+
+        // when
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategory, moimSortedFilter);
+
+        // then
+        assertThat(moimSimpleResponses.size()).isEqualTo(2);
+        assertThat(moimSimpleResponses.get(0).title()).isEqualTo(SECOND_CREATED_MOIM_TITLE.value());
+        assertThat(moimSimpleResponses.get(1).title()).isEqualTo(FIRST_CREATED_MOIM_TITLE.value());
+    }
+
+    @DisplayName("모임 리스트를 조회수 순으로 가져온다.")
+    @Test
+    void findAllMoimOrderByViews() {
+        // given
+        MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .title(FIRST_CREATED_MOIM_TITLE.value())
+                .views(10)
+                .build();
+
+        moimRepository.save(firstCreatedMoimJpaEntity);
+
+        MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .title(SECOND_CREATED_MOIM_TITLE.value())
+                .views(20)
+                .build();
+
+        moimRepository.save(secondCreatedMoimJpaEntity);
+
+        MoimCategory moimCategory = null;
+        MoimSortedFilter moimSortedFilter = MoimSortedFilter.VIEWS;
+
+        // when
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategory, moimSortedFilter);
+
+        // then
+        assertThat(moimSimpleResponses.size()).isEqualTo(2);
+        assertThat(moimSimpleResponses.get(0).title()).isEqualTo(SECOND_CREATED_MOIM_TITLE.value());
+        assertThat(moimSimpleResponses.get(1).title()).isEqualTo(FIRST_CREATED_MOIM_TITLE.value());
+    }
+
+    @DisplayName("모임 리스트를 카테고리 별로 가져온다.")
+    @Test
+    void findAllMoimByCategory() {
+        // given
+        MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .title(FIRST_CREATED_MOIM_TITLE.value())
+                .moimCategory(MoimCategory.TEAM_PROJECT)
+                .build();
+
+        moimRepository.save(firstCreatedMoimJpaEntity);
+
+        MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .title(SECOND_CREATED_MOIM_TITLE.value())
+                .moimCategory(MoimCategory.STUDY)
+                .build();
+
+        moimRepository.save(secondCreatedMoimJpaEntity);
+
+        MoimCategory moimCategory = MoimCategory.TEAM_PROJECT;
+        MoimSortedFilter moimSortedFilter = null;
+
+        // when
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategory, moimSortedFilter);
+
+        // then
+        assertThat(moimSimpleResponses.size()).isEqualTo(1);
+        assertThat(moimSimpleResponses.get(0).title()).isEqualTo(FIRST_CREATED_MOIM_TITLE.value());
+    }
+
     @DisplayName("모임에 여석이 있는지 검사하고, 꽉 차면 에러를 발생시킨다.")
     @Test
     void validateCapacityThrowError() {
@@ -273,6 +394,43 @@ class MoimFinderTest extends ImplementTest {
                 .doesNotThrowAnyException();
         assertThatCode(() -> moimFinder.validateCapacity(savedMoim2))
                 .doesNotThrowAnyException();
+    }
+
+    @DisplayName("검색어로 모임을 검색한다.")
+    @Test
+    void searchMoimBySearchParam() {
+        // given1
+        MoimJpaEntity moimA = MoimJpaEntity.builder()
+                .title("appleMango")
+                .build();
+
+        // given2
+        MoimJpaEntity moimB = MoimJpaEntity.builder()
+                .title(" " + "apple" + " " + "mango" + " ")
+                .build();
+
+        // given3
+        MoimJpaEntity moimC = MoimJpaEntity.builder()
+                .title("apple" + " " + "mango")
+                .build();
+
+        moimRepository.save(moimA);
+        moimRepository.save(moimB);
+        moimRepository.save(moimC);
+
+        //when
+        List<MoimSimpleResponse> appleResponses = moimFinder.searchMoim("apple");
+        List<MoimSimpleResponse> mangoResponses = moimFinder.searchMoim("mango");
+        List<MoimSimpleResponse> blankResponses = moimFinder.searchMoim(" ");
+        List<MoimSimpleResponse> noneResponses = moimFinder.searchMoim("none");
+        List<MoimSimpleResponse> applemangoResponses = moimFinder.searchMoim("apple mango");
+
+        //then
+        assertThat(appleResponses.size()).isEqualTo(3);
+        assertThat(mangoResponses.size()).isEqualTo(3);
+        assertThat(blankResponses.size()).isEqualTo(3);
+        assertThat(noneResponses.size()).isEqualTo(0);
+        assertThat(applemangoResponses.size()).isEqualTo(2);
     }
 
     private MemberJpaEntity saveRandomMember() {

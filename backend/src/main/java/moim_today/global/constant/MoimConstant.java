@@ -5,6 +5,8 @@ public enum MoimConstant {
     DEFAULT_MOIM_IMAGE_URL("https://anak2.s3.ap-northeast-2.amazonaws.com/moim/default-moim.jpg"),
     DEFAULT_MOIM_PASSWORD("NONE");
 
+    public static final String VIEWED_MOIM_COOKIE_NAME = "VIEWEDMOIMS";
+
     private final String value;
 
     MoimConstant(final String value) {

@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_HOST_ERROR;
+import static moim_today.global.constant.NumberConstant.VIEW_COUNT_OF_ONE;
 import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
 
 @Getter
@@ -22,7 +23,8 @@ import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZ
 @Entity
 public class MoimJpaEntity extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "moim_id")
     private long id;
 
@@ -125,5 +127,9 @@ public class MoimJpaEntity extends BaseTimeEntity {
                 this.password = updatePassword;
             }
         }
+    }
+
+    public void updateMoimViews() {
+        this.views += VIEW_COUNT_OF_ONE.value();
     }
 }

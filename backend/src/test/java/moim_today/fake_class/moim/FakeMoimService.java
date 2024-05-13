@@ -1,12 +1,15 @@
 package moim_today.fake_class.moim;
 
+import jakarta.servlet.http.HttpServletResponse;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.domain.moim.DisplayStatus;
+import moim_today.domain.moim.MoimSortedFilter;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
 import moim_today.global.error.NotFoundException;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -20,8 +23,8 @@ import static moim_today.util.TestConstant.*;
 public class FakeMoimService implements MoimService {
 
     @Override
-    public void createMoim(final long memberId, final long universityId, final MoimCreateRequest moimCreateRequest) {
-
+    public MoimIdResponse createMoim(final long memberId, final long universityId, final MoimCreateRequest moimCreateRequest) {
+        return MoimIdResponse.from(MOIM_ID.longValue());
     }
 
     @Override
@@ -30,7 +33,9 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public MoimDetailResponse getMoimDetail(final long moimId) {
+    public MoimDetailResponse getMoimDetail(final long moimId,
+                                            final String viewedMoimsCookieByUrlEncoded,
+                                            final HttpServletResponse response) {
         return MoimDetailResponse.builder()
                 .moimId(moimId)
                 .title(MOIM_TITLE.value())
@@ -123,5 +128,55 @@ public class FakeMoimService implements MoimService {
         else if(moimJoinRequest.moimId() == MOIM_ID.longValue() + 3L){
             throw new BadRequestException(MOIM_CAPACITY_ERROR.message());
         }
+    }
+
+    @Override
+    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategory moimCategory, final MoimSortedFilter moimSortedFilter) {
+        MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
+                .moimId(1L)
+                .title(MOIM_TITLE.value())
+                .capacity(CAPACITY.intValue())
+                .currentCount(CURRENT_COUNT.intValue())
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PUBLIC)
+                .build();
+
+        MoimSimpleResponse moimSimpleResponse2 = MoimSimpleResponse.builder()
+                .moimId(2L)
+                .title(MOIM_TITLE.value())
+                .capacity(CAPACITY.intValue())
+                .currentCount(CURRENT_COUNT.intValue())
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PUBLIC)
+                .build();
+
+        return List.of(moimSimpleResponse1, moimSimpleResponse2);
+    }
+
+    @Override
+    public List<MoimSimpleResponse> searchMoim(final String searchParam) {
+        MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
+                .moimId(1L)
+                .title(MOIM_TITLE.value())
+                .capacity(CAPACITY.intValue())
+                .currentCount(CURRENT_COUNT.intValue())
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PUBLIC)
+                .build();
+
+        MoimSimpleResponse moimSimpleResponse2 = MoimSimpleResponse.builder()
+                .moimId(2L)
+                .title(MOIM_TITLE.value())
+                .capacity(CAPACITY.intValue())
+                .currentCount(CURRENT_COUNT.intValue())
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PUBLIC)
+                .build();
+
+        return List.of(moimSimpleResponse1, moimSimpleResponse2);
     }
 }

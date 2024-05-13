@@ -237,4 +237,19 @@ class MoimJpaEntityTest {
         assertThat(moimJpaEntity.getStartDate()).isEqualTo(startDate);
         assertThat(moimJpaEntity.getEndDate()).isEqualTo(endDate);
     }
+
+    @DisplayName("조회수를 1 올린다.")
+    @Test
+    void updateViewsTest(){
+        //given
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .views(0)
+                .build();
+
+        //when
+        moimJpaEntity.updateMoimViews();
+
+        //then
+        assertThat(moimJpaEntity.getViews()).isEqualTo(1);
+    }
 }

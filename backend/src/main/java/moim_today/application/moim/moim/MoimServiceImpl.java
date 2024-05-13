@@ -1,5 +1,8 @@
 package moim_today.application.moim.moim;
 
+import jakarta.servlet.http.HttpServletResponse;
+import moim_today.domain.moim.MoimSortedFilter;
+import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
@@ -66,10 +69,11 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public void createMoim(final long memberId, final long universityId,
+    public MoimIdResponse createMoim(final long memberId, final long universityId,
                            final MoimCreateRequest moimCreateRequest) {
         MoimJpaEntity moim = moimAppender.createMoim(memberId, universityId, moimCreateRequest);
         joinedMoimAppender.createJoinedMoim(memberId, moim.getId());
+        return MoimIdResponse.from(moim.getId());
     }
 
     @Override
@@ -79,8 +83,11 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public MoimDetailResponse getMoimDetail(final long moimId) {
+    public MoimDetailResponse getMoimDetail(final long moimId,
+                                            final String viewedMoimsCookieByUrlEncoded,
+                                            final HttpServletResponse response) {
         MoimJpaEntity moimJpaEntity =  moimFinder.getById(moimId);
+        moimUpdater.updateMoimViews(moimId, viewedMoimsCookieByUrlEncoded, response);
         return MoimDetailResponse.from(moimJpaEntity);
     }
 
@@ -145,5 +152,15 @@ public class MoimServiceImpl implements MoimService{
         long enterMoimId = moimJoinRequest.moimId();
 
         moimManager.appendMemberToMoim(requestMemberId, enterMoimId);
+    }
+
+    @Override
+    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategory moimCategory, final MoimSortedFilter moimSortedFilter) {
+        return moimFinder.findAllMoimResponse(moimCategory, moimSortedFilter);
+    }
+
+    @Override
+    public List<MoimSimpleResponse> searchMoim(final String searchParam) {
+        return moimFinder.searchMoim(searchParam);
     }
 }

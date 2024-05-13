@@ -28,13 +28,13 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns(
                         "/api/login",
                         "/api/certification/**",
-                        "/api/moims/detail",
                         "/api/sign-up",
                         "/api/universities",
                         "/api/universities/departments/**",
                         "/api/departments/university-name",
                         "/api/departments/university-id",
-                        "/api/departments"
+                        "/api/departments",
+                        "/api/moims/categories"
                 );
     }
 

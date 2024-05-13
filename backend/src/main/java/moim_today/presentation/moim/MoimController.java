@@ -1,8 +1,11 @@
 package moim_today.presentation.moim;
 
+import jakarta.servlet.http.HttpServletResponse;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.domain.member.MemberSession;
+import moim_today.domain.moim.MoimSortedFilter;
+import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
 import moim_today.dto.moim.moim_notice.*;
 import moim_today.global.annotation.Login;
@@ -11,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import static moim_today.global.constant.MoimConstant.VIEWED_MOIM_COOKIE_NAME;
 
 @RequestMapping("/api/moims")
 @RestController
@@ -26,20 +31,27 @@ public class MoimController {
     }
 
     @PostMapping
-    public void createMoim(@Login final MemberSession memberSession,
+    public MoimIdResponse createMoim(@Login final MemberSession memberSession,
                            @RequestBody final MoimCreateRequest moimCreateRequest) {
-        moimService.createMoim(memberSession.id(), memberSession.universityId(), moimCreateRequest);
+        return moimService.createMoim(memberSession.id(), memberSession.universityId(), moimCreateRequest);
     }
 
     @PostMapping("/image")
-    public MoimImageResponse uploadMoimImage(@Login final MemberSession memberSession,
-                                             @RequestPart final MultipartFile file) {
+    public MoimImageResponse uploadMoimImage(@RequestPart final MultipartFile file) {
         return moimService.uploadMoimImage(file);
     }
 
-    @GetMapping("/detail")
-    public MoimDetailResponse getMoimDetail(@RequestParam final long moimId) {
-        return moimService.getMoimDetail(moimId);
+    @GetMapping("/detail/{moimId}")
+    public MoimDetailResponse getMoimDetail(@PathVariable final long moimId,
+                                            @CookieValue(value = VIEWED_MOIM_COOKIE_NAME, required = false) final String viewedMoimsCookieByUrlEncoded,
+                                            final HttpServletResponse response) {
+        return moimService.getMoimDetail(moimId, viewedMoimsCookieByUrlEncoded, response);
+    }
+
+    @GetMapping("/simple")
+    public CollectionResponse<List<MoimSimpleResponse>> findAllMoimResponse(@RequestParam final MoimCategory moimCategory,
+                                                                            @RequestParam final MoimSortedFilter moimSortedFilter) {
+        return CollectionResponse.of(moimService.findAllMoimResponse(moimCategory, moimSortedFilter));
     }
 
     @PatchMapping
@@ -50,7 +62,7 @@ public class MoimController {
 
     @GetMapping("/members/{moimId}")
     public MoimMemberTabResponse findMoimMembers(@Login final MemberSession memberSession,
-                                               @PathVariable final long moimId){
+                                                 @PathVariable final long moimId) {
         return moimService.findMoimMembers(memberSession.id(), moimId);
     }
 
@@ -62,7 +74,7 @@ public class MoimController {
 
     @DeleteMapping("/members/kick")
     public void forceDeleteMember(@Login final MemberSession memberSession,
-                             @RequestBody final MoimMemberKickRequest moimMemberKickRequest){
+                                  @RequestBody final MoimMemberKickRequest moimMemberKickRequest) {
         moimService.kickMember(memberSession.id(), moimMemberKickRequest);
     }
 
@@ -74,13 +86,13 @@ public class MoimController {
 
     @DeleteMapping("/members")
     public void deleteMember(@Login final MemberSession memberSession,
-                             @RequestBody final MoimMemberDeleteRequest moimMemberDeleteRequest){
+                             @RequestBody final MoimMemberDeleteRequest moimMemberDeleteRequest) {
         moimService.deleteMember(memberSession.id(), moimMemberDeleteRequest);
     }
 
     @PostMapping("/members")
     public void joinMoim(@Login final MemberSession memberSession,
-                         @RequestBody final MoimJoinRequest moimJoinRequest){
+                         @RequestBody final MoimJoinRequest moimJoinRequest) {
         moimService.appendMemberToMoim(memberSession.id(), moimJoinRequest);
     }
 
@@ -106,5 +118,15 @@ public class MoimController {
     public void deleteMoimNotice(@Login final MemberSession memberSession,
                                  @RequestBody final MoimNoticeDeleteRequest moimNoticeDeleteRequest) {
         moimNoticeService.deleteMoimNotice(memberSession.id(), moimNoticeDeleteRequest);
+    }
+
+    @GetMapping("/search")
+    public CollectionResponse<List<MoimSimpleResponse>> searchMoim(@RequestParam final String searchParam) {
+        return CollectionResponse.of(moimService.searchMoim(searchParam));
+    }
+
+    @GetMapping("/categories")
+    public CollectionResponse<MoimCategory[]> getMoimCategories() {
+        return CollectionResponse.of(MoimCategory.values());
     }
 }
