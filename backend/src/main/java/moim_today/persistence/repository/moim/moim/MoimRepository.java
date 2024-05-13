@@ -26,4 +26,6 @@ public interface MoimRepository {
     List<MoimSimpleResponse> findAllMoimResponse(final MoimFilterRequest moimFilterRequest);
 
     MoimJpaEntity getByIdWithPessimisticLock(final long moimId);
+
+    List<MoimSimpleResponse> searchMoimBySearchParam(final String searchParam);
 }

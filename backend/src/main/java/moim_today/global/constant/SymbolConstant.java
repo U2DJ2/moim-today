@@ -8,7 +8,8 @@ public enum SymbolConstant {
     CAPITAL_WWW("WWW."),
     SLASH("/"),
     AT("@"),
-    EMAIL_EXTENSION("ac.kr");
+    EMAIL_EXTENSION("ac.kr"),
+    PERCENT("%");
 
     private final String value;
 

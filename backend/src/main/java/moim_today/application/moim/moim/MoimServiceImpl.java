@@ -156,4 +156,9 @@ public class MoimServiceImpl implements MoimService{
     public List<MoimSimpleResponse> findAllMoimResponse(final MoimFilterRequest moimFilterRequest) {
         return moimFinder.findAllMoimResponse(moimFilterRequest);
     }
+
+    @Override
+    public List<MoimSimpleResponse> searchMoim(final String searchParam) {
+        return moimFinder.searchMoim(searchParam);
+    }
 }

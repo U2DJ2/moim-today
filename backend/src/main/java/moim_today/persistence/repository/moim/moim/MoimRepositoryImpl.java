@@ -3,14 +3,10 @@ package moim_today.persistence.repository.moim.moim;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import moim_today.domain.moim.enums.MoimCategory;
 import jakarta.persistence.LockModeType;
-import moim_today.dto.moim.moim.MoimDateResponse;
-import moim_today.dto.moim.moim.MoimSimpleResponse;
-import moim_today.dto.moim.moim.QMoimDateResponse;
-import moim_today.dto.moim.moim.QMoimSimpleResponse;
-import moim_today.dto.moim.moim.MoimFilterRequest;
 import moim_today.domain.moim.MoimSortedFilter;
+import moim_today.domain.moim.enums.MoimCategory;
+import moim_today.dto.moim.moim.*;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.stereotype.Repository;
@@ -18,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static moim_today.global.constant.SymbolConstant.PERCENT;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_NOT_FOUND_ERROR;
 import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.moimJpaEntity;
 
@@ -92,6 +89,22 @@ public class MoimRepositoryImpl implements MoimRepository {
                 .where(moimJpaEntity.id.eq(moimId))
                 .setLockMode(LockModeType.PESSIMISTIC_WRITE)
                 .fetchFirst();
+    }
+
+    @Override
+    public List<MoimSimpleResponse> searchMoimBySearchParam(final String searchParam) {
+        return queryFactory.select(new QMoimSimpleResponse(
+                        moimJpaEntity.id,
+                        moimJpaEntity.title,
+                        moimJpaEntity.capacity,
+                        moimJpaEntity.currentCount,
+                        moimJpaEntity.imageUrl,
+                        moimJpaEntity.moimCategory,
+                        moimJpaEntity.displayStatus
+                ))
+                .from(moimJpaEntity)
+                .where(moimJpaEntity.title.likeIgnoreCase(PERCENT.value() + searchParam.trim() + PERCENT.value()))
+                .fetch();
     }
 
     @Override

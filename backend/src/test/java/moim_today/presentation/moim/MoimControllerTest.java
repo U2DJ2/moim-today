@@ -74,8 +74,10 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("capacity").type(NUMBER).description("모집 인원"),
                                         fieldWithPath("password").type(STRING).description("모임 비밀번호(공개 여부가 PUBLIC일 경우 Nullable)"),
                                         fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL(Nullable)"),
-                                        fieldWithPath("moimCategory").type(VARIES).description("카테고리"),
-                                        fieldWithPath("displayStatus").type(VARIES).description("공개 여부"),
+                                        fieldWithPath("moimCategory").type(VARIES).description(String.format("카테고리 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
+                                        fieldWithPath("displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
+                                                EnumDocsUtils.getEnumNames(DisplayStatus.class))),
                                         fieldWithPath("startDate").type(STRING).description("시작 일자"),
                                         fieldWithPath("endDate").type(STRING).description("종료 일자")
                                 )
@@ -132,8 +134,10 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("capacity").type(NUMBER).description("모집 인원"),
                                         fieldWithPath("currentCount").type(NUMBER).description("현재 인원"),
                                         fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL"),
-                                        fieldWithPath("moimCategory").type(VARIES).description("카테고리"),
-                                        fieldWithPath("displayStatus").type(VARIES).description("공개여부"),
+                                        fieldWithPath("moimCategory").type(VARIES).description(String.format("카테고리 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
+                                        fieldWithPath("displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
+                                                EnumDocsUtils.getEnumNames(DisplayStatus.class))),
                                         fieldWithPath("views").type(NUMBER).description("조회수"),
                                         fieldWithPath("startDate").type(STRING).description("시작 일자"),
                                         fieldWithPath("endDate").type(STRING).description("종료 일자")
@@ -210,8 +214,10 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("capacity").type(NUMBER).description("수정한 모집 인원"),
                                         fieldWithPath("imageUrl").type(STRING).description("수정한 모임 사진 URL"),
                                         fieldWithPath("password").type(STRING).description("수정한 비밀번호"),
-                                        fieldWithPath("moimCategory").type(VARIES).description("수정한 카테고리"),
-                                        fieldWithPath("displayStatus").type(VARIES).description("수정한 공개여부"),
+                                        fieldWithPath("moimCategory").type(VARIES).description(String.format("수정한 카테고리 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
+                                        fieldWithPath("displayStatus").type(VARIES).description(String.format("수정한 공개 여부 - %s",
+                                                EnumDocsUtils.getEnumNames(DisplayStatus.class))),
                                         fieldWithPath("startDate").type(STRING).description("수정한 시작일자"),
                                         fieldWithPath("endDate").type(STRING).description("수정한 종료일자")
                                 ).build()
@@ -732,6 +738,53 @@ class MoimControllerTest extends ControllerTest {
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),
                                         fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임을 검색한다.")
+    @Test
+    void searchMoimTest() throws Exception {
+
+        mockMvc.perform(get("/api/moims/search")
+                        .queryParam("searchParam", "검색어"))
+                .andExpect(status().isOk())
+                .andDo(document("모임 검색 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("모임 검색")
+                                .queryParameters(
+                                        parameterWithName("searchParam").description("검색어")
+                                )
+                                .responseFields(
+                                        fieldWithPath("data[0].moimId").type(NUMBER).description("모임 Id"),
+                                        fieldWithPath("data[0].title").type(STRING).description("모임명"),
+                                        fieldWithPath("data[0].capacity").type(NUMBER).description("모집 인원"),
+                                        fieldWithPath("data[0].currentCount").type(NUMBER).description("현재 인원"),
+                                        fieldWithPath("data[0].imageUrl").type(STRING).description("모임 사진 URL"),
+                                        fieldWithPath("data[0].moimCategory").type(VARIES).description(String.format("카테고리 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
+                                        fieldWithPath("data[0].displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
+                                                EnumDocsUtils.getEnumNames(DisplayStatus.class)))
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임 카테고리 전체 리스트를 반환한다.")
+    @Test
+    void returnCategoriesTest() throws Exception {
+
+        mockMvc.perform(get("/api/moims/categories"))
+                .andExpect(status().isOk())
+                .andDo(document("전체 카테고리 리스트 조회 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("전체 카테고리 리스트 조회")
+                                .responseFields(
+                                        fieldWithPath("data[]").type(ARRAY).description(String.format("카테고리 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class)))
                                 )
                                 .build()
                         )));

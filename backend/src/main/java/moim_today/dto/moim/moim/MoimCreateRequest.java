@@ -3,6 +3,7 @@ package moim_today.dto.moim.moim;
 import lombok.Builder;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
+import moim_today.global.error.BadRequestException;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity.MoimJpaEntityBuilder;
 
@@ -12,6 +13,7 @@ import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
 import static moim_today.global.constant.NumberConstant.DEFAULT_MOIM_CURRENT_COUNT;
 import static moim_today.global.constant.NumberConstant.DEFAULT_MOIM_VIEWS;
+import static moim_today.global.constant.exception.MoimExceptionConstant.PRIVATE_MOIM_NEEDS_PASSWORD_ERROR;
 
 @Builder
 public record MoimCreateRequest(
@@ -43,7 +45,9 @@ public record MoimCreateRequest(
                 .startDate(startDate)
                 .endDate(endDate);
 
-        if (displayStatus.equals(DisplayStatus.PRIVATE) && password != null) {
+        if (displayStatus.equals(DisplayStatus.PRIVATE) && password == null) {
+            throw new BadRequestException(PRIVATE_MOIM_NEEDS_PASSWORD_ERROR.message());
+        } else if (displayStatus.equals(DisplayStatus.PRIVATE)){
             moimJpaEntityBuilder.password(password);
         } else {
             moimJpaEntityBuilder.password(DEFAULT_MOIM_PASSWORD.value());
