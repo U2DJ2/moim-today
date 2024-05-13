@@ -4,12 +4,16 @@ import SimpleDrop from "../../../components/Dropdown/Simple";
 import { useNavigate, useParams } from "react-router";
 function MoimHome() {
   const navigate = useNavigate();
-  const MoimId = useParams();
+  let noticeId = 1,
+    meetingId = 1;
   const onSelect = (option) => {
     console.log(option);
   };
   const noticeHandler = () => {
-    navigate(`${MoimId}/notice`);
+    navigate(`notice/${noticeId}`);
+  };
+  const cardClickHandler = () => {
+    navigate(`meeting/${meetingId}`);
   };
   return (
     <div className="flex flex-col gap-24">
@@ -53,6 +57,7 @@ function MoimHome() {
           dday={"D-1"}
           title={"{Gathering_Title}"}
           btn={true}
+          clickHandler={cardClickHandler}
         />
       </div>
     </div>
