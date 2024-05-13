@@ -2,6 +2,7 @@ package moim_today.implement.todo;
 
 import moim_today.domain.todo.enums.TodoProgress;
 import moim_today.dto.todo.MemberTodoResponse;
+import moim_today.dto.todo.TodoRemoveRequest;
 import moim_today.dto.todo.TodoUpdateRequest;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static moim_today.global.constant.exception.TodoExceptionConstant.*;
 import static moim_today.util.TestConstant.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
@@ -106,6 +108,30 @@ class TodoManagerTest extends ImplementTest {
         });
     }
 
+    @DisplayName("Todo를 업데이트한다")
+    @Test
+    void updateTodoTest() {
+        // given1
+        TodoJpaEntity originalTodo = TodoJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .moimId(MOIM_ID.longValue())
+                .contents(UPDATE_BEFORE_CONTENT.value())
+                .todoProgress(TodoProgress.PENDING)
+                .startDateTime(LocalDateTime.of(1000, 1, 1, 1, 1, 1))
+                .endDateTime(LocalDateTime.of(1500, 5, 5, 5, 5, 5))
+                .build();
+
+        todoRepository.save(originalTodo);
+
+        // given2
+        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest(originalTodo.getId(), MOIM_ID.longValue(),
+                UPDATE_AFTER_CONTENT.value(), TodoProgress.ACTIVE, UPDATE_AFTER_START_TIME, UPDATE_AFTER_END_TIME);
+
+        // expected
+        assertThatCode(() -> todoManager.updateTodo(MEMBER_ID.longValue(), todoUpdateRequest))
+                .doesNotThrowAnyException();
+    }
+
     @DisplayName("Todo를 업데이트할 때, Todo가 존재하지 않으면 에러가 발생한다")
     @Test
     void updateTodoNotFoundErrorTest() {
@@ -114,7 +140,7 @@ class TodoManagerTest extends ImplementTest {
                 UPDATE_AFTER_CONTENT.value(), TodoProgress.ACTIVE, UPDATE_AFTER_START_TIME, UPDATE_AFTER_END_TIME);
 
         // expected
-        Assertions.assertThatThrownBy(() -> todoManager.updateTodo(MEMBER_ID.longValue(), todoUpdateRequest))
+        assertThatThrownBy(() -> todoManager.updateTodo(MEMBER_ID.longValue(), todoUpdateRequest))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(TODO_NOT_FOUND_ERROR.message());
     }
@@ -139,7 +165,7 @@ class TodoManagerTest extends ImplementTest {
         todoRepository.save(originalTodo);
 
         // expected
-        Assertions.assertThatThrownBy(() -> todoManager.updateTodo(MEMBER_ID.longValue()+1L, todoUpdateRequest))
+        assertThatThrownBy(() -> todoManager.updateTodo(MEMBER_ID.longValue()+1L, todoUpdateRequest))
                 .isInstanceOf(ForbiddenException.class)
                 .hasMessage(TODO_NOT_OWNER_ERROR.message());
     }
@@ -165,14 +191,14 @@ class TodoManagerTest extends ImplementTest {
                 WRONG_UPDATE_AFTER_END_TIME);
 
         // expected
-        Assertions.assertThatThrownBy(() -> todoManager.updateTodo(MEMBER_ID.longValue(), todoUpdateRequest))
+        assertThatThrownBy(() -> todoManager.updateTodo(MEMBER_ID.longValue(), todoUpdateRequest))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage(TODO_START_TIME_AFTER_END_TIME_ERROR.message());
     }
 
-    @DisplayName("Todo를 업데이트한다")
+    @DisplayName("Todo를 삭제한다")
     @Test
-    void updateTodoTest() {
+    void deleteTodoTest() {
         // given1
         TodoJpaEntity originalTodo = TodoJpaEntity.builder()
                 .memberId(MEMBER_ID.longValue())
@@ -186,11 +212,60 @@ class TodoManagerTest extends ImplementTest {
         todoRepository.save(originalTodo);
 
         // given2
-        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest(originalTodo.getId(), MOIM_ID.longValue(),
-                UPDATE_AFTER_CONTENT.value(), TodoProgress.ACTIVE, UPDATE_AFTER_START_TIME, UPDATE_AFTER_END_TIME);
+        TodoRemoveRequest todoRemoveRequest = new TodoRemoveRequest(originalTodo.getId());
+
+        // when
+        todoManager.deleteTodo(MEMBER_ID.longValue(), todoRemoveRequest);
+
+        // then
+        assertThatThrownBy(() -> todoRepository.getById(originalTodo.getId()))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage(TODO_NOT_FOUND_ERROR.message());
+    }
+
+    @DisplayName("Todo를 삭제할 때, 존재하지 않는 Todo면 오류가 발생한다")
+    @Test
+    void deleteTodoNotFoundErrorTest() {
+        // given1
+        TodoJpaEntity originalTodo = TodoJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .moimId(MOIM_ID.longValue())
+                .contents(UPDATE_BEFORE_CONTENT.value())
+                .todoProgress(TodoProgress.PENDING)
+                .startDateTime(LocalDateTime.of(1000, 1, 1, 1, 1, 1))
+                .endDateTime(LocalDateTime.of(1500, 5, 5, 5, 5, 5))
+                .build();
+
+        // given2
+        TodoRemoveRequest todoRemoveRequest = new TodoRemoveRequest(originalTodo.getId());
 
         // expected
-        assertThatCode(() -> todoManager.updateTodo(MEMBER_ID.longValue(), todoUpdateRequest))
-                .doesNotThrowAnyException();
+        assertThatThrownBy(() -> todoManager.deleteTodo(MEMBER_ID.longValue(), todoRemoveRequest))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage(TODO_NOT_FOUND_ERROR.message());
+    }
+
+    @DisplayName("Todo를 삭제할 때, 삭제 권한이 없으면 오류가 발생한다")
+    @Test
+    void deleteTodoNotOwnerErrorTest() {
+        // given1
+        TodoJpaEntity originalTodo = TodoJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .moimId(MOIM_ID.longValue())
+                .contents(UPDATE_BEFORE_CONTENT.value())
+                .todoProgress(TodoProgress.PENDING)
+                .startDateTime(LocalDateTime.of(1000, 1, 1, 1, 1, 1))
+                .endDateTime(LocalDateTime.of(1500, 5, 5, 5, 5, 5))
+                .build();
+
+        todoRepository.save(originalTodo);
+
+        // given2
+        TodoRemoveRequest todoRemoveRequest = new TodoRemoveRequest(originalTodo.getId());
+
+        // expected
+        assertThatThrownBy(() -> todoManager.deleteTodo(MEMBER_ID.longValue()+1L, todoRemoveRequest))
+                .isInstanceOf(ForbiddenException.class)
+                .hasMessage(TODO_NOT_OWNER_ERROR.message());
     }
 }
