@@ -14,6 +14,8 @@ import cardImage from "../../assets/svg/card-image.svg";
 
 import { GET } from "../../utils/axios";
 
+import axios from "axios";
+
 /**
  * SearchBar Component
  * @returns {JSX.Element}
@@ -43,15 +45,30 @@ function SearchBar() {
   );
 }
 
-function FilterBar() {
-  const [selected, setSelected] = useState("전체");
-
+function FilterBar({
+  setMoimCategory,
+  setMoimSortedFilter,
+  selected,
+  setSelected,
+}) {
   const handleDropdown = (option) => {
     console.log(option);
+    if (option === "스터디") {
+      setMoimCategory("STUDY");
+    } else if (option === "팀 프로젝트") {
+      setMoimCategory("TEAM_PROJECT");
+    } else if (option === "취미활동") {
+      setMoimCategory("HOBBY");
+    } else if (option === "운동") {
+      setMoimCategory("EXERCISE");
+    } else {
+      setMoimCategory("OTHERS");
+    }
   };
 
   const handleFilter = (option) => {
     console.log(option);
+    setMoimSortedFilter(option);
   };
 
   return (
@@ -75,19 +92,19 @@ function FilterBar() {
         <div className="flex gap-3">
           <div
             className={`justify-center px-9 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
-              selected === "전체" ? "bg-gray-200" : ""
+              selected === "CREATED_AT" ? "bg-gray-200" : ""
             }`}
-            onClick={() => setSelected("전체")}
+            onClick={() => setSelected("CREATED_AT")}
           >
             전체
           </div>
           <div
             className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
-              selected === "추천순" ? "bg-gray-200" : ""
+              selected === "VIEWS" ? "bg-gray-200" : ""
             }`}
-            onClick={() => setSelected("추천순")}
+            onClick={() => setSelected("VIEWS")}
           >
-            추천순
+            조회수 순
           </div>
           <div
             className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
@@ -107,26 +124,40 @@ function FilterBar() {
     </div>
   );
 }
-
+const getAllMoims = async (moimCategory, moimSortedFilter) => {
+  await GET(`api/moims/simple/moimCategory=${moimCategory}/${moimSortedFilter}`)
+    .then((res) => {
+      console.log(res);
+    })
+    .then((error) => console.log(error));
+};
 export default function Home() {
-  const [moimCategory, setMoimCategory] = useState("");
-  const [moimSortedFilter, setMoimSortedFilter] = useState("");
+  const [moimCategory, setMoimCategory] = useState("STUDY");
+  const [moimSortedFilter, setMoimSortedFilter] = useState("CREATED_AT");
+  const [selected, setSelected] = useState("CREATED_AT");
   const params = {
     moimCategory: "EXERCISE",
     moimSortedFilter: "CREATED_AT",
   };
   useEffect(() => {
-    try {
-      GET(`api/moims/simple/${moimCategory}/${moimSortedFilter}`)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      console.log(error);
-    }
+    const fetchMoims = async () => {
+      try {
+        const params = {
+          moimCategory: "",
+          moimSortedFilter: "CREATED_AT",
+        };
+        const response = await axios.get(
+          "https://api.moim.today/api/moims/simple",
+          {
+            params: params,
+          }
+        );
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchMoims();
   }, []);
   return (
     <div className="flex flex-col justify-between pb-20 bg-white">
@@ -136,7 +167,11 @@ export default function Home() {
         </h1>
         <SearchBar />
       </main>
-      <FilterBar />
+      <FilterBar
+        setMoimCategory={setMoimCategory}
+        selected={selected}
+        setSelected={setSelected}
+      />
       <div className="grid grid-cols-1 gap-10 mt-20 mx-auto md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
         <CardContainer
           image={cardImage}
