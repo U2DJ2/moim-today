@@ -7,7 +7,6 @@ import moim_today.dto.meeting.MeetingDetailResponse;
 import moim_today.dto.meeting.MeetingSimpleResponse;
 import moim_today.dto.member.MemberSimpleResponse;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,7 +27,6 @@ public class FakeMeetingService implements MeetingService {
                 .meetingId(MEETING_ID.longValue())
                 .agenda(MEETING_AGENDA.value())
                 .startDate(LocalDate.of(2024, 3, 4))
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .dDay(3)
                 .build();
 
@@ -36,7 +34,6 @@ public class FakeMeetingService implements MeetingService {
                 .meetingId(MEETING_ID.longValue() + 1)
                 .agenda(MEETING_AGENDA.value())
                 .startDate(LocalDate.of(2024, 3, 5))
-                .dayOfWeek(DayOfWeek.TUESDAY)
                 .dDay(2)
                 .build();
 
@@ -44,7 +41,6 @@ public class FakeMeetingService implements MeetingService {
                 .meetingId(MEETING_ID.longValue() + 2)
                 .agenda(MEETING_AGENDA.value())
                 .startDate(LocalDate.of(2024, 3, 6))
-                .dayOfWeek(DayOfWeek.WEDNESDAY)
                 .dDay(1)
                 .build();
 

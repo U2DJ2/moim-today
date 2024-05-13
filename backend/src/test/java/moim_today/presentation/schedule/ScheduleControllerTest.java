@@ -11,7 +11,6 @@ import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -55,7 +54,6 @@ class ScheduleControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].scheduleId").type(NUMBER).description("스케줄 id"),
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("data[0].scheduleName").type(STRING).description("스케줄명"),
-                                        fieldWithPath("data[0].dayOfWeek").type(STRING).description("요일"),
                                         fieldWithPath("data[0].colorHex").type(STRING).description("색상"),
                                         fieldWithPath("data[0].startDateTime").type(STRING).description("시작 시간"),
                                         fieldWithPath("data[0].endDateTime").type(STRING).description("종료 시간")
@@ -131,7 +129,6 @@ class ScheduleControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].scheduleId").type(NUMBER).description("스케줄 id"),
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("data[0].scheduleName").type(STRING).description("스케줄명"),
-                                        fieldWithPath("data[0].dayOfWeek").type(STRING).description("요일"),
                                         fieldWithPath("data[0].colorHex").type(STRING).description("색상"),
                                         fieldWithPath("data[0].startDateTime").type(STRING).description("시작 시간"),
                                         fieldWithPath("data[0].endDateTime").type(STRING).description("종료 시간")
@@ -209,7 +206,6 @@ class ScheduleControllerTest extends ControllerTest {
     void createSchedule() throws Exception {
         ScheduleCreateRequest scheduleCreateRequest = ScheduleCreateRequest.builder()
                 .scheduleName(SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
@@ -227,7 +223,6 @@ class ScheduleControllerTest extends ControllerTest {
                                 .summary("개인 일정 등록")
                                 .requestFields(
                                         fieldWithPath("scheduleName").type(STRING).description("스케줄명"),
-                                        fieldWithPath("dayOfWeek").type(STRING).description("요일"),
                                         fieldWithPath("startDateTime").type(STRING).description("시작 시간"),
                                         fieldWithPath("endDateTime").type(STRING).description("종료 시간")
                                 )
@@ -240,7 +235,6 @@ class ScheduleControllerTest extends ControllerTest {
     void createScheduleFail() throws Exception {
         ScheduleCreateRequest scheduleCreateRequest = ScheduleCreateRequest.builder()
                 .scheduleName(SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 0, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
@@ -258,7 +252,6 @@ class ScheduleControllerTest extends ControllerTest {
                                 .summary("개인 일정 등록")
                                 .requestFields(
                                         fieldWithPath("scheduleName").type(STRING).description("스케줄명"),
-                                        fieldWithPath("dayOfWeek").type(STRING).description("요일"),
                                         fieldWithPath("startDateTime").type(STRING).description("시작 시간"),
                                         fieldWithPath("endDateTime").type(STRING).description("종료 시간")
                                 )
@@ -276,7 +269,6 @@ class ScheduleControllerTest extends ControllerTest {
         ScheduleUpdateRequest scheduleUpdateRequest = ScheduleUpdateRequest.builder()
                 .scheduleId(1L)
                 .scheduleName(SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
@@ -295,7 +287,6 @@ class ScheduleControllerTest extends ControllerTest {
                                 .requestFields(
                                         fieldWithPath("scheduleId").type(NUMBER).description("스케줄 id"),
                                         fieldWithPath("scheduleName").type(STRING).description("스케줄명"),
-                                        fieldWithPath("dayOfWeek").type(STRING).description("요일"),
                                         fieldWithPath("startDateTime").type(STRING).description("시작 시간"),
                                         fieldWithPath("endDateTime").type(STRING).description("종료 시간")
                                 )
@@ -309,7 +300,6 @@ class ScheduleControllerTest extends ControllerTest {
         ScheduleUpdateRequest scheduleUpdateRequest = ScheduleUpdateRequest.builder()
                 .scheduleId(1L)
                 .scheduleName(SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 0, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
@@ -328,7 +318,6 @@ class ScheduleControllerTest extends ControllerTest {
                                 .requestFields(
                                         fieldWithPath("scheduleId").type(NUMBER).description("스케줄 id"),
                                         fieldWithPath("scheduleName").type(STRING).description("스케줄명"),
-                                        fieldWithPath("dayOfWeek").type(STRING).description("요일"),
                                         fieldWithPath("startDateTime").type(STRING).description("시작 시간"),
                                         fieldWithPath("endDateTime").type(STRING).description("종료 시간")
                                 )
@@ -346,7 +335,6 @@ class ScheduleControllerTest extends ControllerTest {
         ScheduleUpdateRequest scheduleUpdateRequest = ScheduleUpdateRequest.builder()
                 .scheduleId(Long.parseLong(FORBIDDEN_SCHEDULE_ID.value()))
                 .scheduleName(SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
@@ -365,7 +353,6 @@ class ScheduleControllerTest extends ControllerTest {
                                 .requestFields(
                                         fieldWithPath("scheduleId").type(NUMBER).description("스케줄 id"),
                                         fieldWithPath("scheduleName").type(STRING).description("스케줄명"),
-                                        fieldWithPath("dayOfWeek").type(STRING).description("요일"),
                                         fieldWithPath("startDateTime").type(STRING).description("시작 시간"),
                                         fieldWithPath("endDateTime").type(STRING).description("종료 시간")
                                 )

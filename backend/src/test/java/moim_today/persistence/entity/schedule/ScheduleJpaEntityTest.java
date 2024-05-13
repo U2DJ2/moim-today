@@ -6,7 +6,6 @@ import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCHEDULE_FORBIDDEN;
@@ -26,7 +25,6 @@ class ScheduleJpaEntityTest {
                 .memberId(memberId)
                 .meetingId(meetingId)
                 .scheduleName(SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
@@ -34,7 +32,6 @@ class ScheduleJpaEntityTest {
         ScheduleUpdateRequest scheduleUpdateRequest = ScheduleUpdateRequest.builder()
                 .scheduleId(1L)
                 .scheduleName(NEW_SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.SATURDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 14, 0, 0))
                 .build();
@@ -46,7 +43,6 @@ class ScheduleJpaEntityTest {
         assertThat(scheduleJpaEntity.getMemberId()).isEqualTo(memberId);
         assertThat(scheduleJpaEntity.getMeetingId()).isEqualTo(meetingId);
         assertThat(scheduleJpaEntity.getScheduleName()).isEqualTo(NEW_SCHEDULE_NAME.value());
-        assertThat(scheduleJpaEntity.getDayOfWeek()).isEqualTo(DayOfWeek.SATURDAY);
         assertThat(scheduleJpaEntity.getStartDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 12, 0, 0));
         assertThat(scheduleJpaEntity.getEndDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 14, 0, 0));
     }
@@ -62,7 +58,6 @@ class ScheduleJpaEntityTest {
                 .memberId(memberId)
                 .meetingId(meetingId)
                 .scheduleName(SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
@@ -85,7 +80,6 @@ class ScheduleJpaEntityTest {
                 .memberId(memberId)
                 .meetingId(meetingId)
                 .scheduleName(SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();

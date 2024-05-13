@@ -11,7 +11,6 @@ import moim_today.util.EnumDocsUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
@@ -121,9 +120,6 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
                                         fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
-                                        fieldWithPath("data[0].dayOfWeek").type(VARIES).description(
-                                                String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(DayOfWeek.class))
-                                        ),
                                         fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
                                         fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
                                 )
@@ -151,9 +147,6 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
                                         fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
-                                        fieldWithPath("data[0].dayOfWeek").type(VARIES).description(
-                                                String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(DayOfWeek.class))
-                                        ),
                                         fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
                                         fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
                                 )
@@ -181,9 +174,6 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
                                         fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
-                                        fieldWithPath("data[0].dayOfWeek").type(VARIES).description(
-                                                String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(DayOfWeek.class))
-                                        ),
                                         fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
                                         fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
                                 )

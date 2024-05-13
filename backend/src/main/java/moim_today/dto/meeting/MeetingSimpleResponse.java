@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import moim_today.domain.meeting.Meeting;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,6 @@ public record MeetingSimpleResponse(
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate startDate,
-        DayOfWeek dayOfWeek,
         long dDay,
         boolean attendance
 ) {
@@ -40,7 +38,6 @@ public record MeetingSimpleResponse(
                 .meetingId(meetingSimpleDao.meetingId())
                 .agenda(meetingSimpleDao.agenda())
                 .startDate(meetingSimpleDao.startDateTime().toLocalDate())
-                .dayOfWeek(meetingSimpleDao.startDateTime().getDayOfWeek())
                 .dDay(dDay)
                 .attendance(meetingSimpleDao.attendance())
                 .build();
