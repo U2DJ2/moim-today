@@ -85,6 +85,11 @@ public class MoimFinder {
         }
     }
 
+    @Transactional(readOnly = true)
+    public List<MoimSimpleResponse> searchMoim(final String searchParam) {
+        return moimRepository.searchMoimBySearchParam(searchParam);
+    }
+
     private List<Long> extractMemberIds(final List<JoinedMoimJpaEntity> joinedMoimJpaEntities){
         List<Long> memberIds = new ArrayList<>();
         joinedMoimJpaEntities.forEach(e -> memberIds.add(e.getMemberId()));

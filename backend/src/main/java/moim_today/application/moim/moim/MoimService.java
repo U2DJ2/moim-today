@@ -28,4 +28,6 @@ public interface MoimService {
     void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest);
 
     List<MoimSimpleResponse> findAllMoimResponse(final MoimFilterRequest moimFilterRequest);
+
+    List<MoimSimpleResponse> searchMoim(final String searchParam);
 }

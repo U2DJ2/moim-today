@@ -152,4 +152,9 @@ public class FakeMoimService implements MoimService {
 
         return List.of(moimSimpleResponse1, moimSimpleResponse2);
     }
+
+    @Override
+    public List<MoimSimpleResponse> searchMoim(final String searchParam) {
+        return List.of();
+    }
 }
