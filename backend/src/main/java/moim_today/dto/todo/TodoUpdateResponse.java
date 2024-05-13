@@ -2,14 +2,14 @@ package moim_today.dto.todo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import moim_today.domain.todo.enums.TodoProgress;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
 
 import java.time.LocalDateTime;
 
-public record TodoUpdateRequest(
-        long todoId,
-        long moimId,
+@Builder
+public record TodoUpdateResponse(
         String contents,
         TodoProgress todoProgress,
 
@@ -21,18 +21,12 @@ public record TodoUpdateRequest(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         LocalDateTime endDateTime
 ) {
-    public TodoJpaEntity toEntity(final long memberId){
-        return TodoJpaEntity.builder()
-                .moimId(moimId)
-                .memberId(memberId)
-                .contents(contents)
-                .todoProgress(todoProgress)
-                .startDateTime(startDateTime)
-                .endDateTime(endDateTime)
+    public static TodoUpdateResponse of(final TodoJpaEntity originalTodo) {
+        return TodoUpdateResponse.builder()
+                .contents(originalTodo.getContents())
+                .todoProgress(originalTodo.getTodoProgress())
+                .startDateTime(originalTodo.getStartDateTime())
+                .endDateTime(originalTodo.getEndDateTime())
                 .build();
-    }
-
-    public boolean isStartBeforeOrEqualEnd(){
-        return !startDateTime.isAfter(endDateTime);
     }
 }

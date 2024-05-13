@@ -3,12 +3,14 @@ package moim_today.persistence.repository.todo;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.dto.todo.QTodoResponse;
 import moim_today.dto.todo.TodoResponse;
+import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static moim_today.global.constant.exception.TodoExceptionConstant.TODO_NOT_FOUND_ERROR;
 import static moim_today.persistence.entity.todo.QTodoJpaEntity.todoJpaEntity;
 
 @Repository
@@ -66,5 +68,11 @@ public class TodoRepositoryImpl implements TodoRepository {
                                 .and(todoJpaEntity.endDateTime.between(startDateTime, endDateTime))
                 )
                 .fetch();
+    }
+
+    @Override
+    public TodoJpaEntity getById(final long todoId) {
+        return todoJpaRepository.findById(todoId)
+                .orElseThrow(() -> new NotFoundException(TODO_NOT_FOUND_ERROR.message()));
     }
 }

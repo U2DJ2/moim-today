@@ -19,4 +19,6 @@ public interface TodoRepository {
 
     List<TodoResponse> findAllByDateRange(final long memberId, final long moimId,
                                           final LocalDateTime startDateTime, final LocalDateTime endDateTime);
+
+    TodoJpaEntity getById(final long todoId);
 }

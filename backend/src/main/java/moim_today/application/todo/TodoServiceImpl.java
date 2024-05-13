@@ -3,6 +3,7 @@ package moim_today.application.todo;
 import moim_today.dto.todo.MemberTodoResponse;
 import moim_today.dto.todo.TodoCreateRequest;
 import moim_today.dto.todo.TodoUpdateRequest;
+import moim_today.dto.todo.TodoUpdateResponse;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import moim_today.implement.todo.TodoAppender;
 import moim_today.implement.todo.TodoManager;
@@ -42,10 +43,8 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public void updateTodo(final long memberId, final TodoUpdateRequest todoUpdateRequest) {
+    public TodoUpdateResponse updateTodo(final long memberId, final TodoUpdateRequest todoUpdateRequest) {
         joinedMoimFinder.validateMemberInMoim(memberId, todoUpdateRequest.moimId());
-        // Todo: 저장된 Todo가 있는지 검증하는 로직 추가
-        // Todo: 투두 업데이트 권한이 있는 사용자인지 검사
-        // Todo: 투두 업데이트 기능 Implement에 추가
+        return todoManager.updateTodo(memberId, todoUpdateRequest);
     }
 }

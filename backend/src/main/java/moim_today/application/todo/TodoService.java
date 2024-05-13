@@ -3,6 +3,7 @@ package moim_today.application.todo;
 import moim_today.dto.todo.MemberTodoResponse;
 import moim_today.dto.todo.TodoCreateRequest;
 import moim_today.dto.todo.TodoUpdateRequest;
+import moim_today.dto.todo.TodoUpdateResponse;
 
 import java.time.YearMonth;
 import java.util.List;
@@ -16,5 +17,5 @@ public interface TodoService {
                                                        final YearMonth startDate,
                                                        final int months);
 
-    void updateTodo(final long memberId, final TodoUpdateRequest todoUpdateRequest);
+    TodoUpdateResponse updateTodo(final long memberId, final TodoUpdateRequest todoUpdateRequest);
 }
