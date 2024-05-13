@@ -58,7 +58,17 @@ function FilterBar() {
     <div className="flex gap-2.5 justify-between px-12 py-4 mt-9 w-full text-base text-center whitespace-nowrap text-neutral-700 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
       <div className="flex gap-0 justify-center items-center">
         <div>
-          <Dropdown options={["Latest", "Views"]} onSelect={handleDropdown} />
+          <Dropdown
+            options={[
+              "전체",
+              "스터디",
+              "팀 프로젝트",
+              "취미활동",
+              "운동",
+              "기타",
+            ]}
+            onSelect={handleDropdown}
+          />
         </div>
       </div>
       <div className="flex justify-center items-center self-start px-16 font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
@@ -99,13 +109,15 @@ function FilterBar() {
 }
 
 export default function Home() {
-  const data = {
+  const [moimCategory, setMoimCategory] = useState("");
+  const [moimSortedFilter, setMoimSortedFilter] = useState("");
+  const params = {
     moimCategory: "EXERCISE",
     moimSortedFilter: "CREATED_AT",
   };
   useEffect(() => {
     try {
-      GET("api/moims/simple", data)
+      GET(`api/moims/simple/${moimCategory}/${moimSortedFilter}`)
         .then((res) => {
           console.log(res);
         })

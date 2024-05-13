@@ -18,6 +18,9 @@ import Schedule from "../pages/Schedule";
 // Page : Moim Detail Page
 import MoimDetailPage from "../pages/MoimDetailPage";
 
+// Page : Moim - Meeting Page
+import MoimMeetingPage from "../pages/MoimMeetingPage";
+
 // Components
 import Calendar from "../components/Calendar";
 import MoimJoinPage from "../pages/MoimJoinPage";
