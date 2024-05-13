@@ -11,6 +11,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import DateRangePicker from "../../components/DatePicker/Range";
 
 import { POST } from "../../utils/axios";
+import { number } from "prop-types";
 
 // Define label style
 const labelStyle =
@@ -83,8 +84,23 @@ function Dropdown({ label, options, onSelect }) {
     </>
   );
 }
+const textCapture = (label, setTitle, setContents) => {
+  if (label === "모임명") {
+    setTitle(e.target.value);
+    console.log("first");
+  } else if (label === "상세설명") {
+    setContents(e.target.value);
+  }
+  console.log("z");
+};
 
-function InputField({ label, placeholder }) {
+function InputField({
+  label,
+  placeholder,
+  setTitle,
+  setContents,
+  changeHandler,
+}) {
   return (
     <>
       <div className={labelStyle}>{label}</div>
@@ -93,6 +109,7 @@ function InputField({ label, placeholder }) {
           type="text"
           className={`w-full bg-transparent outline-none`}
           placeholder={placeholder}
+          onChange={changeHandler}
         />
       </div>
     </>
@@ -171,6 +188,14 @@ function ImageUploader({ setUploadFile }) {
 
 export default function MoimCreation() {
   const [uploadFileUrl, setUploadFile] = useState(null);
+  const [displayStatus, setDisplay] = useState(false);
+  const [category, setCategory] = useState("스터디");
+  const [title, setTitle] = useState("");
+  const [contents, setContents] = useState("");
+  const [password, setPassword] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [capacity, setCapacity] = useState(0);
 
   const navigate = useNavigate();
 
@@ -178,10 +203,13 @@ export default function MoimCreation() {
     const isChecked = event.target.checked; // 체크 여부를 가져옵니다.
     // isChecked 값에 따라 필요한 작업을 수행합니다.
     console.log("체크 여부:", isChecked);
+    isChecked ? setDisplay(true) : setDisplay(false);
+    console.log(displayStatus);
   };
 
   const handleDropdown = (option) => {
     console.log(option);
+    setCategory(option);
   };
 
   // "취소하기" 버튼 클릭 시 메인 페이지로 이동
@@ -191,10 +219,36 @@ export default function MoimCreation() {
 
   const handleDateRange = (dateRange) => {
     console.log(dateRange);
+    setStartDate(dateRange.startDate);
+    setEndDate(dateRange.endDate);
+  };
+
+  const data = {
+    title: title,
+    contents: contents,
+    capacity: capacity,
+    password: "",
+    imageUrl: uploadFileUrl,
+    moimCategory: "STUDY",
+    displayStatus: "PRIVATE",
+    startDate: startDate,
+    endDate: endDate,
   };
 
   const onClickHandler = () => {
     console.log("first");
+
+    try {
+      POST("api/moims", data)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log("error");
+    }
   };
   return (
     <div className="flex flex-col justify-center p-8 bg-white rounded-[32px] max-md:px-5">
@@ -217,8 +271,24 @@ export default function MoimCreation() {
           onSelect={handleDropdown}
         />
 
-        <InputField label="모임명" placeholder="모임 이름을 적어주세요." />
-        <InputField label="상세 설명" placeholder="모임 설명을 적어주세요." />
+        <InputField
+          label="모임명"
+          placeholder="모임 이름을 적어주세요."
+          setTitle={setTitle}
+          setContents={setContents}
+          changeHandler={(e) => {
+            setTitle(e.target.value);
+          }}
+        />
+        <InputField
+          label="상세 설명"
+          placeholder="모임 설명을 적어주세요."
+          setTitle={setTitle}
+          setContents={setContents}
+          changeHandler={(e) => {
+            setContents(e.target.value);
+          }}
+        />
         <ImageUploader setUploadFile={setUploadFile} />
 
         <div className={labelStyle}>{"운영 시간"}</div>
@@ -230,6 +300,9 @@ export default function MoimCreation() {
         <InputField
           label="참여 인원"
           placeholder="참여 인원을 숫자만 입력해주세요!"
+          changeHandler={(e) => {
+            setCapacity(parseInt(e.target.value));
+          }}
         />
       </main>
       <footer className="flex justify-center gap-12">
