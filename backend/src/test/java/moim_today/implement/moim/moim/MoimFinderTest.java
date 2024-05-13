@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -201,7 +202,7 @@ class MoimFinderTest extends ImplementTest {
 
     @DisplayName("필터가 없으면 모든 카테고리의 모임 리스트를 최신 생성 순으로 가져온다.")
     @Test
-    void findAllMoim() {
+    void findAllMoim() throws InterruptedException {
         // given
         MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
                 .title(FIRST_CREATED_MOIM_TITLE.value())
@@ -209,6 +210,7 @@ class MoimFinderTest extends ImplementTest {
                 .build();
 
         moimRepository.save(firstCreatedMoimJpaEntity);
+        Thread.sleep(10);
 
         MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
                 .title(SECOND_CREATED_MOIM_TITLE.value())
@@ -225,13 +227,13 @@ class MoimFinderTest extends ImplementTest {
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
-        assertThat(moimSimpleResponses.get(0).title()).isEqualTo(FIRST_CREATED_MOIM_TITLE.value());
-        assertThat(moimSimpleResponses.get(1).title()).isEqualTo(SECOND_CREATED_MOIM_TITLE.value());
+        assertThat(moimSimpleResponses.get(0).title()).isEqualTo(SECOND_CREATED_MOIM_TITLE.value());
+        assertThat(moimSimpleResponses.get(1).title()).isEqualTo(FIRST_CREATED_MOIM_TITLE.value());
     }
 
     @DisplayName("모임 리스트를 최신 생성 순으로 가져온다.")
     @Test
-    void findAllMoimOrderByCreatedAt() {
+    void findAllMoimOrderByCreatedAt() throws InterruptedException {
         // given
         MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
                 .title(FIRST_CREATED_MOIM_TITLE.value())
@@ -239,6 +241,7 @@ class MoimFinderTest extends ImplementTest {
                 .build();
 
         moimRepository.save(firstCreatedMoimJpaEntity);
+        Thread.sleep(10);
 
         MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
                 .title(SECOND_CREATED_MOIM_TITLE.value())
@@ -256,8 +259,8 @@ class MoimFinderTest extends ImplementTest {
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
-        assertThat(moimSimpleResponses.get(0).title()).isEqualTo(FIRST_CREATED_MOIM_TITLE.value());
-        assertThat(moimSimpleResponses.get(1).title()).isEqualTo(SECOND_CREATED_MOIM_TITLE.value());
+        assertThat(moimSimpleResponses.get(0).title()).isEqualTo(SECOND_CREATED_MOIM_TITLE.value());
+        assertThat(moimSimpleResponses.get(1).title()).isEqualTo(FIRST_CREATED_MOIM_TITLE.value());
     }
 
     @DisplayName("모임 리스트를 조회수 순으로 가져온다.")
