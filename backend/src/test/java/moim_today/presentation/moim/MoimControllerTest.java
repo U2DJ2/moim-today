@@ -81,6 +81,9 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("startDate").type(STRING).description("시작 일자"),
                                         fieldWithPath("endDate").type(STRING).description("종료 일자")
                                 )
+                                .responseFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("모임 Id")
+                                )
                                 .build()
                         )));
     }

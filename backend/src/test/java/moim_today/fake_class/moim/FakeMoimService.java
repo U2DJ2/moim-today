@@ -21,8 +21,8 @@ import static moim_today.util.TestConstant.*;
 public class FakeMoimService implements MoimService {
 
     @Override
-    public void createMoim(final long memberId, final long universityId, final MoimCreateRequest moimCreateRequest) {
-
+    public MoimIdResponse createMoim(final long memberId, final long universityId, final MoimCreateRequest moimCreateRequest) {
+        return MoimIdResponse.from(MOIM_ID.longValue());
     }
 
     @Override

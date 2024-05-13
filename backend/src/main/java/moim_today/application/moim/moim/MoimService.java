@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MoimService {
 
-    void createMoim(final long memberId, final long universityId,
+    MoimIdResponse createMoim(final long memberId, final long universityId,
                     final MoimCreateRequest moimCreateRequest);
 
     MoimImageResponse uploadMoimImage(final MultipartFile file);
