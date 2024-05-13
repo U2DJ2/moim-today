@@ -20,4 +20,10 @@ public class JoinedMeetingUpdater {
                 joinedMeetingRepository.findByMemberIdAndMeetingId(memberId, meetingId);
         joinedMeetingJpaEntity.updateAttendance(attendance);
     }
+
+    @Transactional
+    public void updateUpcomingNoticeSent(final long joinedMeetingId) {
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity = joinedMeetingRepository.getById(joinedMeetingId);
+        joinedMeetingJpaEntity.updateUpcomingNoticeSent(true);
+    }
 }

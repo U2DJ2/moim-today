@@ -24,18 +24,18 @@ public class JoinedMeetingJpaEntity extends BaseTimeEntity {
 
     private boolean attendance;
 
-    private boolean invitationSent;
+    private boolean upcomingNoticeSent;
 
     protected JoinedMeetingJpaEntity() {
     }
 
     @Builder
     private JoinedMeetingJpaEntity(final long meetingId, final long memberId,
-                                   final boolean attendance, final boolean invitationSent) {
+                                   final boolean attendance, final boolean upcomingNoticeSent) {
         this.meetingId = meetingId;
         this.memberId = memberId;
         this.attendance = attendance;
-        this.invitationSent = invitationSent;
+        this.upcomingNoticeSent = upcomingNoticeSent;
     }
 
     public static JoinedMeetingJpaEntity toEntity(final long meetingId, final long memberId,
@@ -44,11 +44,15 @@ public class JoinedMeetingJpaEntity extends BaseTimeEntity {
                 .meetingId(meetingId)
                 .memberId(memberId)
                 .attendance(attendance)
-                .invitationSent(false)
+                .upcomingNoticeSent(false)
                 .build();
     }
 
     public void updateAttendance(final boolean attendance) {
         this.attendance = attendance;
+    }
+
+    public void updateUpcomingNoticeSent(final boolean upcomingNoticeSent) {
+        this.upcomingNoticeSent = upcomingNoticeSent;
     }
 }

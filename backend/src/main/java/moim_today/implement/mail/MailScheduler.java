@@ -3,17 +3,16 @@ package moim_today.implement.mail;
 import moim_today.dto.mail.MailSendRequest;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
 import moim_today.global.annotation.Implement;
+import moim_today.implement.meeting.joined_meeting.JoinedMeetingUpdater;
 import moim_today.implement.meeting.meeting.MeetingFinder;
 
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static moim_today.global.constant.MailConstant.MEETING_INVITATION_EMAIL_SUBJECT;
-import static moim_today.global.constant.MailConstant.UPCOMING_MEETING_NOTICE_MAIL;
+import static moim_today.global.constant.MailConstant.*;
 
 @Implement
 public class MailScheduler {
@@ -22,14 +21,16 @@ public class MailScheduler {
 
     private final MailSender mailSender;
     private final MeetingFinder meetingFinder;
+    private final JoinedMeetingUpdater joinedMeetingUpdater;
 
-    public MailScheduler(final MailSender mailSender, final MeetingFinder meetingFinder) {
+    public MailScheduler(final MailSender mailSender, final MeetingFinder meetingFinder,
+                         final JoinedMeetingUpdater joinedMeetingUpdater) {
         this.mailSender = mailSender;
         this.meetingFinder = meetingFinder;
+        this.joinedMeetingUpdater = joinedMeetingUpdater;
     }
 
     @Scheduled(fixedRate = ONE_HOUR_IN_MILLISECONDS)
-    @Transactional
     public void sendInvitationMail() {
         LocalDateTime currentDateTime = LocalDateTime.now();
         List<UpcomingMeetingNoticeResponse> upcomingNotices = meetingFinder.findUpcomingNotices(currentDateTime);
@@ -40,23 +41,25 @@ public class MailScheduler {
             String data = makeData(upcomingNotice);
 
             mailSender.send(mailSendRequest, UPCOMING_MEETING_NOTICE_MAIL.value(), data);
+            joinedMeetingUpdater.updateUpcomingNoticeSent(upcomingNotice.joinedMeetingId());
         }
     }
 
     private String makeData(final UpcomingMeetingNoticeResponse upcomingNotice) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("1. 미팅 의제 : ").append(upcomingNotice.agenda()).append("<br>")
-                .append("2. 시작 시간 : ").append(formatDateTime(upcomingNotice.startDateTime())).append("<br>")
-                .append("3. 종료 시간 : ").append(formatDateTime(upcomingNotice.endDateTime())).append("<br>")
-                .append("4. 미팅 장소 : ").append(upcomingNotice.place()).append("<br>")
-                .append("5. 참석 여부 : ").append(upcomingNotice.attendance() ? "참석" : "불참").append("<br>");
+        sb.append(MEETING_AGENDA.value()).append(upcomingNotice.agenda()).append(MAIL_LINE_BREAK.value())
+                .append(MEETING_START_DATE_TIME.value()).append(formatDateTime(upcomingNotice.startDateTime())).append(MAIL_LINE_BREAK.value())
+                .append(MEETING_END_DATE_TIME.value()).append(formatDateTime(upcomingNotice.endDateTime())).append(MAIL_LINE_BREAK.value())
+                .append(MEETING_PLACE.value()).append(upcomingNotice.place()).append(MAIL_LINE_BREAK.value())
+                .append(MEETING_ATTENDANCE.value()).append(upcomingNotice.attendance() ? ATTENDANCE.value() : ABSENCE.value())
+                .append(MAIL_LINE_BREAK.value());
 
         return sb.toString();
     }
 
     private String formatDateTime(final LocalDateTime dateTime) {
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern(MAIL_DATE_TIME_FORMAT.value());
         return dateTime.format(outputFormatter);
     }
 }

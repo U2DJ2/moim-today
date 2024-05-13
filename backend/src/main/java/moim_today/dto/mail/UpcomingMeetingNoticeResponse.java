@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 public record UpcomingMeetingNoticeResponse(
         long moimId,
+        long joinedMeetingId,
         String email,
         String agenda,
         LocalDateTime startDateTime,

@@ -6,10 +6,7 @@ import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
 import moim_today.dto.meeting.MeetingSimpleDao;
 import moim_today.dto.meeting.QMeetingSimpleDao;
 import moim_today.global.error.NotFoundException;
-import moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
-import moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity;
-import moim_today.persistence.entity.member.QMemberJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -100,6 +97,7 @@ public class MeetingRepositoryImpl implements MeetingRepository {
 
         return queryFactory.select(
                         new QUpcomingMeetingNoticeResponse(
+                                joinedMeetingJpaEntity.id,
                                 meetingJpaEntity.moimId,
                                 memberJpaEntity.email,
                                 meetingJpaEntity.agenda,
@@ -115,7 +113,7 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                 .where(
                         meetingJpaEntity.startDateTime.before(upcomingDateTime)
                                 .and(meetingJpaEntity.startDateTime.after(currentDateTime)
-                                        .and(joinedMeetingJpaEntity.invitationSent.isFalse()))
+                                        .and(joinedMeetingJpaEntity.upcomingNoticeSent.isFalse()))
                 )
                 .fetch();
     }

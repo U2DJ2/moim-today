@@ -15,7 +15,17 @@ public enum MailConstant {
 
     PASSWORD_FIND_SUBJECT("[Moim-Today] 비밀번호 찾기"),
     EMAIL_CERTIFICATION_SUBJECT("[Moim-Today] 회원가입 이메일 인증"),
-    MEETING_INVITATION_EMAIL_SUBJECT("[Moim-Today] 다가오는 미팅 정보");
+    MEETING_INVITATION_EMAIL_SUBJECT("[Moim-Today] 다가오는 미팅 정보"),
+
+    MEETING_AGENDA("1. 미팅 의제 : "),
+    MEETING_START_DATE_TIME("2. 시작 시간 : "),
+    MEETING_END_DATE_TIME("3. 종료 시간 : "),
+    MEETING_PLACE("4. 미팅 장소 : "),
+    MEETING_ATTENDANCE("5. 참석 여부 : "),
+    MAIL_LINE_BREAK("<br><br>"),
+    ATTENDANCE("참석"),
+    ABSENCE("불참"),
+    MAIL_DATE_TIME_FORMAT("yyyy년 MM월 dd일 HH시 mm분");
 
     private final String value;
 
