@@ -4,6 +4,7 @@ import moim_today.application.todo.TodoService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.todo.MemberTodoResponse;
 import moim_today.dto.todo.TodoCreateRequest;
+import moim_today.dto.todo.TodoUpdateRequest;
 import moim_today.global.annotation.Login;
 import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;
@@ -35,5 +36,11 @@ public class TodoController {
             final @RequestParam int months) {
 
         return CollectionResponse.of(todoService.findAllMembersTodosInMoim(memberSession.id(), moimId, startDate, months));
+    }
+
+    @PatchMapping
+    public void updateTodo(final @Login MemberSession memberSession,
+                           final TodoUpdateRequest todoUpdateRequest){
+        todoService.updateTodo(memberSession.id(), todoUpdateRequest);
     }
 }
