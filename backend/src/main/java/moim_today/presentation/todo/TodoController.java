@@ -1,5 +1,6 @@
 package moim_today.presentation.todo;
 
+import jakarta.validation.Valid;
 import moim_today.application.todo.TodoService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.todo.*;
@@ -22,9 +23,10 @@ public class TodoController {
 
     @PostMapping
     public void createTodo(final @Login MemberSession memberSession,
-                      final TodoCreateRequest todoCreateRequest){
+                      final @RequestBody @Valid TodoCreateRequest todoCreateRequest){
         todoService.createTodo(memberSession.id(), todoCreateRequest);
     }
+
 
     @GetMapping("/{moimId}")
     public CollectionResponse<List<MemberTodoResponse>> findAllMembersTodosInMoim(
@@ -38,13 +40,13 @@ public class TodoController {
 
     @PatchMapping
     public TodoUpdateResponse updateTodo(final @Login MemberSession memberSession,
-                                         final TodoUpdateRequest todoUpdateRequest) {
+                                         final @RequestBody TodoUpdateRequest todoUpdateRequest) {
         return todoService.updateTodo(memberSession.id(), todoUpdateRequest);
     }
 
     @DeleteMapping
     public void deleteTodo(final @Login MemberSession memberSession,
-                           final TodoRemoveRequest todoRemoveRequest) {
+                           final @RequestBody TodoRemoveRequest todoRemoveRequest) {
         todoService.deleteTodo(memberSession.id(), todoRemoveRequest);
     }
 }

@@ -1,6 +1,7 @@
 package moim_today.dto.todo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import moim_today.domain.todo.enums.TodoProgress;
@@ -33,6 +34,7 @@ public record TodoCreateRequest(
                 .build();
     }
 
+    @JsonIgnore
     public boolean isStartBeforeOrEqualEnd(){
         return !startDateTime.isAfter(endDateTime);
     }

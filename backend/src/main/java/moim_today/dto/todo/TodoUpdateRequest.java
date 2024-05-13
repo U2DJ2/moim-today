@@ -1,6 +1,7 @@
 package moim_today.dto.todo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import moim_today.domain.todo.enums.TodoProgress;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
@@ -32,6 +33,7 @@ public record TodoUpdateRequest(
                 .build();
     }
 
+    @JsonIgnore
     public boolean isStartBeforeOrEqualEnd(){
         return !startDateTime.isAfter(endDateTime);
     }
