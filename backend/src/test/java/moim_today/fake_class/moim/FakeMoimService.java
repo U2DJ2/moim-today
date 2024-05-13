@@ -3,11 +3,13 @@ package moim_today.fake_class.moim;
 import jakarta.servlet.http.HttpServletResponse;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.domain.moim.DisplayStatus;
+import moim_today.domain.moim.MoimSortedFilter;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
 import moim_today.global.error.NotFoundException;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -129,7 +131,7 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMoimResponse(final MoimFilterRequest moimFilterRequest) {
+    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategory moimCategory, final MoimSortedFilter moimSortedFilter) {
         MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
                 .moimId(1L)
                 .title(MOIM_TITLE.value())

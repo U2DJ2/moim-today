@@ -152,23 +152,19 @@ class MoimControllerTest extends ControllerTest {
     @DisplayName("모임리스트를 조회한다.")
     @Test
     void findAllMoimSimpleResponseTest() throws Exception {
-        MoimFilterRequest moimFilterRequest = MoimFilterRequest.builder()
-                .moimCategory(MoimCategory.EXERCISE)
-                .moimSortedFilter(MoimSortedFilter.CREATED_AT)
-                .build();
 
         mockMvc.perform(get("/api/moims/simple")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(moimFilterRequest)))
+                        .queryParam("moimCategory", MoimCategory.EXERCISE.name())
+                        .queryParam("moimSortedFilter", MoimSortedFilter.CREATED_AT.name()))
                 .andExpect(status().isOk())
                 .andDo(document("모임 리스트 조회 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
                                 .summary("모임 리스트 조회")
-                                .requestFields(
-                                        fieldWithPath("moimCategory").type(VARIES).description(String.format("카테고리 - %s",
+                                .queryParameters(
+                                        parameterWithName("moimCategory").description(String.format("카테고리 - %s",
                                                 EnumDocsUtils.getEnumNames(MoimCategory.class))),
-                                        fieldWithPath("moimSortedFilter").type(VARIES).description(String.format("정렬 기준 - %s",
+                                        parameterWithName("moimSortedFilter").description(String.format("정렬 기준 - %s",
                                                 EnumDocsUtils.getEnumNames(MoimSortedFilter.class)))
                                 )
                                 .responseFields(

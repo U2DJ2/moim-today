@@ -6,7 +6,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.LockModeType;
 import moim_today.domain.moim.MoimSortedFilter;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.moim.*;
+import moim_today.dto.moim.moim.MoimDateResponse;
+import moim_today.dto.moim.moim.MoimSimpleResponse;
+import moim_today.dto.moim.moim.QMoimDateResponse;
+import moim_today.dto.moim.moim.QMoimSimpleResponse;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.stereotype.Repository;
@@ -71,16 +74,6 @@ public class MoimRepositoryImpl implements MoimRepository {
         moimJpaRepository.deleteById(moimId);
     }
 
-    @Override
-    public long getMemberIdById(final long moimId) {
-        return queryFactory
-                .select(moimJpaEntity.memberId)
-                .from(moimJpaEntity)
-                .where(moimJpaEntity.id.eq(moimId))
-                .stream().findAny()
-                .orElseThrow(() -> new NotFoundException(MOIM_NOT_FOUND_ERROR.message()));
-    }
-
     @Transactional
     @Override
     public MoimJpaEntity getByIdWithPessimisticLock(final long moimId) {
@@ -108,9 +101,7 @@ public class MoimRepositoryImpl implements MoimRepository {
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMoimResponse(final MoimFilterRequest moimFilterRequest) {
-        MoimCategory moimCategory = moimFilterRequest.moimCategory();
-        MoimSortedFilter moimSortedFilter = moimFilterRequest.moimSortedFilter();
+    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategory moimCategory, final MoimSortedFilter moimSortedFilter) {
 
         return queryFactory.select(new QMoimSimpleResponse(
                         moimJpaEntity.id,
