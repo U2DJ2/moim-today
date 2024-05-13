@@ -189,7 +189,7 @@ public class TodoControllerTest extends ControllerTest {
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
-                                .summary("투두 조회")
+                                .summary("모임의 모든 투두 조회")
                                 .queryParameters(
                                         parameterWithName("startDate").description("투두 시작 시간")
                                                 .attributes(key("format").value("yyyy-MM-dd"),
@@ -231,7 +231,7 @@ public class TodoControllerTest extends ControllerTest {
                         ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
-                                .summary("투두 조회")
+                                .summary("모임의 모든 투두 조회")
                                 .queryParameters(
                                         parameterWithName("startDate").description("투두 시작 시간")
                                                 .attributes(key("format").value("yyyy-MM-dd"),
