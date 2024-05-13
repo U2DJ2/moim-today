@@ -121,10 +121,10 @@ public class MoimRepositoryImpl implements MoimRepository {
         return moimJpaEntity.moimCategory.eq(moimCategory);
     }
 
-    private OrderSpecifier<?> createOrderBySpecifier(MoimSortedFilter moimSortedFilter) {
+    private OrderSpecifier<?> createOrderBySpecifier(final MoimSortedFilter moimSortedFilter) {
         if (moimSortedFilter == MoimSortedFilter.VIEWS) {
             return moimJpaEntity.views.desc();
         }
-        return moimJpaEntity.createdAt.asc();
+        return moimJpaEntity.createdAt.desc();
     }
 }
