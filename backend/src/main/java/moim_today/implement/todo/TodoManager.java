@@ -60,7 +60,7 @@ public class TodoManager {
         }
     }
 
-    public boolean isTodoOwner(final long memberId, final TodoJpaEntity todoJpaEntity){
+    private boolean isTodoOwner(final long memberId, final TodoJpaEntity todoJpaEntity){
         return todoJpaEntity.getMemberId() == memberId;
     }
 }
