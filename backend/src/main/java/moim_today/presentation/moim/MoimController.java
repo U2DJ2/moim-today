@@ -40,8 +40,8 @@ public class MoimController {
         return moimService.uploadMoimImage(file);
     }
 
-    @GetMapping("/detail")
-    public MoimDetailResponse getMoimDetail(@RequestParam final long moimId,
+    @GetMapping("/detail/{moimId}")
+    public MoimDetailResponse getMoimDetail(@PathVariable final long moimId,
                                             @CookieValue(value = VIEWED_MOIM_COOKIE_NAME, required = false) final String viewedMoimsCookieByUrlEncoded,
                                             final HttpServletResponse response) {
         return moimService.getMoimDetail(moimId, viewedMoimsCookieByUrlEncoded, response);

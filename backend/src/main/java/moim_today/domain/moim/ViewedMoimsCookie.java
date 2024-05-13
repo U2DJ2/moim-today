@@ -44,7 +44,10 @@ public record ViewedMoimsCookie(
     }
 
     public boolean existsInViewedMoims(final long moimId) {
-        return viewedMoims.stream().map(ViewedMoim::moimId).toList().contains(moimId);
+        return viewedMoims.stream()
+                .map(ViewedMoim::moimId)
+                .toList()
+                .contains(moimId);
     }
 
     public boolean isExpired(final long moimId) {
