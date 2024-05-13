@@ -1,10 +1,15 @@
 package moim_today.persistence.repository.meeting.meeting;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import moim_today.dto.mail.QUpcomingMeetingNoticeResponse;
+import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
 import moim_today.dto.meeting.MeetingSimpleDao;
 import moim_today.dto.meeting.QMeetingSimpleDao;
 import moim_today.global.error.NotFoundException;
+import moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
+import moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity;
+import moim_today.persistence.entity.member.QMemberJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +19,7 @@ import java.util.List;
 import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_NOT_FOUND_ERROR;
 import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.*;
 import static moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity.meetingJpaEntity;
+import static moim_today.persistence.entity.member.QMemberJpaEntity.*;
 
 @Repository
 public class MeetingRepositoryImpl implements MeetingRepository {
@@ -81,10 +87,36 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                         joinedMeetingJpaEntity.attendance
                 ))
                 .from(meetingJpaEntity)
-                .where(meetingJpaEntity.moimId.eq(moimId)
-                        .and(meetingJpaEntity.startDateTime.before(currentDateTime)))
                 .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id)
                         .and(joinedMeetingJpaEntity.memberId.eq(memberId)))
+                .where(meetingJpaEntity.moimId.eq(moimId)
+                        .and(meetingJpaEntity.startDateTime.before(currentDateTime)))
+                .fetch();
+    }
+
+    @Override
+    public List<UpcomingMeetingNoticeResponse> findUpcomingNotices(final LocalDateTime currentDateTime) {
+        LocalDateTime upcomingDateTime = currentDateTime.plusDays(1);
+
+        return queryFactory.select(
+                        new QUpcomingMeetingNoticeResponse(
+                                meetingJpaEntity.moimId,
+                                memberJpaEntity.email,
+                                meetingJpaEntity.agenda,
+                                meetingJpaEntity.startDateTime,
+                                meetingJpaEntity.endDateTime,
+                                meetingJpaEntity.place,
+                                joinedMeetingJpaEntity.attendance
+                        )
+                )
+                .from(meetingJpaEntity)
+                .innerJoin(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id))
+                .innerJoin(memberJpaEntity).on(memberJpaEntity.id.eq(joinedMeetingJpaEntity.memberId))
+                .where(
+                        meetingJpaEntity.startDateTime.before(upcomingDateTime)
+                                .and(meetingJpaEntity.startDateTime.after(currentDateTime)
+                                        .and(joinedMeetingJpaEntity.invitationSent.isFalse()))
+                )
                 .fetch();
     }
 

@@ -1,6 +1,7 @@
 package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingStatus;
+import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
 import moim_today.dto.meeting.MeetingDetailResponse;
 import moim_today.dto.meeting.MeetingSimpleDao;
 import moim_today.dto.member.MemberSimpleResponse;
@@ -48,5 +49,10 @@ public class MeetingFinder {
         MeetingJpaEntity meetingJpaEntity = meetingRepository.getById(meetingId);
         List<MemberSimpleResponse> memberSimpleResponses = joinedMeetingFinder.findMembersJoinedMeeting(meetingId);
         return MeetingDetailResponse.toResponse(meetingJpaEntity, memberSimpleResponses);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UpcomingMeetingNoticeResponse> findUpcomingNotices(final LocalDateTime currentDateTime) {
+        return meetingRepository.findUpcomingNotices(currentDateTime);
     }
 }

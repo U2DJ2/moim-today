@@ -7,7 +7,7 @@
     <title>Moim-Today</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #f1f3f5;
             margin: 0;
             padding: 32px 0;
@@ -22,51 +22,44 @@
             max-width: 600px;
             width: 100%;
             background-color: #ffffff;
-            padding: 0 20px;
-            margin: auto;
+            padding: 20px;
+            margin: 0 auto;
             border-radius: 8px;
-            border: 1px solid #FFC0CB;
+            border: 1px solid #FFC0CB; /* Pink border added */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .header {
             padding: 20px 0;
             border-bottom: 1px solid #f1f3f5;
         }
-        h1 {
-            font-size: 72px;
+        h1, h2 {
+            font-size: 48px; /* Reduced size for better spacing */
             color: #FF2400;
             font-weight: bold;
             font-family: 'Praise', cursive;
-            margin-bottom: 20px;
-        }
-        h2 {
-            font-size: 24px;
-            color: #333;
-            font-weight: bold;
-            margin-bottom: 40px;
+            margin-bottom: 10px;
         }
         .message {
-            font-size: 55px;
+            font-size: 46px; /* Adjusted for consistency */
             color: #FF2400;
             font-weight: bold;
             font-family: 'Praise', cursive;
             margin-bottom: 20px;
-        }
-        .cta-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 32px;
             text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
-        .cta-button:hover {
-            background-color: #45a049;
+        .meeting-info {
+            /*background-color: #FFF0F5; !* Lighter pink background for emphasis *!*/
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            max-width: 540px;
+            margin: auto; /* Centering the box */
+            font-family: 'Arial', sans-serif; /* Adding font style */
+        }
+        .meeting-data {
+            font-size: 18px;
+            color: #333;
         }
         .footer {
             padding: 32px 0;
@@ -83,24 +76,14 @@
 <div class="outer-container">
     <div class="inner-container">
         <div class="header">
-            <table width="100%">
-                <tr>
-<!--                    <td width="100"><img width="100" height="19" src="your-logo-url-here.png"></td>-->
-                    <td width="460" style="text-align:right">
-<!--                        <img src="your-slogan-url-here.png" height="19" style="vertical-align:bottom">-->
-                    </td>
-                </tr>
-            </table>
+            <!-- 로고 및 슬로건 이미지 추가 가능 -->
         </div>
-
         <div class="message">
             Moim-Today
         </div>
-
-        <a th:href="@{'https://api.moim.today/api/certification/email/' + ${data}}" class="cta-button">
-            회원가입 이메일 인증하기
-        </a>
-
+        <div class="meeting-info">
+            <div class="meeting-data" th:utext="${data}"></div>
+        </div>
         <div class="footer">
             모임의 혁신 Moim-Today<br>
         </div>
