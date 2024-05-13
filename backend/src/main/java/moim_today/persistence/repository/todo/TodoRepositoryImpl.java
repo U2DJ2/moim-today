@@ -75,4 +75,9 @@ public class TodoRepositoryImpl implements TodoRepository {
         return todoJpaRepository.findById(todoId)
                 .orElseThrow(() -> new NotFoundException(TODO_NOT_FOUND_ERROR.message()));
     }
+
+    @Override
+    public void deleteById(final long todoId) {
+        todoJpaRepository.deleteById(todoId);
+    }
 }

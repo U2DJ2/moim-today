@@ -3,6 +3,7 @@ package moim_today.implement.todo;
 import moim_today.domain.todo.enums.TodoProgress;
 import moim_today.dto.todo.MemberTodoResponse;
 import moim_today.dto.todo.TodoUpdateRequest;
+import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
@@ -17,8 +18,7 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
 
-import static moim_today.global.constant.exception.TodoExceptionConstant.TODO_NOT_FOUND_ERROR;
-import static moim_today.global.constant.exception.TodoExceptionConstant.TODO_NOT_OWNER_ERROR;
+import static moim_today.global.constant.exception.TodoExceptionConstant.*;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
@@ -30,8 +30,12 @@ class TodoManagerTest extends ImplementTest {
 
     private final LocalDateTime UPDATE_AFTER_START_TIME =
             LocalDateTime.of(1, 1, 1, 1, 11, 1);
+    private final LocalDateTime WRONG_UPDATE_AFTER_START_TIME =
+            LocalDateTime.of(1200, 12, 12, 12, 8, 8, 8);
     private final LocalDateTime UPDATE_AFTER_END_TIME =
             LocalDateTime.of(1200, 12, 12, 12, 8, 8, 8);
+    private final LocalDateTime WRONG_UPDATE_AFTER_END_TIME =
+            LocalDateTime.of(1, 1, 1, 1, 11, 1);
 
     @DisplayName("모임의 모든 멤버의 시작, 끝 기간에 맞는 Todo를 모두 가져온다")
     @Test
@@ -138,6 +142,32 @@ class TodoManagerTest extends ImplementTest {
         Assertions.assertThatThrownBy(() -> todoManager.updateTodo(MEMBER_ID.longValue()+1L, todoUpdateRequest))
                 .isInstanceOf(ForbiddenException.class)
                 .hasMessage(TODO_NOT_OWNER_ERROR.message());
+    }
+
+    @DisplayName("Todo를 업데이트할 때, Todo의 시작이 끝나는 시간보다 느리면 에러가 발생한다")
+    @Test
+    void updateTodoStartDateErrorTest() {
+        // given1
+        TodoJpaEntity originalTodo = TodoJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .moimId(MOIM_ID.longValue())
+                .contents(UPDATE_BEFORE_CONTENT.value())
+                .todoProgress(TodoProgress.PENDING)
+                .startDateTime(LocalDateTime.of(1000, 1, 1, 1, 1, 1))
+                .endDateTime(LocalDateTime.of(1500, 5, 5, 5, 5, 5))
+                .build();
+
+        todoRepository.save(originalTodo);
+
+        // given2
+        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest(originalTodo.getId(), MOIM_ID.longValue(),
+                UPDATE_AFTER_CONTENT.value(), TodoProgress.ACTIVE, WRONG_UPDATE_AFTER_START_TIME,
+                WRONG_UPDATE_AFTER_END_TIME);
+
+        // expected
+        Assertions.assertThatThrownBy(() -> todoManager.updateTodo(MEMBER_ID.longValue(), todoUpdateRequest))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(TODO_START_TIME_AFTER_END_TIME_ERROR.message());
     }
 
     @DisplayName("Todo를 업데이트한다")
