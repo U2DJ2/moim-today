@@ -12,6 +12,7 @@ import DateRangePicker from "../../components/DatePicker/Range";
 
 import { POST } from "../../utils/axios";
 import { number } from "prop-types";
+import { SecurityUpdateSharp } from "@mui/icons-material";
 
 // Define label style
 const labelStyle =
@@ -188,7 +189,7 @@ function ImageUploader({ setUploadFile }) {
 
 export default function MoimCreation() {
   const [uploadFileUrl, setUploadFile] = useState(null);
-  const [displayStatus, setDisplay] = useState(false);
+  const [displayStatus, setDisplay] = useState("");
   const [category, setCategory] = useState("스터디");
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
@@ -196,20 +197,32 @@ export default function MoimCreation() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [capacity, setCapacity] = useState(0);
+  const [isChecked, setIsChecked] = useState(false);
 
   const navigate = useNavigate();
 
   const handleVisibility = (event) => {
-    const isChecked = event.target.checked; // 체크 여부를 가져옵니다.
+    setIsChecked(event.target.checked); // 체크 여부를 가져옵니다.
     // isChecked 값에 따라 필요한 작업을 수행합니다.
-    console.log("체크 여부:", isChecked);
-    isChecked ? setDisplay(true) : setDisplay(false);
+    console.log("체크 여부:", !isChecked);
+    isChecked ? setDisplay("PUBLIC") : setDisplay("PRIVATE");
     console.log(displayStatus);
   };
 
+  // STUDY, TEAM_PROJECT, HOBBY, EXERCISE, OTHERS
   const handleDropdown = (option) => {
     console.log(option);
-    setCategory(option);
+    if (option === "스터디") {
+      setCategory("STUDY");
+    } else if (option === "팀 프로젝트") {
+      setCategory("TEAM_PROJECT");
+    } else if (option === "취미활동") {
+      setCategory("HOBBY");
+    } else if (option === "운동") {
+      setCategory("EXERCISE");
+    } else {
+      setCategory("OTHERS");
+    }
   };
 
   // "취소하기" 버튼 클릭 시 메인 페이지로 이동
@@ -229,8 +242,8 @@ export default function MoimCreation() {
     capacity: capacity,
     password: "",
     imageUrl: uploadFileUrl,
-    moimCategory: "STUDY",
-    displayStatus: "PRIVATE",
+    moimCategory: category,
+    displayStatus: displayStatus,
     startDate: startDate,
     endDate: endDate,
   };
@@ -265,12 +278,27 @@ export default function MoimCreation() {
         </div>
       </header>
       <main>
+        {!isChecked && (
+          <>
+            <div className={labelStyle}>비밀번호</div>
+            <div className={`${commonInputStyle} max-md:max-w-full`}>
+              <input
+                type="password"
+                className={`w-full bg-transparent outline-none`}
+                placeholder={"비밀번호를 입력해주세요."}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              />
+            </div>
+          </>
+        )}
         <Dropdown
           label={"카테고리"}
           options={["스터디", "팀 프로젝트", "취미활동", "운동", "기타"]}
           onSelect={handleDropdown}
         />
-
+        {}
         <InputField
           label="모임명"
           placeholder="모임 이름을 적어주세요."
@@ -290,13 +318,11 @@ export default function MoimCreation() {
           }}
         />
         <ImageUploader setUploadFile={setUploadFile} />
-
         <div className={labelStyle}>{"운영 시간"}</div>
         <DateRangePicker
           onChange={handleDateRange}
           inputClassName={`w-full ${commonInputStyle}`}
         />
-
         <InputField
           label="참여 인원"
           placeholder="참여 인원을 숫자만 입력해주세요!"
