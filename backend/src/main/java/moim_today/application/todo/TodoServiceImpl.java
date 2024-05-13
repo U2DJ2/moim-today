@@ -1,9 +1,6 @@
 package moim_today.application.todo;
 
-import moim_today.dto.todo.MemberTodoResponse;
-import moim_today.dto.todo.TodoCreateRequest;
-import moim_today.dto.todo.TodoUpdateRequest;
-import moim_today.dto.todo.TodoUpdateResponse;
+import moim_today.dto.todo.*;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import moim_today.implement.todo.TodoAppender;
 import moim_today.implement.todo.TodoManager;
@@ -46,5 +43,10 @@ public class TodoServiceImpl implements TodoService{
     public TodoUpdateResponse updateTodo(final long memberId, final TodoUpdateRequest todoUpdateRequest) {
         joinedMoimFinder.validateMemberInMoim(memberId, todoUpdateRequest.moimId());
         return todoManager.updateTodo(memberId, todoUpdateRequest);
+    }
+
+    @Override
+    public void deleteTodo(final long memberId, final TodoRemoveRequest todoRemoveRequest) {
+        todoManager.deleteTodo(memberId, todoRemoveRequest);
     }
 }

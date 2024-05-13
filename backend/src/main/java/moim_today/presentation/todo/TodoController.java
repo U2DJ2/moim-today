@@ -2,10 +2,7 @@ package moim_today.presentation.todo;
 
 import moim_today.application.todo.TodoService;
 import moim_today.domain.member.MemberSession;
-import moim_today.dto.todo.MemberTodoResponse;
-import moim_today.dto.todo.TodoCreateRequest;
-import moim_today.dto.todo.TodoUpdateRequest;
-import moim_today.dto.todo.TodoUpdateResponse;
+import moim_today.dto.todo.*;
 import moim_today.global.annotation.Login;
 import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +38,13 @@ public class TodoController {
 
     @PatchMapping
     public TodoUpdateResponse updateTodo(final @Login MemberSession memberSession,
-                                         final TodoUpdateRequest todoUpdateRequest){
+                                         final TodoUpdateRequest todoUpdateRequest) {
         return todoService.updateTodo(memberSession.id(), todoUpdateRequest);
+    }
+
+    @DeleteMapping
+    public void deleteTodo(final @Login MemberSession memberSession,
+                           final TodoRemoveRequest todoRemoveRequest) {
+        todoService.deleteTodo(memberSession.id(), todoRemoveRequest);
     }
 }
