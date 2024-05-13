@@ -4,9 +4,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.domain.member.MemberSession;
+import moim_today.domain.moim.MoimSortedFilter;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
-import moim_today.dto.moim.moim.MoimFilterRequest;
 import moim_today.dto.moim.moim_notice.*;
 import moim_today.global.annotation.Login;
 import moim_today.global.response.CollectionResponse;
@@ -31,9 +31,9 @@ public class MoimController {
     }
 
     @PostMapping
-    public void createMoim(@Login final MemberSession memberSession,
+    public MoimIdResponse createMoim(@Login final MemberSession memberSession,
                            @RequestBody final MoimCreateRequest moimCreateRequest) {
-        moimService.createMoim(memberSession.id(), memberSession.universityId(), moimCreateRequest);
+        return moimService.createMoim(memberSession.id(), memberSession.universityId(), moimCreateRequest);
     }
 
     @PostMapping("/image")
@@ -49,8 +49,9 @@ public class MoimController {
     }
 
     @GetMapping("/simple")
-    public CollectionResponse<List<MoimSimpleResponse>> findAllMoimResponse(@RequestBody final MoimFilterRequest moimFilterRequest) {
-        return CollectionResponse.of(moimService.findAllMoimResponse(moimFilterRequest));
+    public CollectionResponse<List<MoimSimpleResponse>> findAllMoimResponse(@RequestParam final MoimCategory moimCategory,
+                                                                            @RequestParam final MoimSortedFilter moimSortedFilter) {
+        return CollectionResponse.of(moimService.findAllMoimResponse(moimCategory, moimSortedFilter));
     }
 
     @PatchMapping
