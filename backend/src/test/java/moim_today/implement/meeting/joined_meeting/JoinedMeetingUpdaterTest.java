@@ -42,4 +42,29 @@ class JoinedMeetingUpdaterTest extends ImplementTest {
         assertThat(findEntity.getMemberId()).isEqualTo(memberId);
         assertThat(findEntity.getMeetingId()).isEqualTo(meetingId);
     }
+
+    @DisplayName("다가오는 미팅 공지 메일 전송 여부를 수정한다.")
+    @Test
+    void updateUpcomingNoticeSent() {
+        // given
+        long memberId = TestConstant.MEMBER_ID.longValue();
+        long meetingId = TestConstant.MEETING_ID.longValue();
+        boolean beforeUpcomingNoticeSent = false;
+        boolean afterUpcomingNoticeSent = true;
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingId)
+                .upcomingNoticeSent(beforeUpcomingNoticeSent)
+                .build();
+
+        joinedMeetingRepository.save(joinedMeetingJpaEntity);
+
+        // when
+        joinedMeetingUpdater.updateUpcomingNoticeSent(joinedMeetingJpaEntity.getId(), afterUpcomingNoticeSent);
+
+        // then
+        JoinedMeetingJpaEntity findEntity = joinedMeetingRepository.getById(joinedMeetingJpaEntity.getId());
+        assertThat(findEntity.isUpcomingNoticeSent()).isEqualTo(afterUpcomingNoticeSent);
+    }
 }

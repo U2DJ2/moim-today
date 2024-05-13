@@ -22,8 +22,8 @@ public class JoinedMeetingUpdater {
     }
 
     @Transactional
-    public void updateUpcomingNoticeSent(final long joinedMeetingId) {
+    public void updateUpcomingNoticeSent(final long joinedMeetingId, final boolean upcomingNoticeSent) {
         JoinedMeetingJpaEntity joinedMeetingJpaEntity = joinedMeetingRepository.getById(joinedMeetingId);
-        joinedMeetingJpaEntity.updateUpcomingNoticeSent(true);
+        joinedMeetingJpaEntity.updateUpcomingNoticeSent(upcomingNoticeSent);
     }
 }

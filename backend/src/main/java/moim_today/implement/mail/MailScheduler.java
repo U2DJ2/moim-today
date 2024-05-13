@@ -41,7 +41,7 @@ public class MailScheduler {
             String data = makeData(upcomingNotice);
 
             mailSender.send(mailSendRequest, UPCOMING_MEETING_NOTICE_MAIL.value(), data);
-            joinedMeetingUpdater.updateUpcomingNoticeSent(upcomingNotice.joinedMeetingId());
+            joinedMeetingUpdater.updateUpcomingNoticeSent(upcomingNotice.joinedMeetingId(), true);
         }
     }
 

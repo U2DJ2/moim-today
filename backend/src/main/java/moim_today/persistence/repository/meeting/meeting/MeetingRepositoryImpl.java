@@ -111,7 +111,7 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                 .innerJoin(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id))
                 .innerJoin(memberJpaEntity).on(memberJpaEntity.id.eq(joinedMeetingJpaEntity.memberId))
                 .where(
-                        meetingJpaEntity.startDateTime.before(upcomingDateTime)
+                        meetingJpaEntity.startDateTime.loe(upcomingDateTime)
                                 .and(meetingJpaEntity.startDateTime.after(currentDateTime)
                                         .and(joinedMeetingJpaEntity.upcomingNoticeSent.isFalse()))
                 )

@@ -1,6 +1,7 @@
 package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingStatus;
+import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
 import moim_today.dto.meeting.MeetingDetailResponse;
 import moim_today.dto.meeting.MeetingSimpleDao;
 import moim_today.dto.member.MemberSimpleResponse;
@@ -290,5 +291,221 @@ class MeetingFinderTest extends ImplementTest {
         assertThat(meetingDetailResponse.endDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 4, 12, 0, 0));
         assertThat(meetingDetailResponse.place()).isEqualTo(MEETING_PLACE.value());
         assertThat(meetingDetailResponse.members().size()).isEqualTo(2);
+    }
+
+    @DisplayName("다가오는 미팅 정보들을 조회한다.")
+    @Test
+    void findUpcomingNotices() {
+        // given 1
+        LocalDateTime currentDateTime = LocalDateTime.of(2024, 3, 4, 8, 0, 0);
+
+        // given 2
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .email(EMAIL.value())
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+
+        // given 3
+        MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
+                .agenda(MEETING_AGENDA.value())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
+                .place(MEETING_PLACE.value())
+                .build();
+
+        meetingRepository.save(meetingJpaEntity);
+
+        // given 4
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity = JoinedMeetingJpaEntity.builder()
+                .meetingId(meetingJpaEntity.getId())
+                .memberId(memberJpaEntity.getId())
+                .attendance(true)
+                .upcomingNoticeSent(false)
+                .build();
+
+        joinedMeetingRepository.save(joinedMeetingJpaEntity);
+
+        // when
+        List<UpcomingMeetingNoticeResponse> upcomingNotices = meetingFinder.findUpcomingNotices(currentDateTime);
+
+        // then
+        UpcomingMeetingNoticeResponse upcomingNotice = upcomingNotices.get(0);
+
+        assertThat(upcomingNotices.size()).isEqualTo(1);
+        assertThat(upcomingNotice.email()).isEqualTo(memberJpaEntity.getEmail());
+        assertThat(upcomingNotice.agenda()).isEqualTo(meetingJpaEntity.getAgenda());
+        assertThat(upcomingNotice.startDateTime()).isEqualTo(meetingJpaEntity.getStartDateTime());
+        assertThat(upcomingNotice.endDateTime()).isEqualTo(meetingJpaEntity.getEndDateTime());
+        assertThat(upcomingNotice.place()).isEqualTo(meetingJpaEntity.getPlace());
+        assertThat(upcomingNotice.attendance()).isEqualTo(joinedMeetingJpaEntity.isAttendance());
+    }
+
+    @DisplayName("다가오는 미팅은 시작 시간이 현재 시간보다 뒤에 있는 시간대를 조회한다.")
+    @Test
+    void findUpcomingNoticesOnlyAfter() {
+        // given 1
+        LocalDateTime currentDateTime = LocalDateTime.of(2024, 3, 4, 8, 0, 0);
+
+        // given 2
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .email(EMAIL.value())
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+
+        // given 3
+        MeetingJpaEntity beforeMeetingJpaEntity = MeetingJpaEntity.builder()
+                .agenda(MEETING_AGENDA.value())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 8, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .place(MEETING_PLACE.value())
+                .build();
+
+        MeetingJpaEntity afterMeetingJpaEntity = MeetingJpaEntity.builder()
+                .agenda(MEETING_AGENDA.value())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 8, 0, 1))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .place(MEETING_PLACE.value())
+                .build();
+
+        meetingRepository.save(beforeMeetingJpaEntity);
+        meetingRepository.save(afterMeetingJpaEntity);
+
+        // given 4
+        JoinedMeetingJpaEntity beforeJoinedMeetingJpaEntity = JoinedMeetingJpaEntity.builder()
+                .meetingId(beforeMeetingJpaEntity.getId())
+                .memberId(memberJpaEntity.getId())
+                .attendance(true)
+                .upcomingNoticeSent(false)
+                .build();
+
+        JoinedMeetingJpaEntity afterJoinedMeetingJpaEntity = JoinedMeetingJpaEntity.builder()
+                .meetingId(afterMeetingJpaEntity.getId())
+                .memberId(memberJpaEntity.getId())
+                .attendance(true)
+                .upcomingNoticeSent(false)
+                .build();
+
+        joinedMeetingRepository.save(beforeJoinedMeetingJpaEntity);
+        joinedMeetingRepository.save(afterJoinedMeetingJpaEntity);
+
+        // when
+        List<UpcomingMeetingNoticeResponse> upcomingNotices = meetingFinder.findUpcomingNotices(currentDateTime);
+
+        // then
+        assertThat(upcomingNotices.size()).isEqualTo(1);
+    }
+
+    @DisplayName("다가오는 미팅은 시작시간 기준으로 24시간 이내의 미팅만 조회한다.")
+    @Test
+    void findUpcomingNoticesUntilAfter24Hours() {
+        // given 1
+        LocalDateTime currentDateTime = LocalDateTime.of(2024, 3, 4, 8, 0, 0);
+
+        // given 2
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .email(EMAIL.value())
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+
+        // given 3
+        MeetingJpaEntity beforeMeetingJpaEntity = MeetingJpaEntity.builder()
+                .agenda(MEETING_AGENDA.value())
+                .startDateTime(LocalDateTime.of(2024, 3, 5, 8, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 5, 10, 0, 0))
+                .place(MEETING_PLACE.value())
+                .build();
+
+        MeetingJpaEntity afterMeetingJpaEntity = MeetingJpaEntity.builder()
+                .agenda(MEETING_AGENDA.value())
+                .startDateTime(LocalDateTime.of(2024, 3, 5, 8, 0, 1))
+                .endDateTime(LocalDateTime.of(2024, 3, 5, 10, 0, 0))
+                .place(MEETING_PLACE.value())
+                .build();
+
+        meetingRepository.save(beforeMeetingJpaEntity);
+        meetingRepository.save(afterMeetingJpaEntity);
+
+        // given 4
+        JoinedMeetingJpaEntity beforeJoinedMeetingJpaEntity = JoinedMeetingJpaEntity.builder()
+                .meetingId(beforeMeetingJpaEntity.getId())
+                .memberId(memberJpaEntity.getId())
+                .attendance(true)
+                .upcomingNoticeSent(false)
+                .build();
+
+        JoinedMeetingJpaEntity afterJoinedMeetingJpaEntity = JoinedMeetingJpaEntity.builder()
+                .meetingId(afterMeetingJpaEntity.getId())
+                .memberId(memberJpaEntity.getId())
+                .attendance(true)
+                .upcomingNoticeSent(false)
+                .build();
+
+        joinedMeetingRepository.save(beforeJoinedMeetingJpaEntity);
+        joinedMeetingRepository.save(afterJoinedMeetingJpaEntity);
+
+        // when
+        List<UpcomingMeetingNoticeResponse> upcomingNotices = meetingFinder.findUpcomingNotices(currentDateTime);
+
+        // then
+        assertThat(upcomingNotices.size()).isEqualTo(1);
+    }
+
+    @DisplayName("다가오는 미팅중에서 공지 메일을 보내지 않은 미팅 정보만 가져온다.")
+    @Test
+    void findUpcomingNoticesOnlyUpcomingNoticeSentFalse() {
+        // given 1
+        LocalDateTime currentDateTime = LocalDateTime.of(2024, 3, 4, 8, 0, 0);
+
+        // given 2
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .email(EMAIL.value())
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+
+        // given 3
+        MeetingJpaEntity beforeMeetingJpaEntity = MeetingJpaEntity.builder()
+                .agenda(MEETING_AGENDA.value())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
+                .place(MEETING_PLACE.value())
+                .build();
+
+        MeetingJpaEntity afterMeetingJpaEntity = MeetingJpaEntity.builder()
+                .agenda(MEETING_AGENDA.value())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 14, 0, 0))
+                .place(MEETING_PLACE.value())
+                .build();
+
+        meetingRepository.save(beforeMeetingJpaEntity);
+        meetingRepository.save(afterMeetingJpaEntity);
+
+        // given 4
+        JoinedMeetingJpaEntity beforeJoinedMeetingJpaEntity = JoinedMeetingJpaEntity.builder()
+                .meetingId(beforeMeetingJpaEntity.getId())
+                .memberId(memberJpaEntity.getId())
+                .attendance(true)
+                .upcomingNoticeSent(false)
+                .build();
+
+        JoinedMeetingJpaEntity afterJoinedMeetingJpaEntity = JoinedMeetingJpaEntity.builder()
+                .meetingId(afterMeetingJpaEntity.getId())
+                .memberId(memberJpaEntity.getId())
+                .attendance(true)
+                .upcomingNoticeSent(true)
+                .build();
+
+        joinedMeetingRepository.save(beforeJoinedMeetingJpaEntity);
+        joinedMeetingRepository.save(afterJoinedMeetingJpaEntity);
+
+        // when
+        List<UpcomingMeetingNoticeResponse> upcomingNotices = meetingFinder.findUpcomingNotices(currentDateTime);
+
+        // then
+        assertThat(upcomingNotices.size()).isEqualTo(1);
     }
 }
