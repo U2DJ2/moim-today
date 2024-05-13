@@ -33,7 +33,6 @@ function Router() {
         <Route path="/" element={<HomePage />} />
         <Route path="/join/:MoimId" element={<MoimJoinPage />} />
         <Route path="/calendar" element={<Calendar />} />
-        <Route path="/schedule" element={<Schedule />} />
         <Route path="/detailed/:MoimId" element={<MoimDetailPage />} />
       </Route>
 
@@ -41,6 +40,7 @@ function Router() {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/creation" element={<MoimCreationPage />} />
       <Route path="/manage" element={<Manage />} />
+      <Route path="/schedule" element={<Schedule />} />
     </Routes>
   );
 }

@@ -267,7 +267,7 @@ export default function MoimCreation() {
       <main>
         <Dropdown
           label={"카테고리"}
-          options={["스터디", "팀 프로젝트", "취미활동", "기타"]}
+          options={["스터디", "팀 프로젝트", "취미활동", "운동", "기타"]}
           onSelect={handleDropdown}
         />
 
