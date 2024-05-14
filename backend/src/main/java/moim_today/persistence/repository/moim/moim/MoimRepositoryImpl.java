@@ -10,6 +10,7 @@ import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.dto.moim.moim.MoimSimpleResponse;
 import moim_today.dto.moim.moim.QMoimDateResponse;
 import moim_today.dto.moim.moim.QMoimSimpleResponse;
+import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.stereotype.Repository;
@@ -101,7 +102,7 @@ public class MoimRepositoryImpl implements MoimRepository {
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategory moimCategory, final MoimSortedFilter moimSortedFilter) {
+    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
 
         return queryFactory.select(new QMoimSimpleResponse(
                         moimJpaEntity.id,
@@ -113,15 +114,16 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.displayStatus
                 ))
                 .from(moimJpaEntity)
-                .where(applyMoimCategoryFilter(moimCategory))
+                .where(applyMoimCategoryFilter(moimCategoryDto))
                 .orderBy(createOrderBySpecifier(moimSortedFilter))
                 .fetch();
     }
 
-    private BooleanExpression applyMoimCategoryFilter(final MoimCategory moimCategory) {
-        if (moimCategory == null) {
+    private BooleanExpression applyMoimCategoryFilter(final MoimCategoryDto moimCategoryDto) {
+        if (moimCategoryDto == MoimCategoryDto.ALL) {
             return null;
         }
+        MoimCategory moimCategory = MoimCategory.valueOf(moimCategoryDto.name());
         return moimJpaEntity.moimCategory.eq(moimCategory);
     }
 

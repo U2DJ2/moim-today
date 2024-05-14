@@ -5,6 +5,7 @@ import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.dto.moim.moim.MoimSimpleResponse;
+import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
@@ -216,11 +217,11 @@ class MoimFinderTest extends ImplementTest {
 
         moimRepository.save(secondCreatedMoimJpaEntity);
 
-        MoimCategory moimCategory = null;
+        MoimCategoryDto moimCategoryDto = MoimCategoryDto.ALL;
         MoimSortedFilter moimSortedFilter = null;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategory, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategoryDto, moimSortedFilter);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
@@ -246,11 +247,11 @@ class MoimFinderTest extends ImplementTest {
 
         moimRepository.save(secondCreatedMoimJpaEntity);
 
-        MoimCategory moimCategory = null;
+        MoimCategoryDto moimCategoryDto = MoimCategoryDto.ALL;
         MoimSortedFilter moimSortedFilter = MoimSortedFilter.CREATED_AT;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategory, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategoryDto, moimSortedFilter);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
@@ -276,11 +277,11 @@ class MoimFinderTest extends ImplementTest {
 
         moimRepository.save(secondCreatedMoimJpaEntity);
 
-        MoimCategory moimCategory = null;
+        MoimCategoryDto moimCategoryDto = MoimCategoryDto.ALL;
         MoimSortedFilter moimSortedFilter = MoimSortedFilter.VIEWS;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategory, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategoryDto, moimSortedFilter);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
@@ -306,11 +307,11 @@ class MoimFinderTest extends ImplementTest {
 
         moimRepository.save(secondCreatedMoimJpaEntity);
 
-        MoimCategory moimCategory = MoimCategory.TEAM_PROJECT;
+        MoimCategoryDto moimCategoryDto = MoimCategoryDto.TEAM_PROJECT;
         MoimSortedFilter moimSortedFilter = null;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategory, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategoryDto, moimSortedFilter);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(1);
