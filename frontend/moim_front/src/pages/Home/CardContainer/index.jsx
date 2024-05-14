@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import people from "../../../assets/svg/personIcon.svg";
 import { useNavigate } from "react-router";
 function CardContainer({
