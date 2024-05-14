@@ -23,6 +23,7 @@ function MoimDetailPage() {
     };
     fetchMoimDetail();
   }, []);
+
   const modalHandler = () => {
     setIsOpen(!isOpen);
   };

@@ -61,6 +61,8 @@ function FilterBar({
       setMoimCategory("HOBBY");
     } else if (option === "운동") {
       setMoimCategory("EXERCISE");
+    } else if (option === "전체") {
+      setMoimCategory("ALL");
     } else {
       setMoimCategory("OTHERS");
     }
@@ -95,7 +97,7 @@ function FilterBar({
             }`}
             onClick={() => setSelected("CREATED_AT")}
           >
-            전체
+            최신순
           </div>
           <div
             className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
@@ -104,14 +106,6 @@ function FilterBar({
             onClick={() => setSelected("VIEWS")}
           >
             조회수 순
-          </div>
-          <div
-            className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
-              selected === "최신순" ? "bg-gray-200" : ""
-            }`}
-            onClick={() => setSelected("최신순")}
-          >
-            최신순
           </div>
         </div>
       </div>
@@ -131,20 +125,17 @@ const getAllMoims = async (moimCategory, moimSortedFilter) => {
     .then((error) => console.log(error));
 };
 export default function Home() {
-  const [moimCategory, setMoimCategory] = useState("STUDY");
+  const [moimCategory, setMoimCategory] = useState("ALL");
   const [moimSortedFilter, setMoimSortedFilter] = useState("CREATED_AT");
   const [selected, setSelected] = useState("CREATED_AT");
   const [moimInfo, setMoimInfo] = useState([]);
-  const params = {
-    moimCategory: "EXERCISE",
-    moimSortedFilter: "CREATED_AT",
-  };
+
   useEffect(() => {
     const fetchMoims = async () => {
       try {
         const params = {
-          moimCategoryDto: "STUDY",
-          moimSortedFilter: "CREATED_AT",
+          moimCategoryDto: moimCategory,
+          moimSortedFilter: "",
         };
         const response = await axios.get(
           "https://api.moim.today/api/moims/simple",
@@ -160,6 +151,27 @@ export default function Home() {
     };
     fetchMoims();
   }, []);
+  useEffect(() => {
+    const fetchMoims = async () => {
+      try {
+        const params = {
+          moimCategoryDto: moimCategory,
+          moimSortedFilter: selected,
+        };
+        const response = await axios.get(
+          "https://api.moim.today/api/moims/simple",
+          {
+            params: params,
+          }
+        );
+        console.log(response.data);
+        setMoimInfo(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchMoims();
+  }, [moimCategory, selected]);
   useEffect(() => {}, [moimCategory, moimSortedFilter]);
   return (
     <div className="flex flex-col justify-between pb-20 bg-white">
