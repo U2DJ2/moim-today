@@ -37,7 +37,7 @@ public record AvailableTimeInMoimResponse(
 
     private static AvailableTimeInMoimResponse of(final AvailableTime availableTime, final List<Member> members) {
         return AvailableTimeInMoimResponse.builder()
-                .members(MemberSimpleResponse.of(members))
+                .members(MemberSimpleResponse.from(members))
                 .startDateTime(availableTime.startDateTime())
                 .endDateTime(availableTime.endDateTime())
                 .colorHex(AvailableColorHex.getHexByCount(members.size()))

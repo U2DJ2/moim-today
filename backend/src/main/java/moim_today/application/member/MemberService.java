@@ -17,4 +17,6 @@ public interface MemberService {
     ProfileImageResponse uploadProfileImage(final long memberId, final MultipartFile file);
 
     MemberHostResponse isHost(final long memberId, final long moimId);
+
+    MemberSimpleResponse getHostProfileByMoimId(final long moimId);
 }

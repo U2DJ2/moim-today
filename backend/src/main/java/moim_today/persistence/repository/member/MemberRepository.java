@@ -1,6 +1,7 @@
 package moim_today.persistence.repository.member;
 
 import moim_today.dto.member.MemberProfileResponse;
+import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 
@@ -26,4 +27,6 @@ public interface MemberRepository {
     List<MemberJpaEntity> findByIdIn(final List<Long> memberIds);
 
     List<MoimMemberResponse> findMembersWithJoinInfo(final List<Long> joinedMoimMemberIds, final long hostId);
+
+    MemberSimpleResponse getHostProfileByMoimId(final long moimId);
 }

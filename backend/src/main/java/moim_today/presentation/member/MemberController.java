@@ -47,7 +47,12 @@ public class MemberController {
 
     @GetMapping("/{moimId}/hosts")
     public MemberHostResponse isHost(@Login final MemberSession memberSession,
-                          @PathVariable final long moimId){
+                                     @PathVariable final long moimId) {
         return memberService.isHost(memberSession.id(), moimId);
+    }
+
+    @GetMapping("/host-prifile/{moimId}")
+    public MemberSimpleResponse getHostProfileByMoimId(@PathVariable final long moimId) {
+        return memberService.getHostProfileByMoimId(moimId);
     }
 }
