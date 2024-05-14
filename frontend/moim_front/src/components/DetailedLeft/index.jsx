@@ -4,8 +4,6 @@ import clock from "../../assets/svg/clockIcon.svg";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
 
-const navigate = useNavigate();
-
 function DetailedLeft({
   userName,
   title,
@@ -18,6 +16,7 @@ function DetailedLeft({
 }) {
   let { MoimId } = useParams();
   console.log(MoimId);
+  const navigate = useNavigate();
 
   const body = {
     moimId: MoimId,
