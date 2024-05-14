@@ -67,6 +67,10 @@ public class FakeMemberService implements MemberService {
 
     @Override
     public MemberSimpleResponse getHostProfileByMoimId(final long moimId) {
-        return null;
+        return MemberSimpleResponse.builder()
+                .memberId(MEMBER_ID.longValue())
+                .username(USERNAME.value())
+                .memberProfileImageUrl(PROFILE_IMAGE_URL.value())
+                .build();
     }
 }

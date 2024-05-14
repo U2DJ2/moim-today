@@ -92,11 +92,6 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public List<MemberJpaEntity> findByIdIn(final List<Long> memberIds) {
-        return memberJpaRepository.findByIdIn(memberIds);
-    }
-
-    @Override
     public List<MoimMemberResponse> findMembersWithJoinInfo(final List<Long> joinedMoimMemberIds,
                                                             final long hostId) {
         return queryFactory.select(new QMoimMemberResponse(

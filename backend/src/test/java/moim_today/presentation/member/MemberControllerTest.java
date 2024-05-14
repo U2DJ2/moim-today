@@ -133,6 +133,24 @@ class MemberControllerTest extends ControllerTest {
                         )));
     }
 
+    @DisplayName("모임 생성자 프로필 정보를 조회한다.")
+    @Test
+    void getHostProfile() throws Exception {
+        mockMvc.perform(get("/api/members/host-profile/{moimId}", 1))
+                .andExpect(status().isOk())
+                .andDo(document("모임 생성자 프로필 정보 조회 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("회원")
+                                .summary("모임 생성자 프로필 정보 조회")
+                                .responseFields(
+                                        fieldWithPath("memberId").type(NUMBER).description("회원 Id"),
+                                        fieldWithPath("username").type(STRING).description("이름"),
+                                        fieldWithPath("memberProfileImageUrl").type(STRING).description("프로필 이미지 url")
+                                )
+                                .build()
+                        )));
+    }
+
     @DisplayName("프로필 정보를 수정한다.")
     @Test
     void updateProfile() throws Exception {

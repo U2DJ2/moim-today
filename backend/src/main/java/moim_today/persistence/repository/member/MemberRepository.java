@@ -24,8 +24,6 @@ public interface MemberRepository {
 
     MemberProfileResponse getMemberProfile(final long memberId);
 
-    List<MemberJpaEntity> findByIdIn(final List<Long> memberIds);
-
     List<MoimMemberResponse> findMembersWithJoinInfo(final List<Long> joinedMoimMemberIds, final long hostId);
 
     MemberSimpleResponse getHostProfileByMoimId(final long moimId);
