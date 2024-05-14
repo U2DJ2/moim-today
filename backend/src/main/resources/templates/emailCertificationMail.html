@@ -25,7 +25,8 @@
             Moim-Today
         </div>
 
-        <a href="https://api.moim.today/api/certification/email/${data}" style="background-color: #4CAF50; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+        <a th:href="@{'https://api.moim.today/api/certification/email/' + ${data}}"
+           style="background-color: #4CAF50; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
             회원가입 이메일 인증하기
         </a>
 
