@@ -135,6 +135,7 @@ export default function Home() {
   const [moimCategory, setMoimCategory] = useState("STUDY");
   const [moimSortedFilter, setMoimSortedFilter] = useState("CREATED_AT");
   const [selected, setSelected] = useState("CREATED_AT");
+  const [moimInfo, setMoimInfo] = useState([]);
   const params = {
     moimCategory: "EXERCISE",
     moimSortedFilter: "CREATED_AT",
@@ -143,7 +144,7 @@ export default function Home() {
     const fetchMoims = async () => {
       try {
         const params = {
-          moimCategory: "",
+          moimCategory: "STUDY",
           moimSortedFilter: "CREATED_AT",
         };
         const response = await axios.get(
@@ -152,13 +153,15 @@ export default function Home() {
             params: params,
           }
         );
-        console.log(response);
+        console.log(response.data);
+        setMoimInfo(response.data.data);
       } catch (error) {
         console.log(error);
       }
     };
     fetchMoims();
   }, []);
+  useEffect(() => {}, [moimCategory, moimSortedFilter]);
   return (
     <div className="flex flex-col justify-between pb-20 bg-white">
       <main className="flex flex-col self-center px-5 mt-9 max-w-full whitespace-nowrap w-[700px]">
@@ -173,43 +176,17 @@ export default function Home() {
         setSelected={setSelected}
       />
       <div className="grid grid-cols-1 gap-10 mt-20 mx-auto md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
-        <CardContainer
-          image={cardImage}
-          category={"# category"}
-          title={"{GatheringTitle}"}
-          capacity={12}
-          currentCount={4}
-          moimId={1}
-        />
-        <CardContainer
-          image={cardImage}
-          category={"# category"}
-          title={"{GatheringTitle}"}
-          capacity={12}
-          currentCount={4}
-          moimId={2}
-        />
-        <CardContainer
-          image={cardImage}
-          category={"# category"}
-          title={"{GatheringTitle}"}
-          capacity={12}
-          currentCount={4}
-        />
-        <CardContainer
-          image={cardImage}
-          category={"# category"}
-          title={"{GatheringTitle}"}
-          capacity={12}
-          currentCount={4}
-        />
-        <CardContainer
-          image={cardImage}
-          category={"# category"}
-          title={"{GatheringTitle}"}
-          capacity={12}
-          currentCount={4}
-        />
+        {moimInfo.map((item) => (
+          <CardContainer
+            key={item.moimId}
+            image={item.imageUrl}
+            category={item.moimCategory}
+            title={item.title}
+            capacity={item.capacity}
+            currentCount={item.currentCount}
+            moimId={item.moimId}
+          />
+        ))}
       </div>
     </div>
   );
