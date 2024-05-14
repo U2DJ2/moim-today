@@ -2,8 +2,8 @@ package moim_today.application.moim.moim;
 
 import jakarta.servlet.http.HttpServletResponse;
 import moim_today.domain.moim.MoimSortedFilter;
-import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
+import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
 import moim_today.implement.meeting.meeting.MeetingFinder;
@@ -155,8 +155,8 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategory moimCategory, final MoimSortedFilter moimSortedFilter) {
-        return moimFinder.findAllMoimResponse(moimCategory, moimSortedFilter);
+    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
+        return moimFinder.findAllMoimResponse(moimCategoryDto, moimSortedFilter);
     }
 
     @Override

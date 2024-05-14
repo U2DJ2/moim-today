@@ -7,6 +7,7 @@ import moim_today.domain.member.MemberSession;
 import moim_today.domain.moim.MoimSortedFilter;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
+import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import moim_today.dto.moim.moim_notice.*;
 import moim_today.global.annotation.Login;
 import moim_today.global.response.CollectionResponse;
@@ -49,9 +50,9 @@ public class MoimController {
     }
 
     @GetMapping("/simple")
-    public CollectionResponse<List<MoimSimpleResponse>> findAllMoimResponse(@RequestParam final MoimCategory moimCategory,
+    public CollectionResponse<List<MoimSimpleResponse>> findAllMoimResponse(@RequestParam final MoimCategoryDto moimCategoryDto,
                                                                             @RequestParam final MoimSortedFilter moimSortedFilter) {
-        return CollectionResponse.of(moimService.findAllMoimResponse(moimCategory, moimSortedFilter));
+        return CollectionResponse.of(moimService.findAllMoimResponse(moimCategoryDto, moimSortedFilter));
     }
 
     @PatchMapping
