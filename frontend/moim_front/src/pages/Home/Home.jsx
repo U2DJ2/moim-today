@@ -67,7 +67,6 @@ function FilterBar({
   };
 
   const handleFilter = (option) => {
-    console.log(option);
     setMoimSortedFilter(option);
   };
 
@@ -144,7 +143,7 @@ export default function Home() {
     const fetchMoims = async () => {
       try {
         const params = {
-          moimCategory: "STUDY",
+          moimCategoryDto: "STUDY",
           moimSortedFilter: "CREATED_AT",
         };
         const response = await axios.get(

@@ -2,26 +2,30 @@ import React, { useEffect, useState } from "react";
 import DetailedLeft from "../../components/DetailedLeft";
 import DetailedRight from "../../components/DetailedRight";
 import { useParams } from "react-router";
+import Modal from "../../components/Modal/ModalTest";
 import axios from "axios";
 
 function MoimDetailPage() {
   const { MoimId } = useParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState("");
   const [moimInfo, setMoimInfo] = useState([]);
-  console.log(MoimId);
   useEffect(() => {
     const fetchMoimDetail = async () => {
       try {
         const response = await axios.get(
           `https://api.moim.today/api/moims/detail/${MoimId}`
         );
-        console.log(response.data);
         setMoimInfo(response.data);
       } catch (error) {
-        console.log(error);
+        setMessage(error.response.data.message);
       }
     };
     fetchMoimDetail();
   }, []);
+  const modalHandler = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <div className="bg-gradient-to-b  justify-center from-white to-[#F6F8FE] h-screen w-full min-h-[800px] px-9">
       <div className=" flex w-fit ">
@@ -33,6 +37,8 @@ function MoimDetailPage() {
             capacity={moimInfo.capacity}
             joined={false}
             image={moimInfo.imageUrl}
+            setMessage={setMessage}
+            setIsOpen={setIsOpen}
           />
           <DetailedRight
             category={moimInfo.category}
@@ -44,6 +50,12 @@ function MoimDetailPage() {
           />
         </div>
       </div>
+      <Modal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        closeModal={modalHandler}
+        message={message}
+      />
     </div>
   );
 }

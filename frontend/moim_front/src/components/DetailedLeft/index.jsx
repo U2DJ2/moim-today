@@ -1,8 +1,8 @@
 import React from "react";
 import icon from "../../assets/svg/personIcon.svg";
 import clock from "../../assets/svg/clockIcon.svg";
-import { POST } from "../../utils/axios";
 import { useParams } from "react-router";
+import axios from "axios";
 
 function DetailedLeft({
   userName,
@@ -11,19 +11,24 @@ function DetailedLeft({
   capacity,
   joined,
   image,
+  setMessage,
+  setIsOpen,
 }) {
-  let { params } = useParams();
+  let { MoimId } = useParams();
+  console.log(MoimId);
 
-  const data = {
-    moimId: params,
+  const body = {
+    moimId: MoimId,
   };
   const onClickHandler = () => {
-    POST("api/moims/members", data)
+    axios
+      .post("https://api.moim.today/api/moims/members", body)
       .then((res) => {
         console.log(res.data);
       })
       .catch((error) => {
-        console.log(error);
+        setIsOpen(true);
+        setMessage(error.response.data.message);
       });
   };
   return (
