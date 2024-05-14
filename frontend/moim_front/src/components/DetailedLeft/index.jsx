@@ -1,8 +1,10 @@
 import React from "react";
 import icon from "../../assets/svg/personIcon.svg";
 import clock from "../../assets/svg/clockIcon.svg";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import axios from "axios";
+
+const navigate = useNavigate();
 
 function DetailedLeft({
   userName,
@@ -25,6 +27,7 @@ function DetailedLeft({
       .post("https://api.moim.today/api/moims/members", body)
       .then((res) => {
         console.log(res.data);
+        navigate("/");
       })
       .catch((error) => {
         setIsOpen(true);
