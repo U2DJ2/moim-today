@@ -135,7 +135,7 @@ export default function Home() {
       try {
         const params = {
           moimCategoryDto: moimCategory,
-          moimSortedFilter: "",
+          moimSortedFilter: selected,
         };
         const response = await axios.get(
           "https://api.moim.today/api/moims/simple",
@@ -166,6 +166,7 @@ export default function Home() {
         );
         console.log(response.data);
         setMoimInfo(response.data.data);
+        console.log(moimInfo);
       } catch (error) {
         console.log(error);
       }
@@ -187,17 +188,23 @@ export default function Home() {
         setSelected={setSelected}
       />
       <div className="grid grid-cols-1 gap-10 mt-20 mx-auto md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
-        {moimInfo.map((item) => (
-          <CardContainer
-            key={item.moimId}
-            image={item.imageUrl}
-            category={item.moimCategory}
-            title={item.title}
-            capacity={item.capacity}
-            currentCount={item.currentCount}
-            moimId={item.moimId}
-          />
-        ))}
+        {moimInfo.length != 0 ? (
+          moimInfo.map((item) => (
+            <CardContainer
+              key={item.moimId}
+              image={item.imageUrl}
+              category={item.moimCategory}
+              title={item.title}
+              capacity={item.capacity}
+              currentCount={item.currentCount}
+              moimId={item.moimId}
+            />
+          ))
+        ) : (
+          <div className="font-Pretendard_Light flex">
+            검색 정보가 없습니다.
+          </div>
+        )}
       </div>
     </div>
   );
