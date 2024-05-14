@@ -4,13 +4,10 @@ import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
 import moim_today.dto.meeting.MeetingDetailResponse;
 import moim_today.dto.meeting.MeetingSimpleDao;
-import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.util.ImplementTest;
-import moim_today.util.TestConstant;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,6 +115,71 @@ class MeetingFinderTest extends ImplementTest {
         assertThat(meetingSimpleDaos.size()).isEqualTo(2);
     }
 
+    @DisplayName("다가올 미팅의 엔티티 정보를 생성일자가 오래된 순으로 반환한다.")
+    @Test
+    void findAllUpcomingByMoimIdOrderByStartDateTimeAsc() {
+        // given 1
+        long moimId = MOIM_ID.longValue();
+        LocalDateTime pastDateTime = LocalDateTime.of(2024, 3, 4, 8, 0, 0);
+        LocalDateTime upcomingDateTime = LocalDateTime.of(2024, 3, 4, 12, 0, 0);
+        LocalDateTime currentDateTime = LocalDateTime.of(2024, 3, 4, 10, 0, 0);
+
+        MeetingJpaEntity meetingJpaEntity1 = MeetingJpaEntity.builder()
+                .moimId(moimId)
+                .agenda(FIRST_CREATED_MEETING_AGENDA.value())
+                .startDateTime(upcomingDateTime)
+                .build();
+
+        MeetingJpaEntity meetingJpaEntity2 = MeetingJpaEntity.builder()
+                .moimId(moimId)
+                .agenda(SECOND_CREATED_MEETING_AGENDA.value())
+                .startDateTime(upcomingDateTime)
+                .build();
+
+        MeetingJpaEntity meetingJpaEntity3 = MeetingJpaEntity.builder()
+                .moimId(moimId)
+                .startDateTime(pastDateTime)
+                .build();
+
+        meetingRepository.save(meetingJpaEntity1);
+        meetingRepository.save(meetingJpaEntity2);
+        meetingRepository.save(meetingJpaEntity3);
+
+        // given 2
+        long memberId = MEMBER_ID.longValue();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity1.getId())
+                .attendance(true)
+                .build();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity2 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity2.getId())
+                .attendance(true)
+                .build();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity3 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity3.getId())
+                .attendance(false)
+                .build();
+
+        joinedMeetingRepository.save(joinedMeetingJpaEntity1);
+        joinedMeetingRepository.save(joinedMeetingJpaEntity2);
+        joinedMeetingRepository.save(joinedMeetingJpaEntity3);
+
+        // when
+        List<MeetingSimpleDao> meetingSimpleDaos =
+                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.UPCOMING, currentDateTime);
+
+        // then
+        assertThat(meetingSimpleDaos.size()).isEqualTo(2);
+        assertThat(meetingSimpleDaos.get(0).agenda()).isEqualTo(FIRST_CREATED_MEETING_AGENDA.value());
+        assertThat(meetingSimpleDaos.get(1).agenda()).isEqualTo(SECOND_CREATED_MEETING_AGENDA.value());
+    }
+
     @DisplayName("하나의 모임에 생성된 이후에 이전 미팅의 엔티티 정보를 반환한다.")
     @Test
     void findAllPastByMoimId() {
@@ -178,6 +240,72 @@ class MeetingFinderTest extends ImplementTest {
         // then
         assertThat(meetingSimpleDaos.size()).isEqualTo(2);
     }
+
+    @DisplayName("이전 미팅의 엔티티 정보를 생성일자가 오래된 순으로 반환한다.")
+    @Test
+    void findAllPastByMoimIdOrderByStartDateTimeAsc() {
+        // given 1
+        long moimId = MOIM_ID.longValue();
+        LocalDateTime pastDateTime = LocalDateTime.of(2024, 3, 4, 8, 0, 0);
+        LocalDateTime upcomingDateTime = LocalDateTime.of(2024, 3, 4, 12, 0, 0);
+        LocalDateTime currentDateTime = LocalDateTime.of(2024, 3, 4, 10, 0, 0);
+
+        MeetingJpaEntity meetingJpaEntity1 = MeetingJpaEntity.builder()
+                .moimId(moimId)
+                .agenda(FIRST_CREATED_MEETING_AGENDA.value())
+                .startDateTime(pastDateTime)
+                .build();
+
+        MeetingJpaEntity meetingJpaEntity2 = MeetingJpaEntity.builder()
+                .moimId(moimId)
+                .agenda(SECOND_CREATED_MEETING_AGENDA.value())
+                .startDateTime(pastDateTime)
+                .build();
+
+        MeetingJpaEntity meetingJpaEntity3 = MeetingJpaEntity.builder()
+                .moimId(moimId)
+                .startDateTime(upcomingDateTime)
+                .build();
+
+        meetingRepository.save(meetingJpaEntity1);
+        meetingRepository.save(meetingJpaEntity2);
+        meetingRepository.save(meetingJpaEntity3);
+
+        // given 2
+        long memberId = MEMBER_ID.longValue();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity1.getId())
+                .attendance(true)
+                .build();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity2 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity2.getId())
+                .attendance(true)
+                .build();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity3 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity3.getId())
+                .attendance(false)
+                .build();
+
+        joinedMeetingRepository.save(joinedMeetingJpaEntity1);
+        joinedMeetingRepository.save(joinedMeetingJpaEntity2);
+        joinedMeetingRepository.save(joinedMeetingJpaEntity3);
+
+        // when
+        List<MeetingSimpleDao> meetingSimpleDaos =
+                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.PAST, currentDateTime);
+
+        // then
+        assertThat(meetingSimpleDaos.size()).isEqualTo(2);
+        assertThat(meetingSimpleDaos.get(0).agenda()).isEqualTo(FIRST_CREATED_MEETING_AGENDA.value());
+        assertThat(meetingSimpleDaos.get(1).agenda()).isEqualTo(SECOND_CREATED_MEETING_AGENDA.value());
+    }
+
 
     @DisplayName("하나의 모임의 모든 미팅의 엔티티 정보를 반환한다.")
     @Test

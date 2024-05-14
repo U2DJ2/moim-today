@@ -54,6 +54,7 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                 .where(meetingJpaEntity.moimId.eq(moimId))
                 .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id)
                         .and(joinedMeetingJpaEntity.memberId.eq(memberId)))
+                .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
     }
 
@@ -71,6 +72,7 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                         .and(meetingJpaEntity.startDateTime.after(currentDateTime)))
                 .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id)
                         .and(joinedMeetingJpaEntity.memberId.eq(memberId)))
+                .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
     }
 
@@ -88,6 +90,7 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                         .and(joinedMeetingJpaEntity.memberId.eq(memberId)))
                 .where(meetingJpaEntity.moimId.eq(moimId)
                         .and(meetingJpaEntity.startDateTime.before(currentDateTime)))
+                .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
     }
 
