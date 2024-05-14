@@ -19,7 +19,7 @@ public record ViewedMoim(
     }
 
     @JsonIgnore
-    public boolean isExpired() {
+    public boolean checkExpired() {
         return expiredTime.isBefore(LocalDateTime.now());
     }
 }

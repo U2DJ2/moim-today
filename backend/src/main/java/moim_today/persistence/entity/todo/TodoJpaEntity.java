@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import moim_today.domain.todo.enums.TodoProgress;
+import moim_today.dto.todo.TodoUpdateRequest;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
 
@@ -46,5 +47,12 @@ public class TodoJpaEntity extends BaseTimeEntity {
         this.todoProgress = todoProgress;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+    }
+
+    public void updateTodo(final TodoUpdateRequest todoUpdateRequest) {
+        this.todoProgress = todoUpdateRequest.todoProgress();
+        this.contents = todoUpdateRequest.contents();
+        this.startDateTime = todoUpdateRequest.startDateTime();
+        this.endDateTime = todoUpdateRequest.endDateTime();
     }
 }

@@ -20,6 +20,11 @@ public class TodoRemover {
 
     @Transactional
     public void deleteAllTodosCreatedByMemberInMoim(final long moimId, final long memberId) {
-        todoRepository.deleteAllTodosCreatedByMemberInMoim(moimId, memberId);
+        todoRepository.deleteAllCreatedByMemberInMoim(memberId, moimId);
+    }
+
+    @Transactional
+    public void deleteById(final long todoId) {
+        todoRepository.deleteById(todoId);
     }
 }

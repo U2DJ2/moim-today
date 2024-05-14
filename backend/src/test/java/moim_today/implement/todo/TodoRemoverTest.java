@@ -123,7 +123,7 @@ class TodoRemoverTest extends ImplementTest {
         todoRemover.deleteAllTodosCreatedByMemberInMoim(moimId1, memberId);
 
         // then
-        assertThat(todoRepository.getAllTodosByMemberId(memberId).size())
+        assertThat(todoRepository.getAllByMemberId(memberId).size())
                 .isEqualTo(2);
     }
 }

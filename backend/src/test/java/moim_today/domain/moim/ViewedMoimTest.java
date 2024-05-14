@@ -18,7 +18,7 @@ class ViewedMoimTest {
                 .build();
 
         //when
-        boolean isExpired = viewedMoim.isExpired();
+        boolean isExpired = viewedMoim.checkExpired();
 
         //then
         assertThat(isExpired).isTrue();
@@ -33,7 +33,7 @@ class ViewedMoimTest {
                 .build();
 
         //when
-        boolean isExpired = viewedMoim.isExpired();
+        boolean isExpired = viewedMoim.checkExpired();
 
         //then
         assertThat(isExpired).isFalse();

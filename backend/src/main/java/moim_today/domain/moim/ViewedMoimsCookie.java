@@ -52,7 +52,7 @@ public record ViewedMoimsCookie(
 
     public boolean isExpired(final long moimId) {
         ViewedMoim viewedMoim = getViewedMoim(moimId);
-        return viewedMoim.isExpired();
+        return viewedMoim.checkExpired();
     }
 
     public void addViewedMoimsCookieInCookie(final HttpServletResponse response, final ObjectMapper objectMapper) {

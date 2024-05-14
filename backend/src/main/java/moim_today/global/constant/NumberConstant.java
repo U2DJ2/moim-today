@@ -8,7 +8,7 @@ public enum NumberConstant {
     SLASH_CNT_START(0),
     MAX_SLASH_CNT(2),
 
-    DEFAULT_MOIM_CURRENT_COUNT(1),
+    DEFAULT_MOIM_CURRENT_COUNT(0),
     DEFAULT_MOIM_VIEWS(0),
     VIEW_COUNT_OF_ONE(1),
 
