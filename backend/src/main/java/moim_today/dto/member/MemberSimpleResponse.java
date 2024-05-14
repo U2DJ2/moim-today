@@ -1,6 +1,7 @@
 package moim_today.dto.member;
 
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import moim_today.domain.member.Member;
 
@@ -14,6 +15,10 @@ public record MemberSimpleResponse(
         String username,
         String memberProfileImageUrl
 ) {
+
+    @QueryProjection
+    public MemberSimpleResponse {
+    }
 
     public static MemberSimpleResponse of(final Member member) {
         return MemberSimpleResponse.builder()

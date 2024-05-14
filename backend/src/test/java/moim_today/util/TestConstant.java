@@ -80,6 +80,9 @@ public enum TestConstant {
     MEETING_AGENDA("meeting agenda"),
     MEETING_PLACE("meeting place"),
 
+    FIRST_CREATED_MEETING_AGENDA("first agenda"),
+    SECOND_CREATED_MEETING_AGENDA("second agenda"),
+
     STATUS_CODE("200"),
     MESSAGE("message"),
 

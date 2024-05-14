@@ -5,102 +5,31 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Moim-Today</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f1f3f5;
-            margin: 0;
-            padding: 32px 0;
-            text-align: center;
-        }
-        .outer-container {
-            width: 100%;
-            background-color: #f1f3f5;
-            padding: 32px 0;
-        }
-        .inner-container {
-            max-width: 600px;
-            width: 100%;
-            background-color: #ffffff;
-            padding: 0 20px;
-            margin: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .header {
-            padding: 20px 0;
-            border-bottom: 1px solid #f1f3f5;
-        }
-        h1 {
-            font-size: 72px;
-            color: #FF2400;
-            font-weight: bold;
-            font-family: 'Praise', cursive;
-            margin-bottom: 20px;
-        }
-        h2 {
-            font-size: 24px;
-            color: #333;
-            font-weight: bold;
-            margin-bottom: 40px;
-        }
-        .message {
-            font-size: 55px;
-            color: #FF2400;
-            font-weight: bold;
-            font-family: 'Praise', cursive;
-            margin-bottom: 20px;
-        }
-        .cta-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        .cta-button:hover {
-            background-color: #45a049;
-        }
-        .footer {
-            padding: 32px 0;
-            text-align: center;
-            color: #868e96;
-            font-size: 12px;
-            line-height: 1.38;
-            letter-spacing: -0.3px;
-        }
-    </style>
 </head>
-<body>
+<body style="font-family: Arial, sans-serif; background-color: #f1f3f5; margin: 0; padding: 32px 0; text-align: center;">
 
-<div class="outer-container">
-    <div class="inner-container">
-        <div class="header">
+<div style="width: 100%; background-color: #f1f3f5; padding: 32px 0;">
+    <div style="max-width: 600px; width: 100%; background-color: #ffffff; padding: 0 20px; margin: auto; border-radius: 8px; border: 1px solid #FFC0CB; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <div style="padding: 20px 0; border-bottom: 1px solid #f1f3f5;">
             <table width="100%">
                 <tr>
-<!--                    <td width="100"><img width="100" height="19" src="your-logo-url-here.png"></td>-->
+                    <!-- <td width="100"><img width="100" height="19" src="your-logo-url-here.png"></td> -->
                     <td width="460" style="text-align:right">
-<!--                        <img src="your-slogan-url-here.png" height="19" style="vertical-align:bottom">-->
+                        <!-- <img src="your-slogan-url-here.png" height="19" style="vertical-align:bottom"> -->
                     </td>
                 </tr>
             </table>
         </div>
 
-        <div class="message">
+        <div style="font-size: 55px; color: #FF2400; font-weight: bold; font-family: 'Praise', cursive; margin-bottom: 20px;">
             Moim-Today
         </div>
 
-        <a th:href="@{'https://api.moim.today/api/certification/email/' + ${data}}" class="cta-button">
+        <a href="https://api.moim.today/api/certification/email/${data}" style="background-color: #4CAF50; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
             회원가입 이메일 인증하기
         </a>
 
-        <div class="footer">
+        <div style="padding: 32px 0; text-align: center; color: #868e96; font-size: 12px; line-height: 1.38; letter-spacing: -0.3px;">
             모임의 혁신 Moim-Today<br>
         </div>
     </div>

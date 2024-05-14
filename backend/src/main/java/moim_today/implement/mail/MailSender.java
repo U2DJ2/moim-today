@@ -62,7 +62,7 @@ public class MailSender {
         return context;
     }
 
-    private SendEmailRequest createSendEmailRequest(final String subject, final String content, List<String> to) {
+    private SendEmailRequest createSendEmailRequest(final String subject, final String content, final List<String> to) {
         return new SendEmailRequest()
                 .withDestination(new Destination().withToAddresses(to))
                 .withSource(this.from)

@@ -1,5 +1,7 @@
 package moim_today.persistence.repository.meeting.meeting;
 
+import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
+import moim_today.dto.meeting.MeetingSimpleDao;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 
 import java.time.LocalDateTime;
@@ -9,11 +11,13 @@ public interface MeetingRepository {
 
     List<Long> findMeetingIdsByMoimId(final long moimId);
 
-    List<MeetingJpaEntity> findAllByMoimId(final long moimId, final LocalDateTime currentDateTime);
+    List<MeetingSimpleDao> findAllByMoimId(final long moimId, final long memberId, final LocalDateTime currentDateTime);
 
-    List<MeetingJpaEntity> findAllUpcomingByMoimId(final long moimId, final LocalDateTime currentDateTime);
+    List<MeetingSimpleDao> findAllUpcomingByMoimId(final long moimId, final long memberId, final LocalDateTime currentDateTime);
 
-    List<MeetingJpaEntity> findAllPastByMoimId(final long moimId, final LocalDateTime currentDateTime);
+    List<MeetingSimpleDao> findAllPastByMoimId(final long moimId, final long memberId, final LocalDateTime currentDateTime);
+
+    List<UpcomingMeetingNoticeResponse> findUpcomingNotices(final LocalDateTime currentDateTime);
 
     MeetingJpaEntity getById(final long meetingId);
 

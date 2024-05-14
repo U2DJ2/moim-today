@@ -4,12 +4,10 @@ import moim_today.domain.schedule.Schedule;
 import moim_today.global.error.BadRequestException;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import moim_today.util.ImplementTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,21 +27,18 @@ class ScheduleAppenderTest extends ImplementTest {
         // given 1
         Schedule schedule1 = Schedule.builder()
                 .scheduleName("스케줄 1")
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
 
         Schedule schedule2 = Schedule.builder()
                 .scheduleName("스케줄 2")
-                .dayOfWeek(DayOfWeek.THURSDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 2, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 2, 12, 0, 0))
                 .build();
 
         Schedule schedule3 = Schedule.builder()
                 .scheduleName("스케줄 3")
-                .dayOfWeek(DayOfWeek.WEDNESDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 3, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 3, 12, 0, 0))
                 .build();
@@ -80,21 +75,18 @@ class ScheduleAppenderTest extends ImplementTest {
         // given 2
         Schedule schedule1 = Schedule.builder()
                 .scheduleName("스케줄 1")
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
 
         Schedule schedule2 = Schedule.builder()
                 .scheduleName("스케줄 2")
-                .dayOfWeek(DayOfWeek.THURSDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 2, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 2, 12, 0, 0))
                 .build();
 
         Schedule schedule3 = Schedule.builder()
                 .scheduleName("스케줄 3")
-                .dayOfWeek(DayOfWeek.WEDNESDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 3, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 3, 12, 0, 0))
                 .build();
@@ -123,7 +115,6 @@ class ScheduleAppenderTest extends ImplementTest {
                 .memberId(memberId)
                 .meetingId(meetingId)
                 .scheduleName(SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
@@ -138,7 +129,6 @@ class ScheduleAppenderTest extends ImplementTest {
         assertThat(findEntity.getMemberId()).isEqualTo(memberId);
         assertThat(findEntity.getMeetingId()).isEqualTo(meetingId);
         assertThat(findEntity.getScheduleName()).isEqualTo(SCHEDULE_NAME.value());
-        assertThat(findEntity.getDayOfWeek()).isEqualTo(DayOfWeek.MONDAY);
         assertThat(findEntity.getStartDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 10, 0, 0));
         assertThat(findEntity.getEndDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 12, 0, 0));
     }
@@ -155,7 +145,6 @@ class ScheduleAppenderTest extends ImplementTest {
                 .memberId(anotherMemberId)
                 .meetingId(meetingId)
                 .scheduleName(SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
@@ -167,7 +156,6 @@ class ScheduleAppenderTest extends ImplementTest {
                 .memberId(memberId)
                 .meetingId(meetingId)
                 .scheduleName(SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
@@ -182,7 +170,6 @@ class ScheduleAppenderTest extends ImplementTest {
         assertThat(findEntity.getMemberId()).isEqualTo(memberId);
         assertThat(findEntity.getMeetingId()).isEqualTo(meetingId);
         assertThat(findEntity.getScheduleName()).isEqualTo(SCHEDULE_NAME.value());
-        assertThat(findEntity.getDayOfWeek()).isEqualTo(DayOfWeek.MONDAY);
         assertThat(findEntity.getStartDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 10, 0, 0));
         assertThat(findEntity.getEndDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 12, 0, 0));
     }

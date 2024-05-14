@@ -15,6 +15,7 @@ import java.util.Optional;
 
 import static moim_today.global.constant.exception.MemberExceptionConstant.*;
 import static moim_today.persistence.entity.department.QDepartmentJpaEntity.departmentJpaEntity;
+import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.*;
 import static moim_today.persistence.entity.member.QMemberJpaEntity.memberJpaEntity;
 import static moim_today.persistence.entity.moim.joined_moim.QJoinedMoimJpaEntity.joinedMoimJpaEntity;
 import static moim_today.persistence.entity.university.QUniversityJpaEntity.universityJpaEntity;
