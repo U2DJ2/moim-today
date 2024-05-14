@@ -24,7 +24,7 @@ public record TodoResponse(
     public TodoResponse{
     }
 
-    public static TodoResponse of(final TodoJpaEntity todo) {
+    public static TodoResponse from(final TodoJpaEntity todo) {
         return TodoResponse.builder()
                 .todoId(todo.getId())
                 .contents(todo.getContents())

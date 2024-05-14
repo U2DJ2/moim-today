@@ -20,7 +20,7 @@ public record TodoDetailResponse(
         LocalDateTime endDateTime
 ) {
 
-    public static TodoDetailResponse of(TodoJpaEntity todoJpaEntity){
+    public static TodoDetailResponse from(final TodoJpaEntity todoJpaEntity){
         return TodoDetailResponse.builder()
                 .moimId(todoJpaEntity.getMoimId())
                 .contents(todoJpaEntity.getContents())

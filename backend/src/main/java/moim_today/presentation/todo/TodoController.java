@@ -22,36 +22,36 @@ public class TodoController {
     }
 
     @PostMapping
-    public TodoCreateResponse createTodo(final @Login MemberSession memberSession,
-                      final @RequestBody @Valid TodoCreateRequest todoCreateRequest){
+    public TodoCreateResponse createTodo(@Login final MemberSession memberSession,
+                                         @RequestBody @Valid final TodoCreateRequest todoCreateRequest) {
         return todoService.createTodo(memberSession.id(), todoCreateRequest);
     }
 
 
     @GetMapping("moim/{moimId}")
     public CollectionResponse<List<MemberTodoResponse>> findAllMembersTodosInMoim(
-            final @Login MemberSession memberSession,
-            final @PathVariable long moimId,
-            final @RequestParam YearMonth startDate,
-            final @RequestParam int months) {
+            @Login final MemberSession memberSession,
+            @PathVariable final long moimId,
+            @RequestParam final YearMonth startDate,
+            @RequestParam final int months) {
 
         return CollectionResponse.of(todoService.findAllMembersTodosInMoim(memberSession.id(), moimId, startDate, months));
     }
 
     @GetMapping("/{todoId}")
-    public TodoDetailResponse findTodoById(final @PathVariable long todoId){
+    public TodoDetailResponse findTodoById(@PathVariable final long todoId) {
         return todoService.getById(todoId);
     }
 
     @PatchMapping
-    public TodoUpdateResponse updateTodo(final @Login MemberSession memberSession,
-                                         final @RequestBody TodoUpdateRequest todoUpdateRequest) {
+    public TodoUpdateResponse updateTodo(@Login final MemberSession memberSession,
+                                         @RequestBody final TodoUpdateRequest todoUpdateRequest) {
         return todoService.updateTodo(memberSession.id(), todoUpdateRequest);
     }
 
     @DeleteMapping
-    public void deleteTodo(final @Login MemberSession memberSession,
-                           final @RequestBody TodoRemoveRequest todoRemoveRequest) {
+    public void deleteTodo(@Login final MemberSession memberSession,
+                           @RequestBody final TodoRemoveRequest todoRemoveRequest) {
         todoService.deleteTodo(memberSession.id(), todoRemoveRequest);
     }
 }

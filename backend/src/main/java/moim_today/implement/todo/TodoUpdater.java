@@ -11,6 +11,6 @@ public class TodoUpdater {
     public TodoUpdateResponse updateTodo(final TodoJpaEntity originalTodo,
                                          final TodoUpdateRequest todoUpdateRequest) {
         originalTodo.updateTodo(todoUpdateRequest);
-        return TodoUpdateResponse.of(originalTodo);
+        return TodoUpdateResponse.from(originalTodo);
     }
 }

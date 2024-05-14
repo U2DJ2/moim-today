@@ -29,7 +29,7 @@ public class TodoServiceImpl implements TodoService{
     public TodoCreateResponse createTodo(final long memberId, final TodoCreateRequest todoCreateRequest) {
         joinedMoimFinder.validateMemberInMoim(memberId, todoCreateRequest.moimId());
         TodoJpaEntity todo = todoAppender.createTodo(memberId, todoCreateRequest);
-        return TodoCreateResponse.of(todo.getId());
+        return TodoCreateResponse.from(todo.getId());
     }
 
     @Override
@@ -55,6 +55,6 @@ public class TodoServiceImpl implements TodoService{
     @Override
     public TodoDetailResponse getById(final long todoId) {
         TodoJpaEntity todo = todoManager.getById(todoId);
-        return TodoDetailResponse.of(todo);
+        return TodoDetailResponse.from(todo);
     }
 }

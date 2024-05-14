@@ -6,6 +6,7 @@ import moim_today.global.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -79,6 +80,17 @@ public class ApiRestControllerAdvice {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ErrorResponse handleIncorrectData(final HttpMessageNotReadableException e){
         return ErrorResponse.of(BAD_REQUEST.statusCode(), e.getMessage());
+    }
+
+    // description : Valid annotation handling
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ErrorResponse handleValidationExceptions(MethodArgumentNotValidException e) {
+        String errorMessage = e.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .findFirst()
+                .orElse(e.getMessage());
+        return ErrorResponse.of(BAD_REQUEST.statusCode(), errorMessage);
     }
 
     /**

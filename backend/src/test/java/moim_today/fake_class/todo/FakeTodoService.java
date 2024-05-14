@@ -38,7 +38,7 @@ public class FakeTodoService implements TodoService {
             throw new BadRequestException(TODO_START_TIME_AFTER_END_TIME_ERROR.message());
         }
 
-        return TodoCreateResponse.of(TODO_ID.longValue());
+        return TodoCreateResponse.from(TODO_ID.longValue());
     }
 
     @Override
@@ -133,6 +133,6 @@ public class FakeTodoService implements TodoService {
                 .endDateTime(LocalDateTime.of(2024, 5, 5, 5, 5, 5))
                 .build();
 
-        return TodoDetailResponse.of(originalTodo);
+        return TodoDetailResponse.from(originalTodo);
     }
 }

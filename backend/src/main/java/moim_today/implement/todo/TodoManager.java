@@ -1,5 +1,6 @@
 package moim_today.implement.todo;
 
+import moim_today.domain.todo.TodoLocalDateTime;
 import moim_today.dto.todo.*;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
@@ -9,7 +10,6 @@ import moim_today.persistence.entity.todo.TodoJpaEntity;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 import static moim_today.global.constant.TimeConstant.MONTH_START_POINT;
@@ -39,11 +39,8 @@ public class TodoManager {
                                                               final YearMonth startDate,
                                                               final int months) {
         LocalDateTime startDateTime = startDate.atDay(MONTH_START_POINT.time()).atStartOfDay();
-        LocalDateTime endDateTime = startDateTime.plusMonths(months)
-                .with(TemporalAdjusters.lastDayOfMonth())
-                .withHour(23)
-                .withMinute(59)
-                .withSecond(59);
+        TodoLocalDateTime todoLocalDateTime = new TodoLocalDateTime(startDateTime);
+        LocalDateTime endDateTime = todoLocalDateTime.atMonthEndDateTime(months);
 
         List<Long> moimMemberIds = joinedMoimManager.findAllJoinedMemberId(moimId);
 
@@ -77,8 +74,8 @@ public class TodoManager {
         return todoJpaEntity.getMemberId() == memberId;
     }
 
-    private void validateUpdateTodoDate(TodoUpdateRequest todoUpdateRequest) {
-        if (!todoUpdateRequest.isStartBeforeOrEqualEnd()) {
+    private void validateUpdateTodoDate(final TodoUpdateRequest todoUpdateRequest) {
+        if (!todoUpdateRequest.checkStartBeforeOrEqualEnd()) {
             throw new BadRequestException(TODO_START_TIME_AFTER_END_TIME_ERROR.message());
         }
     }
