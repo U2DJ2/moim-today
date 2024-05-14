@@ -3,7 +3,6 @@ package moim_today.global.constant;
 public enum MailConstant {
 
     DATA("data"),
-    AUTHENTICATION_MAIL("authenticationMail.html"),
     PASSWORD_FIND_MAIL("passwordFindMail.html"),
     EMAIL_CERTIFICATION_MAIL("emailCertificationMail.html"),
     UPCOMING_MEETING_NOTICE_MAIL("upcomingMeetingNoticeMail.html"),
