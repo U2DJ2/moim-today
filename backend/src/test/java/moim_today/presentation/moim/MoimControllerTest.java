@@ -164,7 +164,7 @@ class MoimControllerTest extends ControllerTest {
                                 .summary("모임 리스트 조회")
                                 .queryParameters(
                                         parameterWithName("moimCategoryDto").description(String.format("카테고리 - %s",
-                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
+                                                EnumDocsUtils.getEnumNames(MoimCategoryDto.class))),
                                         parameterWithName("moimSortedFilter").description(String.format("정렬 기준 - %s",
                                                 EnumDocsUtils.getEnumNames(MoimSortedFilter.class)))
                                 )

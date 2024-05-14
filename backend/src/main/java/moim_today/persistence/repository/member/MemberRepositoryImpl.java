@@ -2,7 +2,9 @@ package moim_today.persistence.repository.member;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.dto.member.MemberProfileResponse;
+import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.dto.member.QMemberProfileResponse;
+import moim_today.dto.member.QMemberSimpleResponse;
 import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.dto.moim.moim.QMoimMemberResponse;
 import moim_today.global.error.BadRequestException;
@@ -18,6 +20,7 @@ import static moim_today.persistence.entity.department.QDepartmentJpaEntity.depa
 import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.*;
 import static moim_today.persistence.entity.member.QMemberJpaEntity.memberJpaEntity;
 import static moim_today.persistence.entity.moim.joined_moim.QJoinedMoimJpaEntity.joinedMoimJpaEntity;
+import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.moimJpaEntity;
 import static moim_today.persistence.entity.university.QUniversityJpaEntity.universityJpaEntity;
 
 @Repository
@@ -89,11 +92,6 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public List<MemberJpaEntity> findByIdIn(final List<Long> memberIds) {
-        return memberJpaRepository.findByIdIn(memberIds);
-    }
-
-    @Override
     public List<MoimMemberResponse> findMembersWithJoinInfo(final List<Long> joinedMoimMemberIds,
                                                             final long hostId) {
         return queryFactory.select(new QMoimMemberResponse(
@@ -106,5 +104,17 @@ public class MemberRepositoryImpl implements MemberRepository {
                 .join(joinedMoimJpaEntity).on(joinedMoimJpaEntity.memberId.eq(memberJpaEntity.id))
                 .where(joinedMoimJpaEntity.memberId.in(joinedMoimMemberIds))
                 .fetch();
+    }
+
+    @Override
+    public MemberSimpleResponse getHostProfileByMoimId(final long moimId) {
+        return queryFactory.select(new QMemberSimpleResponse(
+                        memberJpaEntity.id,
+                        memberJpaEntity.username,
+                        memberJpaEntity.memberProfileImageUrl
+                )).from(memberJpaEntity)
+                .join(moimJpaEntity).on(moimJpaEntity.id.eq(moimId).and(moimJpaEntity.memberId.eq(memberJpaEntity.id)))
+                .stream().findAny()
+                .orElseThrow(() -> new NotFoundException(HOST_NOT_FOUND_ERROR.message()));
     }
 }
