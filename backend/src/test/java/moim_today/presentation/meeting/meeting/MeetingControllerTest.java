@@ -16,12 +16,10 @@ import java.time.LocalDateTime;
 import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static moim_today.domain.meeting.enums.MeetingStatus.*;
-import static moim_today.util.TestConstant.MEETING_AGENDA;
-import static moim_today.util.TestConstant.MEETING_PLACE;
+import static moim_today.util.TestConstant.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,9 +47,10 @@ class MeetingControllerTest extends ControllerTest {
 
         String json = objectMapper.writeValueAsString(meetingCreateRequest);
 
-        mockMvc.perform(post("/api/meetings")
-                        .contentType(APPLICATION_JSON)
-                        .content(json)
+        mockMvc.perform(
+                        post("/api/meetings")
+                                .contentType(APPLICATION_JSON)
+                                .content(json)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("단일 미팅 생성 성공",
@@ -84,9 +83,10 @@ class MeetingControllerTest extends ControllerTest {
 
         String json = objectMapper.writeValueAsString(meetingCreateRequest);
 
-        mockMvc.perform(post("/api/meetings")
-                        .contentType(APPLICATION_JSON)
-                        .content(json)
+        mockMvc.perform(
+                        post("/api/meetings")
+                                .contentType(APPLICATION_JSON)
+                                .content(json)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("정기 미팅 생성 성공",
@@ -108,8 +108,9 @@ class MeetingControllerTest extends ControllerTest {
     @DisplayName("모임내 다가오는 미팅 정보 조회한다.")
     @Test
     void findAllUpcomingByMoimId() throws Exception {
-        mockMvc.perform(get("/api/meetings/{moimId}", 1L)
-                        .param("meetingStatus", String.valueOf(UPCOMING))
+        mockMvc.perform(
+                        get("/api/meetings/{moimId}", 1L)
+                                .param("meetingStatus", String.valueOf(UPCOMING))
                 )
                 .andExpect(status().isOk())
                 .andDo(document("모임내 다가오는 미팅 정보 조회",
@@ -130,8 +131,9 @@ class MeetingControllerTest extends ControllerTest {
     @DisplayName("모임내 이전 미팅 정보를 조회한다.")
     @Test
     void findAllPastByMoimId() throws Exception {
-        mockMvc.perform(get("/api/meetings/{moimId}", 1L)
-                        .param("meetingStatus", String.valueOf(PAST))
+        mockMvc.perform(
+                        get("/api/meetings/{moimId}", 1L)
+                                .param("meetingStatus", String.valueOf(PAST))
                 )
                 .andExpect(status().isOk())
                 .andDo(document("모임내 이전 미팅 정보 조회",
@@ -157,8 +159,9 @@ class MeetingControllerTest extends ControllerTest {
     @DisplayName("모임내 모든 미팅 정보를 조회한다.")
     @Test
     void findAllByMoimId() throws Exception {
-        mockMvc.perform(get("/api/meetings/{moimId}", 1L)
-                        .param("meetingStatus", String.valueOf(ALL))
+        mockMvc.perform(
+                        get("/api/meetings/{moimId}", 1L)
+                                .param("meetingStatus", String.valueOf(ALL))
                 )
                 .andExpect(status().isOk())
                 .andDo(document("모임내 모든 미팅 정보 조회",
@@ -184,7 +187,8 @@ class MeetingControllerTest extends ControllerTest {
     @DisplayName("미팅 상세 정보를 조회한다.")
     @Test
     void findDetailsById() throws Exception {
-        mockMvc.perform(get("/api/meetings/detail/{meetingId}", 1L)
+        mockMvc.perform(
+                        get("/api/meetings/detail/{meetingId}", 1L)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("미팅 상세 정보 조회",
@@ -202,6 +206,36 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("members[0].memberProfileImageUrl").type(STRING)
                                                 .description("프로필 이미지 url")
                                 )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("미팅을 삭제한다.")
+    @Test
+    void deleteMeeting() throws Exception {
+        mockMvc.perform(
+                        delete("/api/meetings/{meetingId}", MEETING_ID.longValue())
+                )
+                .andExpect(status().isOk())
+                .andDo(document("미팅 삭제 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅")
+                                .summary("미팅 삭제")
+                                .build()
+                        )));
+    }
+
+    @DisplayName("해당 미팅의 주최자가 아닌 사람은 미팅을 삭제할 수 없다.")
+    @Test
+    void deleteMeetingFail() throws Exception {
+        mockMvc.perform(
+                        delete("/api/meetings/{meetingId}", 9999L)
+                )
+                .andExpect(status().isForbidden())
+                .andDo(document("미팅 삭제 실패 - 주최자가 아님",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅")
+                                .summary("미팅 삭제")
                                 .build()
                         )));
     }

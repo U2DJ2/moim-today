@@ -6,11 +6,14 @@ import moim_today.dto.meeting.MeetingCreateRequest;
 import moim_today.dto.meeting.MeetingDetailResponse;
 import moim_today.dto.meeting.MeetingSimpleResponse;
 import moim_today.dto.member.MemberSimpleResponse;
+import moim_today.global.error.ForbiddenException;
+import moim_today.util.TestConstant;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
 
 public class FakeMeetingService implements MeetingService {
@@ -79,6 +82,8 @@ public class FakeMeetingService implements MeetingService {
 
     @Override
     public void deleteMeeting(final long memberId, final long meetingId) {
-
+        if (meetingId != MEETING_ID.longValue()) {
+            throw new ForbiddenException(MEETING_FORBIDDEN_ERROR.message());
+        }
     }
 }
