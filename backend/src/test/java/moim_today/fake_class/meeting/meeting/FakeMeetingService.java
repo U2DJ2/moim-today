@@ -76,4 +76,9 @@ public class FakeMeetingService implements MeetingService {
                 .members(List.of(memberSimpleResponse1, memberSimpleResponse2, memberSimpleResponse3))
                 .build();
     }
+
+    @Override
+    public void deleteMeeting(final long memberId, final long meetingId) {
+
+    }
 }

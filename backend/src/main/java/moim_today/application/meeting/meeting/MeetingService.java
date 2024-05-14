@@ -14,4 +14,6 @@ public interface MeetingService {
     List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final long memberId, final MeetingStatus meetingStatus);
 
     MeetingDetailResponse findDetailsById(final long meetingId);
+
+    void deleteMeeting(final long memberId, final long meetingId);
 }

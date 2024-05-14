@@ -7,6 +7,8 @@ import moim_today.dto.meeting.MeetingSimpleDao;
 import moim_today.dto.meeting.QMeetingSimpleDao;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
+import moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity;
+import moim_today.persistence.entity.moim.moim.QMoimJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import static moim_today.global.constant.exception.MeetingExceptionConstant.MEET
 import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.*;
 import static moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity.meetingJpaEntity;
 import static moim_today.persistence.entity.member.QMemberJpaEntity.*;
+import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.*;
 
 @Repository
 public class MeetingRepositoryImpl implements MeetingRepository {
@@ -95,6 +98,14 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     }
 
     @Override
+    public long findHostIdByMeetingId(final long meetingId) {
+        return queryFactory.select(moimJpaEntity.memberId)
+                .from(meetingJpaEntity)
+                .join(moimJpaEntity).on(moimJpaEntity.id.eq(meetingJpaEntity.moimId))
+                .fetchFirst();
+    }
+
+    @Override
     public List<UpcomingMeetingNoticeResponse> findUpcomingNotices(final LocalDateTime currentDateTime) {
         LocalDateTime upcomingDateTime = currentDateTime.plusDays(1);
 
@@ -130,6 +141,11 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     @Override
     public MeetingJpaEntity save(final MeetingJpaEntity meetingJpaEntity) {
         return meetingJpaRepository.save(meetingJpaEntity);
+    }
+
+    @Override
+    public void delete(final MeetingJpaEntity meetingJpaEntity) {
+        meetingJpaRepository.delete(meetingJpaEntity);
     }
 
     @Override

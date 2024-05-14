@@ -42,4 +42,10 @@ public class MeetingController {
     public MeetingDetailResponse findDetailsByMoimId(@PathVariable final long meetingId) {
         return meetingService.findDetailsById(meetingId);
     }
+
+    @DeleteMapping("/{meetingId}")
+    public void deleteMeeting(@Login final MemberSession memberSession,
+                              @PathVariable final long meetingId) {
+        meetingService.deleteMeeting(memberSession.id(), meetingId);
+    }
 }

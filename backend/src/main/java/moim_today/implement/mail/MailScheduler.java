@@ -31,7 +31,7 @@ public class MailScheduler {
     }
 
     @Scheduled(fixedRate = ONE_HOUR_IN_MILLISECONDS)
-    public void sendInvitationMail() {
+    public void sendUpcomingMeetingMails() {
         LocalDateTime currentDateTime = LocalDateTime.now();
         List<UpcomingMeetingNoticeResponse> upcomingNotices = meetingFinder.findUpcomingNotices(currentDateTime);
 
