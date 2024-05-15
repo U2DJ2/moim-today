@@ -1,6 +1,7 @@
 package moim_today.dto.member;
 
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import moim_today.domain.member.Member;
 
@@ -15,7 +16,7 @@ public record MemberSimpleResponse(
         String memberProfileImageUrl
 ) {
 
-    public static MemberSimpleResponse of(final Member member) {
+    public static MemberSimpleResponse from(final Member member) {
         return MemberSimpleResponse.builder()
                 .memberId(member.memberId())
                 .username(member.username())
@@ -23,9 +24,13 @@ public record MemberSimpleResponse(
                 .build();
     }
 
-    public static List<MemberSimpleResponse> of(final List<Member> members) {
+    public static List<MemberSimpleResponse> from(final List<Member> members) {
         return members.stream()
-                .map(MemberSimpleResponse::of)
+                .map(MemberSimpleResponse::from)
                 .collect(toList());
+    }
+
+    @QueryProjection
+    public MemberSimpleResponse {
     }
 }

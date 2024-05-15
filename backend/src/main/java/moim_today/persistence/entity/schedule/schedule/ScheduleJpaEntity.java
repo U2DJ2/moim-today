@@ -9,7 +9,6 @@ import lombok.Getter;
 import moim_today.global.error.ForbiddenException;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCHEDULE_FORBIDDEN;
@@ -34,9 +33,6 @@ public class ScheduleJpaEntity extends BaseTimeEntity {
 
     private String scheduleName;
 
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek dayOfWeek;
-
     private String colorHex;
 
     private LocalDateTime startDateTime;
@@ -48,14 +44,12 @@ public class ScheduleJpaEntity extends BaseTimeEntity {
 
     @Builder
     private ScheduleJpaEntity(final long memberId, final long moimId, final long meetingId,
-                             final String scheduleName, final DayOfWeek dayOfWeek,
-                             final String colorHex, final LocalDateTime startDateTime,
-                             final LocalDateTime endDateTime) {
+                              final String scheduleName, final String colorHex,
+                              final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         this.memberId = memberId;
         this.moimId = moimId;
         this.meetingId = meetingId;
         this.scheduleName = scheduleName;
-        this.dayOfWeek = dayOfWeek;
         this.colorHex = colorHex;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
@@ -68,7 +62,6 @@ public class ScheduleJpaEntity extends BaseTimeEntity {
                 .moimId(meetingJpaEntity.getMoimId())
                 .meetingId(meetingJpaEntity.getId())
                 .scheduleName(moimTitle)
-                .dayOfWeek(meetingJpaEntity.getStartDateTime().getDayOfWeek())
                 .startDateTime(meetingJpaEntity.getStartDateTime())
                 .endDateTime(meetingJpaEntity.getEndDateTime())
                 .build();
@@ -76,7 +69,6 @@ public class ScheduleJpaEntity extends BaseTimeEntity {
 
     public void updateSchedule(final ScheduleUpdateRequest scheduleUpdateRequest) {
         this.scheduleName = scheduleUpdateRequest.scheduleName();
-        this.dayOfWeek = scheduleUpdateRequest.dayOfWeek();
         this.startDateTime = scheduleUpdateRequest.startDateTime();
         this.endDateTime = scheduleUpdateRequest.endDateTime();
     }

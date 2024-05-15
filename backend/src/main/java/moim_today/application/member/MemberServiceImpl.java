@@ -70,4 +70,9 @@ public class MemberServiceImpl implements MemberService {
                 .isHost(isHost)
                 .build();
     }
+
+    @Override
+    public MemberSimpleResponse getHostProfileByMoimId(final long moimId) {
+        return memberFinder.getHostProfileByMoimId(moimId);
+    }
 }

@@ -7,6 +7,7 @@ import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.MoimSortedFilter;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
+import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import moim_today.dto.moim.moim_notice.MoimNoticeCreateRequest;
 import moim_today.dto.moim.moim_notice.MoimNoticeDeleteRequest;
 import moim_today.dto.moim.moim_notice.MoimNoticeUpdateRequest;
@@ -154,7 +155,7 @@ class MoimControllerTest extends ControllerTest {
     void findAllMoimSimpleResponseTest() throws Exception {
 
         mockMvc.perform(get("/api/moims/simple")
-                        .queryParam("moimCategory", MoimCategory.EXERCISE.name())
+                        .queryParam("moimCategoryDto", MoimCategoryDto.EXERCISE.name())
                         .queryParam("moimSortedFilter", MoimSortedFilter.CREATED_AT.name()))
                 .andExpect(status().isOk())
                 .andDo(document("모임 리스트 조회 성공",
@@ -162,8 +163,8 @@ class MoimControllerTest extends ControllerTest {
                                 .tag("모임")
                                 .summary("모임 리스트 조회")
                                 .queryParameters(
-                                        parameterWithName("moimCategory").description(String.format("카테고리 - %s",
-                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
+                                        parameterWithName("moimCategoryDto").description(String.format("카테고리 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimCategoryDto.class))),
                                         parameterWithName("moimSortedFilter").description(String.format("정렬 기준 - %s",
                                                 EnumDocsUtils.getEnumNames(MoimSortedFilter.class)))
                                 )

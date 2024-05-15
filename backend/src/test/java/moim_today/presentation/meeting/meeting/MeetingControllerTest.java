@@ -1,17 +1,16 @@
-package moim_today.presentation.meeting;
+package moim_today.presentation.meeting.meeting;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import moim_today.application.meeting.MeetingService;
+import moim_today.application.meeting.meeting.MeetingService;
 import moim_today.domain.meeting.enums.MeetingCategory;
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.MeetingCreateRequest;
-import moim_today.fake_class.meeting.FakeMeetingService;
+import moim_today.fake_class.meeting.meeting.FakeMeetingService;
 import moim_today.util.ControllerTest;
 import moim_today.util.EnumDocsUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
@@ -117,15 +116,13 @@ class MeetingControllerTest extends ControllerTest {
                 .andDo(document("모임내 다가오는 미팅 정보 조회",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("미팅")
-                                .summary("미팅 조회")
+                                .summary("미팅 목록 조회")
                                 .responseFields(
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
                                         fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
-                                        fieldWithPath("data[0].dayOfWeek").type(VARIES).description(
-                                                String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(DayOfWeek.class))
-                                        ),
-                                        fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day")
+                                        fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
+                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
                                 )
                                 .build()
                         )));
@@ -141,7 +138,7 @@ class MeetingControllerTest extends ControllerTest {
                 .andDo(document("모임내 이전 미팅 정보 조회",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("미팅")
-                                .summary("미팅 조회")
+                                .summary("미팅 목록 조회")
                                 .queryParameters(
                                         parameterWithName("meetingStatus").description(
                                                 String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(MeetingStatus.class))
@@ -151,10 +148,60 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
                                         fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
-                                        fieldWithPath("data[0].dayOfWeek").type(VARIES).description(
-                                                String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(DayOfWeek.class))
-                                        ),
-                                        fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day")
+                                        fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
+                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("모임내 모든 미팅 정보를 조회한다.")
+    @Test
+    void findAllByMoimId() throws Exception {
+        mockMvc.perform(get("/api/meetings/{moimId}", 1L)
+                        .param("meetingStatus", String.valueOf(ALL))
+                )
+                .andExpect(status().isOk())
+                .andDo(document("모임내 모든 미팅 정보 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅")
+                                .summary("미팅 목록 조회")
+                                .queryParameters(
+                                        parameterWithName("meetingStatus").description(
+                                                String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(MeetingStatus.class))
+                                        )
+                                )
+                                .responseFields(
+                                        fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
+                                        fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
+                                        fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
+                                        fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
+                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("미팅 상세 정보를 조회한다.")
+    @Test
+    void findDetailsById() throws Exception {
+        mockMvc.perform(get("/api/meetings/detail/{meetingId}", 1L)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("미팅 상세 정보 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅")
+                                .summary("미팅 상세 조회")
+                                .responseFields(
+                                        fieldWithPath("meetingId").type(NUMBER).description("미팅 id"),
+                                        fieldWithPath("agenda").type(STRING).description("미팅 의제"),
+                                        fieldWithPath("startDateTime").type(STRING).description("미팅 시작 시간"),
+                                        fieldWithPath("endDateTime").type(STRING).description("미팅 종료 시간"),
+                                        fieldWithPath("place").type(STRING).description("미팅 장소"),
+                                        fieldWithPath("members[0].memberId").type(NUMBER).description("회원 id"),
+                                        fieldWithPath("members[0].username").type(STRING).description("회원 이름"),
+                                        fieldWithPath("members[0].memberProfileImageUrl").type(STRING)
+                                                .description("프로필 이미지 url")
                                 )
                                 .build()
                         )));

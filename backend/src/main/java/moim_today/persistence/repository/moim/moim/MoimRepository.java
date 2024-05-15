@@ -1,9 +1,9 @@
 package moim_today.persistence.repository.moim.moim;
 
 import moim_today.domain.moim.MoimSortedFilter;
-import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.dto.moim.moim.MoimSimpleResponse;
+import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public interface MoimRepository {
 
     void deleteById(final long moimId);
 
-    List<MoimSimpleResponse> findAllMoimResponse(final MoimCategory moimCategory, final MoimSortedFilter moimSortedFilter);
+    List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter);
 
     MoimJpaEntity getByIdWithPessimisticLock(final long moimId);
 

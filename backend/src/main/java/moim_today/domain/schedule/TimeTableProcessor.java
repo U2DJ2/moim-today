@@ -99,7 +99,7 @@ public record TimeTableProcessor(
             ColorHex hexByCount = ColorHex.getHexByCount(count);
             String colorHex = hexByCount.value();
 
-            Schedule schedule = Schedule.toDomain(name, dayOfWeek, colorHex, startDateTime, endDateTime);
+            Schedule schedule = Schedule.toDomain(name, colorHex, startDateTime, endDateTime);
             schedules.add(schedule);
             nextDate = nextDate.plusWeeks(ONE_WEEK.time());
         }

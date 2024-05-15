@@ -2,8 +2,8 @@ package moim_today.application.moim.moim;
 
 import jakarta.servlet.http.HttpServletResponse;
 import moim_today.domain.moim.MoimSortedFilter;
-import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
+import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public interface MoimService {
 
     void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest);
 
-    List<MoimSimpleResponse> findAllMoimResponse(final MoimCategory moimCategory, final MoimSortedFilter moimSortedFilter);
+    List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter);
 
     List<MoimSimpleResponse> searchMoim(final String searchParam);
 }

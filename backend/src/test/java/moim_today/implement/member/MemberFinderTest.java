@@ -2,10 +2,12 @@ package moim_today.implement.member;
 
 import moim_today.domain.member.enums.Gender;
 import moim_today.dto.member.MemberProfileResponse;
+import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
+import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;
@@ -126,5 +128,64 @@ class MemberFinderTest extends ImplementTest {
         assertThatCode(() -> {
             memberFinder.validateEmailNotExists(EMAIL.value());
         }).doesNotThrowAnyException();
+    }
+
+
+    @DisplayName("모임 생성자의 프로필 정보를 가져온다.")
+    @Test
+    void getHostProfileTest(){
+        // given1
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .username(USERNAME.value())
+                .memberProfileImageUrl(PROFILE_IMAGE_URL.value())
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        long memberId = memberJpaEntity.getId();
+
+        // given2
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .memberId(memberId)
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+        long moimId = moimJpaEntity.getId();
+
+        //when
+        MemberSimpleResponse memberSimpleResponse = memberFinder.getHostProfileByMoimId(moimId);
+
+        //then
+        assertThat(memberSimpleResponse.memberId()).isEqualTo(memberId);
+        assertThat(memberSimpleResponse.username()).isEqualTo(USERNAME.value());
+        assertThat(memberSimpleResponse.memberProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL.value());
+    }
+
+    @DisplayName("모임이 없으면 모임 생성자를 조회할 때 예외가 발생한다.")
+    @Test
+    void getHostProfileNotExistMoimTest(){
+        // given
+        long notFoundMoimId = MOIM_ID.longValue();
+
+        //expected
+        assertThatThrownBy(() -> memberFinder.getHostProfileByMoimId(notFoundMoimId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage(HOST_NOT_FOUND_ERROR.message());
+    }
+
+    @DisplayName("모임이 있어도 생성자가 존재하지 않으면 조회할 때 예외가 발생한다.")
+    @Test
+    void getHostProfileNotExistHostTest(){
+        // given
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+        long moimId = moimJpaEntity.getId();
+
+        //expected
+        assertThatThrownBy(() -> memberFinder.getHostProfileByMoimId(moimId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage(HOST_NOT_FOUND_ERROR.message());
     }
 }
