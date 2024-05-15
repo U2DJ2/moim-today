@@ -20,7 +20,7 @@ import static moim_today.util.TestConstant.*;
 public class FakeTodoService implements TodoService {
 
     private final LocalDate TODO_DATE =
-            LocalDate.of(1, 1, 1);
+            LocalDate.of(2024, 5, 5);
 
     @Override
     public TodoCreateResponse createTodo(final long memberId, final TodoCreateRequest todoCreateRequest) {
@@ -91,7 +91,7 @@ public class FakeTodoService implements TodoService {
         }
 
         return new TodoUpdateResponse(UPDATE_AFTER_CONTENT.value(),
-                TodoProgress.PENDING, TODO_DATE
+                TodoProgress.COMPLETED, TODO_DATE
         );
     }
 
