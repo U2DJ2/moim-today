@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,11 +23,21 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
         this.queryFactory = queryFactory;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Long> findAllJoinedMemberId(final long moimId) {
         return queryFactory.select(joinedMoimJpaEntity.memberId)
                 .from(joinedMoimJpaEntity)
                 .where(joinedMoimJpaEntity.moimId.eq(moimId))
+                .fetch();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Long> findMoimIdsByMemberId(final long memberId) {
+        return queryFactory.select(joinedMoimJpaEntity.moimId)
+                .from(joinedMoimJpaEntity)
+                .where(joinedMoimJpaEntity.memberId.eq(memberId))
                 .fetch();
     }
 

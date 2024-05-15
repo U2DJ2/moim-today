@@ -19,4 +19,6 @@ public interface TodoService {
     void deleteTodo(final long id, final TodoRemoveRequest todoRemoveRequest);
 
     TodoDetailResponse getById(final long todoId);
+
+    List<MemberMoimTodoResponse> findAllMembersTodos(final long memberId, final YearMonth startDate, final int months);
 }

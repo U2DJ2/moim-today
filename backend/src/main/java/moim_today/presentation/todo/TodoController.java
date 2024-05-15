@@ -27,6 +27,13 @@ public class TodoController {
         return todoService.createTodo(memberSession.id(), todoCreateRequest);
     }
 
+    @GetMapping
+    public CollectionResponse<List<MemberMoimTodoResponse>> findAllTodoByMemberId(
+            @Login final MemberSession memberSession,
+            @RequestParam final YearMonth startDate,
+            @RequestParam final int months){
+        return CollectionResponse.of(todoService.findAllMembersTodos(memberSession.id(), startDate, months));
+    }
 
     @GetMapping("moim/{moimId}")
     public CollectionResponse<List<MemberTodoResponse>> findAllMembersTodosInMoim(

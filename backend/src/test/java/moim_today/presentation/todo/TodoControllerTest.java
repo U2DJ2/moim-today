@@ -140,10 +140,8 @@ public class TodoControllerTest extends ControllerTest {
                                 .tag("투두")
                                 .summary("모임의 모든 투두 조회")
                                 .queryParameters(
-                                        parameterWithName("startDate").description("투두 시작 시간")
-                                                .attributes(key("format").value("yyyy-MM-dd"),
-                                                        key("timezone").value("Asia/Seoul")),
-                                        parameterWithName("months").description("조회 할 n개월")
+                                        parameterWithName("startDate").description("조회를 시작할 월 - ex) 2024-05"),
+                                        parameterWithName("months").description("[조회를 시작할 월로부터 n개월] 을 지정하는 n")
                                 )
                                 .responseFields(
                                         fieldWithPath("data[].memberId").type(NUMBER).description("요청한 멤버 id"),
@@ -181,10 +179,8 @@ public class TodoControllerTest extends ControllerTest {
                                 .tag("투두")
                                 .summary("모임의 모든 투두 조회")
                                 .queryParameters(
-                                        parameterWithName("startDate").description("투두 시작 시간")
-                                                .attributes(key("format").value("yyyy-MM-dd"),
-                                                        key("timezone").value("Asia/Seoul")),
-                                        parameterWithName("months").description("조회 할 n개월")
+                                        parameterWithName("startDate").description("조회를 시작할 월 - ex) 2024-05"),
+                                        parameterWithName("months").description("[조회를 시작할 월로부터 n개월] 을 지정하는 n")
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(JsonFieldType.STRING).description("상태 코드"),
