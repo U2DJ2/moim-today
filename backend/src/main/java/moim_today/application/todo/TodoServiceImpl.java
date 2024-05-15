@@ -44,7 +44,8 @@ public class TodoServiceImpl implements TodoService {
     public List<MemberMoimTodoResponse> findAllMembersTodos(final long memberId, final YearMonth startDate, final int months) {
         List<Long> moimIds = joinedMoimManager.findMoimIdsByMemberId(memberId);
         return moimIds.stream()
-                .map(moimId -> findMemberTodosInMoim(memberId, startDate, months, moimId))
+                .map(moimId -> findMemberTodosInMoim(memberId, moimId, startDate, months))
+                .filter(memberMoimTodoResponse -> !memberMoimTodoResponse.todoResponses().isEmpty())
                 .toList();
     }
 
@@ -75,8 +76,8 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public MemberMoimTodoResponse findMemberTodosInMoim(final long memberId, final YearMonth startDate,
-                                                        final int months, final Long moimId) {
+    public MemberMoimTodoResponse findMemberTodosInMoim(final long memberId, final Long moimId, final YearMonth startDate,
+                                                        final int months) {
         List<TodoResponse> todoResponses = todoManager.findMemberTodosInMoim(memberId, moimId, startDate, months);
         String moimTitle = moimManager.getTitleById(moimId);
         return MemberMoimTodoResponse.builder()
