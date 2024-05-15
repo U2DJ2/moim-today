@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import moim_today.domain.todo.enums.TodoProgress;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record TodoUpdateRequest(
         long todoId,
@@ -13,13 +13,9 @@ public record TodoUpdateRequest(
         String contents,
         TodoProgress todoProgress,
 
-        @NotNull(message="startDateTime 누락")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-        LocalDateTime startDateTime,
-
-        @NotNull(message="endDateTime 누락")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-        LocalDateTime endDateTime
+        @NotNull(message="todoDate 누락")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+        LocalDate todoDate
 ) {
     public TodoJpaEntity toEntity(final long memberId){
         return TodoJpaEntity.builder()
@@ -27,12 +23,7 @@ public record TodoUpdateRequest(
                 .memberId(memberId)
                 .contents(contents)
                 .todoProgress(todoProgress)
-                .startDateTime(startDateTime)
-                .endDateTime(endDateTime)
+                .todoDate(todoDate)
                 .build();
-    }
-
-    public boolean checkStartBeforeOrEqualEnd(){
-        return !startDateTime.isAfter(endDateTime);
     }
 }

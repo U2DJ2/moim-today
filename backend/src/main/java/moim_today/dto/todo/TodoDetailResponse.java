@@ -5,7 +5,7 @@ import lombok.Builder;
 import moim_today.domain.todo.enums.TodoProgress;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Builder
 public record TodoDetailResponse(
@@ -13,11 +13,8 @@ public record TodoDetailResponse(
         String contents,
         TodoProgress todoProgress,
 
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-        LocalDateTime startDateTime,
-
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-        LocalDateTime endDateTime
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+        LocalDate todoDateTime
 ) {
 
     public static TodoDetailResponse from(final TodoJpaEntity todoJpaEntity){
@@ -25,8 +22,7 @@ public record TodoDetailResponse(
                 .moimId(todoJpaEntity.getMoimId())
                 .contents(todoJpaEntity.getContents())
                 .todoProgress(todoJpaEntity.getTodoProgress())
-                .startDateTime(todoJpaEntity.getStartDateTime())
-                .endDateTime(todoJpaEntity.getEndDateTime())
+                .todoDateTime(todoJpaEntity.getTodoDate())
                 .build();
     }
 }

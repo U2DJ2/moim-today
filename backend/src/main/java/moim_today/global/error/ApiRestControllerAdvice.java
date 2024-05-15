@@ -85,7 +85,7 @@ public class ApiRestControllerAdvice {
     // description : Valid annotation handling
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ErrorResponse handleValidationExceptions(MethodArgumentNotValidException e) {
+    public ErrorResponse handleValidationExceptions(final MethodArgumentNotValidException e) {
         String errorMessage = e.getBindingResult().getFieldErrors().stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .findFirst()

@@ -35,10 +35,10 @@ public class TodoServiceImpl implements TodoService{
     @Override
     public List<MemberTodoResponse> findAllMembersTodosInMoim(final long memberId,
                                                               final long moimId,
-                                                              final YearMonth startDate,
+                                                              final YearMonth requestDate,
                                                               final int months) {
         joinedMoimFinder.validateMemberInMoim(memberId, moimId);
-        return todoManager.findAllMembersTodosInMoim(moimId, startDate, months);
+        return todoManager.findAllMembersTodosInMoim(moimId, requestDate, months);
     }
 
     @Override

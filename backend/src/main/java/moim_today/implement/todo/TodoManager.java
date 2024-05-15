@@ -1,20 +1,17 @@
 package moim_today.implement.todo;
 
-import moim_today.domain.todo.TodoLocalDateTime;
 import moim_today.dto.todo.*;
 import moim_today.global.annotation.Implement;
-import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
 import moim_today.implement.moim.joined_moim.JoinedMoimManager;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
 import static moim_today.global.constant.TimeConstant.MONTH_START_POINT;
 import static moim_today.global.constant.exception.TodoExceptionConstant.TODO_NOT_OWNER_ERROR;
-import static moim_today.global.constant.exception.TodoExceptionConstant.TODO_START_TIME_AFTER_END_TIME_ERROR;
 
 @Implement
 public class TodoManager {
@@ -36,22 +33,20 @@ public class TodoManager {
     }
 
     public List<MemberTodoResponse> findAllMembersTodosInMoim(final long moimId,
-                                                              final YearMonth startDate,
+                                                              final YearMonth requestDate,
                                                               final int months) {
-        LocalDateTime startDateTime = startDate.atDay(MONTH_START_POINT.time()).atStartOfDay();
-        TodoLocalDateTime todoLocalDateTime = new TodoLocalDateTime(startDateTime);
-        LocalDateTime endDateTime = todoLocalDateTime.atMonthEndDateTime(months);
+        LocalDate startDate = requestDate.atDay(MONTH_START_POINT.time());
+        LocalDate endDate = requestDate.plusMonths(months).atEndOfMonth();
 
         List<Long> moimMemberIds = joinedMoimManager.findAllJoinedMemberId(moimId);
 
-        return moimMemberIds.stream().map(m -> {
-            List<TodoResponse> todoResponses = todoFinder.findAllByDateRange(m, moimId, startDateTime, endDateTime);
-            return MemberTodoResponse.of(m, todoResponses);
+        return moimMemberIds.stream().map(memberId -> {
+            List<TodoResponse> todoResponses = todoFinder.findAllByDateRange(memberId, moimId, startDate, endDate);
+            return MemberTodoResponse.of(memberId, todoResponses);
         }).toList();
     }
 
     public TodoUpdateResponse updateTodo(final long memberId, final TodoUpdateRequest todoUpdateRequest) {
-        validateUpdateTodoDate(todoUpdateRequest);
         TodoJpaEntity originalTodo = todoFinder.getById(todoUpdateRequest.todoId());
         validateTodoOwner(memberId, originalTodo);
         return todoUpdater.updateTodo(originalTodo, todoUpdateRequest);
@@ -72,12 +67,6 @@ public class TodoManager {
 
     private boolean isTodoOwner(final long memberId, final TodoJpaEntity todoJpaEntity) {
         return todoJpaEntity.getMemberId() == memberId;
-    }
-
-    private void validateUpdateTodoDate(final TodoUpdateRequest todoUpdateRequest) {
-        if (!todoUpdateRequest.checkStartBeforeOrEqualEnd()) {
-            throw new BadRequestException(TODO_START_TIME_AFTER_END_TIME_ERROR.message());
-        }
     }
 
     public TodoJpaEntity getById(final long todoId) {
