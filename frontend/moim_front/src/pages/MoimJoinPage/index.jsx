@@ -6,51 +6,65 @@ import AvailableTime from "./AvailableTime";
 import ToDo from "./ToDo";
 import Member from "./Member";
 import Modal from "../../components/Modal/ModalTest";
-import axios from "axios";
 import { useParams } from "react-router";
+
+import { fetchMeetings, fetchMoimInfo, fetchNotices } from "../../api/moim";
 
 function MoimJoinPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [selected, setSelected] = useState("HOME");
 
+  const [meetingOption, setMeetingOption] = useState("ALL");
+
   const [notices, setNotices] = useState([]);
+  const [moimInfo, setMoimInfo] = useState([]);
+  const [meetings, setMeetings] = useState([]);
   const { MoimId } = useParams();
 
-  const params = {
-    moimId: MoimId,
+  const getNotices = async () => {
+    try {
+      const result = await fetchNotices(MoimId);
+      setNotices(result.data.data);
+    } catch (e) {
+      console.log(e);
+    }
   };
-  useEffect(() => {
-    const fetchJoinInfo = async () => {
-      const response = await axios.get(
-        "https://api.moim.today/api/moims/notices/simple",
-        {
-          params: params,
-        }
-      );
-      //console.log(response.data.data);
-      setNotices(response.data.data);
-      try {
-      } catch (error) {
-        setIsOpen(true);
-        setMessage(error.response);
-        console.log(error);
-      }
-    };
-    fetchJoinInfo();
-  }, []);
 
+  const getInfo = async () => {
+    try {
+      const result = await fetchMoimInfo(MoimId);
+      setMoimInfo(result.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getMeetings = async () => {
+    try {
+      const result = await fetchMeetings(MoimId, meetingOption);
+      console.log(result.data.data);
+      setMeetings(result.data.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getNotices();
+    getMeetings();
+    getInfo();
+  }, []);
   return (
     <MoimContainer>
       <DetailedLeft
         userName={"김유림"}
-        title={"컴구 스터디 구합니다"}
-        currentCount={7}
-        capacity={10}
-        category={"스터디"}
-        contents={
-          "안녕하세요! 아주대학교 소프트웨어학과 20학번 김유림입니다. 컴퓨터 구조 공부를 하고 있는데, 혼자하니까 의지박약으로 쉽지 않네요...함께 열심히 공부하실 분 구합니다!"
-        }
+        title={moimInfo.title}
+        currentCount={moimInfo.currentCount}
+        capacity={moimInfo.capacity}
+        category={moimInfo.category}
+        contents={moimInfo.contents}
+        image={moimInfo.imageUrl}
         joined={true}
       />
       <div className="flex flex-col basis-4/5 bg-white shadow-[0px_4px_12px_rgba(0,_0,_0,_0.06)] overflow-hidden rounded-3xl px-24 pb-6 gap-8 min-h-[600px] h-fit">
@@ -99,7 +113,12 @@ function MoimJoinPage() {
           </div>
         </div>
         {selected === "HOME" ? (
-          <MoimHome notices={notices} />
+          <MoimHome
+            notices={notices}
+            meetings={meetings}
+            meetingOption={meetingOption}
+            setMeetingOption={setMeetingOption}
+          />
         ) : selected === "되는시간" ? (
           <AvailableTime />
         ) : selected === "ToDo" ? (

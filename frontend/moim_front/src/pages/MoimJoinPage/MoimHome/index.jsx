@@ -3,13 +3,14 @@ import CardComponent from "../CardComponent";
 import SimpleDrop from "../../../components/Dropdown/Simple";
 import { useNavigate, useParams } from "react-router";
 import { GET } from "../../../utils/axios";
-function MoimHome({ notices }) {
+function MoimHome({ notices, meetings, meetingOption, setMeetingOption }) {
   const navigate = useNavigate();
 
   let noticeId = 1,
     meetingId = 1;
   const onSelect = (option) => {
     console.log(option);
+    setMeetingOption(option);
   };
   const noticeHandler = () => {
     navigate(`notice/${noticeId}`);
@@ -56,13 +57,19 @@ function MoimHome({ notices }) {
           />
         </div>
 
-        <CardComponent
-          date={"4월 15일 (월)"}
-          dday={"D-1"}
-          title={"{Gathering_Title}"}
-          btn={true}
-          clickHandler={cardClickHandler}
-        />
+        {meetings.length != 0 ? (
+          <CardComponent
+            date={"4월 15일 (월)"}
+            dday={"D-1"}
+            title={"{Gathering_Title}"}
+            btn={true}
+            clickHandler={cardClickHandler}
+          />
+        ) : (
+          <div className="font-Pretendard_Light flex">
+            생성된 미팅이 없습니다.
+          </div>
+        )}
       </div>
     </div>
   );
