@@ -26,6 +26,10 @@ function DetailedLeft({
       .post("https://api.moim.today/api/moims/members", body)
       .then((res) => {
         console.log(res.data);
+        // setMessage("모임에 가입됐습니다.");
+
+        // isOpen(true);
+        alert("모임에 가입되셨습니다");
         navigate(`/join/${MoimId}`);
       })
       .catch((error) => {
