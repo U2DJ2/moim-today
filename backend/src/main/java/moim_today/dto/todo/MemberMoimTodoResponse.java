@@ -7,6 +7,7 @@ import java.util.List;
 @Builder
 public record MemberMoimTodoResponse(
         long moimId,
+        String moimTitle,
         List<TodoResponse> todoResponses
 ) {
 }

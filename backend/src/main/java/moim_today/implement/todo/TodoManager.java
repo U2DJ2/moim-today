@@ -21,7 +21,6 @@ public class TodoManager {
     private final TodoRemover todoRemover;
     private final JoinedMoimFinder joinedMoimFinder;
 
-
     public TodoManager(final TodoFinder todoFinder,
                        final TodoUpdater todoUpdater,
                        final TodoRemover todoRemover,
@@ -32,17 +31,12 @@ public class TodoManager {
         this.joinedMoimFinder = joinedMoimFinder;
     }
 
-    public MemberMoimTodoResponse findMemberTodosInMoim(final long memberId, final Long moimId,
+    public  List<TodoResponse> findMemberTodosInMoim(final long memberId, final Long moimId,
                                                         final YearMonth fromDate, final int months) {
         LocalDate startDate = fromDate.atDay(MONTH_START_POINT.time());
         LocalDate endDate = fromDate.plusMonths(months).atEndOfMonth();
 
-        List<TodoResponse> todoResponses = todoFinder.findAllByDateRange(memberId, moimId, startDate, endDate);
-
-        return MemberMoimTodoResponse.builder()
-                .moimId(moimId)
-                .todoResponses(todoResponses)
-                .build();
+        return todoFinder.findAllByDateRange(memberId, moimId, startDate, endDate);
     }
 
     public List<MemberTodoResponse> findAllMembersTodosInMoim(final long moimId,
