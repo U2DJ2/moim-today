@@ -26,7 +26,7 @@ function DetailedLeft({
       .post("https://api.moim.today/api/moims/members", body)
       .then((res) => {
         console.log(res.data);
-        navigate("/");
+        navigate(`/join/${MoimId}`);
       })
       .catch((error) => {
         setIsOpen(true);

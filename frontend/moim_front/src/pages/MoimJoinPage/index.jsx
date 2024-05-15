@@ -1,13 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MoimContainer from "../../components/PageContainer/MoimContainer";
 import DetailedLeft from "../../components/DetailedLeft";
 import MoimHome from "./MoimHome";
 import AvailableTime from "./AvailableTime";
 import ToDo from "./ToDo";
 import Member from "./Member";
+import Modal from "../../components/Modal/ModalTest";
+import axios from "axios";
+import { useParams } from "react-router";
 
 function MoimJoinPage() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState("");
   const [selected, setSelected] = useState("HOME");
+
+  const [notices, setNotices] = useState([]);
+  const { MoimId } = useParams();
+
+  const params = {
+    moimId: MoimId,
+  };
+  useEffect(() => {
+    const fetchJoinInfo = async () => {
+      const response = await axios.get(
+        "https://api.moim.today/api/moims/notices/simple",
+        {
+          params: params,
+        }
+      );
+      //console.log(response.data.data);
+      setNotices(response.data.data);
+      try {
+      } catch (error) {
+        setIsOpen(true);
+        setMessage(error.response);
+        console.log(error);
+      }
+    };
+    fetchJoinInfo();
+  }, []);
 
   return (
     <MoimContainer>
@@ -68,7 +99,7 @@ function MoimJoinPage() {
           </div>
         </div>
         {selected === "HOME" ? (
-          <MoimHome />
+          <MoimHome notices={notices} />
         ) : selected === "되는시간" ? (
           <AvailableTime />
         ) : selected === "ToDo" ? (
@@ -77,6 +108,12 @@ function MoimJoinPage() {
           <Member />
         ) : null}
       </div>
+      <Modal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        setMessage={setMessage}
+        message={message}
+      />
     </MoimContainer>
   );
 }

@@ -3,7 +3,7 @@ import CardComponent from "../CardComponent";
 import SimpleDrop from "../../../components/Dropdown/Simple";
 import { useNavigate, useParams } from "react-router";
 import { GET } from "../../../utils/axios";
-function MoimHome() {
+function MoimHome({ notices }) {
   const navigate = useNavigate();
 
   let noticeId = 1,
@@ -32,16 +32,17 @@ function MoimHome() {
         </div>
 
         <div className="flex gap-12">
-          <CardComponent
-            date={"4월 15일 (월)"}
-            title={"{Announce_Title}"}
-            btn={false}
-          />
-          <CardComponent
-            date={"4월 15일 (월)"}
-            title={"{Announce_Title}"}
-            btn={false}
-          />
+          {notices.length != 0 ? (
+            <CardComponent
+              date={"4월 15일 (월)"}
+              title={"{Announce_Title}"}
+              btn={false}
+            />
+          ) : (
+            <div className="font-Pretendard_Light flex">
+              공지사항이 없습니다.
+            </div>
+          )}
         </div>
       </div>
       <div>

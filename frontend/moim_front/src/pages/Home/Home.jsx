@@ -149,7 +149,6 @@ export default function Home() {
         console.log(error);
       }
     };
-    fetchMoims();
   }, []);
   useEffect(() => {
     const fetchMoims = async () => {
