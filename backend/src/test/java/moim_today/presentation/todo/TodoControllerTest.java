@@ -120,14 +120,13 @@ public class TodoControllerTest extends ControllerTest {
     @DisplayName("모임 안에 있는 모든 Todo를 조회한다")
     @Test
     void findAllMembersTodosInMoim() throws Exception {
-        long memberId = 1L;
         final String TWO_MONTHS = "2";
 
         mockMvc.perform(
                         get("/api/todos/moim/{moimId}", MOIM_ID.longValue())
                                 .contentType(APPLICATION_JSON)
                                 .queryParam("startDate", String.valueOf(
-                                        YearMonth.of(2024, 05)
+                                        YearMonth.of(2024, 5)
                                 ))
                                 .queryParam("months", TWO_MONTHS)
                 )
@@ -141,12 +140,49 @@ public class TodoControllerTest extends ControllerTest {
                                 .summary("모임의 모든 투두 조회")
                                 .queryParameters(
                                         parameterWithName("startDate").description("조회를 시작할 월 - ex) 2024-05"),
-                                        parameterWithName("months").description("[조회를 시작할 월로부터 n개월] 을 지정하는 n")
+                                        parameterWithName("months").description("조회를 시작할 월로부터 n개월 - ex) n=2 -> 2024-05-01 ~ 2024-07-31")
                                 )
                                 .responseFields(
                                         fieldWithPath("data[].memberId").type(NUMBER).description("요청한 멤버 id"),
                                         fieldWithPath("data[].todoResponses[].todoId").type(NUMBER).description("투두 id"),
-                                        fieldWithPath("data[].todoResponses[].contents").type(NUMBER).description("투두 내용"),
+                                        fieldWithPath("data[].todoResponses[].contents").type(STRING).description("투두 내용"),
+                                        fieldWithPath("data[].todoResponses[].todoProgress").type(VARIES).description(
+                                                String.format("투두 진행 상황 - %s", EnumDocsUtils.getEnumNames(TodoProgress.class))
+                                        ),
+                                        fieldWithPath("data[].todoResponses[].todoDate").type(NUMBER).description("투두 시작 시간")
+                                )
+                                .build()
+                        ))
+                );
+    }
+
+    @DisplayName("자신의 모든 Todo를 조회한다")
+    @Test
+    void findAllTodoByMemberId() throws Exception {
+        final String TWO_MONTHS = "2";
+
+        mockMvc.perform(
+                        get("/api/todos")
+                                .contentType(APPLICATION_JSON)
+                                .queryParam("startDate", String.valueOf(
+                                        YearMonth.of(2024, 5)
+                                ))
+                                .queryParam("months", TWO_MONTHS)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("자신의 모든 투두 조회 (해당 기간에 투두가 없는 모임은 반환X)",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("투두")
+                                .summary("자신의 모든 투두 조회")
+                                .queryParameters(
+                                        parameterWithName("startDate").description("조회를 시작할 월 - ex) 2024-05"),
+                                        parameterWithName("months").description("조회를 시작할 월로부터 n개월 - ex) n=2 -> 2024-05-01 ~ 2024-07-31")
+                                )
+                                .responseFields(
+                                        fieldWithPath("data[].moimId").type(NUMBER).description("자신이 만든 투두를 가지고 있는 모임 id"),
+                                        fieldWithPath("data[].moimTitle").type(STRING).description("자신이 만든 투두를 가지고 있는 모임 title"),
+                                        fieldWithPath("data[].todoResponses[].todoId").type(NUMBER).description("투두 id"),
+                                        fieldWithPath("data[].todoResponses[].contents").type(STRING).description("투두 내용"),
                                         fieldWithPath("data[].todoResponses[].todoProgress").type(VARIES).description(
                                                 String.format("투두 진행 상황 - %s", EnumDocsUtils.getEnumNames(TodoProgress.class))
                                         ),
@@ -183,8 +219,8 @@ public class TodoControllerTest extends ControllerTest {
                                         parameterWithName("months").description("[조회를 시작할 월로부터 n개월] 을 지정하는 n")
                                 )
                                 .responseFields(
-                                        fieldWithPath("statusCode").type(JsonFieldType.STRING).description("상태 코드"),
-                                        fieldWithPath("message").type(JsonFieldType.STRING).description("오류 메세지")
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
                                 )
                                 .build()
                         ))
@@ -270,8 +306,8 @@ public class TodoControllerTest extends ControllerTest {
                                                         key("timezone").value("Asia/Seoul"))
                                 )
                                 .responseFields(
-                                        fieldWithPath("statusCode").type(JsonFieldType.STRING).description("상태 코드"),
-                                        fieldWithPath("message").type(JsonFieldType.STRING).description("오류 메세지")
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
                                 )
                                 .build()
                         ))
@@ -311,8 +347,8 @@ public class TodoControllerTest extends ControllerTest {
                                                         key("timezone").value("Asia/Seoul"))
                                 )
                                 .responseFields(
-                                        fieldWithPath("statusCode").type(JsonFieldType.STRING).description("상태 코드"),
-                                        fieldWithPath("message").type(JsonFieldType.STRING).description("오류 메세지")
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
                                 )
                                 .build()
                         ))
@@ -369,8 +405,8 @@ public class TodoControllerTest extends ControllerTest {
                                         fieldWithPath("todoId").type(NUMBER).description("투두 id")
                                 )
                                 .responseFields(
-                                        fieldWithPath("statusCode").type(JsonFieldType.STRING).description("상태 코드"),
-                                        fieldWithPath("message").type(JsonFieldType.STRING).description("오류 메세지")
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
                                 )
                                 .build()
                         ))
@@ -400,8 +436,8 @@ public class TodoControllerTest extends ControllerTest {
                                         fieldWithPath("todoId").type(NUMBER).description("투두 id")
                                 )
                                 .responseFields(
-                                        fieldWithPath("statusCode").type(JsonFieldType.STRING).description("상태 코드"),
-                                        fieldWithPath("message").type(JsonFieldType.STRING).description("오류 메세지")
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
                                 )
                                 .build()
                         ))
