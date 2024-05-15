@@ -71,7 +71,7 @@ class TodoManagerTest extends ImplementTest {
         TodoJpaEntity outOfDateRangeTodo = TodoJpaEntity.builder()
                 .memberId(MEMBER_ID.longValue())
                 .moimId((MOIM_ID.longValue()))
-                .todoDate(LocalDate.of(2024, 6, 11))
+                .todoDate(LocalDate.of(2024, 7, 11))
                 .build();
 
         // given3

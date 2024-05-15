@@ -63,8 +63,8 @@ class MeetingControllerTest extends ControllerTest {
                                 .requestFields(
                                         fieldWithPath("moimId").type(NUMBER).description("모임 id"),
                                         fieldWithPath("agenda").type(STRING).description("미팅 의제"),
-                                        fieldWithPath("todoDate").type(STRING).description("미팅 시작 시간"),
-                                        fieldWithPath("endDate").type(STRING).description("미팅 종료 시간"),
+                                        fieldWithPath("startDateTime").type(STRING).description("미팅 시작 시간"),
+                                        fieldWithPath("endDateTime").type(STRING).description("미팅 종료 시간"),
                                         fieldWithPath("place").type(STRING).description("미팅 장소"),
                                         fieldWithPath("meetingCategory").type(STRING).description("미팅 카테고리")
                                 )
@@ -98,8 +98,8 @@ class MeetingControllerTest extends ControllerTest {
                                 .requestFields(
                                         fieldWithPath("moimId").type(NUMBER).description("모임 id"),
                                         fieldWithPath("agenda").type(STRING).description("미팅 의제"),
-                                        fieldWithPath("todoDate").type(STRING).description("미팅 시작 시간"),
-                                        fieldWithPath("endDate").type(STRING).description("미팅 종료 시간"),
+                                        fieldWithPath("startDateTime").type(STRING).description("미팅 시작 시간"),
+                                        fieldWithPath("endDateTime").type(STRING).description("미팅 종료 시간"),
                                         fieldWithPath("place").type(STRING).description("미팅 장소"),
                                         fieldWithPath("meetingCategory").type(STRING).description("미팅 카테고리")
                                 )
@@ -121,7 +121,7 @@ class MeetingControllerTest extends ControllerTest {
                                 .responseFields(
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
-                                        fieldWithPath("data[0].todoDate").type(STRING).description("미팅 시작 날짜"),
+                                        fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
                                         fieldWithPath("data[0].dayOfWeek").type(VARIES).description(
                                                 String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(DayOfWeek.class))
                                         ),
@@ -150,7 +150,7 @@ class MeetingControllerTest extends ControllerTest {
                                 .responseFields(
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
-                                        fieldWithPath("data[0].todoDate").type(STRING).description("미팅 시작 날짜"),
+                                        fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
                                         fieldWithPath("data[0].dayOfWeek").type(VARIES).description(
                                                 String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(DayOfWeek.class))
                                         ),

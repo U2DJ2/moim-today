@@ -41,7 +41,7 @@ class ScheduleControllerTest extends ControllerTest {
     @Test
     void findAllByWeekly() throws Exception {
         mockMvc.perform(get("/api/schedules/weekly")
-                        .param("todoDate", "2024-03-04")
+                        .param("startDate", "2024-03-04")
                 )
                 .andExpect(status().isOk())
                 .andDo(document("로그인한 회원의 캘린더에 나타낼 Weekly 스케줄 조회",
@@ -49,7 +49,7 @@ class ScheduleControllerTest extends ControllerTest {
                                 .tag("스케줄")
                                 .summary("로그인한 회원의 Weekly 스케줄 조회")
                                 .queryParameters(
-                                        parameterWithName("todoDate").description("연도 - 월 - 일 정보, ex) 2024-03-04")
+                                        parameterWithName("startDate").description("연도 - 월 - 일 정보, ex) 2024-03-04")
                                 )
                                 .responseFields(
                                         fieldWithPath("data[0].scheduleId").type(NUMBER).description("스케줄 id"),
@@ -57,8 +57,8 @@ class ScheduleControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].scheduleName").type(STRING).description("스케줄명"),
                                         fieldWithPath("data[0].dayOfWeek").type(STRING).description("요일"),
                                         fieldWithPath("data[0].colorHex").type(STRING).description("색상"),
-                                        fieldWithPath("data[0].todoDate").type(STRING).description("시작 시간"),
-                                        fieldWithPath("data[0].endDate").type(STRING).description("종료 시간")
+                                        fieldWithPath("data[0].startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("data[0].endDateTime").type(STRING).description("종료 시간")
                                 )
                                 .build()
                         )));
@@ -68,7 +68,7 @@ class ScheduleControllerTest extends ControllerTest {
     @Test
     void findAvailableTimeInMoim() throws Exception {
         mockMvc.perform(get("/api/schedules/weekly/available-time/moims/{moimId}", 1L)
-                        .param("todoDate", "2024-03-04")
+                        .param("startDate", "2024-03-04")
                 )
                 .andExpect(status().isOk())
                 .andDo(document("해당 모임의 Weekly 스케줄 가용시간 조회",
@@ -76,14 +76,14 @@ class ScheduleControllerTest extends ControllerTest {
                                 .tag("스케줄")
                                 .summary("해당 모임의 Weekly 스케줄 가용시간 조회")
                                 .queryParameters(
-                                        parameterWithName("todoDate").description("연도 - 월 - 일 정보, ex) 2024-03-04")
+                                        parameterWithName("startDate").description("연도 - 월 - 일 정보, ex) 2024-03-04")
                                 )
                                 .responseFields(
                                         fieldWithPath("data[0].members[0].memberId").type(NUMBER).description("회원 id"),
                                         fieldWithPath("data[0].members[0].username").type(STRING).description("이름"),
                                         fieldWithPath("data[0].members[0].memberProfileImageUrl").type(STRING).description("프로필 이미지 url"),
-                                        fieldWithPath("data[0].todoDate").type(STRING).description("시작 시간"),
-                                        fieldWithPath("data[0].endDate").type(STRING).description("종료 시간"),
+                                        fieldWithPath("data[0].startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("data[0].endDateTime").type(STRING).description("종료 시간"),
                                         fieldWithPath("data[0].colorHex").type(STRING).description("색상")
                                 )
                                 .build()
@@ -94,7 +94,7 @@ class ScheduleControllerTest extends ControllerTest {
     @Test
     void findAvailableTimeForMember() throws Exception {
         mockMvc.perform(get("/api/schedules/weekly/available-time/members/{memberId}", 1L)
-                        .param("todoDate", "2024-03-04")
+                        .param("startDate", "2024-03-04")
                 )
                 .andExpect(status().isOk())
                 .andDo(document("해당 회원의 Weekly 스케줄 가용시간 조회",
@@ -102,11 +102,11 @@ class ScheduleControllerTest extends ControllerTest {
                                 .tag("스케줄")
                                 .summary("해당 회원의 Weekly 스케줄 가용시간 조회")
                                 .queryParameters(
-                                        parameterWithName("todoDate").description("연도 - 월 - 일 정보, ex) 2024-03-04")
+                                        parameterWithName("startDate").description("연도 - 월 - 일 정보, ex) 2024-03-04")
                                 )
                                 .responseFields(
-                                        fieldWithPath("data[0].todoDate").type(STRING).description("시작 시간"),
-                                        fieldWithPath("data[0].endDate").type(STRING).description("종료 시간"),
+                                        fieldWithPath("data[0].startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("data[0].endDateTime").type(STRING).description("종료 시간"),
                                         fieldWithPath("data[0].colorHex").type(STRING).description("색상")
                                 )
                                 .build()
@@ -133,8 +133,8 @@ class ScheduleControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].scheduleName").type(STRING).description("스케줄명"),
                                         fieldWithPath("data[0].dayOfWeek").type(STRING).description("요일"),
                                         fieldWithPath("data[0].colorHex").type(STRING).description("색상"),
-                                        fieldWithPath("data[0].todoDate").type(STRING).description("시작 시간"),
-                                        fieldWithPath("data[0].endDate").type(STRING).description("종료 시간")
+                                        fieldWithPath("data[0].startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("data[0].endDateTime").type(STRING).description("종료 시간")
                                 )
                                 .build()
                         )));
@@ -163,7 +163,7 @@ class ScheduleControllerTest extends ControllerTest {
                                 .summary("에브리타임 URL 공유")
                                 .requestFields(
                                         fieldWithPath("everytimeUrl").type(STRING).description("에브리타임 url"),
-                                        fieldWithPath("todoDate").type(STRING).description("시작 기간"),
+                                        fieldWithPath("startDate").type(STRING).description("시작 기간"),
                                         fieldWithPath("endDate").type(STRING).description("종료 기간")
                                 )
                                 .build()
@@ -193,7 +193,7 @@ class ScheduleControllerTest extends ControllerTest {
                                 .summary("에브리타임 URL 공유")
                                 .requestFields(
                                         fieldWithPath("everytimeUrl").type(STRING).description("에브리타임 id"),
-                                        fieldWithPath("todoDate").type(STRING).description("시작 기간"),
+                                        fieldWithPath("startDate").type(STRING).description("시작 기간"),
                                         fieldWithPath("endDate").type(STRING).description("종료 기간")
                                 )
                                 .responseFields(
@@ -228,8 +228,8 @@ class ScheduleControllerTest extends ControllerTest {
                                 .requestFields(
                                         fieldWithPath("scheduleName").type(STRING).description("스케줄명"),
                                         fieldWithPath("dayOfWeek").type(STRING).description("요일"),
-                                        fieldWithPath("todoDate").type(STRING).description("시작 시간"),
-                                        fieldWithPath("endDate").type(STRING).description("종료 시간")
+                                        fieldWithPath("startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("endDateTime").type(STRING).description("종료 시간")
                                 )
                                 .build()
                         )));
@@ -259,8 +259,8 @@ class ScheduleControllerTest extends ControllerTest {
                                 .requestFields(
                                         fieldWithPath("scheduleName").type(STRING).description("스케줄명"),
                                         fieldWithPath("dayOfWeek").type(STRING).description("요일"),
-                                        fieldWithPath("todoDate").type(STRING).description("시작 시간"),
-                                        fieldWithPath("endDate").type(STRING).description("종료 시간")
+                                        fieldWithPath("startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("endDateTime").type(STRING).description("종료 시간")
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),
@@ -296,8 +296,8 @@ class ScheduleControllerTest extends ControllerTest {
                                         fieldWithPath("scheduleId").type(NUMBER).description("스케줄 id"),
                                         fieldWithPath("scheduleName").type(STRING).description("스케줄명"),
                                         fieldWithPath("dayOfWeek").type(STRING).description("요일"),
-                                        fieldWithPath("todoDate").type(STRING).description("시작 시간"),
-                                        fieldWithPath("endDate").type(STRING).description("종료 시간")
+                                        fieldWithPath("startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("endDateTime").type(STRING).description("종료 시간")
                                 )
                                 .build()
                         )));
@@ -329,8 +329,8 @@ class ScheduleControllerTest extends ControllerTest {
                                         fieldWithPath("scheduleId").type(NUMBER).description("스케줄 id"),
                                         fieldWithPath("scheduleName").type(STRING).description("스케줄명"),
                                         fieldWithPath("dayOfWeek").type(STRING).description("요일"),
-                                        fieldWithPath("todoDate").type(STRING).description("시작 시간"),
-                                        fieldWithPath("endDate").type(STRING).description("종료 시간")
+                                        fieldWithPath("startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("endDateTime").type(STRING).description("종료 시간")
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),
@@ -366,8 +366,8 @@ class ScheduleControllerTest extends ControllerTest {
                                         fieldWithPath("scheduleId").type(NUMBER).description("스케줄 id"),
                                         fieldWithPath("scheduleName").type(STRING).description("스케줄명"),
                                         fieldWithPath("dayOfWeek").type(STRING).description("요일"),
-                                        fieldWithPath("todoDate").type(STRING).description("시작 시간"),
-                                        fieldWithPath("endDate").type(STRING).description("종료 시간")
+                                        fieldWithPath("startDateTime").type(STRING).description("시작 시간"),
+                                        fieldWithPath("endDateTime").type(STRING).description("종료 시간")
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),

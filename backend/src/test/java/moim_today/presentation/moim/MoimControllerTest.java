@@ -78,7 +78,7 @@ class MoimControllerTest extends ControllerTest {
                                                 EnumDocsUtils.getEnumNames(MoimCategory.class))),
                                         fieldWithPath("displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
                                                 EnumDocsUtils.getEnumNames(DisplayStatus.class))),
-                                        fieldWithPath("todoDate").type(STRING).description("시작 일자"),
+                                        fieldWithPath("startDate").type(STRING).description("시작 일자"),
                                         fieldWithPath("endDate").type(STRING).description("종료 일자")
                                 )
                                 .responseFields(
@@ -142,7 +142,7 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
                                                 EnumDocsUtils.getEnumNames(DisplayStatus.class))),
                                         fieldWithPath("views").type(NUMBER).description("조회수"),
-                                        fieldWithPath("todoDate").type(STRING).description("시작 일자"),
+                                        fieldWithPath("startDate").type(STRING).description("시작 일자"),
                                         fieldWithPath("endDate").type(STRING).description("종료 일자")
                                 )
                                 .build()
@@ -217,7 +217,7 @@ class MoimControllerTest extends ControllerTest {
                                                 EnumDocsUtils.getEnumNames(MoimCategory.class))),
                                         fieldWithPath("displayStatus").type(VARIES).description(String.format("수정한 공개 여부 - %s",
                                                 EnumDocsUtils.getEnumNames(DisplayStatus.class))),
-                                        fieldWithPath("todoDate").type(STRING).description("수정한 시작일자"),
+                                        fieldWithPath("startDate").type(STRING).description("수정한 시작일자"),
                                         fieldWithPath("endDate").type(STRING).description("수정한 종료일자")
                                 ).build()
                         )));

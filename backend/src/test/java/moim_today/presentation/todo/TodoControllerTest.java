@@ -126,7 +126,7 @@ public class TodoControllerTest extends ControllerTest {
         mockMvc.perform(
                         get("/api/todos/moim/{moimId}", MOIM_ID.longValue())
                                 .contentType(APPLICATION_JSON)
-                                .queryParam("todoDate", String.valueOf(
+                                .queryParam("startDate", String.valueOf(
                                         YearMonth.of(2024, 05)
                                 ))
                                 .queryParam("months", TWO_MONTHS)
@@ -140,7 +140,7 @@ public class TodoControllerTest extends ControllerTest {
                                 .tag("투두")
                                 .summary("모임의 모든 투두 조회")
                                 .queryParameters(
-                                        parameterWithName("todoDate").description("투두 시작 시간")
+                                        parameterWithName("startDate").description("투두 시작 시간")
                                                 .attributes(key("format").value("yyyy-MM-dd"),
                                                         key("timezone").value("Asia/Seoul")),
                                         parameterWithName("months").description("조회 할 n개월")
@@ -167,7 +167,7 @@ public class TodoControllerTest extends ControllerTest {
         mockMvc.perform(
                         get("/api/todos/moim/{moimId}", MOIM_ID.longValue() + 1L)
                                 .contentType(APPLICATION_JSON)
-                                .queryParam("todoDate", String.valueOf(
+                                .queryParam("startDate", String.valueOf(
                                         YearMonth.of(2024, 5)
                                 ))
                                 .queryParam("months", TWO_MONTHS)
@@ -181,7 +181,7 @@ public class TodoControllerTest extends ControllerTest {
                                 .tag("투두")
                                 .summary("모임의 모든 투두 조회")
                                 .queryParameters(
-                                        parameterWithName("todoDate").description("투두 시작 시간")
+                                        parameterWithName("startDate").description("투두 시작 시간")
                                                 .attributes(key("format").value("yyyy-MM-dd"),
                                                         key("timezone").value("Asia/Seoul")),
                                         parameterWithName("months").description("조회 할 n개월")
@@ -256,47 +256,6 @@ public class TodoControllerTest extends ControllerTest {
                 )
                 .andExpect(status().isNotFound())
                 .andDo(document("투두에 참여하지 않은 멤버라 투두 업데이트 실패",
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("투두")
-                                .summary("투두 업데이트")
-                                .requestHeaders(
-                                        headerWithName("Content-Type").description("application/json")
-                                )
-                                .requestFields(
-                                        fieldWithPath("todoId").type(NUMBER).description("투두 id"),
-                                        fieldWithPath("moimId").type(NUMBER).description("모임 id"),
-                                        fieldWithPath("contents").type(STRING).description("업데이트 할 투두 컨텐츠 값"),
-                                        fieldWithPath("todoProgress").type(VARIES).description(
-                                                String.format("투두 진행 상황 - %s", EnumDocsUtils.getEnumNames(TodoProgress.class))
-                                        ),
-                                        fieldWithPath("todoDate").type(NUMBER).description("투두 시작 시간")
-                                                .attributes(key("format").value("yyyy-MM-dd"),
-                                                        key("timezone").value("Asia/Seoul"))
-                                )
-                                .responseFields(
-                                        fieldWithPath("statusCode").type(JsonFieldType.STRING).description("상태 코드"),
-                                        fieldWithPath("message").type(JsonFieldType.STRING).description("오류 메세지")
-                                )
-                                .build()
-                        ))
-                );
-    }
-
-    @DisplayName("투두의 시작 날짜가 끝나는 날짜보다 뒤이기 때문에 Todo를 업데이트 실패")
-    @Test
-    void updateTodoStartDateError() throws Exception {
-
-        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest(TODO_ID.longValue(), MOIM_ID.longValue()+2L,
-                UPDATE_AFTER_CONTENT.value(), COMPLETED, TODO_DATE);
-
-        String json = objectMapper.writeValueAsString(todoUpdateRequest);
-
-        mockMvc.perform(patch("/api/todos")
-                        .contentType(APPLICATION_JSON)
-                        .content(json)
-                )
-                .andExpect(status().isBadRequest())
-                .andDo(document("투두 시작 날짜 설정 오류로 에러",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("투두")
                                 .summary("투두 업데이트")

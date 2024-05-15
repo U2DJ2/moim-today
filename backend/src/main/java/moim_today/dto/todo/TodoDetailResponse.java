@@ -14,7 +14,7 @@ public record TodoDetailResponse(
         TodoProgress todoProgress,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-        LocalDate todoDateTime
+        LocalDate todoDate
 ) {
 
     public static TodoDetailResponse from(final TodoJpaEntity todoJpaEntity){
@@ -22,7 +22,7 @@ public record TodoDetailResponse(
                 .moimId(todoJpaEntity.getMoimId())
                 .contents(todoJpaEntity.getContents())
                 .todoProgress(todoJpaEntity.getTodoProgress())
-                .todoDateTime(todoJpaEntity.getTodoDate())
+                .todoDate(todoJpaEntity.getTodoDate())
                 .build();
     }
 }
