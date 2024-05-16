@@ -1,6 +1,5 @@
 package moim_today.persistence.entity.meeting.meeting_comment;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
