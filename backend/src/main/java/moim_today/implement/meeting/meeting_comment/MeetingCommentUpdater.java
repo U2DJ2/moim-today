@@ -12,9 +12,12 @@ import java.util.List;
 public class MeetingCommentUpdater {
 
     private final MeetingCommentRepository meetingCommentRepository;
+    private final MeetingCommentFinder meetingCommentFinder;
 
-    public MeetingCommentUpdater(final MeetingCommentRepository meetingCommentRepository) {
+    public MeetingCommentUpdater(final MeetingCommentRepository meetingCommentRepository,
+                                 final MeetingCommentFinder meetingCommentFinder) {
         this.meetingCommentRepository = meetingCommentRepository;
+        this.meetingCommentFinder = meetingCommentFinder;
     }
 
     @Transactional
@@ -23,7 +26,8 @@ public class MeetingCommentUpdater {
     }
 
     @Transactional
-    public void updateMeetingComment(final MeetingCommentJpaEntity meetingCommentJpaEntity, final MeetingCommentUpdateRequest meetingCommentUpdateRequest) {
+    public void updateMeetingComment(final long meetingCommentId, final MeetingCommentUpdateRequest meetingCommentUpdateRequest) {
+        MeetingCommentJpaEntity meetingCommentJpaEntity = meetingCommentFinder.getById(meetingCommentId);
         meetingCommentJpaEntity.updateMeetingComment(meetingCommentUpdateRequest);
     }
 }

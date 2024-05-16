@@ -1,5 +1,6 @@
 package moim_today.implement.meeting.meeting_comment;
 
+import moim_today.dto.meeting.meeting_comment.MeetingCommentUpdateRequest;
 import moim_today.persistence.entity.meeting.meeting_comment.MeetingCommentJpaEntity;
 import moim_today.util.ImplementTest;
 import org.junit.jupiter.api.DisplayName;
@@ -8,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static moim_today.util.TestConstant.MEETING_ID;
-import static moim_today.util.TestConstant.MEMBER_ID;
+import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MeetingCommentUpdaterTest extends ImplementTest {
@@ -98,5 +98,28 @@ class MeetingCommentUpdaterTest extends ImplementTest {
         long findMeetingCommentId2 = meetingCommentRepository.findById(savedMeetingComment4.getId())
                 .getMemberId();
         assertThat(findMeetingCommentId2).isEqualTo(stillInMemberId2);
+    }
+    
+    @DisplayName("댓글을 수정한다.")
+    @Test
+    void updateMeetingComment(){
+        //given
+        MeetingCommentJpaEntity meetingCommentJpaEntity = MeetingCommentJpaEntity.builder()
+                .build();
+
+        meetingCommentRepository.save(meetingCommentJpaEntity);
+        long commentId = meetingCommentJpaEntity.getId();
+        String commentContents = MEETING_COMMENT_CONTENTS.value();
+
+        MeetingCommentUpdateRequest meetingCommentUpdateRequest = MeetingCommentUpdateRequest.builder()
+                .meetingCommentId(commentId)
+                .contents(commentContents).build();
+
+        //when
+        meetingCommentUpdater.updateMeetingComment(commentId, meetingCommentUpdateRequest);
+
+        //then
+        MeetingCommentJpaEntity updatedMeetingComment = meetingCommentRepository.getById(commentId);
+        assertThat(updatedMeetingComment.getContents()).isEqualTo(commentContents);
     }
 }

@@ -56,8 +56,9 @@ public class MeetingCommentServiceImpl implements MeetingCommentService {
     @Transactional
     @Override
     public void updateMeetingComment(final long memberId, final MeetingCommentUpdateRequest meetingCommentUpdateRequest) {
-        MeetingCommentJpaEntity meetingCommentJpaEntity = meetingCommentFinder.getById(meetingCommentUpdateRequest.meetingCommentId());
+        long meetingCommentId = meetingCommentUpdateRequest.meetingCommentId();
+        MeetingCommentJpaEntity meetingCommentJpaEntity = meetingCommentFinder.getById(meetingCommentId);
         meetingCommentJpaEntity.validateMember(memberId);
-        meetingCommentUpdater.updateMeetingComment(meetingCommentJpaEntity, meetingCommentUpdateRequest);
+        meetingCommentUpdater.updateMeetingComment(meetingCommentId, meetingCommentUpdateRequest);
     }
 }
