@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import static moim_today.util.TestConstant.MEMBER_ID;
@@ -23,86 +23,109 @@ class TodoFinderTest extends ImplementTest {
     @Test
     void findAllByDateRange() {
 
-        List<LocalDateTime> startDateTimes = List.of(
-                LocalDateTime.of(2024, 5, 11, 0, 0, 0),
-                LocalDateTime.of(2024, 5, 10, 0, 0, 0)
-        );
-
-        List<LocalDateTime> endDateTimes = List.of(
-                LocalDateTime.of(2024, 5, 11, 0, 0, 0),
-                LocalDateTime.of(2024, 5, 12, 0, 0, 0)
+        //given1
+        List<LocalDate> shouldInvolveTodoDate = List.of(
+                LocalDate.of(2024, 5, 10),
+                LocalDate.of(2024, 5, 11)
         );
 
         TodoJpaEntity todoJpa1 = TodoJpaEntity.builder()
                 .memberId(MEMBER_ID.longValue())
                 .moimId((MOIM_ID.longValue()))
-                .startDateTime(startDateTimes.get(0))
-                .endDateTime(endDateTimes.get(0))
+                .todoDate(shouldInvolveTodoDate.get(0))
                 .build();
 
         TodoJpaEntity todoJpa2 = TodoJpaEntity.builder()
                 .memberId(MEMBER_ID.longValue())
                 .moimId((MOIM_ID.longValue()))
-                .startDateTime(startDateTimes.get(1))
-                .endDateTime(endDateTimes.get(1))
-                .build();
-
-        TodoJpaEntity todoJpa3 = TodoJpaEntity.builder()
-                .memberId(MEMBER_ID.longValue())
-                .moimId((MOIM_ID.longValue()))
-                .startDateTime(LocalDateTime.of(2024, 5, 10, 0, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 5, 13, 0, 0, 0))
+                .todoDate(shouldInvolveTodoDate.get(1))
                 .build();
 
         todoRepository.save(todoJpa1);
         todoRepository.save(todoJpa2);
+
+        //given2
+        List<LocalDate> shouldNotInvolveTodoDate = List.of(
+                LocalDate.of(2024, 5, 9),
+                LocalDate.of(2024, 5, 13)
+        );
+
+        TodoJpaEntity todoJpa3 = TodoJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .moimId((MOIM_ID.longValue()))
+                .todoDate(shouldNotInvolveTodoDate.get(0))
+                .build();
+
+        TodoJpaEntity todoJpa4 = TodoJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .moimId((MOIM_ID.longValue()))
+                .todoDate(shouldNotInvolveTodoDate.get(1))
+                .build();
+
         todoRepository.save(todoJpa3);
+        todoRepository.save(todoJpa4);
 
-        LocalDateTime testStartTime = LocalDateTime.of(2024, 5, 10, 0, 0, 0);
-        LocalDateTime testEndTime = LocalDateTime.of(2024, 5, 12, 0, 0, 0);
+        // when
+        LocalDate getTodoFrom = LocalDate.of(2024, 5, 10);
+        LocalDate getTodoTo = LocalDate.of(2024, 5, 12);
         List<TodoResponse> todoResponses = todoFinder.findAllByDateRange(MEMBER_ID.longValue(), MOIM_ID.longValue(),
-                testStartTime, testEndTime);
+                getTodoFrom, getTodoTo);
 
+        // then
         assertThat(todoResponses.size()).isEqualTo(2);
         todoResponses.forEach(todoResponse -> {
-            assertThat(todoResponse.startDateTime()).isIn(startDateTimes);
-            assertThat(todoResponse.endDateTime()).isIn(endDateTimes);
+            assertThat(todoResponse.todoDate()).isIn(shouldInvolveTodoDate);
         });
     }
 
     @DisplayName("다른 모임이나 다른 멤버의 Todo는 가져오지 않는다")
     @Test
     void findAllByDateRangeExceptAnother() {
+
+        // given1
         TodoJpaEntity todoJpa1 = TodoJpaEntity.builder()
                 .memberId(MEMBER_ID.longValue())
                 .moimId((MOIM_ID.longValue()))
-                .startDateTime(LocalDateTime.of(2024, 5, 11, 0, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 5, 11, 0, 0, 0))
+                .todoDate(LocalDate.of(2024, 5, 10))
                 .build();
 
         TodoJpaEntity todoJpa2 = TodoJpaEntity.builder()
                 .memberId(MEMBER_ID.longValue())
-                .moimId((MOIM_ID.longValue() + 1L))
-                .startDateTime(LocalDateTime.of(2024, 5, 10, 0, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 5, 12, 0, 0, 0))
+                .moimId((MOIM_ID.longValue()))
+                .todoDate(LocalDate.of(2024, 5, 11))
                 .build();
 
         TodoJpaEntity todoJpa3 = TodoJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .moimId((MOIM_ID.longValue()))
+                .todoDate(LocalDate.of(2024, 5, 12))
+                .build();
+
+        // given2
+        TodoJpaEntity todoJpa4 = TodoJpaEntity.builder()
                 .memberId(MEMBER_ID.longValue() + 1L)
                 .moimId((MOIM_ID.longValue()))
-                .startDateTime(LocalDateTime.of(2024, 5, 10, 0, 0, 0))
-                .endDateTime(LocalDateTime.of(2024, 5, 12, 0, 0, 0))
+                .todoDate(LocalDate.of(2024, 5, 10))
+                .build();
+
+
+        TodoJpaEntity todoJpa5 = TodoJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .moimId((MOIM_ID.longValue()))
+                .todoDate(LocalDate.of(2024, 5, 13))
                 .build();
 
         todoRepository.save(todoJpa1);
         todoRepository.save(todoJpa2);
         todoRepository.save(todoJpa3);
+        todoRepository.save(todoJpa4);
+        todoRepository.save(todoJpa5);
 
-        LocalDateTime testStartTime = LocalDateTime.of(2024, 5, 10, 0, 0, 0);
-        LocalDateTime testEndTime = LocalDateTime.of(2024, 5, 12, 0, 0, 0);
+        LocalDate getTodoFrom = LocalDate.of(2024, 5, 10);
+        LocalDate getTodoTo = LocalDate.of(2024, 5, 12);
         List<TodoResponse> todoResponses = todoFinder.findAllByDateRange(MEMBER_ID.longValue(), MOIM_ID.longValue(),
-                testStartTime, testEndTime);
+                getTodoFrom, getTodoTo);
 
-        assertThat(todoResponses.size()).isEqualTo(1);
+        assertThat(todoResponses.size()).isEqualTo(3);
     }
 }

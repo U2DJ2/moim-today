@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static moim_today.domain.meeting.enums.MeetingStatus.*;
-import static moim_today.util.TestConstant.*;
+import static moim_today.util.TestConstant.MEETING_AGENDA;
 import static moim_today.util.TestConstant.MEETING_PLACE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;

@@ -75,4 +75,9 @@ public class MoimManager {
     public boolean isHost(final long memberId, final long moimId){
         return moimFinder.isHost(memberId, moimId);
     }
+
+    @Transactional(readOnly = true)
+    public String getTitleById(final Long moimId) {
+        return moimFinder.getTitleById(moimId);
+    }
 }

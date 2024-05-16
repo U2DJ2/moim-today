@@ -5,7 +5,7 @@ import moim_today.global.annotation.Implement;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
 import moim_today.persistence.repository.todo.TodoRepository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Implement
@@ -19,9 +19,9 @@ public class TodoFinder {
 
     public List<TodoResponse> findAllByDateRange(final long memberId,
                                                  final long moimId,
-                                                 final LocalDateTime startDateTime,
-                                                 final LocalDateTime endDateTime) {
-        return todoRepository.findAllByDateRange(memberId, moimId, startDateTime, endDateTime);
+                                                 final LocalDate startDate,
+                                                 final LocalDate endDate) {
+        return todoRepository.findAllByDateRange(memberId, moimId, startDate, endDate);
     }
 
     public TodoJpaEntity getById(final long todoId){

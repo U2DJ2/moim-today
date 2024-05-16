@@ -8,6 +8,8 @@ public interface JoinedMoimRepository {
 
     List<Long> findAllJoinedMemberId(final long moimId);
 
+    List<Long> findMoimIdsByMemberId(final long memberId);
+
     void deleteAllByMoimId(final long moimId);
 
     long count();

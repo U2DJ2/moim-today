@@ -6,20 +6,16 @@ import lombok.Builder;
 import moim_today.domain.todo.enums.TodoProgress;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Builder
 public record TodoCreateRequest(
         long moimId,
         String contents,
 
-        @NotNull(message = "startDateTime 누락")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-        LocalDateTime startDateTime,
-
-        @NotNull(message = "endDateTime 누락")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-        LocalDateTime endDateTime
+        @NotNull(message = "todoDate 누락")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+        LocalDate todoDate
 ) {
 
     public TodoJpaEntity toEntity(final long memberId){
@@ -28,12 +24,7 @@ public record TodoCreateRequest(
                 .memberId(memberId)
                 .contents(contents)
                 .todoProgress(TodoProgress.PENDING)
-                .startDateTime(startDateTime)
-                .endDateTime(endDateTime)
+                .todoDate(todoDate)
                 .build();
-    }
-
-    public boolean checkStartBeforeOrEqualEnd(){
-        return !startDateTime.isAfter(endDateTime);
     }
 }

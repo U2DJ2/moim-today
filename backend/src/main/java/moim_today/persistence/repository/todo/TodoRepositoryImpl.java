@@ -7,7 +7,7 @@ import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import static moim_today.global.constant.exception.TodoExceptionConstant.TODO_NOT_FOUND_ERROR;
@@ -51,21 +51,19 @@ public class TodoRepositoryImpl implements TodoRepository {
 
     @Override
     public List<TodoResponse> findAllByDateRange(final long memberId, final long moimId,
-                                                 final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
-        return queryFactory.select(
+                                                 final LocalDate startDate, final LocalDate endDate) {
+                return queryFactory.select(
                 new QTodoResponse(
                         todoJpaEntity.id,
                         todoJpaEntity.contents,
                         todoJpaEntity.todoProgress,
-                        todoJpaEntity.startDateTime,
-                        todoJpaEntity.endDateTime
+                        todoJpaEntity.todoDate
                 ))
                 .from(todoJpaEntity)
                 .where(
                         todoJpaEntity.memberId.eq(memberId)
                                 .and(todoJpaEntity.moimId.eq(moimId))
-                                .and(todoJpaEntity.startDateTime.between(startDateTime, endDateTime))
-                                .and(todoJpaEntity.endDateTime.between(startDateTime, endDateTime))
+                                .and(todoJpaEntity.todoDate.between(startDate, endDate))
                 )
                 .fetch();
     }
@@ -76,6 +74,7 @@ public class TodoRepositoryImpl implements TodoRepository {
                 .orElseThrow(() -> new NotFoundException(TODO_NOT_FOUND_ERROR.message()));
     }
 
+    //
     @Override
     public void deleteById(final long todoId) {
         todoJpaRepository.deleteById(todoId);

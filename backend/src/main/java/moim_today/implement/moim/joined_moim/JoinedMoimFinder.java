@@ -46,4 +46,8 @@ public class JoinedMoimFinder {
             throw new BadRequestException(MEMBER_ALREADY_JOINED.message());
         }
     }
+
+    public List<Long> findMoimIdsByMemberId(final long memberId) {
+        return joinedMoimRepository.findMoimIdsByMemberId(memberId);
+    }
 }

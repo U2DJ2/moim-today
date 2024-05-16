@@ -8,7 +8,7 @@ import moim_today.dto.todo.TodoUpdateRequest;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Table(name = "todo")
@@ -30,29 +30,23 @@ public class TodoJpaEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private TodoProgress todoProgress;
 
-    private LocalDateTime startDateTime;
-
-    private LocalDateTime endDateTime;
-
-    protected TodoJpaEntity() {
-    }
+    private LocalDate todoDate;
 
     @Builder
-    private TodoJpaEntity(final long moimId, final long memberId, final String contents,
-                          final TodoProgress todoProgress, final LocalDateTime startDateTime,
-                          final LocalDateTime endDateTime) {
+    public TodoJpaEntity(final long moimId, final long memberId, final String contents, final TodoProgress todoProgress, final LocalDate todoDate) {
         this.moimId = moimId;
         this.memberId = memberId;
         this.contents = contents;
         this.todoProgress = todoProgress;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+        this.todoDate = todoDate;
+    }
+
+    protected TodoJpaEntity() {
     }
 
     public void updateTodo(final TodoUpdateRequest todoUpdateRequest) {
         this.todoProgress = todoUpdateRequest.todoProgress();
         this.contents = todoUpdateRequest.contents();
-        this.startDateTime = todoUpdateRequest.startDateTime();
-        this.endDateTime = todoUpdateRequest.endDateTime();
+        this.todoDate = todoUpdateRequest.todoDate();
     }
 }

@@ -18,4 +18,8 @@ public class JoinedMoimManager {
     public List<Long> findAllJoinedMemberId(final long moimId) {
         return joinedMoimFinder.findAllJoinedMemberId(moimId);
     }
+
+    public List<Long> findMoimIdsByMemberId(final long memberId) {
+        return joinedMoimFinder.findMoimIdsByMemberId(memberId);
+    }
 }
