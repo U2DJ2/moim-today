@@ -3,26 +3,27 @@ package moim_today.domain.schedule.enums;
 
 public enum ColorHex {
 
-    RED("#FFCCCC"),
-    GREEN("#99FF99"),
-    BLUE("#CCCCFF"),
-    YELLOW("#fafaaf"),
-    MAGENTA("#FFCCFF"),
-    PURPLE("#E6CCFF"),
-    MINT("#c2f2e7"),
-    CYAN("#CCFFFF"),
-    BLACK("#CCCCCC"),
-    ORANGE("#FFD9B3"),
-    PINK("#FFE6EB"),
-    LIME("#CCFFCC"),
-    TEAL("#B3FFFF"),
-    BROWN("#E6B8B7"),
-    NAVY("#CCCCE0"),
-    OLIVE("#E6E6CC"),
-    MAROON("#E6CCCC"),
-    AQUA("#CCFFFF"),
-    GRAY("#E0E0E0"),
-    CORAL("#FFCCB3");
+    RED("#CC6666"),
+    GREEN("#66CC66"),
+    BLUE("#6666CC"),
+    YELLOW("#CCCC66"),
+    MAGENTA("#CC66CC"),
+    PURPLE("#9966CC"),
+    MINT("#66CCCC"),
+    CYAN("#66CCCC"),
+    BLACK("#666666"),
+    ORANGE("#CC9966"),
+    PINK("#CC6666"),
+    LIME("#66CC66"),
+    TEAL("#66CCCC"),
+    BROWN("#996666"),
+    NAVY("#666699"),
+    OLIVE("#999966"),
+    MAROON("#993333"),
+    AQUA("#66CCCC"),
+    GRAY("#999999"),
+    CORAL("#CC6666");
+
 
     private final String value;
 
