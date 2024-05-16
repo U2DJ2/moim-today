@@ -13,4 +13,6 @@ public interface MeetingCommentService {
     List<MeetingCommentResponse> findAllByMeetingId(final long memberId, final long meetingId);
 
     void updateMeetingComment(final long memberId, final MeetingCommentUpdateRequest meetingCommentUpdateRequest);
+
+    void deleteMeetingComment(final long memberId, final long meetingCommentId);
 }

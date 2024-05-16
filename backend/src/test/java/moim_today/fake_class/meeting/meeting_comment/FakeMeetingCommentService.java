@@ -50,4 +50,9 @@ public class FakeMeetingCommentService implements MeetingCommentService {
     public void updateMeetingComment(final long memberId, final MeetingCommentUpdateRequest meetingCommentUpdateRequest) {
 
     }
+
+    @Override
+    public void deleteMeetingComment(final long memberId, final long meetingCommentId) {
+
+    }
 }

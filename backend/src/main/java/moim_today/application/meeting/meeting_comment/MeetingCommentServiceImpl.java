@@ -61,4 +61,11 @@ public class MeetingCommentServiceImpl implements MeetingCommentService {
         meetingCommentJpaEntity.validateMember(memberId);
         meetingCommentUpdater.updateMeetingComment(meetingCommentId, meetingCommentUpdateRequest);
     }
+
+    @Override
+    public void deleteMeetingComment(final long memberId, final long meetingCommentId) {
+        MeetingCommentJpaEntity meetingCommentJpaEntity = meetingCommentFinder.getById(meetingCommentId);
+        meetingCommentJpaEntity.validateMember(memberId);
+        meetingCommentRemover.deleteById(meetingCommentId);
+    }
 }

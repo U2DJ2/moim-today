@@ -3,6 +3,7 @@ package moim_today.presentation.meeting.meeting_comment;
 import moim_today.application.meeting.meeting_comment.MeetingCommentService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.meeting.meeting_comment.MeetingCommentCreateRequest;
+import moim_today.dto.meeting.meeting_comment.MeetingCommentDeleteRequest;
 import moim_today.dto.meeting.meeting_comment.MeetingCommentResponse;
 import moim_today.dto.meeting.meeting_comment.MeetingCommentUpdateRequest;
 import moim_today.global.annotation.Login;
@@ -37,5 +38,11 @@ public class MeetingCommentController {
     public void updateMeetingComment(@Login final MemberSession memberSession,
                                      @RequestBody final MeetingCommentUpdateRequest meetingCommentUpdateRequest) {
         meetingCommentService.updateMeetingComment(memberSession.id(), meetingCommentUpdateRequest);
+    }
+
+    @DeleteMapping
+    public void deleteMeetingComment(@Login final MemberSession memberSession,
+                                     @RequestBody final MeetingCommentDeleteRequest deleteMeetingCommentRequest) {
+        meetingCommentService.deleteMeetingComment(memberSession.id(), deleteMeetingCommentRequest.meetingCommentId());
     }
 }

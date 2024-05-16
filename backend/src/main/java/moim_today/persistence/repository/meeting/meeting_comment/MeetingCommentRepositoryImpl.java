@@ -71,4 +71,9 @@ public class MeetingCommentRepositoryImpl implements MeetingCommentRepository {
         return meetingCommentJpaRepository.findById(meetingCommentId)
                 .orElseThrow(() -> new NotFoundException(MEETING_COMMENT_NOT_FOUND_ERROR.message()));
     }
+
+    @Override
+    public void deleteById(final long meetingCommentId) {
+        meetingCommentJpaRepository.deleteById(meetingCommentId);
+    }
 }

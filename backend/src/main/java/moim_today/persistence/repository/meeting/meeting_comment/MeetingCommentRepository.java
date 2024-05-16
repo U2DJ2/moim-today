@@ -18,4 +18,6 @@ public interface MeetingCommentRepository {
     List<MeetingCommentResponse> findAllByMeetingId(final long meetingId);
 
     MeetingCommentJpaEntity getById(final long meetingCommentId);
+
+    void deleteById(final long meetingCommentId);
 }
