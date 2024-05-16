@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import MiniCalendar from "../ToDo/MiniCalendar";
-import Calendar from "../../../components/Calendar";
+import Calendar from "../../../components/Calendar/PersonalCalendar";
 
 function AvailableTime() {
   const [selectedDate, setSelectedDate] = useState(null);
