@@ -21,7 +21,7 @@ class CollectionResponseTest {
         members.add(memberB);
 
         //when
-        CollectionResponse<ArrayList<Member>> arrayListCollectionResponse = CollectionResponse.of(members);
+        CollectionResponse<ArrayList<Member>> arrayListCollectionResponse = CollectionResponse.from(members);
 
         //then
         assertThat(arrayListCollectionResponse.data()).contains(memberA, memberB);

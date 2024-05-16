@@ -36,7 +36,7 @@ public class MeetingController {
             @RequestParam final MeetingStatus meetingStatus) {
         List<MeetingSimpleResponse> meetingSimpleResponses =
                 meetingService.findAllByMoimId(moimId, memberSession.id(), meetingStatus);
-        return CollectionResponse.of(meetingSimpleResponses);
+        return CollectionResponse.from(meetingSimpleResponses);
     }
 
     @GetMapping("/detail/{meetingId}")

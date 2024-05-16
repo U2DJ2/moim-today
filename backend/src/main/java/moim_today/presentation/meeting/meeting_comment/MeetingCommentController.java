@@ -29,6 +29,6 @@ public class MeetingCommentController {
     @GetMapping("/{meetingId}")
     public CollectionResponse<List<MeetingCommentResponse>> findAllByMeetingId(@Login final MemberSession memberSession,
                                                                                @PathVariable final long meetingId) {
-        return CollectionResponse.of(meetingCommentService.findAllByMeetingId(memberSession.id(), meetingId));
+        return CollectionResponse.from(meetingCommentService.findAllByMeetingId(memberSession.id(), meetingId));
     }
 }
