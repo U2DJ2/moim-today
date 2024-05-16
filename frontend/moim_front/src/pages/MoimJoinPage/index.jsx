@@ -9,6 +9,7 @@ import Modal from "../../components/Modal/ModalTest";
 import { useParams } from "react-router";
 
 import { fetchMeetings, fetchMoimInfo, fetchNotices } from "../../api/moim";
+import { checkWriter } from "../../api/users";
 
 function MoimJoinPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +21,8 @@ function MoimJoinPage() {
   const [notices, setNotices] = useState([]);
   const [moimInfo, setMoimInfo] = useState([]);
   const [meetings, setMeetings] = useState([]);
+
+  const [isHost, setIsHost] = useState(false);
   const { MoimId } = useParams();
 
   const getNotices = async () => {
@@ -43,14 +46,24 @@ function MoimJoinPage() {
   const getMeetings = async () => {
     try {
       const result = await fetchMeetings(MoimId, meetingOption);
-      console.log(result.data.data);
+      // console.log(result.data.data);/
       setMeetings(result.data.data);
     } catch (e) {
       console.log(e);
     }
   };
 
+  const getHost = async () => {
+    try {
+      const result = await checkWriter(MoimId);
+      setIsHost(result.data.isHost);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
+    getHost();
     getNotices();
     getMeetings();
     getInfo();

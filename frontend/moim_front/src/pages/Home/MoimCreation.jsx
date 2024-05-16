@@ -189,7 +189,6 @@ function ImageUploader({ setUploadFile }) {
 
 export default function MoimCreation() {
   const [uploadFileUrl, setUploadFile] = useState(null);
-  const [displayStatus, setDisplay] = useState("PRIVATE");
   const [category, setCategory] = useState("STUDY");
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
@@ -198,14 +197,15 @@ export default function MoimCreation() {
   const [endDate, setEndDate] = useState("");
   const [capacity, setCapacity] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
+  const [displayStatus, setDisplay] = useState("PRIVATE");
 
   const navigate = useNavigate();
 
   const handleVisibility = (event) => {
-    setIsChecked(event.target.checked); // 체크 여부를 가져옵니다.
-    // isChecked 값에 따라 필요한 작업을 수행합니다.
+    console.log(!event.target.value);
+    setIsChecked(!event.target.value);
     console.log("체크 여부:", !isChecked);
-    isChecked ? setDisplay("PUBLIC") : setDisplay("PRIVATE");
+    const status = isChecked ? setDisplay("PUBLIC") : setDisplay("PRIVATE");
     console.log(displayStatus);
   };
 
