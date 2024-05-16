@@ -22,14 +22,16 @@ export default function Calendar({ selectedDate }) {
     const currentYear = new Date().getFullYear();
 
     // Fetch all events on component mount
-    fetchAllEvents(currentYear).catch(console.error);
+    // fetchAllEvents(currentYear).catch(console.error);
+
+    fetchAllEvents(currentYear);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (calendarRef.current && selectedDate) {
-      calendarRef.current.getApi().gotoDate(selectedDate.toDate());
+      calendarRef.current.getApi().gotoDate(selectedDate);
     }
   }, [selectedDate]);
 
@@ -97,6 +99,41 @@ export default function Calendar({ selectedDate }) {
     }
   }
 
+  // Function to handle event add
+  async function handleEventAdd(info) {
+    try {
+      const eventData = {
+        scheduleName: info.event.title,
+        startDateTime: info.event.start,
+        endDateTime: info.event.end,
+      };
+
+      await axios.post("https://api.moim.today/api/schedules/", eventData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log(
+        "Event added and sent to the backend:",
+        info.event.start,
+        info.event.end
+      );
+    } catch (error) {
+      console.error("Error adding event:", error);
+    }
+  }
+
+  // Function to handle event change
+  function handleEventChange(info) {
+    console.log("Event changed:", info.event);
+  }
+
+  // Function to handle event remove
+  function handleEventRemove(info) {
+    console.log("Event removed:", info.event);
+  }
+
   // Function to create unique event ID
   function createEventId() {
     return String(eventGuid++);
@@ -129,6 +166,9 @@ export default function Calendar({ selectedDate }) {
         eventChange={function(){}}
         eventRemove={function(){}}
         */
+          eventAdd={handleEventAdd}
+          eventChange={handleEventChange}
+          eventRemove={handleEventRemove}
         />
       </div>
     </div>
