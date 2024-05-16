@@ -7,7 +7,7 @@ import moim_today.dto.meeting.MeetingSimpleDao;
 import moim_today.dto.meeting.MeetingSimpleResponse;
 import moim_today.implement.meeting.meeting.MeetingFinder;
 import moim_today.implement.meeting.meeting.MeetingManager;
-import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
+import moim_today.implement.meeting.meeting.MeetingRemover;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,10 +18,13 @@ public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingManager meetingManager;
     private final MeetingFinder meetingFinder;
+    private final MeetingRemover meetingRemover;
 
-    public MeetingServiceImpl(final MeetingManager meetingManager, final MeetingFinder meetingFinder) {
+    public MeetingServiceImpl(final MeetingManager meetingManager, final MeetingFinder meetingFinder,
+                              final MeetingRemover meetingRemover) {
         this.meetingManager = meetingManager;
         this.meetingFinder = meetingFinder;
+        this.meetingRemover = meetingRemover;
     }
 
     @Override
@@ -40,5 +43,10 @@ public class MeetingServiceImpl implements MeetingService {
     @Override
     public MeetingDetailResponse findDetailsById(final long meetingId) {
         return meetingFinder.findDetailsById(meetingId);
+    }
+
+    @Override
+    public void deleteMeeting(final long memberId, final long meetingId) {
+        meetingRemover.deleteMeeting(meetingId, meetingId);
     }
 }

@@ -17,11 +17,15 @@ public interface MeetingRepository {
 
     List<MeetingSimpleDao> findAllPastByMoimId(final long moimId, final long memberId, final LocalDateTime currentDateTime);
 
+    long findHostIdByMeetingId(final long meetingId);
+
     List<UpcomingMeetingNoticeResponse> findUpcomingNotices(final LocalDateTime currentDateTime);
 
     MeetingJpaEntity getById(final long meetingId);
 
     MeetingJpaEntity save(final MeetingJpaEntity meetingJpaEntity);
+
+    void delete(final MeetingJpaEntity meetingJpaEntity);
 
     long count();
 }
