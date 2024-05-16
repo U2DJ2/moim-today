@@ -131,13 +131,14 @@ function MoimJoinPage() {
             meetings={meetings}
             meetingOption={meetingOption}
             setMeetingOption={setMeetingOption}
+            isHost={isHost}
           />
         ) : selected === "되는시간" ? (
           <AvailableTime />
         ) : selected === "ToDo" ? (
           <ToDo />
         ) : selected === "멤버" ? (
-          <Member />
+          <Member isHost={isHost} MoimId={MoimId} />
         ) : null}
       </div>
       <Modal

@@ -30,3 +30,9 @@ export const fetchMeetings = async (moimId, meetingStatus) => {
   );
   return result;
 };
+export const fetchMembers = async (moimId) => {
+  const result = await axios.get(
+    `https://api.moim.today/api/moims/members/${moimId}`
+  );
+  return result;
+};
