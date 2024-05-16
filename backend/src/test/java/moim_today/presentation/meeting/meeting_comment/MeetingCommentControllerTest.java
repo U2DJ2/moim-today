@@ -3,6 +3,7 @@ package moim_today.presentation.meeting.meeting_comment;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.meeting.meeting_comment.MeetingCommentService;
 import moim_today.dto.meeting.meeting_comment.MeetingCommentCreateRequest;
+import moim_today.dto.meeting.meeting_comment.MeetingCommentDeleteRequest;
 import moim_today.dto.meeting.meeting_comment.MeetingCommentUpdateRequest;
 import moim_today.fake_class.meeting.meeting_comment.FakeMeetingCommentService;
 import moim_today.util.ControllerTest;
@@ -91,8 +92,28 @@ class MeetingCommentControllerTest extends ControllerTest {
                                 .tag("미팅 댓글")
                                 .summary("미팅 댓글 수정")
                                 .requestFields(
-                                        fieldWithPath("meetingCommentId").type(NUMBER).description("댓글 Id"),
-                                        fieldWithPath("contents").type(STRING).description("댓글 내용")
+                                        fieldWithPath("meetingCommentId").type(NUMBER).description("수정할 댓글 Id"),
+                                        fieldWithPath("contents").type(STRING).description("수정할 댓글 내용")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("미팅의 댓글을 삭제한다.")
+    @Test
+    void deleteMeetingComment() throws Exception {
+        MeetingCommentDeleteRequest meetingCommentDeleteRequest = new MeetingCommentDeleteRequest(MEETING_COMMENT_ID.longValue());
+
+        mockMvc.perform(delete("/api/meeting-comments/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(meetingCommentDeleteRequest)))
+                .andExpect(status().isOk())
+                .andDo(document("미팅 댓글 삭제 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅 댓글")
+                                .summary("미팅 댓글 삭제")
+                                .requestFields(
+                                        fieldWithPath("meetingCommentId").type(NUMBER).description("삭제할 댓글 Id")
                                 )
                                 .build()
                         )));
