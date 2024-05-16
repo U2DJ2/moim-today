@@ -22,8 +22,10 @@ export default function Calendar({ selectedDate }) {
     const currentYear = new Date().getFullYear();
 
     // Fetch all events on component mount
+    // fetchAllEvents(currentYear).catch(console.error);
+
     fetchAllEvents(currentYear);
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -38,7 +40,9 @@ export default function Calendar({ selectedDate }) {
       let allEvents = [];
       for (let month = 1; month <= 8; month++) {
         const response = await axios.get(
-          `https://api.moim.today/api/schedules/monthly?yearMonth=${year}-${month < 10 ? '0' + month : month}`,
+          `https://api.moim.today/api/schedules/monthly?yearMonth=${year}-${
+            month < 10 ? "0" + month : month
+          }`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -101,18 +105,22 @@ export default function Calendar({ selectedDate }) {
       const eventData = {
         scheduleName: info.event.title,
         startDateTime: info.event.start,
-        endDateTime: info.event.end
+        endDateTime: info.event.end,
       };
 
-      await axios.post('https://api.moim.today/api/schedules/', eventData, {
+      await axios.post("https://api.moim.today/api/schedules/", eventData, {
         headers: {
-          'Content-Type': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
       });
 
-      console.log('Event added and sent to the backend:', info.event.start, info.event.end);
+      console.log(
+        "Event added and sent to the backend:",
+        info.event.start,
+        info.event.end
+      );
     } catch (error) {
-      console.error('Error adding event:', error);
+      console.error("Error adding event:", error);
     }
   }
 
@@ -125,7 +133,6 @@ export default function Calendar({ selectedDate }) {
   function handleEventRemove(info) {
     console.log("Event removed:", info.event);
   }
-
 
   // Function to create unique event ID
   function createEventId() {
@@ -153,6 +160,12 @@ export default function Calendar({ selectedDate }) {
           select={handleDateSelect}
           eventContent={renderEventContent} // custom render function
           eventClick={handleEventClick}
+          // you can update a remote database when these fire:
+          /*
+        eventAdd={function(){}}
+        eventChange={function(){}}
+        eventRemove={function(){}}
+        */
           eventAdd={handleEventAdd}
           eventChange={handleEventChange}
           eventRemove={handleEventRemove}

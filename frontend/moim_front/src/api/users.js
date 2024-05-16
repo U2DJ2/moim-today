@@ -11,3 +11,10 @@ export const checkEmailValid = async (data) =>
       baseURL: properties.baseURL,
     },
   });
+
+export const checkWriter = async (moimId) => {
+  const result = await axios.get(
+    `https://api.moim.today/api/members/${moimId}/hosts`
+  );
+  return result;
+};
