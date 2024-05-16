@@ -46,7 +46,7 @@ public class TodoController {
     }
 
     @GetMapping("/{todoId}")
-    public TodoDetailResponse findTodoById(@PathVariable final long todoId) {
+    public TodoResponse findTodoById(@PathVariable final long todoId) {
         return todoService.getById(todoId);
     }
 

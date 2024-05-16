@@ -109,7 +109,7 @@ public class FakeTodoService implements TodoService {
     }
 
     @Override
-    public TodoDetailResponse getById(final long todoId) {
+    public TodoResponse getById(final long todoId) {
         TodoJpaEntity originalTodo = TodoJpaEntity.builder()
                 .memberId(MEMBER_ID.longValue())
                 .moimId(MOIM_ID.longValue())
@@ -118,7 +118,7 @@ public class FakeTodoService implements TodoService {
                 .todoDate(LocalDate.of(2024, 1, 1))
                 .build();
 
-        return TodoDetailResponse.from(originalTodo);
+        return TodoResponse.from(originalTodo);
     }
 
     @Override

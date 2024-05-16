@@ -464,7 +464,7 @@ public class TodoControllerTest extends ControllerTest {
                                         headerWithName("Content-Type").description("application/json")
                                 )
                                 .responseFields(
-                                        fieldWithPath("moimId").type(NUMBER).description("모임 id"),
+                                        fieldWithPath("todoId").type(NUMBER).description("투두 id"),
                                         fieldWithPath("contents").type(NUMBER).description("투두 내용"),
                                         fieldWithPath("todoProgress").type(NUMBER).description(
                                                 String.format("투두 진행 - %s",

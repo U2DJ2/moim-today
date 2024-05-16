@@ -70,9 +70,9 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public TodoDetailResponse getById(final long todoId) {
+    public TodoResponse getById(final long todoId) {
         TodoJpaEntity todo = todoManager.getById(todoId);
-        return TodoDetailResponse.from(todo);
+        return TodoResponse.from(todo);
     }
 
     @Override
