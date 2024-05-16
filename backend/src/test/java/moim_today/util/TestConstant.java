@@ -79,6 +79,7 @@ public enum TestConstant {
     MEETING_ID("123"),
     MEETING_AGENDA("meeting agenda"),
     MEETING_PLACE("meeting place"),
+    MEETING_COMMENT_ID("456"),
     MEETING_COMMENT_CONTENTS("meeting comment contents"),
 
     FIRST_CREATED_MEETING_AGENDA("first agenda"),

@@ -20,13 +20,11 @@ public class MeetingCommentRepositoryImpl implements MeetingCommentRepository {
 
     private final MeetingCommentJpaRepository meetingCommentJpaRepository;
     private final JPAQueryFactory queryFactory;
-    private final MeetingCommentAppender meetingCommentAppender;
 
     public MeetingCommentRepositoryImpl(final MeetingCommentJpaRepository meetingCommentJpaRepository,
-                                        final JPAQueryFactory queryFactory, final MeetingCommentAppender meetingCommentAppender) {
+                                        final JPAQueryFactory queryFactory) {
         this.meetingCommentJpaRepository = meetingCommentJpaRepository;
         this.queryFactory = queryFactory;
-        this.meetingCommentAppender = meetingCommentAppender;
     }
 
     @Override

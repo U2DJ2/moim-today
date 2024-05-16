@@ -15,6 +15,7 @@ import static com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes.
 import static moim_today.util.TestConstant.MEETING_COMMENT_CONTENTS;
 import static moim_today.util.TestConstant.MEETING_ID;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,6 +49,28 @@ class MeetingCommentControllerTest extends ControllerTest {
                                         fieldWithPath("meetingId").type(NUMBER).description("미팅 Id"),
                                         fieldWithPath("contents").type(STRING).description("댓글 내용")
                                 )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("미팅의 댓글 목록을 불러온다.")
+    @Test
+    void findAllMeetingCommentsByMeetingId() throws Exception {
+        long meetingId = MEETING_ID.longValue();
+
+        mockMvc.perform(get("/api/meeting-comments/{meetingId}", meetingId))
+                .andExpect(status().isOk())
+                .andDo(document("미팅 댓글 목록 조회 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅 댓글")
+                                .summary("미팅 댓글 목록 조회")
+                                .responseFields(
+                                        fieldWithPath("data[0].meetingCommentId").type(NUMBER).description("댓글 Id"),
+                                        fieldWithPath("data[0].username").type(STRING).description("작성자"),
+                                        fieldWithPath("data[0].imageUrl").type(STRING).description("작성자 프로필 사진 Url"),
+                                        fieldWithPath("data[0].contents").type(STRING).description("댓글 내용"),
+                                        fieldWithPath("data[0].createdAt").type(STRING).description("생성 일자")
+                                        )
                                 .build()
                         )));
     }

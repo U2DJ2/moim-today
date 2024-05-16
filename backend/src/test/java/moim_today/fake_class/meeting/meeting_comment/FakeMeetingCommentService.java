@@ -4,7 +4,10 @@ import moim_today.application.meeting.meeting_comment.MeetingCommentService;
 import moim_today.dto.meeting.meeting_comment.MeetingCommentCreateRequest;
 import moim_today.dto.meeting.meeting_comment.MeetingCommentResponse;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static moim_today.util.TestConstant.*;
 
 public class FakeMeetingCommentService implements MeetingCommentService {
 
@@ -15,6 +18,30 @@ public class FakeMeetingCommentService implements MeetingCommentService {
 
     @Override
     public List<MeetingCommentResponse> findAllByMeetingId(final long memberId, final long meetingId) {
-        return List.of();
+        MeetingCommentResponse commentResponse1 = MeetingCommentResponse.builder()
+                .meetingCommentId(MEETING_COMMENT_ID.longValue())
+                .username(USERNAME.value())
+                .imageUrl(PROFILE_IMAGE_URL.value())
+                .contents(MEETING_COMMENT_CONTENTS.value())
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        MeetingCommentResponse commentResponse2 = MeetingCommentResponse.builder()
+                .meetingCommentId(MEETING_COMMENT_ID.longValue() + 1)
+                .username(USERNAME.value())
+                .imageUrl(PROFILE_IMAGE_URL.value())
+                .contents(MEETING_COMMENT_CONTENTS.value())
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        MeetingCommentResponse commentResponse3 = MeetingCommentResponse.builder()
+                .meetingCommentId(MEETING_COMMENT_ID.longValue() + 2)
+                .username(USERNAME.value())
+                .imageUrl(PROFILE_IMAGE_URL.value())
+                .contents(MEETING_COMMENT_CONTENTS.value())
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        return List.of(commentResponse1, commentResponse2, commentResponse3);
     }
 }

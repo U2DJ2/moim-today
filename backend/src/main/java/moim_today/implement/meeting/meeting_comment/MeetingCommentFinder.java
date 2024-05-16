@@ -3,6 +3,7 @@ package moim_today.implement.meeting.meeting_comment;
 import moim_today.dto.meeting.meeting_comment.MeetingCommentResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.persistence.repository.meeting.meeting_comment.MeetingCommentRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class MeetingCommentFinder {
         this.meetingCommentRepository = meetingCommentRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<MeetingCommentResponse> findAllByMeetingId(final long meetingId) {
         return meetingCommentRepository.findAllByMeetingId(meetingId);
     }
