@@ -3,6 +3,7 @@ package moim_today.fake_class.meeting.meeting_comment;
 import moim_today.application.meeting.meeting_comment.MeetingCommentService;
 import moim_today.dto.meeting.meeting_comment.MeetingCommentCreateRequest;
 import moim_today.dto.meeting.meeting_comment.MeetingCommentResponse;
+import moim_today.dto.meeting.meeting_comment.MeetingCommentUpdateRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,5 +44,10 @@ public class FakeMeetingCommentService implements MeetingCommentService {
                 .build();
 
         return List.of(commentResponse1, commentResponse2, commentResponse3);
+    }
+
+    @Override
+    public void updateMeetingComment(final long memberId, final MeetingCommentUpdateRequest meetingCommentUpdateRequest) {
+
     }
 }

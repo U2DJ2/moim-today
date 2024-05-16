@@ -16,4 +16,6 @@ public interface MeetingCommentRepository {
     long count();
 
     List<MeetingCommentResponse> findAllByMeetingId(final long meetingId);
+
+    MeetingCommentJpaEntity getById(final long meetingCommentId);
 }

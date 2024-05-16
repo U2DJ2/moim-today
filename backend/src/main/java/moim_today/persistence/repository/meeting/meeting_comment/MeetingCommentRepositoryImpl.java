@@ -4,7 +4,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.dto.meeting.meeting_comment.MeetingCommentResponse;
 import moim_today.dto.meeting.meeting_comment.QMeetingCommentResponse;
 import moim_today.global.error.NotFoundException;
-import moim_today.implement.meeting.meeting_comment.MeetingCommentAppender;
 import moim_today.persistence.entity.meeting.meeting_comment.MeetingCommentJpaEntity;
 import org.springframework.stereotype.Repository;
 
@@ -65,5 +64,11 @@ public class MeetingCommentRepositoryImpl implements MeetingCommentRepository {
                 .join(memberJpaEntity).on(meetingCommentJpaEntity.memberId.eq(memberJpaEntity.id))
                 .where(meetingCommentJpaEntity.meetingId.eq(meetingId))
                 .fetch();
+    }
+
+    @Override
+    public MeetingCommentJpaEntity getById(final long meetingCommentId) {
+        return meetingCommentJpaRepository.findById(meetingCommentId)
+                .orElseThrow(() -> new NotFoundException(MEETING_COMMENT_NOT_FOUND_ERROR.message()));
     }
 }
