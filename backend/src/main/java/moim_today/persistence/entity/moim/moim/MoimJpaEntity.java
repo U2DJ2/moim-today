@@ -11,6 +11,7 @@ import moim_today.global.base_entity.BaseTimeEntity;
 import moim_today.global.error.ForbiddenException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;

@@ -1,7 +1,7 @@
 package moim_today.persistence.repository.meeting.meeting;
 
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
-import moim_today.dto.meeting.MeetingSimpleDao;
+import moim_today.dto.meeting.meeting.MeetingSimpleDao;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 
 import java.time.LocalDateTime;

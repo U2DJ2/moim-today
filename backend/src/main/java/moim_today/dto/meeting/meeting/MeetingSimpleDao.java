@@ -1,4 +1,4 @@
-package moim_today.dto.meeting;
+package moim_today.dto.meeting.meeting;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;

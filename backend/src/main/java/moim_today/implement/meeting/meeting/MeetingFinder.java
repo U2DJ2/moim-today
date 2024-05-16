@@ -2,8 +2,8 @@ package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
-import moim_today.dto.meeting.MeetingDetailResponse;
-import moim_today.dto.meeting.MeetingSimpleDao;
+import moim_today.dto.meeting.meeting.MeetingDetailResponse;
+import moim_today.dto.meeting.meeting.MeetingSimpleDao;
 import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingFinder;

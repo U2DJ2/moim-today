@@ -4,7 +4,7 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.meeting.meeting.MeetingService;
 import moim_today.domain.meeting.enums.MeetingCategory;
 import moim_today.domain.meeting.enums.MeetingStatus;
-import moim_today.dto.meeting.MeetingCreateRequest;
+import moim_today.dto.meeting.meeting.MeetingCreateRequest;
 import moim_today.fake_class.meeting.meeting.FakeMeetingService;
 import moim_today.util.ControllerTest;
 import moim_today.util.EnumDocsUtils;
