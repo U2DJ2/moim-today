@@ -19,7 +19,6 @@ import Schedule from "../pages/Schedule";
 import MoimDetailPage from "../pages/MoimDetailPage";
 
 // Components
-import Calendar from "../components/Calendar";
 import MoimJoinPage from "../pages/MoimJoinPage";
 
 /**
@@ -33,7 +32,6 @@ function Router() {
         <Route path="/" element={<HomePage />} />
         <Route path="/join/:MoimId" element={<MoimJoinPage />} />
         <Route path="/manage" element={<Manage />} />
-        <Route path="/calendar" element={<Calendar />} />
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/detailed/:MoimId" element={<MoimDetailPage />} />
       </Route>
