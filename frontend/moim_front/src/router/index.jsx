@@ -38,7 +38,6 @@ function Router() {
           path="/join/meeting/:MoimId/:meetingId"
           element={<MoimMeetingPage />}
         />
-        <Route path="/calendar" element={<Calendar />} />
         <Route path="/detailed/:MoimId" element={<MoimDetailPage />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
