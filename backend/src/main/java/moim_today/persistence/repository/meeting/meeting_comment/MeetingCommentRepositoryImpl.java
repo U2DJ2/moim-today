@@ -43,4 +43,8 @@ public class MeetingCommentRepositoryImpl implements MeetingCommentRepository {
                 .execute();
     }
 
+    @Override
+    public long count() {
+        return meetingCommentJpaRepository.count();
+    }
 }
