@@ -132,4 +132,8 @@ public class MoimJpaEntity extends BaseTimeEntity {
     public void updateMoimViews() {
         this.views += VIEW_COUNT_OF_ONE.value();
     }
+
+    public boolean checkVacancy(){
+        return currentCount < capacity;
+    }
 }

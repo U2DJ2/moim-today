@@ -252,4 +252,23 @@ class MoimJpaEntityTest {
         //then
         assertThat(moimJpaEntity.getViews()).isEqualTo(1);
     }
+
+    @DisplayName("자리가 있는지 검사한다")
+    @Test
+    void checkVacancy() {
+        // given
+        MoimJpaEntity vacancyMoim = MoimJpaEntity.builder()
+                .capacity(5)
+                .currentCount(4)
+                .build();
+
+        MoimJpaEntity noVacancyMoim = MoimJpaEntity.builder()
+                .capacity(5)
+                .currentCount(5)
+                .build();
+
+        // expected
+        assertThat(vacancyMoim.checkVacancy()).isTrue();
+        assertThat(noVacancyMoim.checkVacancy()).isFalse();
+    }
 }
