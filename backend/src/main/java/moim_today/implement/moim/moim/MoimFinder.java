@@ -45,7 +45,7 @@ public class MoimFinder {
     }
 
     @Transactional
-    public MoimJpaEntity getByIdWithPessimisticLock(final long moimId){
+    public MoimJpaEntity getByIdWithPessimisticLock(final long moimId) {
         return moimRepository.getByIdWithPessimisticLock(moimId);
     }
 
@@ -78,10 +78,11 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
-    public void validateCapacity(final MoimJpaEntity moimJpaEntity){
+    public void validateCapacity(final MoimJpaEntity moimJpaEntity) {
         long moimId = moimJpaEntity.getId();
         List<Long> participatingMemberIds = joinedMoimFinder.findAllJoinedMemberId(moimId);
-        if(participatingMemberIds.size() >= moimJpaEntity.getCapacity()){
+        if (participatingMemberIds.size() >= moimJpaEntity.getCapacity()
+                || !moimJpaEntity.checkVacancy()) {
             throw new BadRequestException(MOIM_CAPACITY_ERROR.message());
         }
     }
@@ -91,7 +92,7 @@ public class MoimFinder {
         return moimRepository.searchMoimBySearchParam(searchParam);
     }
 
-    private List<Long> extractMemberIds(final List<JoinedMoimJpaEntity> joinedMoimJpaEntities){
+    private List<Long> extractMemberIds(final List<JoinedMoimJpaEntity> joinedMoimJpaEntities) {
         List<Long> memberIds = new ArrayList<>();
         joinedMoimJpaEntities.forEach(e -> memberIds.add(e.getMemberId()));
         return memberIds;

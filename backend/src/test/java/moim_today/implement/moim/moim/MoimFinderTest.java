@@ -318,7 +318,7 @@ class MoimFinderTest extends ImplementTest {
         assertThat(moimSimpleResponses.get(0).title()).isEqualTo(FIRST_CREATED_MOIM_TITLE.value());
     }
 
-    @DisplayName("모임에 여석이 있는지 검사하고, 꽉 차면 에러를 발생시킨다.")
+    @DisplayName("모임에 여석이 있는지 검사하고, 꽉 차있으면 에러를 발생시킨다.")
     @Test
     void validateCapacityThrowError() {
         // given1
@@ -331,15 +331,24 @@ class MoimFinderTest extends ImplementTest {
         MoimJpaEntity moimJpaEntity1 = MoimJpaEntity.builder()
                 .memberId(hostId)
                 .capacity(1)
+                .currentCount(1)
                 .build();
 
         MoimJpaEntity moimJpaEntity2 = MoimJpaEntity.builder()
                 .memberId(hostId)
                 .capacity(3)
+                .currentCount(3)
+                .build();
+
+        MoimJpaEntity moimJpaEntity3 = MoimJpaEntity.builder()
+                .memberId(hostId)
+                .capacity(100)
+                .currentCount(100)
                 .build();
 
         MoimJpaEntity savedMoim1 = moimRepository.save(moimJpaEntity1);
         MoimJpaEntity savedMoim2 = moimRepository.save(moimJpaEntity2);
+        MoimJpaEntity savedMoim3 = moimRepository.save(moimJpaEntity3);
 
         // given3
         JoinedMoimJpaEntity jm1 = saveJoinedMoim(savedMoim1.getId(), hostId);
@@ -354,6 +363,9 @@ class MoimFinderTest extends ImplementTest {
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage(MOIM_CAPACITY_ERROR.message());
         assertThatThrownBy(() -> moimFinder.validateCapacity(savedMoim2))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(MOIM_CAPACITY_ERROR.message());
+        assertThatThrownBy(() -> moimFinder.validateCapacity(savedMoim3))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage(MOIM_CAPACITY_ERROR.message());
     }
@@ -371,11 +383,19 @@ class MoimFinderTest extends ImplementTest {
         MoimJpaEntity moimJpaEntity1 = MoimJpaEntity.builder()
                 .memberId(hostId)
                 .capacity(4)
+                .currentCount(3)
                 .build();
 
         MoimJpaEntity moimJpaEntity2 = MoimJpaEntity.builder()
                 .memberId(hostId)
                 .capacity(100)
+                .currentCount(1)
+                .build();
+
+        MoimJpaEntity moimJpaEntity3 = MoimJpaEntity.builder()
+                .memberId(hostId)
+                .capacity(20)
+                .currentCount(19)
                 .build();
 
         MoimJpaEntity savedMoim1 = moimRepository.save(moimJpaEntity1);
@@ -389,9 +409,10 @@ class MoimFinderTest extends ImplementTest {
         JoinedMoimJpaEntity jm5 = saveJoinedMoim(savedMoim2.getId(), member2.getId());
         JoinedMoimJpaEntity jm6 = saveJoinedMoim(savedMoim2.getId(), member3.getId());
 
-
         // expected
         assertThatCode(() -> moimFinder.validateCapacity(savedMoim1))
+                .doesNotThrowAnyException();
+        assertThatCode(() -> moimFinder.validateCapacity(savedMoim2))
                 .doesNotThrowAnyException();
         assertThatCode(() -> moimFinder.validateCapacity(savedMoim2))
                 .doesNotThrowAnyException();
