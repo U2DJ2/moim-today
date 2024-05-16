@@ -28,4 +28,6 @@ public interface MeetingRepository {
     void delete(final MeetingJpaEntity meetingJpaEntity);
 
     long count();
+
+    long findMoimIdByMeetingId(final long meetingId);
 }

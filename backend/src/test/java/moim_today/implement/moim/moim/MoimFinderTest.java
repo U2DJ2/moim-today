@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -256,6 +257,7 @@ class MoimFinderTest extends ImplementTest {
                 .build();
 
         moimRepository.save(firstCreatedMoimJpaEntity);
+        moimRepository.flush();
 
         Thread.sleep(10);
 
@@ -265,6 +267,7 @@ class MoimFinderTest extends ImplementTest {
                 .build();
 
         moimRepository.save(secondCreatedMoimJpaEntity);
+        moimRepository.flush();
 
         MoimCategoryDto moimCategoryDto = MoimCategoryDto.ALL;
         MoimSortedFilter moimSortedFilter = null;
@@ -288,6 +291,7 @@ class MoimFinderTest extends ImplementTest {
                 .build();
 
         moimRepository.save(firstCreatedMoimJpaEntity);
+        moimRepository.flush();
 
         Thread.sleep(10);
 
@@ -297,6 +301,7 @@ class MoimFinderTest extends ImplementTest {
                 .build();
 
         moimRepository.save(secondCreatedMoimJpaEntity);
+        moimRepository.flush();
 
         MoimCategoryDto moimCategoryDto = MoimCategoryDto.ALL;
         MoimSortedFilter moimSortedFilter = MoimSortedFilter.CREATED_AT;

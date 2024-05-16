@@ -103,6 +103,11 @@ public class MoimRepositoryImpl implements MoimRepository {
     }
 
     @Override
+    public void flush() {
+        moimJpaRepository.flush();
+    }
+
+    @Override
     public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
 
         return queryFactory.select(new QMoimSimpleResponse(

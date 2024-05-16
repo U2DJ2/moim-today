@@ -30,4 +30,6 @@ public interface MoimRepository {
     MoimJpaEntity getByIdWithPessimisticLock(final long moimId);
 
     List<MoimSimpleResponse> searchMoimBySearchParam(final String searchParam);
+
+    void flush();
 }

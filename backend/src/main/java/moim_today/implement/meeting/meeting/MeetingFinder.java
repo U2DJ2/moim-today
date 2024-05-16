@@ -37,7 +37,7 @@ public class MeetingFinder {
                                                   final LocalDateTime currentDateTime) {
         if (meetingStatus.equals(MeetingStatus.ALL)) {
             return meetingRepository.findAllByMoimId(moimId, memberId, currentDateTime);
-        } else if(meetingStatus.equals(MeetingStatus.PAST)) {
+        } else if (meetingStatus.equals(MeetingStatus.PAST)) {
             return meetingRepository.findAllPastByMoimId(moimId, memberId, currentDateTime);
         }
 
@@ -54,5 +54,10 @@ public class MeetingFinder {
     @Transactional(readOnly = true)
     public List<UpcomingMeetingNoticeResponse> findUpcomingNotices(final LocalDateTime currentDateTime) {
         return meetingRepository.findUpcomingNotices(currentDateTime);
+    }
+
+    @Transactional(readOnly = true)
+    public long findMoimIdByMeetingId(final long meetingId) {
+        return meetingRepository.findMoimIdByMeetingId(meetingId);
     }
 }

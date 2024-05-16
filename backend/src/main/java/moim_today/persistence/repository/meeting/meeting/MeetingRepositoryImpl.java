@@ -158,4 +158,13 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     public long count() {
         return meetingJpaRepository.count();
     }
+
+    @Override
+    public long findMoimIdByMeetingId(final long meetingId) {
+        return queryFactory.select(meetingJpaEntity.moimId)
+                .from(meetingJpaEntity)
+                .where(meetingJpaEntity.id.eq(meetingId))
+                .stream().findAny()
+                .orElseThrow(() -> new NotFoundException(MEETING_NOT_FOUND_ERROR.message()));
+    }
 }
