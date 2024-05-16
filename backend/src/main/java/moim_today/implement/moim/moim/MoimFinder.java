@@ -50,10 +50,9 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<MoimMemberResponse> findMembersInMoim(final List<JoinedMoimJpaEntity> joinedMoimJpaEntities,
-                                                      final long hostId) {
-        List<Long> memberIds = extractMemberIds(joinedMoimJpaEntities);
-        return memberFinder.findMembersWithJoinedInfo(memberIds, hostId);
+    public List<MoimMemberResponse> findMembersInMoim(final List<Long> moimMemberIds, final long hostId,
+                                                      final long moimId) {
+        return memberFinder.findMoimMembers(moimMemberIds, hostId, moimId);
     }
 
     @Transactional(readOnly = true)

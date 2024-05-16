@@ -1,10 +1,13 @@
 package moim_today.persistence.entity.moim.joined_moim;
 
+import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
-import jakarta.persistence.*;
-import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Table(name = "joined_moim")
@@ -35,5 +38,11 @@ public class JoinedMoimJpaEntity extends BaseTimeEntity {
                 .moimId(moimId)
                 .memberId(memberId)
                 .build();
+    }
+
+    public static List<Long> extractMemberIds(final List<JoinedMoimJpaEntity> joinedMoimJpaEntities) {
+        List<Long> memberIds = new ArrayList<>();
+        joinedMoimJpaEntities.forEach(e -> memberIds.add(e.getMemberId()));
+        return memberIds;
     }
 }

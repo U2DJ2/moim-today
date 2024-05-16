@@ -17,7 +17,6 @@ import java.util.Optional;
 
 import static moim_today.global.constant.exception.MemberExceptionConstant.*;
 import static moim_today.persistence.entity.department.QDepartmentJpaEntity.departmentJpaEntity;
-import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.*;
 import static moim_today.persistence.entity.member.QMemberJpaEntity.memberJpaEntity;
 import static moim_today.persistence.entity.moim.joined_moim.QJoinedMoimJpaEntity.joinedMoimJpaEntity;
 import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.moimJpaEntity;
@@ -92,8 +91,8 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public List<MoimMemberResponse> findMembersWithJoinInfo(final List<Long> joinedMoimMemberIds,
-                                                            final long hostId) {
+    public List<MoimMemberResponse> findMoimMembers(final List<Long> moimMemberIds,
+                                                    final long hostId, final long moimId) {
         return queryFactory.select(new QMoimMemberResponse(
                         memberJpaEntity.id.eq(hostId),
                         memberJpaEntity.id,
@@ -102,7 +101,8 @@ public class MemberRepositoryImpl implements MemberRepository {
                         memberJpaEntity.memberProfileImageUrl
                 )).from(memberJpaEntity)
                 .join(joinedMoimJpaEntity).on(joinedMoimJpaEntity.memberId.eq(memberJpaEntity.id))
-                .where(joinedMoimJpaEntity.memberId.in(joinedMoimMemberIds))
+                .where(joinedMoimJpaEntity.memberId.in(moimMemberIds)
+                        .and(joinedMoimJpaEntity.moimId.eq(moimId)))
                 .fetch();
     }
 

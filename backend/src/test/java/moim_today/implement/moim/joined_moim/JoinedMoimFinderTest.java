@@ -52,6 +52,47 @@ class JoinedMoimFinderTest extends ImplementTest {
         assertThat(membersByMoimId.size()).isEqualTo(MOIM_MEMBER_SIZE);
     }
 
+    @DisplayName("모임에 참여한 멤버들을 조회할 때 다른 모임의 멤버는 조회하지 않는다")
+    @Test
+    void findMembersByMoimIdExcludeAnotherMoimMembers() {
+
+        // given1
+        MoimJpaEntity moimJpaEntity1 = MoimJpaEntity.builder()
+                .memberId(1L)
+                .build();
+
+        MoimJpaEntity moimJpaEntity2 = MoimJpaEntity.builder()
+                .memberId(2L)
+                .build();
+
+        MoimJpaEntity savedMoim1 = moimRepository.save(moimJpaEntity1);
+        MoimJpaEntity savedMoim2 = moimRepository.save(moimJpaEntity2);
+
+        // given2
+        for(int i  = 0 ; i < MOIM_MEMBER_SIZE; i++){
+            JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
+                    .memberId(i)
+                    .moimId(savedMoim1.getId())
+                    .build();
+            joinedMoimRepository.save(joinedMoimJpaEntity);
+        }
+
+        for(int i  = 0 ; i < MOIM_MEMBER_SIZE; i++){
+            JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
+                    .memberId(i)
+                    .moimId(savedMoim2.getId())
+                    .build();
+            joinedMoimRepository.save(joinedMoimJpaEntity);
+        }
+
+
+        // when
+        List<JoinedMoimJpaEntity> membersByMoimId = joinedMoimFinder.findByMoimId(savedMoim1.getId());
+
+        // then
+        assertThat(membersByMoimId.size()).isEqualTo(MOIM_MEMBER_SIZE);
+    }
+
     @DisplayName("모임의 멤버를 조회할 때 아무도 없으면 에러를 발생시킨다")
     @Test
     void findMembersByMoimIdNotFound() {

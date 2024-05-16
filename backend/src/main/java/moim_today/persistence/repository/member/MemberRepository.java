@@ -24,7 +24,7 @@ public interface MemberRepository {
 
     MemberProfileResponse getMemberProfile(final long memberId);
 
-    List<MoimMemberResponse> findMembersWithJoinInfo(final List<Long> joinedMoimMemberIds, final long hostId);
+    List<MoimMemberResponse> findMoimMembers(final List<Long> joinedMoimMemberIds, final long hostId, final long moimId);
 
     MemberSimpleResponse getHostProfileByMoimId(final long moimId);
 }
