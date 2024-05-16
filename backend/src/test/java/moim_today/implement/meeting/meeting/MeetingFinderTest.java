@@ -641,7 +641,7 @@ class MeetingFinderTest extends ImplementTest {
 
     @DisplayName("미팅 Id로 모임 Id를 조회한다.")
     @Test
-    void findMoimIdByMeetingId() {
+    void getMoimIdByMeetingId() {
         // given
         long expectedMoimId = MOIM_ID.longValue();
 
@@ -653,7 +653,7 @@ class MeetingFinderTest extends ImplementTest {
         long meetingId = meetingJpaEntity.getId();
 
         // when
-        long actualMoimId = meetingFinder.findMoimIdByMeetingId(meetingId);
+        long actualMoimId = meetingFinder.getMoimIdByMeetingId(meetingId);
 
         // then
         assertThat(expectedMoimId).isEqualTo(actualMoimId);
@@ -661,9 +661,9 @@ class MeetingFinderTest extends ImplementTest {
 
     @DisplayName("미팅 Id로 모임 Id를 조회할때, 미팅이 존재하지 않으면 예외가 발생한다.")
     @Test
-    void findMoimIdByMeetingIdThrowsNotFoundException() {
+    void getMoimIdByMeetingIdThrowsNotFoundException() {
         // expected
-        assertThatThrownBy(() -> meetingFinder.findMoimIdByMeetingId(MEETING_ID.longValue()))
+        assertThatThrownBy(() -> meetingFinder.getMoimIdByMeetingId(MEETING_ID.longValue()))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(MEETING_NOT_FOUND_ERROR.message());
     }

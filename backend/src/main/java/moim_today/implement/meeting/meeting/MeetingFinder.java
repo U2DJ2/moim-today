@@ -57,7 +57,7 @@ public class MeetingFinder {
     }
 
     @Transactional(readOnly = true)
-    public long findMoimIdByMeetingId(final long meetingId) {
+    public long getMoimIdByMeetingId(final long meetingId) {
         return meetingRepository.findMoimIdByMeetingId(meetingId);
     }
 }

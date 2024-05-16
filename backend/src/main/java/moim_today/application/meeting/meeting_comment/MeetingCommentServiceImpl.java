@@ -1,6 +1,7 @@
 package moim_today.application.meeting.meeting_comment;
 
 import moim_today.dto.meeting.meeting_comment.MeetingCommentCreateRequest;
+import moim_today.dto.meeting.meeting_comment.MeetingCommentResponse;
 import moim_today.implement.meeting.meeting.MeetingFinder;
 import moim_today.implement.meeting.meeting_comment.MeetingCommentAppender;
 import moim_today.implement.meeting.meeting_comment.MeetingCommentFinder;
@@ -8,6 +9,8 @@ import moim_today.implement.meeting.meeting_comment.MeetingCommentRemover;
 import moim_today.implement.meeting.meeting_comment.MeetingCommentUpdater;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MeetingCommentServiceImpl implements MeetingCommentService {
@@ -35,8 +38,15 @@ public class MeetingCommentServiceImpl implements MeetingCommentService {
 
     @Override
     public void createMeetingComment(final long memberId, final MeetingCommentCreateRequest meetingCommentCreateRequest) {
-        long moimId = meetingFinder.findMoimIdByMeetingId(meetingCommentCreateRequest.meetingId());
+        long moimId = meetingFinder.getMoimIdByMeetingId(meetingCommentCreateRequest.meetingId());
         joinedMoimFinder.validateMemberInMoim(memberId, moimId);
         meetingCommentAppender.createMeetingComment(memberId, meetingCommentCreateRequest);
+    }
+
+    @Override
+    public List<MeetingCommentResponse> findAllByMeetingId(final long memberId, final long meetingId) {
+        long moimId = meetingFinder.getMoimIdByMeetingId(meetingId);
+        joinedMoimFinder.validateMemberInMoim(memberId, moimId);
+        return meetingCommentFinder.findAllByMeetingId(meetingId);
     }
 }

@@ -1,7 +1,10 @@
 package moim_today.persistence.repository.meeting.meeting_comment;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import moim_today.dto.meeting.meeting_comment.MeetingCommentResponse;
+import moim_today.dto.meeting.meeting_comment.QMeetingCommentResponse;
 import moim_today.global.error.NotFoundException;
+import moim_today.implement.meeting.meeting_comment.MeetingCommentAppender;
 import moim_today.persistence.entity.meeting.meeting_comment.MeetingCommentJpaEntity;
 import org.springframework.stereotype.Repository;
 
@@ -10,17 +13,20 @@ import java.util.List;
 import static moim_today.global.constant.MemberConstant.UNKNOWN_MEMBER;
 import static moim_today.global.constant.exception.MeetingCommentExceptionConstant.MEETING_COMMENT_NOT_FOUND_ERROR;
 import static moim_today.persistence.entity.meeting.meeting_comment.QMeetingCommentJpaEntity.meetingCommentJpaEntity;
+import static moim_today.persistence.entity.member.QMemberJpaEntity.memberJpaEntity;
 
 @Repository
 public class MeetingCommentRepositoryImpl implements MeetingCommentRepository {
 
     private final MeetingCommentJpaRepository meetingCommentJpaRepository;
     private final JPAQueryFactory queryFactory;
+    private final MeetingCommentAppender meetingCommentAppender;
 
     public MeetingCommentRepositoryImpl(final MeetingCommentJpaRepository meetingCommentJpaRepository,
-                                        final JPAQueryFactory queryFactory) {
+                                        final JPAQueryFactory queryFactory, final MeetingCommentAppender meetingCommentAppender) {
         this.meetingCommentJpaRepository = meetingCommentJpaRepository;
         this.queryFactory = queryFactory;
+        this.meetingCommentAppender = meetingCommentAppender;
     }
 
     @Override
@@ -46,5 +52,20 @@ public class MeetingCommentRepositoryImpl implements MeetingCommentRepository {
     @Override
     public long count() {
         return meetingCommentJpaRepository.count();
+    }
+
+    @Override
+    public List<MeetingCommentResponse> findAllByMeetingId(final long meetingId) {
+        return queryFactory.select(new QMeetingCommentResponse(
+                        meetingCommentJpaEntity.id,
+                        memberJpaEntity.username,
+                        memberJpaEntity.memberProfileImageUrl,
+                        meetingCommentJpaEntity.contents,
+                        meetingCommentJpaEntity.createdAt
+                ))
+                .from(meetingCommentJpaEntity)
+                .join(memberJpaEntity).on(meetingCommentJpaEntity.memberId.eq(memberJpaEntity.id))
+                .where(meetingCommentJpaEntity.meetingId.eq(meetingId))
+                .fetch();
     }
 }
