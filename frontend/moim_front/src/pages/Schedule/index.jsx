@@ -2,8 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-// Dayjs
-import dayjs from 'dayjs';
+import { Datepicker } from "flowbite-react"
 
 // Icons
 import HomeIcon from '@mui/icons-material/Home';
@@ -14,9 +13,88 @@ import PersonalSection from "./PersonalSection";
 // CSS
 import "./style.css";
 
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+const calendarTheme = {
+    "root": {
+        "base": "relative"
+    },
+    "popup": {
+        "root": {
+            "base": "absolute top-10 z-50 block pt-2",
+            "inline": "relative top-0 z-auto",
+            "inner": "inline-block rounded-lg bg-white shadow-none dark:bg-gray-700"
+        },
+        "header": {
+            "base": "",
+            "title": "px-2 py-3 text-center font-semibold text-gray-900 dark:text-white",
+            "selectors": {
+                "base": "mb-2 flex justify-between",
+                "button": {
+                    "base": "rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600",
+                    "prev": "",
+                    "next": "",
+                    "view": ""
+                }
+            }
+        },
+        "view": {
+            "base": "p-1"
+        },
+        "footer": {
+            "base": "mt-2 flex space-x-2",
+            "button": {
+                "base": "w-full rounded-3xl px-5 py-2 text-center text-sm font-medium focus:ring-4 focus:ring-cyan-300",
+                "today": "bg-rose-600 text-white hover:bg-rose-600 dark:bg-rose-600 dark:hover:bg-rose-600",
+                "clear": "border border-gray-300 bg-white text-gray-900 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+            }
+        }
+    },
+    "views": {
+        "days": {
+            "header": {
+                "base": "mb-1 grid grid-cols-7",
+                "title": "h-6 text-center text-sm font-medium leading-6 text-gray-500 dark:text-gray-400"
+            },
+            "items": {
+                "base": "grid w-64 grid-cols-7",
+                "item": {
+                    "base": "block flex-1 cursor-pointer rounded-full border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600 ",
+                    "selected": "bg-rose-600 text-white hover:bg-rose-600",
+                    "disabled": "text-gray-500"
+                }
+            }
+        },
+        "months": {
+            "items": {
+                "base": "grid w-64 grid-cols-4",
+                "item": {
+                    "base": "block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600",
+                    "selected": "bg-rose-600 text-white hover:bg-rose-600",
+                    "disabled": "text-gray-500"
+                }
+            }
+        },
+        "years": {
+            "items": {
+                "base": "grid w-64 grid-cols-4",
+                "item": {
+                    "base": "block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600",
+                    "selected": "bg-rose-600 text-white hover:bg-rose-600",
+                    "disabled": "text-gray-500"
+                }
+            }
+        },
+        "decades": {
+            "items": {
+                "base": "grid w-64 grid-cols-4",
+                "item": {
+                    "base": "block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9  text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600",
+                    "selected": "bg-rose-600 text-white hover:bg-rose-600",
+                    "disabled": "text-gray-500"
+                }
+            }
+        }
+    }
+}
 
 function SidebarElementIcon() {
     return (
@@ -35,26 +113,8 @@ function SidebarElementLink({ icon, text, color, onClick }) {
     );
 }
 
-function MiniCalendar({ onSelectDate }) {
-    // Get current date
-    var today = new Date();
-
-    const [value, setValue] = useState(dayjs(today));
-
-    const handleDateChange = (newValue) => {
-        setValue(newValue);
-        onSelectDate(newValue); // 선택된 날짜를 상위 컴포넌트로 전달
-    };
-
-    return (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar value={value} onChange={handleDateChange} />
-        </LocalizationProvider>
-    );
-}
-
 // Sidebar 컴포넌트
-function Sidebar({ onSelectMiniCalendarDate }) {
+function Sidebar({ onDateChange }) {
     const navigate = useNavigate();
 
     // 홈 버튼 클릭 시 메인 페이지로 이동
@@ -64,14 +124,14 @@ function Sidebar({ onSelectMiniCalendarDate }) {
 
     return (
         <aside className="flex flex-col w-[30%] max-md:ml-0 max-md:w-full">
-            <div className="flex flex-col grow items-start self-stretch py-4 pr-3 pl-16 max-md:pl-5 max-md:mt-6">
+            <div className="flex flex-col grow items-center self-stretch p-4 max-md:pl-5 max-md:mt-2">
                 <SidebarElementIcon />
                 <div className="mt-3 text-base font-semibold text-center text-zinc-500">
                     모임 대시보드{" "}
                 </div>
                 <div className="flex gap-2.5 mt-5"></div>
                 <SidebarElementLink icon={<HomeIcon />} text="홈" color="text-gray-400" className="mt-16 max-md:mt-10" onClick={handleHome} />
-                <MiniCalendar onSelectDate={onSelectMiniCalendarDate} />
+                <Datepicker theme={calendarTheme} inline onSelectedDateChanged={onDateChange}/>
             </div>
         </aside>
     );
@@ -87,8 +147,8 @@ export default function Schedule() {
     return (
         <div className="justify-between pt-9 bg-white h-screen flex flex-col">
             <div className="flex-1 overflow-auto">
-                <div className="flex gap-5 h-full w-full max-md:flex-col max-md:gap-0">
-                    <Sidebar onSelectMiniCalendarDate={handleMiniCalendarDateSelect} />
+                <div className="flex h-full w-full max-md:flex-col max-md:gap-0">
+                    <Sidebar onDateChange={handleMiniCalendarDateSelect} />
                     <PersonalSection selectedDate={selectedDate} />
                 </div>
             </div>

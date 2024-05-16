@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 
 // Material UI
-import { Slide } from "@material-ui/core";
-import MuiAlert from "@material-ui/lab/Alert";
+import { Slide } from '@mui/material';
+import MuiAlert from "@mui/material/Alert";
 
 // Icons
 import EditIcon from '@mui/icons-material/Edit';
@@ -66,7 +66,7 @@ function InputField({ label, value }) {
 export default function ProfileSection() {
     return (
         <section className="flex flex-col w-full max-md:ml-0 max-md:w-full h-full">
-            <div className="flex flex-col self-stretch p-12 text-sm font-semibold leading-5 whitespace-nowrap bg-slate-50 rounded-[64px_64px_0px_0px] text-stone-500 max-md:px-5 max-md:mt-6 max-md:max-w-full h-full flex-grow">
+            <div className="flex flex-col self-stretch p-12 text-sm font-semibold leading-5 whitespace-nowrap bg-slate-50 rounded-[64px_0px_0px_0px] text-stone-500 max-md:px-5 max-md:mt-6 max-md:max-w-full h-full flex-grow">
                 <h1 className="text-6xl text-black max-md:max-w-full max-md:text-4xl">Profile</h1>
                 <InputField label="이름" value="김준영" />
                 <InputField label="학과" value="소프트웨어학과" />
