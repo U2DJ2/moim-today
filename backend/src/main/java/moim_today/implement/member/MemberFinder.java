@@ -47,8 +47,9 @@ public class MemberFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<MoimMemberResponse> findMembersWithJoinedInfo(final List<Long> memberIds, final long hostId) {
-        return memberRepository.findMembersWithJoinInfo(memberIds, hostId);
+    public List<MoimMemberResponse> findMoimMembers(final List<Long> memberIds, final long hostId,
+                                                    final long moimId) {
+        return memberRepository.findMoimMembers(memberIds, hostId, moimId);
     }
 
     @Transactional(readOnly = true)

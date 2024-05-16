@@ -113,11 +113,13 @@ class MoimFinderTest extends ImplementTest {
         joinedMoimJpaEntities.add(saveJoinedMoim(savedMoim.getId(), savedMember2.getId()));
         joinedMoimJpaEntities.add(saveJoinedMoim(savedMoim.getId(), savedMember3.getId()));
 
+        List<Long> memberIds = JoinedMoimJpaEntity.extractMemberIds(joinedMoimJpaEntities);
         // when
-        List<MoimMemberResponse> moimMembers = moimFinder.findMembersInMoim(joinedMoimJpaEntities, savedMoim.getMemberId());
+        List<MoimMemberResponse> moimMembers = moimFinder.findMembersInMoim(memberIds,
+                savedMoim.getMemberId(), savedMoim.getId());
 
         List<Long> moimMemberIds = new ArrayList<>();
-        moimMembers.stream().forEach(m -> moimMemberIds.add(m.memberId()));
+        moimMembers.forEach(m -> moimMemberIds.add(m.memberId()));
 
         // then
         assertThat(moimMembers.size()).isEqualTo(MOIM_MEMBER_SIZE);

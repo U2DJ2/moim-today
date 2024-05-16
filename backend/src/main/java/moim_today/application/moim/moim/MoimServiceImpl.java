@@ -119,7 +119,8 @@ public class MoimServiceImpl implements MoimService{
         boolean isHostRequest = moimFinder.isHost(memberId, moimId);
 
         List<JoinedMoimJpaEntity> joinedMoimJpaEntities = joinedMoimFinder.findByMoimId(moimId);
-        List<MoimMemberResponse> moimMemberResponses = moimFinder.findMembersInMoim(joinedMoimJpaEntities, moimHostId);
+        List<Long> moimMemberIds = JoinedMoimJpaEntity.extractMemberIds(joinedMoimJpaEntities);
+        List<MoimMemberResponse> moimMemberResponses = moimFinder.findMembersInMoim(moimMemberIds, moimHostId, moimId);
 
         return MoimMemberTabResponse.of(isHostRequest, moimMemberResponses);
     }
