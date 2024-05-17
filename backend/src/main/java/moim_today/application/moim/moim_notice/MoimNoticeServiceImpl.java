@@ -36,7 +36,7 @@ public class MoimNoticeServiceImpl implements MoimNoticeService{
 
     @Override
     public void createMoimNotice(final long memberId, final MoimNoticeCreateRequest moimNoticeCreateRequest) {
-        moimNoticeAppender.createMoimNotice(memberId, moimNoticeCreateRequest);
+        moimNoticeAppender.createMoimNotice(memberId, moimNoticeCreateRequest.moimId(), moimNoticeCreateRequest);
     }
 
     @Override
