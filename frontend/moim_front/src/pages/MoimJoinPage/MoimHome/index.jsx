@@ -17,6 +17,10 @@ function MoimHome({
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
 
+  const [noticeTitle, setNoticeTitle] = useState("");
+  const [noticeContent, setNoticeContent] = useState("");
+  const [noticeDate, setNoticeDate] = useState("");
+
   const navigate = useNavigate();
 
   let noticeId = 1,
@@ -48,7 +52,7 @@ function MoimHome({
     const postNotice = async () => {
       try {
         const response = await POST("api/moims/notices", data);
-        console.log(response);
+        console.log(response.data);
       } catch (e) {
         console.log(e);
       }
@@ -78,12 +82,15 @@ function MoimHome({
               공지사항 생성하기
             </button>
           ) : null}
-          {notices.length != 0 ? (
-            <CardComponent
-              date={"4월 15일 (월)"}
-              title={"{Announce_Title}"}
-              btn={false}
-            />
+          {notices.length !== 0 ? (
+            notices.map((notice, index) => (
+              <CardComponent
+                key={index}
+                date={notice.createdAt}
+                title={notice.title}
+                btn={false}
+              />
+            ))
           ) : (
             <div className="font-Pretendard_Light flex">
               공지사항이 없습니다.

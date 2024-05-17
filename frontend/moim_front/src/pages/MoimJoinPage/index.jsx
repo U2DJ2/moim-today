@@ -28,6 +28,7 @@ function MoimJoinPage() {
   const getNotices = async () => {
     try {
       const result = await fetchNotices(MoimId);
+      console.log(result);
       setNotices(result.data.data);
     } catch (e) {
       console.log(e);
@@ -47,6 +48,7 @@ function MoimJoinPage() {
     try {
       const result = await fetchMeetings(MoimId, meetingOption);
       // console.log(result.data.data);/
+
       setMeetings(result.data.data);
     } catch (e) {
       console.log(e);

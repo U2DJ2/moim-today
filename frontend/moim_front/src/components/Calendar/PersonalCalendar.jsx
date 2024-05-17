@@ -11,9 +11,14 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
 // Temporary event ID generator
-let eventGuid = 0;
+// let eventGuid = 0;
 
-export default function Calendar({ selectedDate, isPersonal }) {
+export default function Calendar({
+  selectedDate,
+  isPersonal,
+  isMeeting,
+  moimId,
+}) {
   const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
   const [events, setEvents] = useState([]);
 
@@ -26,6 +31,9 @@ export default function Calendar({ selectedDate, isPersonal }) {
 
     if (isPersonal) {
       fetchAllEvents(currentYear).catch(console.error);
+    } else if (isMeeting) {
+      //isMeeting이 true일 경우
+      fetchAvailables();
     }
   }, []);
 
@@ -58,6 +66,26 @@ export default function Calendar({ selectedDate, isPersonal }) {
     }
   }
 
+  async function fetchAvailables() {
+    try {
+      let allEvents = [];
+      const response = await axios.get(
+        `https://api.moim.today/api/schedules/weekly/available-time/moims/${moimId}`,
+        {
+          params: {
+            startDate: "2024-05-14",
+          },
+        }
+      );
+      // allEvents = [...allEvents, ...response.data.data.map(mapEventData)];
+      // setEvents(allEvents);
+
+      console.log(response.data.data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   // Function to map event data
   function mapEventData(event) {
     return {
@@ -72,8 +100,9 @@ export default function Calendar({ selectedDate, isPersonal }) {
 
   // Function to handle date selection
   function handleDateSelect(selectInfo) {
-    let title = prompt("Please enter a new title for your event");
+    let title = prompt(selectInfo);
     let calendarApi = selectInfo.view.calendar;
+    console.log(selectInfo);
 
     calendarApi.unselect(); // clear date selection
 
@@ -108,7 +137,7 @@ export default function Calendar({ selectedDate, isPersonal }) {
         endDateTime: info.event.end,
       };
 
-      await axios.post("https://api.moim.today/api/schedules/", eventData, {
+      await axios.post("https://api.moim.today/api/schedules", eventData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -135,9 +164,9 @@ export default function Calendar({ selectedDate, isPersonal }) {
   }
 
   // Function to create unique event ID
-  function createEventId() {
-    return String(eventGuid++);
-  }
+  // function createEventId() {
+  //   return String(eventGuid++);
+  // }
 
   return (
     <div className="demo-app">
