@@ -32,7 +32,7 @@ public class TodoController {
             @Login final MemberSession memberSession,
             @RequestParam final YearMonth startDate,
             @RequestParam final int months){
-        return CollectionResponse.of(todoService.findAllMembersTodos(memberSession.id(), startDate, months));
+        return CollectionResponse.from(todoService.findAllMembersTodos(memberSession.id(), startDate, months));
     }
 
     @GetMapping("moim/{moimId}")
