@@ -6,6 +6,7 @@ import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.entity.moim.moim_notice.MoimNoticeJpaEntity;
 import moim_today.persistence.repository.moim.moim_notice.MoimNoticeRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;
 
 @Implement
@@ -20,9 +21,10 @@ public class MoimNoticeAppender {
         this.moimFinder = moimFinder;
     }
 
+    @CacheEvict(value = "moimNotices", key = "#moimId")
     @Transactional
-    public void createMoimNotice(final long memberId, final MoimNoticeCreateRequest moimNoticeCreateRequest) {
-        MoimJpaEntity moimJpaEntity = moimFinder.getById(moimNoticeCreateRequest.moimId());
+    public void createMoimNotice(final long memberId, final long moimId, final MoimNoticeCreateRequest moimNoticeCreateRequest) {
+        MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
         moimJpaEntity.validateHostMember(memberId);
         MoimNoticeJpaEntity moimNoticeJpaEntity = moimNoticeCreateRequest.toEntity();
         moimNoticeRepository.save(moimNoticeJpaEntity);
