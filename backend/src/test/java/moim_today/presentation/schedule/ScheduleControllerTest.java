@@ -77,6 +77,7 @@ class ScheduleControllerTest extends ControllerTest {
                                         parameterWithName("startDate").description("연도 - 월 - 일 정보, ex) 2024-03-04")
                                 )
                                 .responseFields(
+                                        fieldWithPath("data[0].calendarId").type(NUMBER).description("캘린더 id"),
                                         fieldWithPath("data[0].members[0].memberId").type(NUMBER).description("회원 id"),
                                         fieldWithPath("data[0].members[0].username").type(STRING).description("이름"),
                                         fieldWithPath("data[0].members[0].memberProfileImageUrl").type(STRING).description("프로필 이미지 url"),
@@ -103,6 +104,7 @@ class ScheduleControllerTest extends ControllerTest {
                                         parameterWithName("startDate").description("연도 - 월 - 일 정보, ex) 2024-03-04")
                                 )
                                 .responseFields(
+                                        fieldWithPath("data[0].calenderId").type(NUMBER).description("캘린더 id"),
                                         fieldWithPath("data[0].startDateTime").type(STRING).description("시작 시간"),
                                         fieldWithPath("data[0].endDateTime").type(STRING).description("종료 시간"),
                                         fieldWithPath("data[0].colorHex").type(STRING).description("색상")

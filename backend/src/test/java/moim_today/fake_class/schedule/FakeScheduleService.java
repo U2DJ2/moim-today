@@ -76,6 +76,7 @@ public class FakeScheduleService implements ScheduleService {
         List<MemberSimpleResponse> memberSimpleResponses3 = List.of(memberSimpleResponse2);
 
         AvailableTimeInMoimResponse availableTimeInMoimResponse1 = AvailableTimeInMoimResponse.builder()
+                .calendarId(1)
                 .members(memberSimpleResponses1)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
@@ -83,6 +84,7 @@ public class FakeScheduleService implements ScheduleService {
                 .build();
 
         AvailableTimeInMoimResponse availableTimeInMoimResponse2 = AvailableTimeInMoimResponse.builder()
+                .calendarId(2)
                 .members(memberSimpleResponses2)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 14, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 16, 0, 0))
@@ -90,6 +92,7 @@ public class FakeScheduleService implements ScheduleService {
                 .build();
 
         AvailableTimeInMoimResponse availableTimeInMoimResponse3 = AvailableTimeInMoimResponse.builder()
+                .calendarId(3)
                 .members(memberSimpleResponses3)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 18, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 20, 0, 0))
@@ -104,18 +107,21 @@ public class FakeScheduleService implements ScheduleService {
             final long memberId, final LocalDate startDate) {
 
         AvailableTimeForMemberResponse availableTimeForMemberResponse1 = AvailableTimeForMemberResponse.builder()
+                .calenderId(1)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
                 .colorHex(AvailableColorHex.getHexByCount(0))
                 .build();
 
         AvailableTimeForMemberResponse availableTimeForMemberResponse2 = AvailableTimeForMemberResponse.builder()
+                .calenderId(1)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 14, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 16, 0, 0))
                 .colorHex(AvailableColorHex.getHexByCount(0))
                 .build();
 
         AvailableTimeForMemberResponse availableTimeForMemberResponse3 = AvailableTimeForMemberResponse.builder()
+                .calenderId(1)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 18, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 20, 0, 0))
                 .colorHex(AvailableColorHex.getHexByCount(1))
