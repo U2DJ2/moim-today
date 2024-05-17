@@ -77,9 +77,9 @@ export default function Calendar({
           },
         }
       );
-      // allEvents = [...allEvents, ...response.data.data.map(mapEventData)];
-      // setEvents(allEvents);
-
+      allEvents = [...allEvents, ...response.data.data.map(mapEventData)];
+      setEvents(allEvents);
+      console.log(events);
       console.log(response.data.data);
     } catch (e) {
       console.log(e);
@@ -89,10 +89,10 @@ export default function Calendar({
   // Function to map event data
   function mapEventData(event) {
     return {
-      id: event.scheduleId,
-      title: event.scheduleName,
-      start: event.startDateTime,
-      end: event.endDateTime,
+      id: "1",
+      title: event.scheduleName || "",
+      start: event.startDateTime.replace(" ", "T"),
+      end: event.endDateTime.replace(" ", "T"),
       allDay: false, // Assuming all events fetched are not all-day events
       backgroundColor: event.colorHex,
     };
