@@ -90,7 +90,7 @@ export default function Calendar({
   // Function to map event data
   function mapEventData(event) {
     return {
-      id: event.calendarId,
+      id: event.scheduleId || event.calendarId,
       title: event.scheduleName || "",
       start: event.startDateTime.replace(" ", "T"),
       end: event.endDateTime.replace(" ", "T"),
