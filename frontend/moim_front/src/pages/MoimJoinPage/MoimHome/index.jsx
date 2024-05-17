@@ -2,16 +2,21 @@ import React, { useEffect, useState } from "react";
 import CardComponent from "../CardComponent";
 import SimpleDrop from "../../../components/Dropdown/Simple";
 import { useNavigate, useParams } from "react-router";
-import { GET } from "../../../utils/axios";
+import { GET, POST } from "../../../utils/axios";
 import CreationModal from "../../../components/CreationModal";
+import { SettingsOutlined } from "@mui/icons-material";
 function MoimHome({
   notices,
   meetings,
   meetingOption,
   setMeetingOption,
   isHost,
+  moimId,
 }) {
   const [showModal, setShowModal] = useState(false);
+  const [title, setTitle] = useState("");
+  const [contents, setContents] = useState("");
+
   const navigate = useNavigate();
 
   let noticeId = 1,
@@ -31,7 +36,25 @@ function MoimHome({
     setShowModal(!showModal);
     console.log(showModal);
   };
-  const makeMeetingHandler = () => {};
+  const makeMeetingHandler = () => {
+    navigate(`/meeting/${moimId}`);
+  };
+  const noticeHandler = () => {
+    const data = {
+      moimId: moimId,
+      title: title,
+      contents: contents,
+    };
+    const postNotice = async () => {
+      try {
+        const response = await POST("api/moims/notices", data);
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    postNotice();
+  };
 
   return (
     <div className="flex flex-col gap-24">
@@ -102,7 +125,32 @@ function MoimHome({
         )}
       </div>
       {showModal && (
-        <CreationModal showModal={showModal} setShowModal={setShowModal} />
+        <CreationModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          noticeHandler={noticeHandler}
+        >
+          <div className="flex flex-col">
+            <div className="">
+              <div>제목</div>
+              <input
+                placeholder="제목을 입력해주세요"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <div>내용</div>
+              <input
+                placeholder="내용을 입력해주세요"
+                onChange={(e) => {
+                  setContents(e.target.value);
+                }}
+              />
+            </div>
+          </div>
+        </CreationModal>
       )}
     </div>
   );

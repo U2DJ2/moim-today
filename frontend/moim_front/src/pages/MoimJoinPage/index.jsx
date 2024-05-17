@@ -132,6 +132,7 @@ function MoimJoinPage() {
             meetingOption={meetingOption}
             setMeetingOption={setMeetingOption}
             isHost={isHost}
+            moimId={MoimId}
           />
         ) : selected === "되는시간" ? (
           <AvailableTime />
