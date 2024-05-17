@@ -13,7 +13,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 // Temporary event ID generator
 let eventGuid = 0;
 
-export default function Calendar({ selectedDate }) {
+export default function Calendar({ selectedDate, isPersonal }) {
   const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
   const [events, setEvents] = useState([]);
 
@@ -24,9 +24,9 @@ export default function Calendar({ selectedDate }) {
     // Fetch all events on component mount
     // fetchAllEvents(currentYear).catch(console.error);
 
-    fetchAllEvents(currentYear);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (isPersonal) {
+      fetchAllEvents(currentYear).catch(console.error);
+    }
   }, []);
 
   useEffect(() => {
