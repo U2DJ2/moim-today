@@ -61,6 +61,7 @@ export default function Calendar({
         allEvents = [...allEvents, ...response.data.data.map(mapEventData)];
       }
       setEvents(allEvents);
+      console.log(events);
     } catch (error) {
       console.error("Error fetching events:", error);
     }
@@ -89,7 +90,7 @@ export default function Calendar({
   // Function to map event data
   function mapEventData(event) {
     return {
-      id: "1",
+      id: event.calendarId,
       title: event.scheduleName || "",
       start: event.startDateTime.replace(" ", "T"),
       end: event.endDateTime.replace(" ", "T"),
@@ -124,7 +125,7 @@ export default function Calendar({
         `Are you sure you want to delete the event '${clickInfo.event.title}'`
       )
     ) {
-      clickInfo.event.remove();
+      // clickInfo.event.remove();
     }
   }
 
@@ -164,9 +165,9 @@ export default function Calendar({
   }
 
   // Function to create unique event ID
-  // function createEventId() {
-  //   return String(eventGuid++);
-  // }
+  function createEventId() {
+    return String(eventGuid++);
+  }
 
   return (
     <div className="demo-app">
