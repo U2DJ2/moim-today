@@ -10,6 +10,9 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
+// Modal for Meeting Creation
+import CreationModal from "../../components/CreationModal";
+
 // Temporary event ID generator
 // let eventGuid = 0;
 
@@ -18,6 +21,7 @@ export default function Calendar({
   isPersonal,
   isMeeting,
   moimId,
+  setShowModal,
 }) {
   const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
   const [events, setEvents] = useState([]);
@@ -77,7 +81,7 @@ export default function Calendar({
         `https://api.moim.today/api/schedules/weekly/available-time/moims/${moimId}`,
         {
           params: {
-            startDate: "2024-05-14",
+            startDate: "2024-05-19",
           },
         }
       );
@@ -103,18 +107,19 @@ export default function Calendar({
       allDay: false, // Assuming all events fetched are not all-day events
       backgroundColor: event.colorHex,
     };
-
-    // 특정 조건을 만족하면 display: "background" 속성을 추가
+    // isplay: "background" 속성을 추가
     if (backgroundEvent) {
       formattedEvent.display = "background";
     }
-
     return formattedEvent;
   }
 
   // Function to handle date selection
   function handleDateSelect(selectInfo) {
-    let title = prompt(selectInfo);
+    setShowModal(true);
+    let title = prompt("모임명을 입력해주세요");
+
+    console.log(title);
     let calendarApi = selectInfo.view.calendar;
     console.log(selectInfo);
 
@@ -177,9 +182,9 @@ export default function Calendar({
   }
 
   // Function to create unique event ID
-  function createEventId() {
-    return String(eventGuid++);
-  }
+  // function createEventId() {
+  //   return String(eventGuid++);
+  // }
 
   return (
     <div className="demo-app">
