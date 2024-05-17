@@ -58,7 +58,10 @@ export default function Calendar({
             // Add any other necessary headers or configurations
           }
         );
-        allEvents = [...allEvents, ...response.data.data.map(mapEventData)];
+        allEvents = [
+          ...allEvents,
+          ...response.data.data.map((event) => mapEventData(event, false)),
+        ];
       }
       setEvents(allEvents);
       console.log(events);
@@ -78,7 +81,10 @@ export default function Calendar({
           },
         }
       );
-      allEvents = [...allEvents, ...response.data.data.map(mapEventData)];
+      allEvents = [
+        ...allEvents,
+        ...response.data.data.map((event) => mapEventData(event, true)),
+      ];
       setEvents(allEvents);
       console.log(events);
       console.log(response.data.data);
@@ -88,8 +94,8 @@ export default function Calendar({
   }
 
   // Function to map event data
-  function mapEventData(event) {
-    return {
+  function mapEventData(event, backgroundEvent) {
+    const formattedEvent = {
       id: event.scheduleId || event.calendarId,
       title: event.scheduleName || "",
       start: event.startDateTime.replace(" ", "T"),
@@ -97,6 +103,13 @@ export default function Calendar({
       allDay: false, // Assuming all events fetched are not all-day events
       backgroundColor: event.colorHex,
     };
+
+    // 특정 조건을 만족하면 display: "background" 속성을 추가
+    if (backgroundEvent) {
+      formattedEvent.display = "background";
+    }
+
+    return formattedEvent;
   }
 
   // Function to handle date selection
@@ -138,11 +151,10 @@ export default function Calendar({
         endDateTime: info.event.end,
       };
 
-      await axios.post("https://api.moim.today/api/schedules", eventData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const result = await axios.post(
+        "https://api.moim.today/api/schedules",
+        eventData
+      );
 
       console.log(
         "Event added and sent to the backend:",
