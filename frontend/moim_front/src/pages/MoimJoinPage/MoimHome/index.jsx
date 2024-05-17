@@ -3,6 +3,7 @@ import CardComponent from "../CardComponent";
 import SimpleDrop from "../../../components/Dropdown/Simple";
 import { useNavigate, useParams } from "react-router";
 import { GET } from "../../../utils/axios";
+import CreationModal from "../../../components/CreationModal";
 function MoimHome({
   notices,
   meetings,
@@ -10,6 +11,7 @@ function MoimHome({
   setMeetingOption,
   isHost,
 }) {
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   let noticeId = 1,
@@ -25,7 +27,10 @@ function MoimHome({
     navigate(`meeting/${meetingId}`);
   };
 
-  const makeNoticeHandler = () => {};
+  const makeNoticeHandler = () => {
+    setShowModal(!showModal);
+    console.log(showModal);
+  };
   const makeMeetingHandler = () => {};
 
   return (
@@ -96,6 +101,9 @@ function MoimHome({
           </div>
         )}
       </div>
+      {showModal && (
+        <CreationModal showModal={showModal} setShowModal={setShowModal} />
+      )}
     </div>
   );
 }
