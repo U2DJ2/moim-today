@@ -1,13 +1,10 @@
 import React, { useRef } from "react";
 
-function CreationModal({ showModal, setShowModal, children, noticeHandler }) {
+function CreationModal({ showModal, setShowModal, children, closeHandler }) {
   const modalRef = useRef();
   const closeModal = () => {
-    if (noticeHandler != null) {
-      noticeHandler();
-    } else {
-      setShowModal(false);
-    }
+    closeHandler;
+    setShowModal(false);
   };
 
   const modalOutSideClick = (e) => {
