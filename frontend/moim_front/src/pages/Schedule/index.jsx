@@ -2,7 +2,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-import { Datepicker } from "flowbite-react"
+// API
+import axios from 'axios';
+
+// UI
+import { Datepicker, Accordion } from "flowbite-react"
 
 // Icons
 import HomeIcon from '@mui/icons-material/Home';
@@ -96,6 +100,50 @@ const calendarTheme = {
     }
 }
 
+async function fetchAllTodos() {
+    try {
+        const response = await axios.get(
+            `https://api.moim.today/api/todos?startDate=2024-01&months=12`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                // Add any other necessary headers or configurations
+            }
+        );
+
+        console.log(response.data);
+    } catch (error) {
+        console.error("Error fetching events:", error);
+    }
+}
+
+// Define a function to add a todo item
+async function addTodo(moimId, contents, todoDate) {
+    try {
+        const response = await axios.post(
+            'https://api.moim.today/api/todos',
+            {
+                moimId: moimId,
+                contents: contents,
+                todoDate: todoDate
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        console.log('Todo added successfully:', response.data);
+        // You can perform any additional actions here after adding the todo
+    } catch (error) {
+        console.error('Error adding todo:', error);
+    }
+}
+
+
+
 function SidebarElementIcon() {
     return (
         <div className="flex flex-col justify-center items-start p-5 bg-rose-600 rounded-3xl max-md:pr-5">
@@ -113,6 +161,35 @@ function SidebarElementLink({ icon, text, color, onClick }) {
     );
 }
 
+function AccordionList() {
+    return (
+        <Accordion>
+            <Accordion.Panel>
+                <Accordion.Title>Test Title A</Accordion.Title>
+                <Accordion.Content>
+                    <p className="text-gray-500 dark:text-gray-400">
+                        AAA
+                    </p>
+                </Accordion.Content>
+            </Accordion.Panel>
+            <Accordion.Panel>
+                <Accordion.Title>Is there a Figma file available?</Accordion.Title>
+                <Accordion.Content>
+                    <p className="text-gray-500 dark:text-gray-400">
+                        BBB
+                    </p>
+                </Accordion.Content>
+            </Accordion.Panel>
+            <Accordion.Panel>
+                <Accordion.Title>Tailwind UI?</Accordion.Title>
+                <Accordion.Content>
+                    <p className="mb-2 text-gray-500 dark:text-gray-400">Learn more about these</p>
+                </Accordion.Content>
+            </Accordion.Panel>
+        </Accordion>
+    );
+}
+
 // Sidebar 컴포넌트
 function Sidebar({ onDateChange }) {
     const navigate = useNavigate();
@@ -120,6 +197,24 @@ function Sidebar({ onDateChange }) {
     // 홈 버튼 클릭 시 메인 페이지로 이동
     const handleHome = () => {
         navigate('/');
+    };
+
+    // Function to handle adding todo
+    const handleAddTodo = () => {
+        // Use prompt to get user input
+        const moimId = prompt('Enter moimId:'); // Prompt for moimId
+        const contents = prompt('Enter contents:'); // Prompt for contents
+        const todoDate = prompt('Enter todoDate:'); // Prompt for todoDate
+
+        // Check if any field is empty or if the user cancels the prompt
+        if (!moimId || !contents || !todoDate) {
+            // Inform the user to fill in all fields
+            alert('Please fill in all fields.');
+            return;
+        }
+
+        // Call the function to add todo
+        addTodo(moimId, contents, todoDate);
     };
 
     return (
@@ -131,7 +226,15 @@ function Sidebar({ onDateChange }) {
                 </div>
                 <div className="flex gap-2.5 mt-5"></div>
                 <SidebarElementLink icon={<HomeIcon />} text="홈" color="text-gray-400" className="mt-16 max-md:mt-10" onClick={handleHome} />
-                <Datepicker theme={calendarTheme} inline onSelectedDateChanged={onDateChange}/>
+                <Datepicker showTodayButton={false} showClearButton={false} theme={calendarTheme} inline onSelectedDateChanged={onDateChange} />
+                <div className="flex gap-2.5 mt-5"></div>
+                <button
+                    className='w-52 justify-center px-6 py-3 text-[16px] text-center text-white bg-black whitespace-nowrap rounded-full font-semibold  hover:cursor-pointer'
+                    onClick={handleAddTodo}>
+                    TODO 추가하기
+                </button>
+                <div className="flex gap-2.5 mt-5"></div>
+                <AccordionList />
             </div>
         </aside>
     );
@@ -145,12 +248,10 @@ export default function Schedule() {
     };
 
     return (
-        <div className="justify-between pt-9 bg-white h-screen flex flex-col">
-            <div className="flex-1 overflow-auto">
-                <div className="flex h-full w-full max-md:flex-col max-md:gap-0">
-                    <Sidebar onDateChange={handleMiniCalendarDateSelect} />
-                    <PersonalSection selectedDate={selectedDate} />
-                </div>
+        <div className="justify-between bg-white flex flex-col">
+            <div className="flex w-full max-md:flex-col max-md:gap-0">
+                <Sidebar onDateChange={handleMiniCalendarDateSelect} />
+                <PersonalSection selectedDate={selectedDate} />
             </div>
         </div>
     );
