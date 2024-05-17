@@ -4,17 +4,21 @@ import moim_today.application.meeting.meeting_comment.MeetingCommentService;
 import moim_today.dto.meeting.meeting_comment.MeetingCommentCreateRequest;
 import moim_today.dto.meeting.meeting_comment.MeetingCommentResponse;
 import moim_today.dto.meeting.meeting_comment.MeetingCommentUpdateRequest;
+import moim_today.global.error.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_NOT_FOUND_ERROR;
 import static moim_today.util.TestConstant.*;
 
 public class FakeMeetingCommentService implements MeetingCommentService {
 
     @Override
     public void createMeetingComment(final long memberId, final MeetingCommentCreateRequest meetingCommentCreateRequest) {
-
+        if (meetingCommentCreateRequest.meetingId() == NOT_FOUND_MEETING_ID.longValue()) {
+            throw new NotFoundException(MEETING_NOT_FOUND_ERROR.message());
+        }
     }
 
     @Override

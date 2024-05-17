@@ -10,6 +10,7 @@ import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes.NUMBER;
@@ -53,6 +54,65 @@ class MeetingCommentControllerTest extends ControllerTest {
                         )));
     }
 
+    @DisplayName("미팅이 존재하지 않으면 댓글 작성에 실패한다.")
+    @Test
+    void createMeetingCommentNotExistMeeting() throws Exception {
+        MeetingCommentCreateRequest meetingCommentCreateRequest = MeetingCommentCreateRequest.builder()
+                .meetingId(NOT_FOUND_MEETING_ID.longValue())
+                .contents(MEETING_COMMENT_CONTENTS.value())
+                .build();
+
+        mockMvc.perform(post("/api/meeting-comments")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(meetingCommentCreateRequest)))
+                .andExpect(status().isNotFound())
+                .andDo(document("미팅 댓글 작성 실패 - 존재하지 않는 미팅",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅 댓글")
+                                .summary("미팅 댓글 작성")
+                                .requestFields(
+                                        fieldWithPath("meetingId").type(NUMBER).description("존재하지 않는 미팅 Id"),
+                                        fieldWithPath("contents").type(STRING).description("댓글 내용")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(JsonFieldType.STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(JsonFieldType.STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+
+    }
+
+    @DisplayName("모임의 참여자가 아니면 댓글 작성에 실패한다.")
+    @Test
+    void createMeetingCommentThrowsForbidden() throws Exception {
+        MeetingCommentCreateRequest meetingCommentCreateRequest = MeetingCommentCreateRequest.builder()
+                .meetingId(NOT_FOUND_MEETING_ID.longValue())
+                .contents(MEETING_COMMENT_CONTENTS.value())
+                .build();
+
+        mockMvc.perform(post("/api/meeting-comments")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(meetingCommentCreateRequest)))
+                .andExpect(status().isForbidden())
+                .andDo(document("미팅 댓글 작성 실패 - 모임의 참여자가 아닐 경우",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅 댓글")
+                                .summary("미팅 댓글 작성")
+                                .requestFields(
+                                        fieldWithPath("meetingId").type(NUMBER).description("미팅 Id"),
+                                        fieldWithPath("contents").type(STRING).description("댓글 내용")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(JsonFieldType.STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(JsonFieldType.STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+
+    }
+
+
     @DisplayName("미팅의 댓글 목록을 불러온다.")
     @Test
     void findAllMeetingCommentsByMeetingId() throws Exception {
@@ -74,6 +134,8 @@ class MeetingCommentControllerTest extends ControllerTest {
                                 .build()
                         )));
     }
+
+
 
     @DisplayName("미팅의 댓글을 수정한다.")
     @Test
