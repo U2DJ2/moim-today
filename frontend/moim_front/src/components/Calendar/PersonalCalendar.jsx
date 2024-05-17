@@ -21,12 +21,12 @@ export default function Calendar({
   isPersonal,
   isMeeting,
   moimId,
-  showModal,
-  agenda,
   title,
-  setAgenda,
   setShowModal,
+  endDateTime,
   setEndDateTime,
+  startDateTime,
+  setStartDateTime,
 }) {
   const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
   const [events, setEvents] = useState([]);
@@ -95,8 +95,6 @@ export default function Calendar({
         ...response.data.data.map((event) => mapEventData(event, true)),
       ];
       setEvents(allEvents);
-      console.log(events);
-      console.log(response.data.data);
     } catch (e) {
       console.log(e);
     }
@@ -125,7 +123,10 @@ export default function Calendar({
 
     let calendarApi = selectInfo.view.calendar;
     console.log(selectInfo.endStr.replace("T", " "));
-    setEndDateTime(selectInfo.endStr.replace("T", " "));
+    console.log(selectInfo.startStr);
+    console.log(selectInfo.endStr);
+    setStartDateTime(selectInfo.startStr);
+    setEndDateTime(selectInfo.endStr);
 
     calendarApi.unselect(); // clear date selection
 
@@ -222,21 +223,23 @@ export default function Calendar({
           eventRemove={handleEventRemove}
         />
       </div>
-      <CreationModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        closeHandler={() => calendarRef.current.getApi().unselect()}
-      >
-        <div>
-          <h2>새 이벤트 추가</h2>
-          <input
-            type="text"
-            value={agenda}
-            onChange={(e) => setAgenda(e.target.value)}
-            placeholder="Event Title"
-          />
-        </div>
-      </CreationModal>
+      {/* {isMeeting ? (
+        <CreationModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          closeHandler={() => calendarRef.current.getApi().unselect()}
+        >
+          <div>
+            <h2>새 이벤트 추가</h2>
+            <input
+              type="text"
+              value={agenda}
+              onChange={(e) => setAgenda(e.target.value)}
+              placeholder="Event Title"
+            />
+          </div>
+        </CreationModal>
+      ) : null} */}
     </div>
   );
 }

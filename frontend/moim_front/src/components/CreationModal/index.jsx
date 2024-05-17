@@ -1,10 +1,41 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
+import { postMeeting } from "../../api/moim";
+import { parse } from "date-fns";
 
-function CreationModal({ showModal, setShowModal, children, closeHandler }) {
+function CreationModal({
+  showModal,
+  setShowModal,
+  children,
+  closeHandler,
+  isMeeting,
+  moimId,
+  startDateTime,
+  endDateTime,
+  agenda,
+  place,
+  meetingCategory,
+}) {
   const modalRef = useRef();
+
+  useEffect(() => {
+    console.log(startDateTime);
+    console.log(endDateTime);
+    console.log(showModal);
+  }, [showModal, startDateTime, endDateTime]);
+
+  const data = {
+    moimId: parseInt(moimId),
+    agenda: agenda,
+    startDateTime: startDateTime.replace("T", " ").split("+")[0],
+    endDateTime: endDateTime.replace("T", " ").split("+")[0],
+    place: place,
+    meetingCategory: "REGULAR",
+  };
   const closeModal = () => {
     closeHandler;
     setShowModal(false);
+    console.log(data);
+    isMeeting ? postMeeting(data) : null;
   };
 
   const modalOutSideClick = (e) => {
@@ -20,7 +51,7 @@ function CreationModal({ showModal, setShowModal, children, closeHandler }) {
       onClick={(e) => modalOutSideClick(e)}
     >
       <div className="m-auto shadow w-96 rounded-xl">
-        <div className="flex flex-col justify-center h-64 text-center text-black whitespace-pre bg-white rounded-t-xl">
+        <div className="flex flex-col justify-center h-80 text-center text-black whitespace-pre bg-white rounded-t-xl">
           {children}
         </div>
         <button

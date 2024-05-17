@@ -135,7 +135,7 @@ function MoimHome({
         <CreationModal
           showModal={showModal}
           setShowModal={setShowModal}
-          closeHandler={noticeHandler}
+          noticeHandler={noticeHandler}
         >
           <div className="flex flex-col">
             <div className="">
