@@ -207,9 +207,13 @@ export default function Calendar({
 
 function renderEventContent(eventInfo) {
   return (
-    <>
-      <b>{eventInfo.timeText}</b>
-      <i>{eventInfo.event.title}</i>
-    </>
+    <div className="flex flex-col">
+      <b className="text-black font-Pretendard_SemiBold">
+        {eventInfo.timeText}
+      </b>
+      <i className="text-black font-Pretendard_Light">
+        {eventInfo.event.title}
+      </i>
+    </div>
   );
 }
