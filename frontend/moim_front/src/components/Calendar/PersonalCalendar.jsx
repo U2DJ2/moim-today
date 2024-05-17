@@ -208,10 +208,10 @@ export default function Calendar({
 function renderEventContent(eventInfo) {
   return (
     <div className="flex flex-col">
-      <b className="text-black font-Pretendard_SemiBold">
+      <b className="text-white font-Pretendard_SemiBold">
         {eventInfo.timeText}
       </b>
-      <i className="text-black font-Pretendard_Light">
+      <i className="text-white font-Pretendard_Normal">
         {eventInfo.event.title}
       </i>
     </div>
