@@ -6,6 +6,7 @@ import lombok.Getter;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
 
+
 @Getter
 @Table(name = "joined_meeting")
 @Entity
@@ -23,14 +24,18 @@ public class JoinedMeetingJpaEntity extends BaseTimeEntity {
 
     private boolean attendance;
 
+    private boolean upcomingNoticeSent;
+
     protected JoinedMeetingJpaEntity() {
     }
 
     @Builder
-    private JoinedMeetingJpaEntity(final long meetingId, final long memberId, final boolean attendance) {
+    private JoinedMeetingJpaEntity(final long meetingId, final long memberId,
+                                   final boolean attendance, final boolean upcomingNoticeSent) {
         this.meetingId = meetingId;
         this.memberId = memberId;
         this.attendance = attendance;
+        this.upcomingNoticeSent = upcomingNoticeSent;
     }
 
     public static JoinedMeetingJpaEntity toEntity(final long meetingId, final long memberId,
@@ -39,6 +44,15 @@ public class JoinedMeetingJpaEntity extends BaseTimeEntity {
                 .meetingId(meetingId)
                 .memberId(memberId)
                 .attendance(attendance)
+                .upcomingNoticeSent(false)
                 .build();
+    }
+
+    public void updateAttendance(final boolean attendance) {
+        this.attendance = attendance;
+    }
+
+    public void updateUpcomingNoticeSent(final boolean upcomingNoticeSent) {
+        this.upcomingNoticeSent = upcomingNoticeSent;
     }
 }

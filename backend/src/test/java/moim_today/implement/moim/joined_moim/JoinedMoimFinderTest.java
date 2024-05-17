@@ -1,6 +1,6 @@
 package moim_today.implement.moim.joined_moim;
 
-import moim_today.global.error.ForbiddenException;
+import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static moim_today.global.constant.exception.MoimExceptionConstant.JOINED_MOIM_MEMBER_IS_EMPTY;
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
+import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_IS_EMPTY;
+import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_NOT_FOUND;
 import static moim_today.util.TestConstant.MEMBER_ID;
 import static moim_today.util.TestConstant.MOIM_ID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,6 +47,47 @@ class JoinedMoimFinderTest extends ImplementTest {
 
         // when
         List<JoinedMoimJpaEntity> membersByMoimId = joinedMoimFinder.findByMoimId(savedMoim.getId());
+
+        // then
+        assertThat(membersByMoimId.size()).isEqualTo(MOIM_MEMBER_SIZE);
+    }
+
+    @DisplayName("모임에 참여한 멤버들을 조회할 때 다른 모임의 멤버는 조회하지 않는다")
+    @Test
+    void findMembersByMoimIdExcludeAnotherMoimMembers() {
+
+        // given1
+        MoimJpaEntity moimJpaEntity1 = MoimJpaEntity.builder()
+                .memberId(1L)
+                .build();
+
+        MoimJpaEntity moimJpaEntity2 = MoimJpaEntity.builder()
+                .memberId(2L)
+                .build();
+
+        MoimJpaEntity savedMoim1 = moimRepository.save(moimJpaEntity1);
+        MoimJpaEntity savedMoim2 = moimRepository.save(moimJpaEntity2);
+
+        // given2
+        for(int i  = 0 ; i < MOIM_MEMBER_SIZE; i++){
+            JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
+                    .memberId(i)
+                    .moimId(savedMoim1.getId())
+                    .build();
+            joinedMoimRepository.save(joinedMoimJpaEntity);
+        }
+
+        for(int i  = 0 ; i < MOIM_MEMBER_SIZE; i++){
+            JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
+                    .memberId(i)
+                    .moimId(savedMoim2.getId())
+                    .build();
+            joinedMoimRepository.save(joinedMoimJpaEntity);
+        }
+
+
+        // when
+        List<JoinedMoimJpaEntity> membersByMoimId = joinedMoimFinder.findByMoimId(savedMoim1.getId());
 
         // then
         assertThat(membersByMoimId.size()).isEqualTo(MOIM_MEMBER_SIZE);
@@ -101,9 +142,9 @@ class JoinedMoimFinderTest extends ImplementTest {
         MoimJpaEntity savedMoim = moimRepository.save(moimJpaEntity);
 
         // expected
-        assertThatThrownBy(() -> joinedMoimFinder.validateMemberInMoim(savedMoim.getId(),2L))
-                .isInstanceOf(ForbiddenException.class)
-                .hasMessageMatching(MOIM_FORBIDDEN_ERROR.message());
+        assertThatThrownBy(() -> joinedMoimFinder.validateMemberInMoim(2L, savedMoim.getId()))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageMatching(JOINED_MOIM_MEMBER_NOT_FOUND.message());
     }
 
     @DisplayName("모임에 참여한 멤버일 경우 에러를 발생하지 않는다")
@@ -119,7 +160,7 @@ class JoinedMoimFinderTest extends ImplementTest {
 
         // expected
         assertThatCode(() ->
-                joinedMoimFinder.validateMemberInMoim(savedJoined.getMoimId(), 1L))
+                joinedMoimFinder.validateMemberInMoim(1L, savedJoined.getMoimId()))
                 .doesNotThrowAnyException();
     }
 
@@ -138,7 +179,7 @@ class JoinedMoimFinderTest extends ImplementTest {
         joinedMoimRepository.save(joinedMoimJpaEntity);
 
         //expected
-        assertThatCode(() -> joinedMoimFinder.validateMemberInMoim(moimId, memberId))
+        assertThatCode(() -> joinedMoimFinder.validateMemberInMoim(memberId, moimId))
                 .doesNotThrowAnyException();
     }
 
@@ -150,8 +191,8 @@ class JoinedMoimFinderTest extends ImplementTest {
         long memberId = MEMBER_ID.longValue();
 
         //expected
-        assertThatThrownBy(() -> joinedMoimFinder.validateMemberInMoim(moimId, memberId))
-                .isInstanceOf(ForbiddenException.class)
-                .hasMessage(MOIM_FORBIDDEN_ERROR.message());
+        assertThatThrownBy(() -> joinedMoimFinder.validateMemberInMoim(memberId, moimId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage(JOINED_MOIM_MEMBER_NOT_FOUND.message());
     }
 }

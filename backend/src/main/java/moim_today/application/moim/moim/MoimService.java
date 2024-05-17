@@ -1,20 +1,21 @@
 package moim_today.application.moim.moim;
 
-import moim_today.dto.moim.moim.MoimCreateRequest;
-import moim_today.dto.moim.moim.MoimDetailResponse;
-import moim_today.dto.moim.moim.MoimUpdateRequest;
-import moim_today.dto.moim.moim.MoimImageResponse;
+import jakarta.servlet.http.HttpServletResponse;
+import moim_today.domain.moim.MoimSortedFilter;
 import moim_today.dto.moim.moim.*;
+import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface MoimService {
 
-    void createMoim(final long memberId, final long universityId,
+    MoimIdResponse createMoim(final long memberId, final long universityId,
                     final MoimCreateRequest moimCreateRequest);
 
     MoimImageResponse uploadMoimImage(final MultipartFile file);
 
-    MoimDetailResponse getMoimDetail(final long moimId);
+    MoimDetailResponse getMoimDetail(final long moimId, final String viewedMoimsCookieByUrlEncoded, final HttpServletResponse response);
 
     void updateMoim(final long memberId, final MoimUpdateRequest moimUpdateRequest);
 
@@ -22,5 +23,13 @@ public interface MoimService {
 
     MoimMemberTabResponse findMoimMembers(final long memberId, final long moimId);
 
-    void deleteMember(final long id, final MoimMemberDeleteRequest moimMemberDeleteRequest);
+    void kickMember(final long requestMemberId, final MoimMemberKickRequest moimMemberKickRequest);
+
+    void deleteMember(final long memberId, final MoimMemberDeleteRequest moimMemberDeleteRequest);
+
+    void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest);
+
+    List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter);
+
+    List<MoimSimpleResponse> searchMoim(final String searchParam);
 }

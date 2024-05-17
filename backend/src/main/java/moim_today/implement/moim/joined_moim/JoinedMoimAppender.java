@@ -3,6 +3,7 @@ package moim_today.implement.moim.joined_moim;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
+import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.repository.moim.joined_moim.JoinedMoimRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,8 @@ public class JoinedMoimAppender {
 
     @Transactional
     public void createJoinedMoim(final long memberId, final long moimId) {
-        moimFinder.getById(moimId);
+        MoimJpaEntity findMoim = moimFinder.getByIdWithPessimisticLock(moimId);
+        findMoim.updateCurrentCount(1);
 
         JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.of(memberId, moimId);
 

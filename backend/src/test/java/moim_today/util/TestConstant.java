@@ -50,6 +50,8 @@ public enum TestConstant {
     // 모임
     MOIM_ID("1"),
     FORBIDDEN_MOIM_ID("9999"),
+    FIRST_CREATED_MOIM_TITLE("first title"),
+    SECOND_CREATED_MOIM_TITLE("second title"),
     MOIM_TITLE("moim title"),
     MOIM_CONTENTS("moim contents"),
     CAPACITY("5"),
@@ -78,11 +80,19 @@ public enum TestConstant {
     MEETING_AGENDA("meeting agenda"),
     MEETING_PLACE("meeting place"),
 
+    FIRST_CREATED_MEETING_AGENDA("first agenda"),
+    SECOND_CREATED_MEETING_AGENDA("second agenda"),
+
     STATUS_CODE("200"),
     MESSAGE("message"),
 
     LOCAL_DATE_FORMAT("yyyy-MM-dd"),
-    LOCAL_DATE_TIME_FORMAT("yyyy-MM-dd HH:mm:ss");
+    LOCAL_DATE_TIME_FORMAT("yyyy-MM-dd HH:mm:ss"),
+
+    //투두
+    TODO_ID("1"),
+    UPDATE_BEFORE_CONTENT("업데이트하기 전 Todo Content"),
+    UPDATE_AFTER_CONTENT("업데이트한 이후 Todo Content");
 
     private final String value;
 

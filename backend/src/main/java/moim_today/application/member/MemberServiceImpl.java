@@ -5,6 +5,7 @@ import moim_today.dto.member.*;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.member.MemberFinder;
 import moim_today.implement.member.MemberUpdater;
+import moim_today.implement.moim.moim.MoimManager;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,17 +17,18 @@ import static moim_today.global.constant.FileTypeConstant.PROFILE_IMAGE;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberUpdater memberUpdater;
-
     private final MemberFinder memberFinder;
-
     private final FileUploader fileUploader;
+    private final MoimManager moimManager;
 
     public MemberServiceImpl(final MemberUpdater memberUpdater,
                              final MemberFinder memberFinder,
-                             final FileUploader fileUploader) {
+                             final FileUploader fileUploader,
+                             final MoimManager moimManager) {
         this.memberUpdater = memberUpdater;
         this.memberFinder = memberFinder;
         this.fileUploader = fileUploader;
+        this.moimManager = moimManager;
     }
 
     @Override
@@ -59,5 +61,18 @@ public class MemberServiceImpl implements MemberService {
     public ProfileImageResponse uploadProfileImage(final long memberId, final MultipartFile file) {
         String imageUrl = fileUploader.uploadFile(PROFILE_IMAGE.value(), file);
         return ProfileImageResponse.from(imageUrl);
+    }
+
+    @Override
+    public MemberHostResponse isHost(final long memberId, final long moimId) {
+        boolean isHost = moimManager.isHost(memberId, moimId);
+        return MemberHostResponse.builder()
+                .isHost(isHost)
+                .build();
+    }
+
+    @Override
+    public MemberSimpleResponse getHostProfileByMoimId(final long moimId) {
+        return memberFinder.getHostProfileByMoimId(moimId);
     }
 }

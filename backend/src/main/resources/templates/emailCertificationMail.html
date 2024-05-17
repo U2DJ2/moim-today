@@ -6,24 +6,35 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Moim-Today</title>
 </head>
-<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; text-align: center;">
+<body style="font-family: Arial, sans-serif; background-color: #f1f3f5; margin: 0; padding: 32px 0; text-align: center;">
 
-<table align="center" style="max-width: 500px; height: 200px; width: 100%; border-collapse: collapse; background-color: #ffffff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-    <tr>
-        <td style="text-align: center;">
-            <h1 style="font-size: 24px; color: #333; font-weight: bold;">
-                모임의 혁신 Moim-Today
-            </h1>
-        </td>
-    </tr>
-    <tr>
-        <td style="text-align: center;">
-            <a th:href="@{'https://api.moim.today/api/certification/email/' + ${data}}" style="background-color: #4CAF50; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-                회원가입 이메일 인증하기
-            </a>
-        </td>
-    </tr>
-</table>
+<div style="width: 100%; background-color: #f1f3f5; padding: 32px 0;">
+    <div style="max-width: 600px; width: 100%; background-color: #ffffff; padding: 0 20px; margin: auto; border-radius: 8px; border: 1px solid #FFC0CB; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <div style="padding: 20px 0; border-bottom: 1px solid #f1f3f5;">
+            <table width="100%">
+                <tr>
+                    <!-- <td width="100"><img width="100" height="19" src="your-logo-url-here.png"></td> -->
+                    <td width="460" style="text-align:right">
+                        <!-- <img src="your-slogan-url-here.png" height="19" style="vertical-align:bottom"> -->
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="font-size: 55px; color: #FF2400; font-weight: bold; font-family: 'Praise', cursive; margin-bottom: 20px;">
+            Moim-Today
+        </div>
+
+        <a th:href="@{'https://api.moim.today/api/certification/email/' + ${data}}"
+           style="background-color: #4CAF50; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+            회원가입 이메일 인증하기
+        </a>
+
+        <div style="padding: 32px 0; text-align: center; color: #868e96; font-size: 12px; line-height: 1.38; letter-spacing: -0.3px;">
+            모임의 혁신 Moim-Today<br>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

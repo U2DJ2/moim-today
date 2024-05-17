@@ -11,8 +11,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static moim_today.global.constant.NumberConstant.CALENDAR_START_ID;
+
 @Builder
 public record AvailableTimeInMoimResponse(
+        int calendarId,
         List<MemberSimpleResponse> members,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -25,19 +28,23 @@ public record AvailableTimeInMoimResponse(
 
     public static List<AvailableTimeInMoimResponse> from(final List<AvailableTime> availableTimes) {
         List<AvailableTimeInMoimResponse> availableTimeInMoimResponses = new ArrayList<>();
+        int calendarId = CALENDAR_START_ID.value();
 
         for (AvailableTime availableTime : availableTimes) {
+            calendarId++;
             List<Member> members = availableTime.members();
-            AvailableTimeInMoimResponse availableTimeInMoimResponse = of(availableTime, members);
+            AvailableTimeInMoimResponse availableTimeInMoimResponse = of(calendarId, availableTime, members);
             availableTimeInMoimResponses.add(availableTimeInMoimResponse);
         }
 
         return availableTimeInMoimResponses;
     }
 
-    private static AvailableTimeInMoimResponse of(final AvailableTime availableTime, final List<Member> members) {
+    private static AvailableTimeInMoimResponse of(final int calendarId, final AvailableTime availableTime,
+                                                  final List<Member> members) {
         return AvailableTimeInMoimResponse.builder()
-                .members(MemberSimpleResponse.of(members))
+                .calendarId(calendarId)
+                .members(MemberSimpleResponse.from(members))
                 .startDateTime(availableTime.startDateTime())
                 .endDateTime(availableTime.endDateTime())
                 .colorHex(AvailableColorHex.getHexByCount(members.size()))

@@ -3,25 +3,21 @@ package moim_today.domain.schedule;
 import lombok.Builder;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 
 @Builder
 public record Schedule(
         String scheduleName,
-        DayOfWeek dayOfWeek,
         String colorHex,
         LocalDateTime startDateTime,
         LocalDateTime endDateTime
 ) {
 
-    public static Schedule toDomain(final String scheduleName, final DayOfWeek dayOfWeek,
-                                    final String colorHex, final LocalDateTime startDateTime,
-                                    final LocalDateTime endDateTime) {
+    public static Schedule toDomain(final String scheduleName, final String colorHex,
+                                    final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         return Schedule.builder()
                 .scheduleName(scheduleName)
-                .dayOfWeek(dayOfWeek)
                 .colorHex(colorHex)
                 .startDateTime(startDateTime)
                 .endDateTime(endDateTime)
@@ -33,7 +29,6 @@ public record Schedule(
                 .memberId(memberId)
                 .meetingId(meetingId)
                 .scheduleName(scheduleName)
-                .dayOfWeek(dayOfWeek)
                 .colorHex(colorHex)
                 .startDateTime(startDateTime)
                 .endDateTime(endDateTime)

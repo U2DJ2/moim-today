@@ -9,7 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCHEDULE_ALREADY_EXIST;
@@ -35,7 +34,6 @@ class ScheduleUpdaterTest extends ImplementTest {
                 .memberId(memberId)
                 .meetingId(meetingId)
                 .scheduleName(SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
@@ -46,7 +44,6 @@ class ScheduleUpdaterTest extends ImplementTest {
         ScheduleUpdateRequest scheduleUpdateRequest = ScheduleUpdateRequest.builder()
                 .scheduleId(scheduleJpaEntity.getId())
                 .scheduleName(NEW_SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.SATURDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 11, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 13, 0, 0))
                 .build();
@@ -59,7 +56,6 @@ class ScheduleUpdaterTest extends ImplementTest {
 
         assertThat(scheduleRepository.count()).isEqualTo(1);
         assertThat(findEntity.getScheduleName()).isEqualTo(NEW_SCHEDULE_NAME.value());
-        assertThat(findEntity.getDayOfWeek()).isEqualTo(DayOfWeek.SATURDAY);
         assertThat(findEntity.getStartDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 11, 0, 0));
         assertThat(findEntity.getEndDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 13, 0, 0));
     }
@@ -91,7 +87,6 @@ class ScheduleUpdaterTest extends ImplementTest {
         ScheduleUpdateRequest scheduleUpdateRequest = ScheduleUpdateRequest.builder()
                 .scheduleId(scheduleJpaEntity.getId())
                 .scheduleName(NEW_SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.SATURDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 11, 59, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 14, 0, 0))
                 .build();
@@ -130,7 +125,6 @@ class ScheduleUpdaterTest extends ImplementTest {
         ScheduleUpdateRequest scheduleUpdateRequest = ScheduleUpdateRequest.builder()
                 .scheduleId(scheduleJpaEntity.getId())
                 .scheduleName(NEW_SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.SATURDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 14, 1, 0))
                 .build();
@@ -162,7 +156,6 @@ class ScheduleUpdaterTest extends ImplementTest {
         ScheduleUpdateRequest scheduleUpdateRequest = ScheduleUpdateRequest.builder()
                 .scheduleId(scheduleJpaEntity.getId())
                 .scheduleName(NEW_SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.SATURDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 14, 1, 0))
                 .build();
@@ -187,7 +180,6 @@ class ScheduleUpdaterTest extends ImplementTest {
                 .memberId(anotherMemberId)
                 .meetingId(meetingId)
                 .scheduleName(SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
@@ -199,7 +191,6 @@ class ScheduleUpdaterTest extends ImplementTest {
                 .memberId(memberId)
                 .meetingId(meetingId)
                 .scheduleName(SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 12, 0, 0))
                 .build();
@@ -210,7 +201,6 @@ class ScheduleUpdaterTest extends ImplementTest {
         ScheduleUpdateRequest scheduleUpdateRequest = ScheduleUpdateRequest.builder()
                 .scheduleId(scheduleJpaEntity.getId())
                 .scheduleName(NEW_SCHEDULE_NAME.value())
-                .dayOfWeek(DayOfWeek.SATURDAY)
                 .startDateTime(LocalDateTime.of(2024, 1, 1, 11, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 1, 1, 13, 0, 0))
                 .build();
@@ -225,7 +215,6 @@ class ScheduleUpdaterTest extends ImplementTest {
         assertThat(findEntity.getMemberId()).isEqualTo(memberId);
         assertThat(findEntity.getMeetingId()).isEqualTo(meetingId);
         assertThat(findEntity.getScheduleName()).isEqualTo(NEW_SCHEDULE_NAME.value());
-        assertThat(findEntity.getDayOfWeek()).isEqualTo(DayOfWeek.SATURDAY);
         assertThat(findEntity.getStartDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 11, 0, 0));
         assertThat(findEntity.getEndDateTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 13, 0, 0));
     }

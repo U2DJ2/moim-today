@@ -19,16 +19,20 @@ class JoinedMoimAppenderTest extends ImplementTest {
     void createJoinedMoimTest() {
         //given
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .currentCount(0)
                 .build();
 
         moimRepository.save(moimJpaEntity);
         long moimId = moimJpaEntity.getId();
-        long memberId = Long.parseLong(MEMBER_ID.value());
+        long memberId = MEMBER_ID.longValue();
 
         //when
         joinedMoimAppender.createJoinedMoim(memberId, moimId);
+        MoimJpaEntity findMoim = moimRepository.getById(moimId);
 
         //then
         assertThat(joinedMoimRepository.count()).isEqualTo(1L);
+        assertThat(joinedMoimRepository.isJoining(moimId, memberId)).isTrue();
+        assertThat(findMoim.getCurrentCount()).isEqualTo(1);
     }
 }

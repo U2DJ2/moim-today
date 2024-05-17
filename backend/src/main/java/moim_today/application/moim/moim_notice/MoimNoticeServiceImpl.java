@@ -20,38 +20,35 @@ public class MoimNoticeServiceImpl implements MoimNoticeService{
     private final MoimNoticeUpdater moimNoticeUpdater;
     private final MoimNoticeRemover moimNoticeRemover;
     private final JoinedMoimFinder joinedMoimFinder;
-    private final MoimFinder moimFinder;
 
 
     public MoimNoticeServiceImpl(final MoimNoticeAppender moimNoticeAppender,
                                  final MoimNoticeFinder moimNoticeFinder,
                                  final MoimNoticeUpdater moimNoticeUpdater,
                                  final MoimNoticeRemover moimNoticeRemover,
-                                 final JoinedMoimFinder joinedMoimFinder,
-                                 final MoimFinder moimFinder) {
+                                 final JoinedMoimFinder joinedMoimFinder) {
         this.moimNoticeAppender = moimNoticeAppender;
         this.moimNoticeFinder = moimNoticeFinder;
         this.moimNoticeUpdater = moimNoticeUpdater;
         this.moimNoticeRemover = moimNoticeRemover;
         this.joinedMoimFinder = joinedMoimFinder;
-        this.moimFinder = moimFinder;
     }
 
     @Override
     public void createMoimNotice(final long memberId, final MoimNoticeCreateRequest moimNoticeCreateRequest) {
-        moimNoticeAppender.createMoimNotice(memberId, moimNoticeCreateRequest);
+        moimNoticeAppender.createMoimNotice(memberId, moimNoticeCreateRequest.moimId(), moimNoticeCreateRequest);
     }
 
     @Override
     public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long memberId, final long moimId) {
-        joinedMoimFinder.validateMemberInMoim(moimId, memberId);
+        joinedMoimFinder.validateMemberInMoim(memberId, moimId);
         return moimNoticeFinder.findAllMoimNotice(moimId);
     }
 
     @Override
     public MoimNoticeDetailResponse getMoimNoticeDetail(final long memberId, final long moimNoticeId) {
         MoimNoticeJpaEntity moimNoticeJpaEntity = moimNoticeFinder.getById(moimNoticeId);
-        joinedMoimFinder.validateMemberInMoim(moimNoticeJpaEntity.getMoimId(), memberId);
+        joinedMoimFinder.validateMemberInMoim(memberId, moimNoticeJpaEntity.getMoimId());
         return MoimNoticeDetailResponse.from(moimNoticeJpaEntity);
     }
 

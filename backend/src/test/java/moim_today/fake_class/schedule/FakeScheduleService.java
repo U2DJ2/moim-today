@@ -24,7 +24,6 @@ public class FakeScheduleService implements ScheduleService {
                 .scheduleId(1L)
                 .meetingId(0L)
                 .scheduleName("스케줄명 1")
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .colorHex(ColorHex.getHexByCount(0).value())
                 .startDateTime(LocalDateTime.of(2024, 03, 04, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 03, 04, 12, 0, 0))
@@ -34,7 +33,6 @@ public class FakeScheduleService implements ScheduleService {
                 .scheduleId(2L)
                 .meetingId(0L)
                 .scheduleName("스케줄명 2")
-                .dayOfWeek(DayOfWeek.TUESDAY)
                 .colorHex(ColorHex.getHexByCount(1).value())
                 .startDateTime(LocalDateTime.of(2024, 03, 05, 12, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 03, 05, 13, 15, 0))
@@ -44,7 +42,6 @@ public class FakeScheduleService implements ScheduleService {
                 .scheduleId(3L)
                 .meetingId(1L)
                 .scheduleName("스케줄명 3")
-                .dayOfWeek(DayOfWeek.WEDNESDAY)
                 .colorHex(ColorHex.getHexByCount(3).value())
                 .startDateTime(LocalDateTime.of(2024, 03, 06, 12, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 03, 06, 13, 15, 0))
@@ -79,6 +76,7 @@ public class FakeScheduleService implements ScheduleService {
         List<MemberSimpleResponse> memberSimpleResponses3 = List.of(memberSimpleResponse2);
 
         AvailableTimeInMoimResponse availableTimeInMoimResponse1 = AvailableTimeInMoimResponse.builder()
+                .calendarId(1)
                 .members(memberSimpleResponses1)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
@@ -86,6 +84,7 @@ public class FakeScheduleService implements ScheduleService {
                 .build();
 
         AvailableTimeInMoimResponse availableTimeInMoimResponse2 = AvailableTimeInMoimResponse.builder()
+                .calendarId(2)
                 .members(memberSimpleResponses2)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 14, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 16, 0, 0))
@@ -93,6 +92,7 @@ public class FakeScheduleService implements ScheduleService {
                 .build();
 
         AvailableTimeInMoimResponse availableTimeInMoimResponse3 = AvailableTimeInMoimResponse.builder()
+                .calendarId(3)
                 .members(memberSimpleResponses3)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 18, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 20, 0, 0))
@@ -107,18 +107,21 @@ public class FakeScheduleService implements ScheduleService {
             final long memberId, final LocalDate startDate) {
 
         AvailableTimeForMemberResponse availableTimeForMemberResponse1 = AvailableTimeForMemberResponse.builder()
+                .calenderId(1)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
                 .colorHex(AvailableColorHex.getHexByCount(0))
                 .build();
 
         AvailableTimeForMemberResponse availableTimeForMemberResponse2 = AvailableTimeForMemberResponse.builder()
+                .calenderId(1)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 14, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 16, 0, 0))
                 .colorHex(AvailableColorHex.getHexByCount(0))
                 .build();
 
         AvailableTimeForMemberResponse availableTimeForMemberResponse3 = AvailableTimeForMemberResponse.builder()
+                .calenderId(1)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 18, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 20, 0, 0))
                 .colorHex(AvailableColorHex.getHexByCount(1))
@@ -137,7 +140,6 @@ public class FakeScheduleService implements ScheduleService {
                 .scheduleId(1L)
                 .meetingId(0L)
                 .scheduleName("스케줄명 1")
-                .dayOfWeek(DayOfWeek.MONDAY)
                 .colorHex(ColorHex.getHexByCount(0).value())
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
@@ -147,7 +149,6 @@ public class FakeScheduleService implements ScheduleService {
                 .scheduleId(2L)
                 .meetingId(0L)
                 .scheduleName("스케줄명 2")
-                .dayOfWeek(DayOfWeek.TUESDAY)
                 .colorHex(ColorHex.getHexByCount(1).value())
                 .startDateTime(LocalDateTime.of(2024, 3, 5, 12, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 5, 13, 15, 0))
@@ -157,7 +158,6 @@ public class FakeScheduleService implements ScheduleService {
                 .scheduleId(3L)
                 .meetingId(1L)
                 .scheduleName("스케줄명 3")
-                .dayOfWeek(DayOfWeek.WEDNESDAY)
                 .colorHex(ColorHex.getHexByCount(2).value())
                 .startDateTime(LocalDateTime.of(2024, 3, 6, 12, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 6, 13, 15, 0))

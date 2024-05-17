@@ -59,7 +59,6 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                                 scheduleJpaEntity.id,
                                 scheduleJpaEntity.meetingId,
                                 scheduleJpaEntity.scheduleName,
-                                scheduleJpaEntity.dayOfWeek,
                                 scheduleJpaEntity.colorHex,
                                 scheduleJpaEntity.startDateTime,
                                 scheduleJpaEntity.endDateTime
@@ -111,8 +110,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         LocalDateTime now = LocalDateTime.now();
         List<Schedule> schedules = timeTableSchedulingTask.schedules();
         long memberId = timeTableSchedulingTask.memberId();
-        String sql = "INSERT INTO schedule (member_id, moim_id, meeting_id, schedule_name, day_of_week, color_hex, start_date_time, end_date_time, created_at, last_modified_at)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO schedule (member_id, moim_id, meeting_id, schedule_name, color_hex, start_date_time, end_date_time, created_at, last_modified_at)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 
@@ -124,12 +123,11 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                 ps.setLong(2, entity.getMoimId());
                 ps.setLong(3, entity.getMeetingId());
                 ps.setString(4, entity.getScheduleName());
-                ps.setString(5, entity.getDayOfWeek().toString());
-                ps.setString(6, entity.getColorHex());
-                ps.setTimestamp(7, Timestamp.valueOf(entity.getStartDateTime()));
-                ps.setTimestamp(8, Timestamp.valueOf(entity.getEndDateTime()));
+                ps.setString(5, entity.getColorHex());
+                ps.setTimestamp(6, Timestamp.valueOf(entity.getStartDateTime()));
+                ps.setTimestamp(7, Timestamp.valueOf(entity.getEndDateTime()));
+                ps.setTimestamp(8, Timestamp.valueOf(now));
                 ps.setTimestamp(9, Timestamp.valueOf(now));
-                ps.setTimestamp(10, Timestamp.valueOf(now));
             }
 
             @Override

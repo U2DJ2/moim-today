@@ -8,6 +8,8 @@ public interface JoinedMoimRepository {
 
     List<Long> findAllJoinedMemberId(final long moimId);
 
+    List<Long> findMoimIdsByMemberId(final long memberId);
+
     void deleteAllByMoimId(final long moimId);
 
     long count();
@@ -18,7 +20,7 @@ public interface JoinedMoimRepository {
 
     void deleteMoimMember(final long moimId, final long memberId);
 
-    boolean isJoining(final long moimId2, final long memberId1);
+    boolean isJoining(final long moimId, final long memberId);
 
     boolean existsByMoimIdAndMemberId(final long moimId, final long memberId);
 }

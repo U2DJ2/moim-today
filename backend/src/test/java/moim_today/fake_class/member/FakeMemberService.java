@@ -56,4 +56,21 @@ public class FakeMemberService implements MemberService {
     public ProfileImageResponse uploadProfileImage(final long memberId, final MultipartFile file) {
         return ProfileImageResponse.from(PROFILE_IMAGE_URL.value());
     }
+
+    @Override
+    public MemberHostResponse isHost(final long memberId, final long moimId) {
+        boolean isHost = (memberId == moimId);
+        return MemberHostResponse.builder()
+                .isHost(isHost)
+                .build();
+    }
+
+    @Override
+    public MemberSimpleResponse getHostProfileByMoimId(final long moimId) {
+        return MemberSimpleResponse.builder()
+                .memberId(MEMBER_ID.longValue())
+                .username(USERNAME.value())
+                .memberProfileImageUrl(PROFILE_IMAGE_URL.value())
+                .build();
+    }
 }
