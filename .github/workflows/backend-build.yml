@@ -43,5 +43,5 @@ jobs:
           host: ${{ secrets.BE_SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: backend/moim-today.jar
+          source: moim-today.jar
           target: /home/ubuntu/deploy/tobe
