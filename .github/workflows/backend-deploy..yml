@@ -17,7 +17,7 @@ jobs:
           script: |
              rm -rf /home/ubuntu/deploy/current
              mkdir /home/ubuntu/deploy/current
-             mv /home/ubuntu/deploy/tobe/backend/moim-today.jar /home/ubuntu/deploy/current/moim-today.jar
+             cp /home/ubuntu/deploy/tobe/backend/moim-today.jar /home/ubuntu/deploy/current/moim-today.jar
              cd /home/ubuntu/deploy/current
              sudo fuser -k -n tcp 8080 || true
              nohup java -jar moim-today.jar > /dev/null 2>&1 & 
