@@ -24,4 +24,4 @@ jobs:
              cd /home/ubuntu/deploy/current
              sudo fuser -k -n tcp 8080 || true
              nohup java -jar moim-today.jar > /dev/null 2>&1 & 
-             rm -rf /home/ubuntu/instagram-server/tobe
+             rm -rf /home/ubuntu/deploy/tobe
