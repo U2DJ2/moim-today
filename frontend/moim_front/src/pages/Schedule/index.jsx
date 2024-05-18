@@ -1,12 +1,12 @@
-// React
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // API
 import axios from 'axios';
 
 // UI
 import { Datepicker, Accordion } from "flowbite-react"
+import { Checkbox, Label } from 'flowbite-react';
 
 // Icons
 import HomeIcon from '@mui/icons-material/Home';
@@ -100,26 +100,57 @@ const calendarTheme = {
     }
 }
 
-async function fetchAllTodos() {
+const accordionTheme = {
+  "root": {
+    "base": "divide-y divide-gray-200 border-gray-200 dark:divide-gray-700 dark:border-gray-700",
+    "flush": {
+      "off": "rounded-lg border",
+      "on": "border-b"
+    }
+  },
+  "content": {
+    "base": "p-5 first:rounded-t-lg last:rounded-b-lg dark:bg-gray-900"
+  },
+  "title": {
+    "arrow": {
+      "base": "h-6 w-6 shrink-0",
+      "open": {
+        "off": "",
+        "on": "rotate-180"
+      }
+    },
+    "base": "flex w-full items-center justify-between p-5 text-left font-medium text-gray-500 first:rounded-t-lg last:rounded-b-lg dark:text-gray-400",
+    "flush": {
+      "off": "hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:hover:bg-gray-800 dark:focus:ring-gray-800",
+      "on": "bg-transparent dark:bg-transparent"
+    },
+    "heading": "",
+    "open": {
+      "off": "",
+      "on": "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white"
+    }
+  }
+}
+
+async function fetchAllTodos(startDate, setMoimData) {
     try {
         const response = await axios.get(
-            `https://api.moim.today/api/todos?startDate=2024-01&months=12`,
+            `https://api.moim.today/api/todos?startDate=${startDate}&months=12`,
             {
                 headers: {
                     "Content-Type": "application/json",
-                },
-                // Add any other necessary headers or configurations
+                }
             }
         );
+        setMoimData(response.data.data);
 
-        console.log(response.data);
+        console.log(response.data.data);
     } catch (error) {
         console.error("Error fetching events:", error);
     }
 }
 
-// Define a function to add a todo item
-async function addTodo(moimId, contents, todoDate) {
+async function addTodo(moimId, contents, todoDate, setMoimData) {
     try {
         const response = await axios.post(
             'https://api.moim.today/api/todos',
@@ -136,13 +167,13 @@ async function addTodo(moimId, contents, todoDate) {
         );
 
         console.log('Todo added successfully:', response.data);
-        // You can perform any additional actions here after adding the todo
+
+         // 추가한 후에 todo 리스트 다시 불러오기
+         fetchAllTodos(todoDate.slice(0, 7), setMoimData);
     } catch (error) {
         console.error('Error adding todo:', error);
     }
 }
-
-
 
 function SidebarElementIcon() {
     return (
@@ -161,60 +192,34 @@ function SidebarElementLink({ icon, text, color, onClick }) {
     );
 }
 
-function AccordionList() {
-    return (
-        <Accordion>
-            <Accordion.Panel>
-                <Accordion.Title>Test Title A</Accordion.Title>
-                <Accordion.Content>
-                    <p className="text-gray-500 dark:text-gray-400">
-                        AAA
-                    </p>
-                </Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-                <Accordion.Title>Is there a Figma file available?</Accordion.Title>
-                <Accordion.Content>
-                    <p className="text-gray-500 dark:text-gray-400">
-                        BBB
-                    </p>
-                </Accordion.Content>
-            </Accordion.Panel>
-            <Accordion.Panel>
-                <Accordion.Title>Tailwind UI?</Accordion.Title>
-                <Accordion.Content>
-                    <p className="mb-2 text-gray-500 dark:text-gray-400">Learn more about these</p>
-                </Accordion.Content>
-            </Accordion.Panel>
-        </Accordion>
-    );
-}
-
-// Sidebar 컴포넌트
 function Sidebar({ onDateChange }) {
     const navigate = useNavigate();
+    const [moimData, setMoimData] = useState([]);
 
-    // 홈 버튼 클릭 시 메인 페이지로 이동
+    useEffect(() => {
+        const firstDate = new Date(new Date().getFullYear(), 0, 1).toISOString().slice(0, 7);
+        fetchAllTodos(firstDate, setMoimData);
+    }, []); // Empty dependency array to ensure useEffect runs only once
+
+    const handleTodoCheckboxClick = (todo) => {
+        alert(`Clicked on todo: ${todo.contents}`);
+    };
+
     const handleHome = () => {
         navigate('/');
     };
 
-    // Function to handle adding todo
     const handleAddTodo = () => {
-        // Use prompt to get user input
-        const moimId = prompt('Enter moimId:'); // Prompt for moimId
-        const contents = prompt('Enter contents:'); // Prompt for contents
-        const todoDate = prompt('Enter todoDate:'); // Prompt for todoDate
+        const moimId = prompt('Enter moimId:');
+        const contents = prompt('Enter contents:');
+        const todoDate = prompt('Enter todoDate:');
 
-        // Check if any field is empty or if the user cancels the prompt
         if (!moimId || !contents || !todoDate) {
-            // Inform the user to fill in all fields
             alert('Please fill in all fields.');
             return;
         }
 
-        // Call the function to add todo
-        addTodo(moimId, contents, todoDate);
+        addTodo(moimId, contents, todoDate, setMoimData);
     };
 
     return (
@@ -234,7 +239,24 @@ function Sidebar({ onDateChange }) {
                     TODO 추가하기
                 </button>
                 <div className="flex gap-2.5 mt-5"></div>
-                <AccordionList />
+                {moimData.map((moim) => (
+                    <Accordion key={moim.moimId} className='w-72' theme={accordionTheme} >
+                        <Accordion.Panel>
+                            <Accordion.Title>{moim.moimTitle} (ID : {moim.moimId})</Accordion.Title>
+                            <Accordion.Content>
+                                {moim.todoResponses.map((todo, todoIndex) => {
+                                    const isLastTodo = todoIndex === moim.todoResponses.length - 1;
+                                    return (
+                                        <div key={todo.todoId} className={`flex items-center gap-2${isLastTodo ? '' : ' mb-4'}`}>
+                                            <Checkbox onChange={() => handleTodoCheckboxClick(todo)} />
+                                            <Label>{todo.contents}</Label>
+                                        </div>
+                                    );
+                                })}
+                            </Accordion.Content>
+                        </Accordion.Panel>
+                    </Accordion>
+                ))}
             </div>
         </aside>
     );
