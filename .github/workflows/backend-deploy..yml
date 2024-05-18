@@ -10,15 +10,18 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.5.4
+      - name: SSH로 EC2에 접속하여 배포하기
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Add SSH key to known hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan ${{ secrets.BE_SERVER_IP }} >> ~/.ssh/known_hosts
-
-      - name: Deploy Backend application
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.BE_SERVER_IP }} "bash /home/ubuntu/deploy/deploy.sh"
+          host: ${{ secrets.BE_SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+             rm -rf /home/ubuntu/deploy/current
+             mkdir /home/ubuntu/deploy/current
+             mv /home/ubuntu/deploy/tobe/moim-today.jar /home/ubuntu/deploy/current/moim-today.jar
+             cd /home/ubuntu/deploy/current
+             sudo fuser -k -n tcp 8080 || true
+             nohup java -jar moim-today.jar > /dev/null 2>&1 & 
+             rm -rf /home/ubuntu/instagram-server/tobe
