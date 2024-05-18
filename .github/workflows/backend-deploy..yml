@@ -3,9 +3,6 @@ name: Deploy Backend Application
 on:
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,8 +17,8 @@ jobs:
           script: |
              rm -rf /home/ubuntu/deploy/current
              mkdir /home/ubuntu/deploy/current
-             mv /home/ubuntu/deploy/tobe/moim-today.jar /home/ubuntu/deploy/current/moim-today.jar
+             mv /home/ubuntu/deploy/tobe/backend/moim-today.jar /home/ubuntu/deploy/current/moim-today.jar
              cd /home/ubuntu/deploy/current
              sudo fuser -k -n tcp 8080 || true
              nohup java -jar moim-today.jar > /dev/null 2>&1 & 
-             rm -rf /home/ubuntu/instagram-server/tobe
+             rm -rf /home/ubuntu/deploy/tobe/backend
