@@ -5,32 +5,20 @@ on:
     branches: [ "main", "backend-main" ]
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Github Repository 파일 불러오기
+        uses: actions/checkout@v4
 
-      - name: Cache Gradle dependencies
-        uses: actions/cache@v2
+      - name: JDK 17버전 설치
+        uses: actions/setup-java@v4
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('backend/**/*.gradle*', 'backend/**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          distribution: temurin
+          java-version: 17
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Create Config
+      - name: application yml 파일 설정
         run: |
           mkdir -p src/main/resources
           mkdir -p src/test/resources
@@ -41,26 +29,19 @@ jobs:
           echo "${{ secrets.TEST_APPLICATION_TEST_YML }}" > src/test/resources/application-test.yml
         working-directory: backend
 
-      - name: Grant execute permission for Gradlew
-        run: chmod +x ./gradlew
+      - name: 테스트 및 빌드
+        run: ./gradlew clean build
         working-directory: backend
-
-      - name: Build with Gradle
-        run: ./gradlew build
+        
+      - name: 빌드된 파일 이름 변경
+        run: mv ./build/libs/*.jar ./moim-today.jar  
         working-directory: backend
-
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.5.4
+        
+      - name: SCP로 EC2에 빌드된 파일 전송하기
+        uses: appleboy/scp-action@v0.1.7
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Add SSH key to known hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan ${{ secrets.BE_SERVER_IP }} >> ~/.ssh/known_hosts
-
-      - name: SCP transfer
-        run: scp backend/build/libs/*.jar ${{ secrets.SSH_USER }}@${{ secrets.BE_SERVER_IP }}:~/deploy
-
-      - name: Deploy Backend application
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.BE_SERVER_IP }} "bash /home/ubuntu/deploy/deploy.sh"
+          host: ${{ secrets.BE_SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: backend/moim-today.jar
+          target: /home/ubuntu/deploy/tobe
