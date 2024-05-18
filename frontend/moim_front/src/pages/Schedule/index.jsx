@@ -270,7 +270,7 @@ export default function Schedule() {
     };
 
     return (
-        <div className="justify-between bg-white flex flex-col">
+        <div className="justify-between pt-6 bg-white flex flex-col">
             <div className="flex w-full max-md:flex-col max-md:gap-0">
                 <Sidebar onDateChange={handleMiniCalendarDateSelect} />
                 <PersonalSection selectedDate={selectedDate} />
