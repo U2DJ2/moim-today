@@ -34,7 +34,7 @@ jobs:
         working-directory: backend
         
       - name: 빌드된 파일 이름 변경
-        run: mv ./build/libs/*.jar ./moim-today.jar  
+        run: mv ./build/libs/*.jar ../moim-today.jar  
         working-directory: backend
         
       - name: SCP로 EC2에 빌드된 파일 전송하기
