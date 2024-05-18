@@ -31,15 +31,17 @@ jobs:
 
       - name: 테스트 및 빌드
         run: ./gradlew clean build
-
+        working-directory: backend
+        
       - name: 빌드된 파일 이름 변경
         run: mv ./build/libs/*.jar ./moim-today.jar  
-
+        working-directory: backend
+        
       - name: SCP로 EC2에 빌드된 파일 전송하기
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.BE_SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: moim-today.jar
+          source: backend/moim-today.jar
           target: /home/ubuntu/deploy/tobe
