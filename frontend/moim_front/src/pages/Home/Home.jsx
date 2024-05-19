@@ -21,20 +21,17 @@ function SearchBar() {
   return (
     <div className="flex flex-col justify-center mt-2 text-zinc-950 text-opacity-70 max-md:max-w-full">
       <form className="flex gap-3 px-6 py-3 bg-zinc-50 bg-opacity-90 rounded-[40px] max-md:flex-wrap">
-        <label htmlFor="search" className="sr-only">
-          Search
-        </label>
         <button
           type="submit"
-          className="justify-center px-1.5 py-1.5 text-lg font-medium text-center leading-[8px]"
+          className="justify-center px-1.5 py-1.5 text-lg text-center leading-[8px]"
         >
           <SearchIcon />
         </button>
         <input
           type="text"
           id="search"
-          placeholder="Search"
-          className="flex-1 bg-zinc-50 my-auto text-lg tracking-tight leading-6 max-md:max-w-full focus:outline-none border-none"
+          placeholder="검색"
+          className="flex-1 font-Pretendard_SemiBold bg-zinc-50 my-auto text-lg tracking-tight leading-6 max-md:max-w-full focus:outline-none border-none"
           aria-label="Search"
         />
       </form>
