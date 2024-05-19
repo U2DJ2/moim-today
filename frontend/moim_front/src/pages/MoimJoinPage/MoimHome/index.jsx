@@ -82,7 +82,7 @@ function MoimHome({
           ) : null}
         </div>
 
-        <div className="flex gap-12">
+        <div className="flex gap-4">
           {notices.length !== 0 ? (
             notices.map((notice, index) => (
               <CardComponent
@@ -122,7 +122,7 @@ function MoimHome({
           />
         </div>
 
-        <div className="flex gap-12">
+        <div className="grid grid-cols-card gap-4">
           {meetings.length != 0 ? (
             meetings.map((meeting, index) => (
               <CardComponent

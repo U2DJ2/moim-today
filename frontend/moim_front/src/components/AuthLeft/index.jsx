@@ -15,8 +15,9 @@ function AuthLeft({
   setEmail,
   password,
   setPassword,
-  setIsOpen,
+  setOpenAlertModal,
   setMessage,
+  className,
 }) {
   const [memory, setMemory] = useState(true);
   const emailHandler = (e) => setEmail(e.target.value);
@@ -38,7 +39,7 @@ function AuthLeft({
         console.log(error.response.data.statusCode);
         const errorCode = error.response.data.statusCode;
         if (errorCode === "404") {
-          setIsOpen(true);
+          setOpenAlertModal(true);
           setMessage(error.response.data.message);
           console.log(error.response.message);
         }
@@ -46,8 +47,8 @@ function AuthLeft({
   };
 
   return (
-    <div className="flex flex-col w-[40%] justify-center items-center ml-24 overflow-hidden sm:overflow-visible">
-      <div className="w-full max-w-lg px-4 sm:px-0">
+    <div className={`${className}`}>
+      <div className="w-full max-w-lg">
         <AuthTitle
           title={title}
           firstContent={firstContent}

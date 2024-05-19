@@ -1,26 +1,27 @@
-import React from "react";
-
 function CardComponent({ date, dday, title, btn, clickHandler, isMeeting }) {
   return (
     <div
-      className="py-8 w-fit justify-items-start p-4 grid font-Pretendard_Medium text-xl gap-4 bg-white shadow-[0px_1px_4px_rgba(0,_0,_0,_0.25)] rounded-3xl hover:cursor-pointer"
+      className="w-auto p-8 grid font-Pretendard_SemiBold text-xl bg-white shadow-[0px_1px_4px_rgba(0,_0,_0,_0.08)] rounded-3xl hover:cursor-pointer"
       onClick={clickHandler}
     >
-      <div className="flex gap-3">
-        <div className=" ">{date}</div>
-        {isMeeting ? (
-          <div className="text-scarlet flex">
-            <div>D-</div>
-            <div>{dday}</div>
-          </div>
-        ) : null}
+      <div className="grid grid-flow-row">
+        <div className="">{date}</div>
+        <div className="grid grid-cols-2 items-center w-fit">
+          <div className="font-bold text-2xl">{title}</div>
+          {isMeeting ? (
+            <div className="text-scarlet grid grid-flow-col">
+              <div>D-</div>
+              <div>{dday}</div>
+            </div>
+          ) : null}
+        </div>
+        <div className="pt-4"></div>
         {btn && (
-          <button className="text-black bg-scarlet rounded-xl text-base font-Pretendard_Medium px-2 hover:text-white">
+          <button className="text-white bg-scarlet p-1.5 rounded-full font-Pretendard_SemiBold">
             참석하기
           </button>
         )}
       </div>
-      <div className=" font-Pretendard_SemiBold">{title}</div>
     </div>
   );
 }
