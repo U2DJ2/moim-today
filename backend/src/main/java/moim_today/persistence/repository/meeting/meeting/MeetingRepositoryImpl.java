@@ -7,8 +7,6 @@ import moim_today.dto.meeting.MeetingSimpleDao;
 import moim_today.dto.meeting.QMeetingSimpleDao;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
-import moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity;
-import moim_today.persistence.entity.moim.moim.QMoimJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,8 +52,8 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                                 joinedMeetingJpaEntity.attendance
                         ))
                 .from(meetingJpaEntity)
-                .where(meetingJpaEntity.moimId.eq(moimId))
-                .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id)
+                .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id))
+                .where(meetingJpaEntity.moimId.eq(moimId)
                         .and(joinedMeetingJpaEntity.memberId.eq(memberId)))
                 .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
@@ -64,16 +62,17 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     @Override
     public List<MeetingSimpleDao> findAllUpcomingByMoimId(final long moimId, final long memberId,
                                                           final LocalDateTime currentDateTime) {
-        return queryFactory.select(new QMeetingSimpleDao(
-                        meetingJpaEntity.id,
-                        meetingJpaEntity.agenda,
-                        meetingJpaEntity.startDateTime,
-                        joinedMeetingJpaEntity.attendance
-                ))
+        return queryFactory.select(
+                        new QMeetingSimpleDao(
+                                meetingJpaEntity.id,
+                                meetingJpaEntity.agenda,
+                                meetingJpaEntity.startDateTime,
+                                joinedMeetingJpaEntity.attendance
+                        ))
                 .from(meetingJpaEntity)
+                .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id))
                 .where(meetingJpaEntity.moimId.eq(moimId)
-                        .and(meetingJpaEntity.startDateTime.after(currentDateTime)))
-                .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id)
+                        .and(meetingJpaEntity.startDateTime.after(currentDateTime))
                         .and(joinedMeetingJpaEntity.memberId.eq(memberId)))
                 .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
@@ -82,17 +81,18 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     @Override
     public List<MeetingSimpleDao> findAllPastByMoimId(final long moimId, final long memberId,
                                                       final LocalDateTime currentDateTime) {
-        return queryFactory.select(new QMeetingSimpleDao(
-                        meetingJpaEntity.id,
-                        meetingJpaEntity.agenda,
-                        meetingJpaEntity.startDateTime,
-                        joinedMeetingJpaEntity.attendance
-                ))
+        return queryFactory.select(
+                        new QMeetingSimpleDao(
+                                meetingJpaEntity.id,
+                                meetingJpaEntity.agenda,
+                                meetingJpaEntity.startDateTime,
+                                joinedMeetingJpaEntity.attendance
+                        ))
                 .from(meetingJpaEntity)
-                .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id)
-                        .and(joinedMeetingJpaEntity.memberId.eq(memberId)))
+                .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id))
                 .where(meetingJpaEntity.moimId.eq(moimId)
-                        .and(meetingJpaEntity.startDateTime.before(currentDateTime)))
+                        .and(meetingJpaEntity.startDateTime.before(currentDateTime))
+                        .and(joinedMeetingJpaEntity.memberId.eq(memberId)))
                 .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
     }
