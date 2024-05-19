@@ -86,14 +86,14 @@ function Personal({
             <input
               type="number"
               className="border text-wrapper border-white text-white bg-scarlet placeholder:text-white 
-         text-xl rounded-lg px-4 py-1 w-20 focus:outline-none placeholder:text-center justify-items-center"
+         text-xl rounded-lg px-4 py-1 w-20 focus:outline-none placeholder:text-center justify-items-center text-center"
               placeholder="MM"
               onChange={handleChangeMonth}
             />
             <input
               type="number"
               className="border text-wrapper border-white text-white bg-scarlet placeholder:text-white 
-        text-xl rounded-lg px-4 py-1 w-20 focus:outline-none placeholder:text-center"
+        text-xl rounded-lg px-4 py-1 w-20 focus:outline-none placeholder:text-center text-center"
               placeholder="DD"
               onChange={handleChangeDay}
             />
