@@ -13,6 +13,7 @@ function CreationModal({
   endDateTime,
   agenda,
   place,
+  setOpen,
   meetingCategory,
 }) {
   const modalRef = useRef();
@@ -34,6 +35,7 @@ function CreationModal({
         meetingCategory: "REGULAR",
       };
       postMeeting(data);
+      setOpen(true);
     } else {
     }
   };

@@ -13,10 +13,12 @@ import Dropdown from "../../components/Dropdown/LabelSimple";
 import { POST } from "../../utils/axios";
 
 // Define label style
-const labelStyle = "mt-2.5 mb-2.5 text-base font-Pretendard_SemiBold leading-5 text-stone-700 max-md:max-w-full";
+const labelStyle =
+  "mt-2.5 mb-2.5 text-base font-Pretendard_SemiBold leading-5 text-stone-700 max-md:max-w-full";
 
 // Define common input style
-const commonInputStyle = "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
+const commonInputStyle =
+  "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
 
 const textCapture = (label, setTitle, setContents) => {
   if (label === "모임명") {

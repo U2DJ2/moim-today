@@ -78,6 +78,7 @@ function MeetingCreation({ moimId }) {
         setEndDateTime={setEndDateTime}
         endDateTime={endDateTime}
         place={place}
+        setOpen={setOpen}
       >
         <div className="font-Pretendard_Black text-3xl pb-8">미팅 생성하기</div>
         <div className="flex flex-col gap-4">
@@ -116,7 +117,7 @@ function MeetingCreation({ moimId }) {
       <Slide direction="up" in={open} mountOnEnter unmountOnExit>
         <div style={{ position: "fixed", bottom: 20, right: 20 }}>
           <Alert severity="success" onClose={() => setOpen(false)}>
-            "미팅 생성이 완료됐습니다"
+            미팅 생성이 완료됐습니다
           </Alert>
         </div>
       </Slide>
