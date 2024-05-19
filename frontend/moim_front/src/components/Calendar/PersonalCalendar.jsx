@@ -127,7 +127,7 @@ export default function Calendar({
       allDay: false, // Assuming all events fetched are not all-day events
       backgroundColor: event.colorHex,
     };
-    // isplay: "background" 속성을 추가
+    // display: "background" 속성을 추가
     if (backgroundEvent) {
       formattedEvent.display = "background";
     }

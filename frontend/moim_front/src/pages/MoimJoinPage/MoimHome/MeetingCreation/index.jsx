@@ -16,7 +16,9 @@ function MeetingCreation({ moimId }) {
 
   const onSelect = (option) => {
     console.log(option);
-    setMeetingCategory(option);
+    option === "정기모임"
+      ? setMeetingCategory("REGULAR")
+      : setMeetingCategory("SINGLE");
   };
 
   const createMeeting = async () => {
@@ -26,7 +28,7 @@ function MeetingCreation({ moimId }) {
       startDateTime: startDateTime.replace("T", " ").split("+")[0],
       endDateTime: endDateTime.replace("T", " ").split("+")[0],
       place: place,
-      meetingCategory: "REGULAR",
+      meetingCategory: meetingCategory,
     };
     console.log("create Meeting");
     try {
@@ -71,7 +73,10 @@ function MeetingCreation({ moimId }) {
           <div className="flex flex-col items-start justify-center">
             <div>
               <div className=" font-Pretendard_Black flex">미팅 카테고리</div>
-              <DropDown options={["REGULAR"]} onSelect={onSelect} />
+              <DropDown
+                options={["정기모임", "단기모임"]}
+                onSelect={onSelect}
+              />
             </div>
 
             <div className="gap-4">
