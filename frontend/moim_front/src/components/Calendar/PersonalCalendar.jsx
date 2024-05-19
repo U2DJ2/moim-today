@@ -43,6 +43,7 @@ export default function Calendar({
     } else if (isMeeting) {
       //isMeeting이 true일 경우
       fetchAvailables();
+      fetchMeetings();
     }
   }, []);
 
@@ -76,6 +77,22 @@ export default function Calendar({
       console.log(events);
     } catch (error) {
       console.error("Error fetching events:", error);
+    }
+  }
+
+  async function fetchMeetings() {
+    try {
+      const response = await axios.get(
+        `https://api.moim.today/api/meetings/${moimId}`,
+        {
+          params: {
+            meetingStatus: "ALL",
+          },
+        }
+      );
+      console.log(response);
+    } catch (e) {
+      console.log(e);
     }
   }
 

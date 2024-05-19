@@ -18,6 +18,7 @@ function MeetingCreation({ moimId }) {
     console.log(option);
     setMeetingCategory(option);
   };
+
   const createMeeting = async () => {
     const data = {
       moimId: moimId,
@@ -35,12 +36,6 @@ function MeetingCreation({ moimId }) {
       console.log(e);
     }
   };
-
-  useEffect(() => {
-    console.log(startDateTime);
-    console.log(endDateTime);
-    console.log(showModal);
-  }, [showModal, startDateTime, endDateTime]);
 
   return (
     <div>
