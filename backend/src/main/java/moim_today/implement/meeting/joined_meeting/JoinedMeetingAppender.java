@@ -27,10 +27,13 @@ public class JoinedMeetingAppender {
         List<JoinedMeetingJpaEntity> joinedMeetings = new ArrayList<>();
 
         for (long memberId : memberIds) {
-            JoinedMeetingJpaEntity joinedMeeting = JoinedMeetingJpaEntity.toEntity(meetingId, memberId, true);
-            joinedMeetings.add(joinedMeeting);
-        }
+            boolean alreadyJoinedMeeting = joinedMeetingRepository.alreadyJoinedMeeting(memberId, meetingId);
 
+            if(!alreadyJoinedMeeting) {
+                JoinedMeetingJpaEntity joinedMeeting = JoinedMeetingJpaEntity.toEntity(meetingId, memberId, true);
+                joinedMeetings.add(joinedMeeting);
+            }
+        }
         joinedMeetingRepository.saveAll(joinedMeetings);
     }
 }

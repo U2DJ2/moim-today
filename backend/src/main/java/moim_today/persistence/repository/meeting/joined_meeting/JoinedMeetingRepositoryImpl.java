@@ -5,6 +5,7 @@ import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.dto.member.QMemberSimpleResponse;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
+import moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -89,5 +90,13 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
                 .join(memberJpaEntity).on(memberJpaEntity.id.eq(joinedMeetingJpaEntity.memberId))
                 .where(joinedMeetingJpaEntity.meetingId.eq(meetingId))
                 .fetch();
+    }
+
+    @Override
+    public boolean alreadyJoinedMeeting(final long memberId, final long meetingId) {
+        return queryFactory.selectFrom(joinedMeetingJpaEntity)
+                .where(joinedMeetingJpaEntity.memberId.eq(memberId)
+                        .and(joinedMeetingJpaEntity.meetingId.eq(meetingId)))
+                .fetchOne() != null;
     }
 }

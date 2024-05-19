@@ -1,6 +1,7 @@
 package moim_today.implement.moim.moim;
 
 import moim_today.global.annotation.Implement;
+import moim_today.implement.meeting.joined_meeting.JoinedMeetingAppender;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
 import moim_today.implement.meeting.meeting.MeetingFinder;
 import moim_today.implement.meeting.meeting_comment.MeetingCommentUpdater;
@@ -22,6 +23,7 @@ public class MoimManager {
     private final TodoRemover todoRemover;
     private final MeetingFinder  meetingFinder;
     private final JoinedMeetingRemover joinedMeetingRemover;
+    private final JoinedMeetingAppender joinedMeetingAppender;
     private final MeetingCommentUpdater meetingCommentUpdater;
     private final ScheduleRemover scheduleRemover;
     private final JoinedMoimAppender joinedMoimAppender;
@@ -32,6 +34,7 @@ public class MoimManager {
                        final TodoRemover todoRemover,
                        final MeetingFinder meetingFinder,
                        final JoinedMeetingRemover joinedMeetingRemover,
+                       final JoinedMeetingAppender joinedMeetingAppender,
                        final MeetingCommentUpdater meetingCommentUpdater,
                        final ScheduleRemover scheduleRemover,
                        final JoinedMoimAppender joinedMoimAppender,
@@ -41,6 +44,7 @@ public class MoimManager {
         this.todoRemover = todoRemover;
         this.meetingFinder = meetingFinder;
         this.joinedMeetingRemover = joinedMeetingRemover;
+        this.joinedMeetingAppender = joinedMeetingAppender;
         this.meetingCommentUpdater = meetingCommentUpdater;
         this.scheduleRemover = scheduleRemover;
         this.joinedMoimAppender = joinedMoimAppender;
@@ -69,6 +73,8 @@ public class MoimManager {
         joinedMoimFinder.validateMemberNotInMoim(moimId, requestMemberId);
 
         joinedMoimAppender.createJoinedMoim(requestMemberId, moimId);
+        List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId);
+        meetingIds.forEach(meetingId -> joinedMeetingAppender.saveJoinedMeeting(moimId, meetingId));
     }
 
     @Transactional(readOnly = true)
