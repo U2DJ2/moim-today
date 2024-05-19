@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import people from "../../../assets/svg/personIcon.svg";
 import { useNavigate } from "react-router";
+import { GET } from "../../../utils/axios";
 function CardContainer({
   image,
   category,
@@ -11,11 +12,26 @@ function CardContainer({
 }) {
   const navigate = useNavigate();
 
+  const onClickHandler = () => {
+    isMember();
+  };
+  const isMember = async () => {
+    try {
+      await GET(`api/members/${moimId}/joining`).then((res) => {
+        if (res.isJoined === true) {
+          navigate(`/join/${moimId}`);
+        } else {
+          navigate(`/detailed/${moimId}`);
+        }
+        console.log(res);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
-    <div
-      className=" hover:cursor-pointer w-[360px] "
-      onClick={() => navigate(`/detailed/${moimId}`)}
-    >
+    <div className=" hover:cursor-pointer w-[360px] " onClick={onClickHandler}>
       <img
         src={image}
         alt="cardContainer"
