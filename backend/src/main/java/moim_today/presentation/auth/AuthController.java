@@ -3,14 +3,10 @@ package moim_today.presentation.auth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import moim_today.application.auth.AuthService;
-import moim_today.domain.member.MemberSession;
 import moim_today.dto.auth.MemberLoginRequest;
 import moim_today.dto.auth.MemberSignUpRequest;
-import moim_today.global.annotation.Login;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import moim_today.dto.auth.MemberSessionValidateResponse;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api")
 @RestController
@@ -29,13 +25,18 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public void logout(@Login final MemberSession memberSession, final HttpServletRequest request) {
+    public void logout(final HttpServletRequest request) {
         authService.logout(request);
     }
 
     @PostMapping("/sign-up")
     public void signUp(@Valid @RequestBody final MemberSignUpRequest memberSignUpRequest,
-                       final HttpServletRequest request){
+                       final HttpServletRequest request) {
         authService.signUp(memberSignUpRequest, request);
+    }
+
+    @GetMapping
+    public MemberSessionValidateResponse validateMemberSession(final HttpServletRequest SessionValidateResponse) {
+        return authService.validateMemberSession(SessionValidateResponse);
     }
 }

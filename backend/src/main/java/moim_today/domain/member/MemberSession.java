@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.Builder;
+import moim_today.dto.auth.MemberSessionValidateResponse;
 import moim_today.global.error.InternalServerException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 
@@ -49,5 +50,14 @@ public record MemberSession(
         } else {
             session.setMaxInactiveInterval(ONE_DAYS_IN_SECONDS.value());
         }
+    }
+
+    public static MemberSessionValidateResponse validateMemberSession(final HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+
+        if (session == null || session.getAttribute(MEMBER_SESSION.value()) == null) {
+            return new MemberSessionValidateResponse(false);
+        }
+        return new MemberSessionValidateResponse(true);
     }
 }
