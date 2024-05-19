@@ -10,6 +10,18 @@ function MoimDetailPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [moimInfo, setMoimInfo] = useState([]);
+  const [writerInfo, setWriterInfo] = useState([]);
+  const fetchWriter = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.moim.today/api/members/host-profile/${MoimId}`
+      );
+      console.log(response.data);
+      setWriterInfo(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   useEffect(() => {
     const fetchMoimDetail = async () => {
       try {
@@ -21,6 +33,8 @@ function MoimDetailPage() {
         setMessage(error.response.data.message);
       }
     };
+
+    fetchWriter();
     fetchMoimDetail();
   }, []);
 
@@ -32,7 +46,7 @@ function MoimDetailPage() {
       <div className=" flex w-full ">
         <div className="flex gap-9 pt-2 flex-1 overflow-auto">
           <DetailedLeft
-            userName={"작성자"}
+            userName={writerInfo.username}
             title={moimInfo.title}
             currentCount={moimInfo.currentCount}
             capacity={moimInfo.capacity}
