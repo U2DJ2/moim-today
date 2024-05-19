@@ -1,6 +1,7 @@
 package moim_today.implement.moim.moim;
 
 import moim_today.global.annotation.Implement;
+import moim_today.implement.meeting.joined_meeting.JoinedMeetingAppender;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
 import moim_today.implement.meeting.meeting.MeetingFinder;
 import moim_today.implement.meeting.meeting_comment.MeetingCommentUpdater;
@@ -25,6 +26,7 @@ public class MoimManager {
     private final MeetingCommentUpdater meetingCommentUpdater;
     private final ScheduleRemover scheduleRemover;
     private final JoinedMoimAppender joinedMoimAppender;
+    private final JoinedMeetingAppender joinedMeetingAppender;
     private final MoimFinder moimFinder;
 
     public MoimManager(final JoinedMoimFinder joinedMoimFinder,
@@ -35,6 +37,7 @@ public class MoimManager {
                        final MeetingCommentUpdater meetingCommentUpdater,
                        final ScheduleRemover scheduleRemover,
                        final JoinedMoimAppender joinedMoimAppender,
+                       final JoinedMeetingAppender joinedMeetingAppender,
                        final MoimFinder moimFinder) {
         this.joinedMoimFinder = joinedMoimFinder;
         this.joinedMoimRemover = joinedMoimRemover;
@@ -44,6 +47,7 @@ public class MoimManager {
         this.meetingCommentUpdater = meetingCommentUpdater;
         this.scheduleRemover = scheduleRemover;
         this.joinedMoimAppender = joinedMoimAppender;
+        this.joinedMeetingAppender = joinedMeetingAppender;
         this.moimFinder = moimFinder;
     }
 
@@ -69,6 +73,8 @@ public class MoimManager {
         joinedMoimFinder.validateMemberNotInMoim(moimId, requestMemberId);
 
         joinedMoimAppender.createJoinedMoim(requestMemberId, moimId);
+        List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId);
+        meetingIds.forEach(meetingId -> joinedMeetingAppender.saveJoinedMeeting(moimId, meetingId));
     }
 
     @Transactional(readOnly = true)
