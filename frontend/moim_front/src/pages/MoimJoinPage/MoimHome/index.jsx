@@ -77,14 +77,14 @@ function MoimHome({
           {isHost ? (
             <button
               onClick={makeNoticeHandler}
-              className="hover:cursor-pointer hover:text-scarlet"
+              className="font-Pretendard_Light hover:cursor-pointer hover:text-scarlet"
             >
               공지사항 생성하기
             </button>
           ) : null}
         </div>
 
-        <div className="flex gap-4">
+        <div className="grid grid-cols-3 gap-4">
           {notices.length !== 0 ? (
             notices.map((notice, index) => (
               <CardComponent
@@ -104,14 +104,12 @@ function MoimHome({
       </div>
       <div>
         <div className="pb-8">
-          <div className="flex">
-            <div className="text-4xl font-Pretendard_Black pb-4">
-              미팅 확인하기
-            </div>
+          <div className="flex pb-4 gap-4">
+            <div className="text-4xl font-Pretendard_Black">미팅 확인하기</div>
             {isHost ? (
               <button
                 onClick={makeMeetingHandler}
-                className="hover:cursor-pointer hover:text-scarlet"
+                className="hover:cursor-pointer font-Pretendard_Light hover:text-scarlet"
               >
                 미팅 생성하기
               </button>
@@ -151,24 +149,34 @@ function MoimHome({
           setShowModal={setShowModal}
           closeHandler={noticeHandler}
         >
-          <div className="flex flex-col ">
-            <div className="">
-              <div>제목</div>
-              <input
-                placeholder="제목을 입력해주세요"
-                onChange={(e) => {
-                  setNoticeTitle(e.target.value);
-                }}
-              />
-            </div>
-            <div>
-              <div>내용</div>
-              <input
-                placeholder="내용을 입력해주세요"
-                onChange={(e) => {
-                  setNoticeContent(e.target.value);
-                }}
-              />
+          <div className="font-Pretendard_Black text-3xl pb-8">공지사항</div>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col items-start justify-center mx-auto gap-4">
+              <div className="gird gap-3">
+                <div className=" font-Pretendard_Black text-xl text-start">
+                  제목
+                </div>
+                <input
+                  className=" font-Pretendard_Light border p-4 focus:outline-none"
+                  placeholder="제목을 입력해주세요"
+                  onChange={(e) => {
+                    setNoticeTitle(e.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="grid gap-1">
+                <div className="font-Pretendard_Black text-xl text-start">
+                  내용
+                </div>
+                <input
+                  className="font-Pretendard_Light border p-4 focus:outline-none"
+                  placeholder="내용을 입력해주세요"
+                  onChange={(e) => {
+                    setNoticeContent(e.target.value);
+                  }}
+                />
+              </div>
             </div>
           </div>
         </CreationModal>
