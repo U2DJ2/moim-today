@@ -100,6 +100,8 @@ function School({
           </p>
 
           <Search
+            label={"학과를 선택해주세요."}
+            placeHolder={"학과를 검색해주세요."}
             options={departmentInfo}
             onSelect={handleDropdown}
             setActiveNext={setActiveNext}

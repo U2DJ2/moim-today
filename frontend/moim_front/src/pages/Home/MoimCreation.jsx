@@ -1,90 +1,23 @@
 // React
-import { useState, useRef, Fragment } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 // UI and Icons
 import { Checkbox } from "@mui/material";
-import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 // Date Picker
 import DateRangePicker from "../../components/DatePicker/Range";
+import Dropdown from "../../components/Dropdown/LabelSimple";
 
+// API
 import { POST } from "../../utils/axios";
-import { number } from "prop-types";
-import { SecurityUpdateSharp } from "@mui/icons-material";
 
 // Define label style
-const labelStyle =
-  "mt-2.5 mb-2.5 text-base font-Pretendard_SemiBold leading-5 text-stone-700 max-md:max-w-full";
+const labelStyle = "mt-2.5 mb-2.5 text-base font-Pretendard_SemiBold leading-5 text-stone-700 max-md:max-w-full";
 
 // Define common input style
-const commonInputStyle =
-  "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
+const commonInputStyle = "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
-function Dropdown({ label, options, onSelect }) {
-  const [selectedOption, setSelectedOption] = useState(options[0]);
-
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    onSelect(option);
-  };
-
-  return (
-    <>
-      <div className={labelStyle}>{label}</div>
-
-      <Menu as="div" className="relative w-full inline-block text-left">
-        <div>
-          <Menu.Button
-            className={`${commonInputStyle} inline-flex w-full justify-between items-center gap-x-1.5 px-4 hover:bg-gray-50`}
-          >
-            <span>{selectedOption}</span>
-            <ChevronDownIcon
-              className="h-5 w-5 text-gray-400 ml-auto"
-              aria-hidden="true"
-            />
-          </Menu.Button>
-        </div>
-
-        <Transition
-          as={Fragment}
-          enter="transition ease-out duration-100"
-          enterFrom="transform opacity-0 scale-95"
-          enterTo="transform opacity-100 scale-100"
-          leave="transition ease-in duration-75"
-          leaveFrom="transform opacity-100 scale-100"
-          leaveTo="transform opacity-0 scale-95"
-        >
-          <Menu.Items className="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div className="py-1">
-              {options.map((option, index) => (
-                <Menu.Item key={index}>
-                  {({ active }) => (
-                    <a
-                      href="#"
-                      onClick={() => handleOptionClick(option)}
-                      className={classNames(
-                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        "block px-4 py-2 text-sm"
-                      )}
-                    >
-                      {option}
-                    </a>
-                  )}
-                </Menu.Item>
-              ))}
-            </div>
-          </Menu.Items>
-        </Transition>
-      </Menu>
-    </>
-  );
-}
 const textCapture = (label, setTitle, setContents) => {
   if (label === "모임명") {
     setTitle(e.target.value);
@@ -298,8 +231,9 @@ export default function MoimCreation() {
           label={"카테고리"}
           options={["스터디", "팀 프로젝트", "취미활동", "운동", "기타"]}
           onSelect={handleDropdown}
+          labelStyle={labelStyle}
+          commonInputStyle={commonInputStyle}
         />
-        {}
         <InputField
           label="모임명"
           placeholder="모임 이름을 적어주세요."
