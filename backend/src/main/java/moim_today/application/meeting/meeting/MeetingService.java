@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface MeetingService {
 
-    MeetingCreateResponse createMeeting(final MeetingCreateRequest meetingCreateRequest);
+    MeetingCreateResponse createMeeting(final long memberId, final MeetingCreateRequest meetingCreateRequest);
 
     List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final long memberId, final MeetingStatus meetingStatus);
 

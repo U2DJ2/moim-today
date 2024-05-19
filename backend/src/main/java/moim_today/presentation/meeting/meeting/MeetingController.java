@@ -25,8 +25,10 @@ public class MeetingController {
     }
 
     @PostMapping
-    public MeetingCreateResponse createMeeting(@RequestBody final MeetingCreateRequest meetingCreateRequest) {
-        return meetingService.createMeeting(meetingCreateRequest);
+    public MeetingCreateResponse createMeeting(
+            @Login final MemberSession memberSession,
+            @RequestBody final MeetingCreateRequest meetingCreateRequest) {
+        return meetingService.createMeeting(memberSession.id(), meetingCreateRequest);
     }
 
     @GetMapping("/{moimId}")

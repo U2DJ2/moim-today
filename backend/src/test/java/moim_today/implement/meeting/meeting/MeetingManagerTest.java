@@ -3,6 +3,7 @@ package moim_today.implement.meeting.meeting;
 import moim_today.domain.meeting.enums.MeetingCategory;
 import moim_today.dto.meeting.MeetingCreateResponse;
 import moim_today.dto.meeting.meeting.MeetingCreateRequest;
+import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
@@ -27,8 +28,16 @@ class MeetingManagerTest extends ImplementTest {
     @Test
     void createSingleMeeting() {
         // given 1
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        long memberId = memberJpaEntity.getId();
+
+        // given 2
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
                 .title(MOIM_TITLE.value())
+                .memberId(memberId)
                 .build();
 
         moimRepository.save(moimJpaEntity);
@@ -47,7 +56,7 @@ class MeetingManagerTest extends ImplementTest {
         LocalDate currentDate = LocalDate.of(2024, 3, 4);
 
         // when
-        MeetingCreateResponse meetingCreateResponse = meetingManager.createMeeting(meetingCreateRequest, currentDate);
+        MeetingCreateResponse meetingCreateResponse = meetingManager.createMeeting(memberId, meetingCreateRequest, currentDate);
 
         // then
         assertThat(meetingRepository.count()).isEqualTo(1);
@@ -102,7 +111,11 @@ class MeetingManagerTest extends ImplementTest {
     @Test
     void createRegularMeetingFromStartDate() {
         // given 1
-        long memberId = 1;
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        long memberId = memberJpaEntity.getId();
         LocalDate currentDate = LocalDate.of(2024, 2, 1);
         LocalDate startDate = LocalDate.of(2024, 3, 4);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
@@ -126,7 +139,7 @@ class MeetingManagerTest extends ImplementTest {
                 .build();
 
         // when
-        MeetingCreateResponse meetingCreateResponse = meetingManager.createMeeting(meetingCreateRequest, currentDate);
+        MeetingCreateResponse meetingCreateResponse = meetingManager.createMeeting(memberId, meetingCreateRequest, currentDate);
 
         // then
         long between = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
@@ -142,7 +155,11 @@ class MeetingManagerTest extends ImplementTest {
     @Test
     void createSingleMeetingWithJoinedAndSchedule() {
         // given 1
-        long memberId = 1;
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        long memberId = memberJpaEntity.getId();
         LocalDate currentDate = LocalDate.of(2024, 3, 30);
         LocalDate startDate = LocalDate.of(2024, 3, 4);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
@@ -176,7 +193,7 @@ class MeetingManagerTest extends ImplementTest {
                 .build();
 
         // when
-        meetingManager.createMeeting(meetingCreateRequest, currentDate);
+        meetingManager.createMeeting(memberId, meetingCreateRequest, currentDate);
 
         // then
         assertThat(meetingRepository.count()).isEqualTo(1);
@@ -188,7 +205,11 @@ class MeetingManagerTest extends ImplementTest {
     @Test
     void createRegularMeetingWithJoinedAndSchedule() {
         // given 1
-        long memberId = 1;
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        long memberId = memberJpaEntity.getId();
         LocalDate currentDate = LocalDate.of(2024, 3, 30);
         LocalDate startDate = LocalDate.of(2024, 3, 4);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
@@ -222,7 +243,7 @@ class MeetingManagerTest extends ImplementTest {
                 .build();
 
         // when
-        meetingManager.createMeeting(meetingCreateRequest, currentDate);
+        meetingManager.createMeeting(memberId, meetingCreateRequest, currentDate);
 
         // then
         long between = ChronoUnit.WEEKS.between(currentDate, endDate) + 1;
@@ -235,7 +256,11 @@ class MeetingManagerTest extends ImplementTest {
     @Test
     void createMeetingScheduleIfNotExist() {
         // given 1
-        long memberId = 1;
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+        long memberId = memberJpaEntity.getId();
         LocalDate currentDate = LocalDate.of(2024, 3, 30);
         LocalDate startDate = LocalDate.of(2024, 3, 4);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
@@ -276,7 +301,7 @@ class MeetingManagerTest extends ImplementTest {
                 .build();
 
         // when
-        meetingManager.createMeeting(meetingCreateRequest, currentDate);
+        meetingManager.createMeeting(memberId, meetingCreateRequest, currentDate);
 
         // then
         assertThat(meetingRepository.count()).isEqualTo(1);
