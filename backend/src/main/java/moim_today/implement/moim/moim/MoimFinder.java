@@ -73,8 +73,8 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
-        return moimRepository.findAllMoimResponse(moimCategoryDto, moimSortedFilter);
+    public List<MoimSimpleResponse> findAllMoimResponseByUniversityId(final long universityId, final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
+        return moimRepository.findAllMoimResponseByUniversityId(universityId, moimCategoryDto, moimSortedFilter);
     }
 
     @Transactional(readOnly = true)

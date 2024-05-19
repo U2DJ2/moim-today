@@ -103,7 +103,9 @@ public class MoimRepositoryImpl implements MoimRepository {
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
+    public List<MoimSimpleResponse> findAllMoimResponseByUniversityId(final long universityId,
+                                                                      final MoimCategoryDto moimCategoryDto,
+                                                                      final MoimSortedFilter moimSortedFilter) {
 
         return queryFactory.select(new QMoimSimpleResponse(
                         moimJpaEntity.id,
@@ -115,7 +117,7 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.displayStatus
                 ))
                 .from(moimJpaEntity)
-                .where(applyMoimCategoryFilter(moimCategoryDto))
+                .where(moimJpaEntity.universityId.eq(universityId).and(applyMoimCategoryFilter(moimCategoryDto)))
                 .orderBy(createOrderBySpecifier(moimSortedFilter))
                 .fetch();
     }

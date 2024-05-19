@@ -146,7 +146,9 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
+    public List<MoimSimpleResponse> findAllMoimResponse(final long universityId,
+                                                        final MoimCategoryDto moimCategoryDto,
+                                                        final MoimSortedFilter moimSortedFilter) {
         MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
                 .moimId(1L)
                 .title(MOIM_TITLE.value())

@@ -13,8 +13,6 @@ import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
-import moim_today.util.TestConstant;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -250,7 +248,10 @@ class MoimFinderTest extends ImplementTest {
     @Test
     void findAllMoim() throws InterruptedException {
         // given
+        long universityId = UNIV_ID.longValue();
+
         MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .universityId(universityId)
                 .title(FIRST_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.TEAM_PROJECT)
                 .build();
@@ -262,6 +263,7 @@ class MoimFinderTest extends ImplementTest {
         Thread.sleep(10);
 
         MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .universityId(universityId)
                 .title(SECOND_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.STUDY)
                 .build();
@@ -272,7 +274,7 @@ class MoimFinderTest extends ImplementTest {
         MoimSortedFilter moimSortedFilter = null;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategoryDto, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponseByUniversityId(universityId, moimCategoryDto, moimSortedFilter);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
@@ -284,7 +286,10 @@ class MoimFinderTest extends ImplementTest {
     @Test
     void findAllMoimOrderByCreatedAt() throws InterruptedException {
         // given
+        long universityId = UNIV_ID.longValue();
+
         MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .universityId(universityId)
                 .title(FIRST_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.TEAM_PROJECT)
                 .build();
@@ -296,6 +301,7 @@ class MoimFinderTest extends ImplementTest {
         Thread.sleep(10);
 
         MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .universityId(universityId)
                 .title(SECOND_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.STUDY)
                 .build();
@@ -306,7 +312,7 @@ class MoimFinderTest extends ImplementTest {
         MoimSortedFilter moimSortedFilter = MoimSortedFilter.CREATED_AT;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategoryDto, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponseByUniversityId(universityId, moimCategoryDto, moimSortedFilter);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
@@ -318,7 +324,10 @@ class MoimFinderTest extends ImplementTest {
     @Test
     void findAllMoimOrderByViews() {
         // given
+        long universityId = UNIV_ID.longValue();
+
         MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .universityId(universityId)
                 .title(FIRST_CREATED_MOIM_TITLE.value())
                 .views(10)
                 .build();
@@ -326,6 +335,7 @@ class MoimFinderTest extends ImplementTest {
         moimRepository.save(firstCreatedMoimJpaEntity);
 
         MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .universityId(universityId)
                 .title(SECOND_CREATED_MOIM_TITLE.value())
                 .views(20)
                 .build();
@@ -336,7 +346,7 @@ class MoimFinderTest extends ImplementTest {
         MoimSortedFilter moimSortedFilter = MoimSortedFilter.VIEWS;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategoryDto, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponseByUniversityId(universityId, moimCategoryDto, moimSortedFilter);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
@@ -348,7 +358,10 @@ class MoimFinderTest extends ImplementTest {
     @Test
     void findAllMoimByCategory() {
         // given
+        long universityId = UNIV_ID.longValue();
+
         MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .universityId(universityId)
                 .title(FIRST_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.TEAM_PROJECT)
                 .build();
@@ -356,6 +369,7 @@ class MoimFinderTest extends ImplementTest {
         moimRepository.save(firstCreatedMoimJpaEntity);
 
         MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .universityId(universityId)
                 .title(SECOND_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.STUDY)
                 .build();
@@ -366,7 +380,41 @@ class MoimFinderTest extends ImplementTest {
         MoimSortedFilter moimSortedFilter = null;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponse(moimCategoryDto, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponseByUniversityId(universityId, moimCategoryDto, moimSortedFilter);
+
+        // then
+        assertThat(moimSimpleResponses.size()).isEqualTo(1);
+        assertThat(moimSimpleResponses.get(0).title()).isEqualTo(FIRST_CREATED_MOIM_TITLE.value());
+    }
+
+    @DisplayName("자신이 속한 대학교의 모임리스트만 가져온다.")
+    @Test
+    void findAllMoimByCategoryByUniversityId() {
+        // given
+        long universityId = UNIV_ID.longValue();
+        long otherUniversityId = UNIV_ID.longValue() + 1;
+
+        MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .universityId(universityId)
+                .title(FIRST_CREATED_MOIM_TITLE.value())
+                .moimCategory(MoimCategory.TEAM_PROJECT)
+                .build();
+
+        moimRepository.save(firstCreatedMoimJpaEntity);
+
+        MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .universityId(otherUniversityId)
+                .title(SECOND_CREATED_MOIM_TITLE.value())
+                .moimCategory(MoimCategory.STUDY)
+                .build();
+
+        moimRepository.save(secondCreatedMoimJpaEntity);
+
+        MoimCategoryDto moimCategoryDto = MoimCategoryDto.ALL;
+        MoimSortedFilter moimSortedFilter = null;
+
+        // when
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponseByUniversityId(universityId, moimCategoryDto, moimSortedFilter);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(1);

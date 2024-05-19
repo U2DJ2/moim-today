@@ -56,9 +56,11 @@ public class MoimController {
     }
 
     @GetMapping("/simple")
-    public CollectionResponse<List<MoimSimpleResponse>> findAllMoimResponse(@RequestParam final MoimCategoryDto moimCategoryDto,
-                                                                            @RequestParam final MoimSortedFilter moimSortedFilter) {
-        return CollectionResponse.from(moimService.findAllMoimResponse(moimCategoryDto, moimSortedFilter));
+    public CollectionResponse<List<MoimSimpleResponse>> findAllMoimResponse(
+            @Login final MemberSession memberSession,
+            @RequestParam final MoimCategoryDto moimCategoryDto,
+            @RequestParam final MoimSortedFilter moimSortedFilter) {
+        return CollectionResponse.from(moimService.findAllMoimResponse(memberSession.universityId(), moimCategoryDto, moimSortedFilter));
     }
 
     @PatchMapping

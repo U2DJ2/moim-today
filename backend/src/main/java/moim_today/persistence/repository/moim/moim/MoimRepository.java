@@ -23,7 +23,7 @@ public interface MoimRepository {
 
     void deleteById(final long moimId);
 
-    List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter);
+    List<MoimSimpleResponse> findAllMoimResponseByUniversityId(final long universityId, final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter);
 
     List<MyMoimResponse> findAllMyMoimResponse(final List<Long> moimIds);
 
