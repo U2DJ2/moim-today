@@ -18,5 +18,7 @@ public interface MemberService {
 
     MemberHostResponse isHost(final long memberId, final long moimId);
 
+    MemberJoinedMoimResponse isJoinedMoim(final long moimId, final long memberId);
+
     MemberSimpleResponse getHostProfileByMoimId(final long moimId);
 }

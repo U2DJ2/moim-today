@@ -77,6 +77,11 @@ public class MoimManager {
     }
 
     @Transactional(readOnly = true)
+    public boolean isJoinedMoim(final long moimId, final long memberId) {
+        return joinedMoimFinder.isJoining(moimId, memberId);
+    }
+
+    @Transactional(readOnly = true)
     public String getTitleById(final Long moimId) {
         return moimFinder.getTitleById(moimId);
     }

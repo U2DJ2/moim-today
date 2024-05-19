@@ -66,6 +66,11 @@ public class FakeMemberService implements MemberService {
     }
 
     @Override
+    public MemberJoinedMoimResponse isJoinedMoim(final long moimId, final long memberId) {
+        return null;
+    }
+
+    @Override
     public MemberSimpleResponse getHostProfileByMoimId(final long moimId) {
         return MemberSimpleResponse.builder()
                 .memberId(MEMBER_ID.longValue())
