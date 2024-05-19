@@ -23,11 +23,11 @@ public interface MoimRepository {
 
     void deleteById(final long moimId);
 
-    List<MoimSimpleResponse> findAllMoimResponseByUniversityId(final long universityId, final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter);
+    List<MoimSimpleResponse> findAllMoimResponses(final long universityId, final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter);
 
     List<MyMoimResponse> findAllMyMoimResponse(final List<Long> moimIds);
 
     MoimJpaEntity getByIdWithPessimisticLock(final long moimId);
 
-    List<MoimSimpleResponse> searchMoimBySearchParam(final String searchParam);
+    List<MoimSimpleResponse> searchMoimBySearchParam(final long universityId, final String searchParam);
 }

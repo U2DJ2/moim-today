@@ -274,7 +274,7 @@ class MoimFinderTest extends ImplementTest {
         MoimSortedFilter moimSortedFilter = null;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponseByUniversityId(universityId, moimCategoryDto, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
@@ -312,7 +312,7 @@ class MoimFinderTest extends ImplementTest {
         MoimSortedFilter moimSortedFilter = MoimSortedFilter.CREATED_AT;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponseByUniversityId(universityId, moimCategoryDto, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
@@ -346,7 +346,7 @@ class MoimFinderTest extends ImplementTest {
         MoimSortedFilter moimSortedFilter = MoimSortedFilter.VIEWS;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponseByUniversityId(universityId, moimCategoryDto, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
@@ -380,7 +380,7 @@ class MoimFinderTest extends ImplementTest {
         MoimSortedFilter moimSortedFilter = null;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponseByUniversityId(universityId, moimCategoryDto, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(1);
@@ -414,7 +414,7 @@ class MoimFinderTest extends ImplementTest {
         MoimSortedFilter moimSortedFilter = null;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponseByUniversityId(universityId, moimCategoryDto, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(1);
@@ -525,17 +525,22 @@ class MoimFinderTest extends ImplementTest {
     @Test
     void searchMoimBySearchParam() {
         // given1
+        long universityId = UNIV_ID.longValue();
+
         MoimJpaEntity moimA = MoimJpaEntity.builder()
+                .universityId(universityId)
                 .title("appleMango")
                 .build();
 
         // given2
         MoimJpaEntity moimB = MoimJpaEntity.builder()
+                .universityId(universityId)
                 .title(" " + "apple" + " " + "mango" + " ")
                 .build();
 
         // given3
         MoimJpaEntity moimC = MoimJpaEntity.builder()
+                .universityId(universityId)
                 .title("apple" + " " + "mango")
                 .build();
 
@@ -544,11 +549,11 @@ class MoimFinderTest extends ImplementTest {
         moimRepository.save(moimC);
 
         //when
-        List<MoimSimpleResponse> appleResponses = moimFinder.searchMoim("apple");
-        List<MoimSimpleResponse> mangoResponses = moimFinder.searchMoim("mango");
-        List<MoimSimpleResponse> blankResponses = moimFinder.searchMoim(" ");
-        List<MoimSimpleResponse> noneResponses = moimFinder.searchMoim("none");
-        List<MoimSimpleResponse> applemangoResponses = moimFinder.searchMoim("apple mango");
+        List<MoimSimpleResponse> appleResponses = moimFinder.searchMoim(universityId, "apple");
+        List<MoimSimpleResponse> mangoResponses = moimFinder.searchMoim(universityId, "mango");
+        List<MoimSimpleResponse> blankResponses = moimFinder.searchMoim(universityId, " ");
+        List<MoimSimpleResponse> noneResponses = moimFinder.searchMoim(universityId, "none");
+        List<MoimSimpleResponse> applemangoResponses = moimFinder.searchMoim(universityId, "apple mango");
 
         //then
         assertThat(appleResponses.size()).isEqualTo(3);
@@ -556,6 +561,49 @@ class MoimFinderTest extends ImplementTest {
         assertThat(blankResponses.size()).isEqualTo(3);
         assertThat(noneResponses.size()).isEqualTo(0);
         assertThat(applemangoResponses.size()).isEqualTo(2);
+    }
+
+    @DisplayName("다른 대학 모임은 검색되지 않는다.")
+    @Test
+    void searchMoimBySearchParamAndUniversityId() {
+        // given1
+        long universityId = UNIV_ID.longValue();
+        long otherUniversityId = UNIV_ID.longValue() + 1 ;
+
+        MoimJpaEntity moimA = MoimJpaEntity.builder()
+                .universityId(universityId)
+                .title("appleMango")
+                .build();
+
+        // given2
+        MoimJpaEntity moimB = MoimJpaEntity.builder()
+                .universityId(universityId)
+                .title(" " + "apple" + " " + "mango" + " ")
+                .build();
+
+        // given3
+        MoimJpaEntity moimC = MoimJpaEntity.builder()
+                .universityId(otherUniversityId)
+                .title("apple" + " " + "mango")
+                .build();
+
+        moimRepository.save(moimA);
+        moimRepository.save(moimB);
+        moimRepository.save(moimC);
+
+        //when
+        List<MoimSimpleResponse> appleResponses = moimFinder.searchMoim(universityId, "apple");
+        List<MoimSimpleResponse> mangoResponses = moimFinder.searchMoim(universityId, "mango");
+        List<MoimSimpleResponse> blankResponses = moimFinder.searchMoim(universityId, " ");
+        List<MoimSimpleResponse> noneResponses = moimFinder.searchMoim(universityId, "none");
+        List<MoimSimpleResponse> applemangoResponses = moimFinder.searchMoim(otherUniversityId, "apple mango");
+
+        //then
+        assertThat(appleResponses.size()).isEqualTo(2);
+        assertThat(mangoResponses.size()).isEqualTo(2);
+        assertThat(blankResponses.size()).isEqualTo(2);
+        assertThat(noneResponses.size()).isEqualTo(0);
+        assertThat(applemangoResponses.size()).isEqualTo(1);
     }
 
     private MemberJpaEntity saveRandomMember() {

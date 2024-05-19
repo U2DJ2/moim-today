@@ -10,13 +10,11 @@ import moim_today.dto.moim.moim.*;
 import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
-import moim_today.persistence.entity.moim.moim.QMoimJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import java.util.List;
+import java.util.Optional;
 
 import static moim_today.global.constant.SymbolConstant.PERCENT;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_NOT_FOUND_ERROR;
@@ -87,7 +85,7 @@ public class MoimRepositoryImpl implements MoimRepository {
     }
 
     @Override
-    public List<MoimSimpleResponse> searchMoimBySearchParam(final String searchParam) {
+    public List<MoimSimpleResponse> searchMoimBySearchParam(final long universityId, final String searchParam) {
         return queryFactory.select(new QMoimSimpleResponse(
                         moimJpaEntity.id,
                         moimJpaEntity.title,
@@ -98,14 +96,16 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.displayStatus
                 ))
                 .from(moimJpaEntity)
-                .where(moimJpaEntity.title.likeIgnoreCase(PERCENT.value() + searchParam.trim() + PERCENT.value()))
+                .where(moimJpaEntity.universityId.eq(universityId)
+                        .and(moimJpaEntity.title.likeIgnoreCase(PERCENT.value() + searchParam.trim() + PERCENT.value()))
+                )
                 .fetch();
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMoimResponseByUniversityId(final long universityId,
-                                                                      final MoimCategoryDto moimCategoryDto,
-                                                                      final MoimSortedFilter moimSortedFilter) {
+    public List<MoimSimpleResponse> findAllMoimResponses(final long universityId,
+                                                         final MoimCategoryDto moimCategoryDto,
+                                                         final MoimSortedFilter moimSortedFilter) {
 
         return queryFactory.select(new QMoimSimpleResponse(
                         moimJpaEntity.id,
@@ -117,7 +117,9 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.displayStatus
                 ))
                 .from(moimJpaEntity)
-                .where(moimJpaEntity.universityId.eq(universityId).and(applyMoimCategoryFilter(moimCategoryDto)))
+                .where(moimJpaEntity.universityId.eq(universityId)
+                        .and(applyMoimCategoryFilter(moimCategoryDto))
+                )
                 .orderBy(createOrderBySpecifier(moimSortedFilter))
                 .fetch();
     }
