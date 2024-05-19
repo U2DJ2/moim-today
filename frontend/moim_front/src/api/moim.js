@@ -1,4 +1,5 @@
 import axios from "axios";
+import { POST } from "../utils/axios";
 
 export const fetchNotices = async (moimId) => {
   const result = await axios.get(
@@ -30,9 +31,14 @@ export const fetchMeetings = async (moimId, meetingStatus) => {
   );
   return result;
 };
+
 export const fetchMembers = async (moimId) => {
   const result = await axios.get(
     `https://api.moim.today/api/moims/members/${moimId}`
   );
   return result;
+};
+
+export const postMeeting = async (data) => {
+  const response = await POST("api/meetings", data);
 };

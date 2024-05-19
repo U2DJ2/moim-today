@@ -10,10 +10,24 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
-// Temporary event ID generator
-let eventGuid = 0;
+// Modal for Meeting Creation
+import CreationModal from "../../components/CreationModal";
 
-export default function Calendar({ selectedDate }) {
+// Temporary event ID generator
+// let eventGuid = 0;
+
+export default function Calendar({
+  selectedDate,
+  isPersonal,
+  isMeeting,
+  moimId,
+  title,
+  setShowModal,
+  endDateTime,
+  setEndDateTime,
+  startDateTime,
+  setStartDateTime,
+}) {
   const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
   const [events, setEvents] = useState([]);
 
@@ -24,9 +38,13 @@ export default function Calendar({ selectedDate }) {
     // Fetch all events on component mount
     // fetchAllEvents(currentYear).catch(console.error);
 
-    fetchAllEvents(currentYear);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (isPersonal) {
+      fetchAllEvents(currentYear).catch(console.error);
+    } else if (isMeeting) {
+      //isMeeting이 true일 경우
+      fetchAvailables();
+      fetchMeetings();
+    }
   }, []);
 
   useEffect(() => {
@@ -50,30 +68,82 @@ export default function Calendar({ selectedDate }) {
             // Add any other necessary headers or configurations
           }
         );
-        allEvents = [...allEvents, ...response.data.data.map(mapEventData)];
+        allEvents = [
+          ...allEvents,
+          ...response.data.data.map((event) => mapEventData(event, false)),
+        ];
       }
       setEvents(allEvents);
+      console.log(events);
     } catch (error) {
       console.error("Error fetching events:", error);
     }
   }
 
+  async function fetchMeetings() {
+    try {
+      const response = await axios.get(
+        `https://api.moim.today/api/meetings/${moimId}`,
+        {
+          params: {
+            meetingStatus: "ALL",
+          },
+        }
+      );
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function fetchAvailables() {
+    try {
+      let allEvents = [];
+      const response = await axios.get(
+        `https://api.moim.today/api/schedules/weekly/available-time/moims/${moimId}`,
+        {
+          params: {
+            startDate: "2024-05-19",
+          },
+        }
+      );
+      allEvents = [
+        ...allEvents,
+        ...response.data.data.map((event) => mapEventData(event, true)),
+      ];
+      setEvents(allEvents);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   // Function to map event data
-  function mapEventData(event) {
-    return {
-      id: event.scheduleId,
-      title: event.scheduleName,
-      start: event.startDateTime,
-      end: event.endDateTime,
+  function mapEventData(event, backgroundEvent) {
+    const formattedEvent = {
+      id: event.scheduleId || event.calendarId,
+      title: event.scheduleName || "",
+      start: event.startDateTime.replace(" ", "T"),
+      end: event.endDateTime.replace(" ", "T"),
       allDay: false, // Assuming all events fetched are not all-day events
       backgroundColor: event.colorHex,
     };
+    // display: "background" 속성을 추가
+    if (backgroundEvent) {
+      formattedEvent.display = "background";
+    }
+    return formattedEvent;
   }
 
   // Function to handle date selection
   function handleDateSelect(selectInfo) {
-    let title = prompt("Please enter a new title for your event");
+    setShowModal(true);
+
     let calendarApi = selectInfo.view.calendar;
+    console.log(selectInfo.endStr.replace("T", " "));
+    console.log(selectInfo.startStr);
+    console.log(selectInfo.endStr);
+    setStartDateTime(selectInfo.startStr);
+    setEndDateTime(selectInfo.endStr);
 
     calendarApi.unselect(); // clear date selection
 
@@ -88,16 +158,16 @@ export default function Calendar({ selectedDate }) {
     }
   }
 
-  // Function to handle event click
-  function handleEventClick(clickInfo) {
-    if (
-      confirm(
-        `Are you sure you want to delete the event '${clickInfo.event.title}'`
-      )
-    ) {
-      clickInfo.event.remove();
-    }
-  }
+  // // Function to handle event click
+  // function handleEventClick(clickInfo) {
+  //   if (
+  //     confirm(
+  //       `Are you sure you want to delete the event '${clickInfo.event.title}'`
+  //     )
+  //   ) {
+  //     // clickInfo.event.remove();
+  //   }
+  // }
 
   // Function to handle event add
   async function handleEventAdd(info) {
@@ -108,11 +178,10 @@ export default function Calendar({ selectedDate }) {
         endDateTime: info.event.end,
       };
 
-      await axios.post("https://api.moim.today/api/schedules/", eventData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const result = await axios.post(
+        "https://api.moim.today/api/schedules",
+        eventData
+      );
 
       console.log(
         "Event added and sent to the backend:",
@@ -135,9 +204,9 @@ export default function Calendar({ selectedDate }) {
   }
 
   // Function to create unique event ID
-  function createEventId() {
-    return String(eventGuid++);
-  }
+  // function createEventId() {
+  //   return String(eventGuid++);
+  // }
 
   return (
     <div className="demo-app">
@@ -159,7 +228,7 @@ export default function Calendar({ selectedDate }) {
           events={events}
           select={handleDateSelect}
           eventContent={renderEventContent} // custom render function
-          eventClick={handleEventClick}
+          // eventClick={handleEventClick}
           // you can update a remote database when these fire:
           /*
         eventAdd={function(){}}
@@ -171,15 +240,36 @@ export default function Calendar({ selectedDate }) {
           eventRemove={handleEventRemove}
         />
       </div>
+      {/* {isMeeting ? (
+        <CreationModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          closeHandler={() => calendarRef.current.getApi().unselect()}
+        >
+          <div>
+            <h2>새 이벤트 추가</h2>
+            <input
+              type="text"
+              value={agenda}
+              onChange={(e) => setAgenda(e.target.value)}
+              placeholder="Event Title"
+            />
+          </div>
+        </CreationModal>
+      ) : null} */}
     </div>
   );
 }
 
 function renderEventContent(eventInfo) {
   return (
-    <>
-      <b>{eventInfo.timeText}</b>
-      <i>{eventInfo.event.title}</i>
-    </>
+    <div className="flex flex-col">
+      <b className="text-white font-Pretendard_SemiBold">
+        {eventInfo.timeText}
+      </b>
+      <i className="text-white font-Pretendard_Normal">
+        {eventInfo.event.title}
+      </i>
+    </div>
   );
 }
