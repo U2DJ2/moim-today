@@ -68,16 +68,16 @@ public class MeetingManager {
 
     private MeetingCreateResponse createRegularMeeting(final MeetingCreateRequest meetingCreateRequest, final String moimTitle) {
         MoimDateResponse moimDateResponse = moimFinder.findMoimDate(meetingCreateRequest.moimId());
-        LocalDate startDate = moimDateResponse.startDate();
-        LocalDate endDate = moimDateResponse.endDate();
+        LocalDate moimEndDate = moimDateResponse.endDate();
 
-        LocalTime startTime = meetingCreateRequest.startDateTime().toLocalTime();
-        LocalTime endTime = meetingCreateRequest.endDateTime().toLocalTime();
+        LocalTime meetingStartTime = meetingCreateRequest.startDateTime().toLocalTime();
+        LocalTime meetingEndTime = meetingCreateRequest.endDateTime().toLocalTime();
+        LocalDate meetingStartDate = meetingCreateRequest.startDateTime().toLocalDate();
         long firstMeetingId = SCHEDULE_MEETING_ID.value();
 
-        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusWeeks(ONE_WEEK.time())) {
-            LocalDateTime startDateTime = LocalDateTime.of(date, startTime);
-            LocalDateTime endDateTime = LocalDateTime.of(date, endTime);
+        for (LocalDate date = meetingStartDate; !date.isAfter(moimEndDate); date = date.plusWeeks(ONE_WEEK.time())) {
+            LocalDateTime startDateTime = LocalDateTime.of(date, meetingStartTime);
+            LocalDateTime endDateTime = LocalDateTime.of(date, meetingEndTime);
 
             MeetingJpaEntity meetingJpaEntity = meetingCreateRequest.toEntity(startDateTime, endDateTime);
             MeetingJpaEntity saveEntity = meetingAppender.saveMeeting(meetingJpaEntity);
