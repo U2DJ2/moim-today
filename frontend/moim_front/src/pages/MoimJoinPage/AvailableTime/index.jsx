@@ -102,7 +102,6 @@ function AvailableTime() {
     <div className="flex gap-5 h-full w-full">
       <div className="flex-1">
         <Datepicker
-          className="flex-1"
           showTodayButton={false}
           showClearButton={false}
           theme={calendarTheme}
@@ -112,7 +111,6 @@ function AvailableTime() {
       </div>
       <div className="flex-[3_3_0%]">
         <Calendar
-          className="flex-3"
           selectedDate={selectedDate}
           isAvailable={true}
           moimId={MoimId}
