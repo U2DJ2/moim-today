@@ -439,7 +439,8 @@ function Sidebar({ onDateChange, setOpenTodoAddModal }) {
                 <div className="flex gap-2.5 mt-5"></div>
                 <button
                     className='w-52 justify-center px-6 py-3 text-[16px] text-center text-white bg-black whitespace-nowrap rounded-full font-semibold  hover:cursor-pointer'
-                    onClick={() => setOpenTodoAddModal(true)}>
+                    // onClick={() => setOpenTodoAddModal(true)}>
+                    onClick={handleAddTodo}>
                     TODO 추가하기
                 </button>
                 <div className="flex gap-2.5 mt-5"></div>
