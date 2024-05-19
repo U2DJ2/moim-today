@@ -5,13 +5,16 @@ import { useNavigate } from 'react-router';
 // Headless UI
 import { Menu, Transition } from '@headlessui/react';
 
+// API
+import axios from 'axios';
+
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
 
 const Profile = () => {
     const navigate = useNavigate();
-    
+
     const handleProfile = () => {
         navigate('/manage', {
             state: {
@@ -19,7 +22,16 @@ const Profile = () => {
             },
         });
     };
-    
+
+    const handleLogout = async () => {
+        try {
+            await axios.post('https://api.moim.today/api/logout');
+        } catch (error) {
+            console.error('Failed to validate session', error);
+            navigate('/login');
+        }
+    }
+
     return (
         <Menu as="div" className="relative inline-block text-left">
             <div>
@@ -56,11 +68,12 @@ const Profile = () => {
                                 </a>
                             )}
                         </Menu.Item>
-                        <form method="POST" action="#">
+                        <form>
                             <Menu.Item>
                                 {({ active }) => (
                                     <button
                                         type="submit"
+                                        onClick={handleLogout}
                                         className={classNames(
                                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                             'block w-full px-4 py-2 text-left text-sm'
