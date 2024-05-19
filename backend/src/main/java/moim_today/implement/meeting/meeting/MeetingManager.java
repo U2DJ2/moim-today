@@ -42,14 +42,15 @@ public class MeetingManager {
     }
 
     @Transactional
-    public MeetingCreateResponse createMeeting(final MeetingCreateRequest meetingCreateRequest) {
+    public MeetingCreateResponse createMeeting(final MeetingCreateRequest meetingCreateRequest,
+                                               final LocalDate currentDate) {
         MeetingCategory meetingCategory = meetingCreateRequest.meetingCategory();
         String moimTitle = moimFinder.getTitleById(meetingCreateRequest.moimId());
 
         if (meetingCategory.equals(MeetingCategory.SINGLE)) {
             return createSingleMeeting(meetingCreateRequest, moimTitle);
         } else {
-            return createRegularMeeting(meetingCreateRequest, moimTitle);
+            return createRegularMeeting(meetingCreateRequest, moimTitle, currentDate);
         }
     }
 
@@ -66,13 +67,15 @@ public class MeetingManager {
         return MeetingCreateResponse.of(saveEntity.getId(), meetingCreateRequest);
     }
 
-    private MeetingCreateResponse createRegularMeeting(final MeetingCreateRequest meetingCreateRequest, final String moimTitle) {
+    private MeetingCreateResponse createRegularMeeting(final MeetingCreateRequest meetingCreateRequest,
+                                                       final String moimTitle, final LocalDate currentDate) {
         MoimDateResponse moimDateResponse = moimFinder.findMoimDate(meetingCreateRequest.moimId());
         LocalDate moimEndDate = moimDateResponse.endDate();
 
         LocalTime meetingStartTime = meetingCreateRequest.startDateTime().toLocalTime();
         LocalTime meetingEndTime = meetingCreateRequest.endDateTime().toLocalTime();
-        LocalDate meetingStartDate = meetingCreateRequest.startDateTime().toLocalDate();
+        LocalDate meetingStartDate = getMeetingStartDate(meetingCreateRequest, currentDate);
+
         long firstMeetingId = SCHEDULE_MEETING_ID.value();
 
         for (LocalDate date = meetingStartDate; !date.isAfter(moimEndDate); date = date.plusWeeks(ONE_WEEK.time())) {
@@ -90,6 +93,14 @@ public class MeetingManager {
         }
 
         return MeetingCreateResponse.of(firstMeetingId, meetingCreateRequest);
+    }
+
+    private LocalDate getMeetingStartDate(final MeetingCreateRequest meetingCreateRequest,
+                                          final LocalDate currentDate) {
+        LocalDate meetingStartDate = meetingCreateRequest.startDateTime().toLocalDate();
+        meetingStartDate = meetingStartDate.isAfter(currentDate) ? meetingStartDate : currentDate;
+
+        return meetingStartDate;
     }
 
     private void createSchedules(final String moimTitle, final MeetingJpaEntity meetingJpaEntity) {

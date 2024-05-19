@@ -7,6 +7,7 @@ import moim_today.implement.meeting.meeting.MeetingManager;
 import moim_today.implement.meeting.meeting.MeetingRemover;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public MeetingCreateResponse createMeeting(final MeetingCreateRequest meetingCreateRequest) {
-        return meetingManager.createMeeting(meetingCreateRequest);
+        return meetingManager.createMeeting(meetingCreateRequest, LocalDate.now());
     }
 
     @Override

@@ -45,8 +45,11 @@ class MeetingManagerTest extends ImplementTest {
                 .meetingCategory(MeetingCategory.SINGLE)
                 .build();
 
+        // given 3
+        LocalDate currentDate = LocalDate.of(2024, 3, 4);
+
         // when
-        MeetingCreateResponse meetingCreateResponse = meetingManager.createMeeting(meetingCreateRequest);
+        MeetingCreateResponse meetingCreateResponse = meetingManager.createMeeting(meetingCreateRequest, currentDate);
 
         // then
         assertThat(meetingRepository.count()).isEqualTo(1);
@@ -57,11 +60,12 @@ class MeetingManagerTest extends ImplementTest {
         assertThat(meetingCreateResponse.meetingCategory()).isEqualTo(MeetingCategory.SINGLE);
     }
 
-    @DisplayName("정기 미팅을 생성한다.")
+    @DisplayName("현재 날짜부터 정기 미팅을 생성한다.")
     @Test
-    void createRegularMeeting() {
+    void createRegularMeetingFromCurrentDate() {
         // given 1
         long memberId = 1;
+        LocalDate currentDate = LocalDate.of(2024, 3, 30);
         LocalDate startDate = LocalDate.of(2024, 3, 4);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
@@ -84,7 +88,47 @@ class MeetingManagerTest extends ImplementTest {
                 .build();
 
         // when
-        MeetingCreateResponse meetingCreateResponse = meetingManager.createMeeting(meetingCreateRequest);
+        MeetingCreateResponse meetingCreateResponse = meetingManager.createMeeting(meetingCreateRequest, currentDate);
+
+        // then
+        long between = ChronoUnit.WEEKS.between(currentDate, endDate) + 1;
+        assertThat(meetingRepository.count()).isEqualTo(between);
+        assertThat(meetingCreateResponse.agenda()).isEqualTo(MEETING_AGENDA.value());
+        assertThat(meetingCreateResponse.startDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 4, 10, 0, 0));
+        assertThat(meetingCreateResponse.endDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 4, 12, 0, 0));
+        assertThat(meetingCreateResponse.place()).isEqualTo(MEETING_PLACE.value());
+        assertThat(meetingCreateResponse.meetingCategory()).isEqualTo(MeetingCategory.REGULAR);
+    }
+
+    @DisplayName("미팅 시작 날짜부터 정기 미팅을 생성한다.")
+    @Test
+    void createRegularMeetingFromStartDate() {
+        // given 1
+        long memberId = 1;
+        LocalDate currentDate = LocalDate.of(2024, 2, 1);
+        LocalDate startDate = LocalDate.of(2024, 3, 4);
+        LocalDate endDate = LocalDate.of(2024, 6, 30);
+
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .memberId(memberId)
+                .startDate(startDate)
+                .endDate(endDate)
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+
+        // given 2
+        MeetingCreateRequest meetingCreateRequest = MeetingCreateRequest.builder()
+                .moimId(moimJpaEntity.getId())
+                .agenda(MEETING_AGENDA.value())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
+                .place(MEETING_PLACE.value())
+                .meetingCategory(MeetingCategory.REGULAR)
+                .build();
+
+        // when
+        MeetingCreateResponse meetingCreateResponse = meetingManager.createMeeting(meetingCreateRequest, currentDate);
 
         // then
         long between = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
@@ -101,6 +145,7 @@ class MeetingManagerTest extends ImplementTest {
     void createSingleMeetingWithJoinedAndSchedule() {
         // given 1
         long memberId = 1;
+        LocalDate currentDate = LocalDate.of(2024, 3, 30);
         LocalDate startDate = LocalDate.of(2024, 3, 4);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
@@ -133,7 +178,7 @@ class MeetingManagerTest extends ImplementTest {
                 .build();
 
         // when
-        meetingManager.createMeeting(meetingCreateRequest);
+        meetingManager.createMeeting(meetingCreateRequest, currentDate);
 
         // then
         assertThat(meetingRepository.count()).isEqualTo(1);
@@ -146,6 +191,7 @@ class MeetingManagerTest extends ImplementTest {
     void createRegularMeetingWithJoinedAndSchedule() {
         // given 1
         long memberId = 1;
+        LocalDate currentDate = LocalDate.of(2024, 3, 30);
         LocalDate startDate = LocalDate.of(2024, 3, 4);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
@@ -178,10 +224,10 @@ class MeetingManagerTest extends ImplementTest {
                 .build();
 
         // when
-        meetingManager.createMeeting(meetingCreateRequest);
+        meetingManager.createMeeting(meetingCreateRequest, currentDate);
 
         // then
-        long between = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
+        long between = ChronoUnit.WEEKS.between(currentDate, endDate) + 1;
         assertThat(meetingRepository.count()).isEqualTo(between);
         assertThat(joinedMeetingRepository.count()).isEqualTo(10 * between);
         assertThat(scheduleRepository.count()).isEqualTo(10 * between);
@@ -192,6 +238,7 @@ class MeetingManagerTest extends ImplementTest {
     void createMeetingScheduleIfNotExist() {
         // given 1
         long memberId = 1;
+        LocalDate currentDate = LocalDate.of(2024, 3, 30);
         LocalDate startDate = LocalDate.of(2024, 3, 4);
         LocalDate endDate = LocalDate.of(2024, 6, 30);
 
@@ -231,7 +278,7 @@ class MeetingManagerTest extends ImplementTest {
                 .build();
 
         // when
-        meetingManager.createMeeting(meetingCreateRequest);
+        meetingManager.createMeeting(meetingCreateRequest, currentDate);
 
         // then
         assertThat(meetingRepository.count()).isEqualTo(1);
