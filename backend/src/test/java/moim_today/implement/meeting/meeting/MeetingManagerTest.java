@@ -2,6 +2,7 @@ package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingCategory;
 import moim_today.dto.meeting.MeetingCreateRequest;
+import moim_today.dto.meeting.MeetingCreateResponse;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
@@ -45,10 +46,15 @@ class MeetingManagerTest extends ImplementTest {
                 .build();
 
         // when
-        meetingManager.createMeeting(meetingCreateRequest);
+        MeetingCreateResponse meetingCreateResponse = meetingManager.createMeeting(meetingCreateRequest);
 
         // then
         assertThat(meetingRepository.count()).isEqualTo(1);
+        assertThat(meetingCreateResponse.agenda()).isEqualTo(MEETING_AGENDA.value());
+        assertThat(meetingCreateResponse.startDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 4, 10, 0, 0));
+        assertThat(meetingCreateResponse.endDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 4, 12, 0, 0));
+        assertThat(meetingCreateResponse.place()).isEqualTo(MEETING_PLACE.value());
+        assertThat(meetingCreateResponse.meetingCategory()).isEqualTo(MeetingCategory.SINGLE);
     }
 
     @DisplayName("정기 미팅을 생성한다.")
@@ -78,11 +84,16 @@ class MeetingManagerTest extends ImplementTest {
                 .build();
 
         // when
-        meetingManager.createMeeting(meetingCreateRequest);
+        MeetingCreateResponse meetingCreateResponse = meetingManager.createMeeting(meetingCreateRequest);
 
         // then
         long between = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
         assertThat(meetingRepository.count()).isEqualTo(between);
+        assertThat(meetingCreateResponse.agenda()).isEqualTo(MEETING_AGENDA.value());
+        assertThat(meetingCreateResponse.startDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 4, 10, 0, 0));
+        assertThat(meetingCreateResponse.endDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 4, 12, 0, 0));
+        assertThat(meetingCreateResponse.place()).isEqualTo(MEETING_PLACE.value());
+        assertThat(meetingCreateResponse.meetingCategory()).isEqualTo(MeetingCategory.REGULAR);
     }
 
     @DisplayName("일회 미팅 생성시 참여 정보, 스케줄 정보를 등록한다.")

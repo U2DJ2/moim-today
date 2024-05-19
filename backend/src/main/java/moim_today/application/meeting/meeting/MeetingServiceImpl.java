@@ -1,10 +1,7 @@
 package moim_today.application.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingStatus;
-import moim_today.dto.meeting.MeetingCreateRequest;
-import moim_today.dto.meeting.MeetingDetailResponse;
-import moim_today.dto.meeting.MeetingSimpleDao;
-import moim_today.dto.meeting.MeetingSimpleResponse;
+import moim_today.dto.meeting.*;
 import moim_today.implement.meeting.meeting.MeetingFinder;
 import moim_today.implement.meeting.meeting.MeetingManager;
 import moim_today.implement.meeting.meeting.MeetingRemover;
@@ -28,8 +25,8 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public void createMeeting(final MeetingCreateRequest meetingCreateRequest) {
-        meetingManager.createMeeting(meetingCreateRequest);
+    public MeetingCreateResponse createMeeting(final MeetingCreateRequest meetingCreateRequest) {
+        return meetingManager.createMeeting(meetingCreateRequest);
     }
 
     @Override
