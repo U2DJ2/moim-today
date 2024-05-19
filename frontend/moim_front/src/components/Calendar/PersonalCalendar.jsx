@@ -212,6 +212,10 @@ export default function Calendar({
   //   return String(eventGuid++);
   // }
 
+  function personalSubmit() {
+    calendarRef.current.getApi().unselect();
+  }
+
   return (
     <div className="demo-app">
       <div className="demo-app-main">
@@ -244,25 +248,6 @@ export default function Calendar({
           eventRemove={handleEventRemove}
         />
       </div>
-      {isPersonal ? (
-        <CreationModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          closeHandler={() => calendarRef.current.getApi().unselect()}
-        >
-          <div className=" font-Pretendard_Light flex flex-col">
-            <div className="mx-auto">
-              <h2>개인 스케쥴 이름</h2>
-              <input
-                type="text"
-                value={scheduleTitle}
-                onChange={(e) => setScheduleTitle(e.target.value)}
-                placeholder="스케쥴 이름을 입력해주세요"
-              />
-            </div>
-          </div>
-        </CreationModal>
-      ) : null}
     </div>
   );
 }
