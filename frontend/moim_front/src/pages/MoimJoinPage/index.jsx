@@ -164,57 +164,25 @@ function MoimJoinPage() {
         <div className="flex justify-center items-center self-start font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
           <div className="flex gap-12 font-semibold font-Roboto lg:text-xl lg:gap-8 xl:text-3xl 2xl:text-4xl">
             <div
-              className={`justify-center max-md:px-5 cursor-pointer ${
-                selected === "HOME"
-                  ? "text-scarlet border-b-2 border-scarlet"
-                  : ""
-              }`}
-              className={`justify-center max-md:px-5 cursor-pointer ${selected === "HOME"
-                ? "text-scarlet border-b-2 border-scarlet"
-                : ""
-                }`}
+              className={`justify-center max-md:px-5 cursor-pointer ${selected === "HOME" ? "text-scarlet border-b-2 border-scarlet" : "" }`}
               onClick={() => setSelected("HOME")}
             >
               HOME
             </div>
             <div
-              className={`justify-center  max-md:px-5 cursor-pointer ${
-                selected === "되는시간"
-                  ? "text-scarlet border-b-2 border-scarlet"
-                  : ""
-              }`}
-              className={`justify-center  max-md:px-5 cursor-pointer ${selected === "되는시간"
-                ? "text-scarlet border-b-2 border-scarlet"
-                : ""
-                }`}
+              className={`justify-center  max-md:px-5 cursor-pointer ${selected === "되는시간" ? "text-scarlet border-b-2 border-scarlet" : ""}`}
               onClick={() => setSelected("되는시간")}
             >
               되는시간
             </div>
             <div
-              className={`justify-center max-md:px-5 cursor-pointer ${
-                selected === "ToDo"
-                  ? "text-scarlet border-b-2 border-scarlet"
-                  : ""
-              }`}
-              className={`justify-center max-md:px-5 cursor-pointer ${selected === "ToDo"
-                ? "text-scarlet border-b-2 border-scarlet"
-                : ""
-                }`}
+              className={`justify-center max-md:px-5 cursor-pointer ${selected === "ToDo" ? "text-scarlet border-b-2 border-scarlet" : "" }`}
               onClick={() => setSelected("ToDo")}
             >
               ToDo
             </div>
             <div
-              className={`justify-center max-md:px-5 cursor-pointer ${
-                selected === "멤버"
-                  ? "text-scarlet border-b-2 border-scarlet"
-                  : ""
-              }`}
-              className={`justify-center max-md:px-5 cursor-pointer ${selected === "멤버"
-                ? "text-scarlet border-b-2 border-scarlet"
-                : ""
-                }`}
+              className={`justify-center max-md:px-5 cursor-pointer ${selected === "멤버" ? "text-scarlet border-b-2 border-scarlet" : "" }`}
               onClick={() => setSelected("멤버")}
             >
               멤버

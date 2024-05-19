@@ -36,11 +36,7 @@ function CardContainer({
   };
 
   return (
-    <div className=" hover:cursor-pointer w-[360px] " onClick={onClickHandler}>
-    <div
-      className=" hover:cursor-pointer w-auto"
-      onClick={() => navigate(`/detailed/${moimId}`)}
-    >
+    <div className=" hover:cursor-pointer w-auto" onClick={onClickHandler}>
       <img
         src={image}
         alt="cardContainer"
