@@ -250,14 +250,16 @@ export default function Calendar({
           setShowModal={setShowModal}
           closeHandler={() => calendarRef.current.getApi().unselect()}
         >
-          <div>
-            <h2>개인 스케쥴 이름</h2>
-            <input
-              type="text"
-              value={scheduleTitle}
-              onChange={(e) => setScheduleTitle(e.target.value)}
-              placeholder="스케쥴 이름을 입력해주세요"
-            />
+          <div className=" font-Pretendard_Light flex flex-col">
+            <div className="mx-auto">
+              <h2>개인 스케쥴 이름</h2>
+              <input
+                type="text"
+                value={scheduleTitle}
+                onChange={(e) => setScheduleTitle(e.target.value)}
+                placeholder="스케쥴 이름을 입력해주세요"
+              />
+            </div>
           </div>
         </CreationModal>
       ) : null}

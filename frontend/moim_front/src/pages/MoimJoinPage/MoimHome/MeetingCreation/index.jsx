@@ -13,7 +13,7 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-function MeetingCreation({ moimId }) {
+function MeetingCreation() {
   const [showModal, setShowModal] = useState(false);
   const [startDateTime, setStartDateTime] = useState("");
   const [endDateTime, setEndDateTime] = useState("");
