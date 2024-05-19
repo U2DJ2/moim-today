@@ -23,6 +23,21 @@ import static moim_today.util.TestConstant.*;
 public class FakeMoimService implements MoimService {
 
     @Override
+    public List<MyMoimResponse> findAllMyMoimResponse(final long memberId) {
+        MyMoimResponse myMoimResponse1 = MyMoimResponse.builder()
+                .moimId(1L)
+                .title(MOIM_TITLE.value())
+                .build();
+
+        MyMoimResponse myMoimResponse2 = MyMoimResponse.builder()
+                .moimId(2L)
+                .title(MOIM_TITLE.value())
+                .build();
+
+        return List.of(myMoimResponse1, myMoimResponse2);
+    }
+
+    @Override
     public MoimIdResponse createMoim(final long memberId, final long universityId, final MoimCreateRequest moimCreateRequest) {
         return MoimIdResponse.from(MOIM_ID.longValue());
     }

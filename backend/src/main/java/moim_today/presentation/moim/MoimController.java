@@ -31,9 +31,15 @@ public class MoimController {
         this.moimNoticeService = moimNoticeService;
     }
 
+    @GetMapping
+    public CollectionResponse<List<MyMoimResponse>> findAllMyMoimResponse(@Login final MemberSession memberSession) {
+        List<MyMoimResponse> myMoimResponses = moimService.findAllMyMoimResponse(memberSession.id());
+        return CollectionResponse.of(myMoimResponses);
+    }
+
     @PostMapping
     public MoimIdResponse createMoim(@Login final MemberSession memberSession,
-                           @RequestBody final MoimCreateRequest moimCreateRequest) {
+                                     @RequestBody final MoimCreateRequest moimCreateRequest) {
         return moimService.createMoim(memberSession.id(), memberSession.universityId(), moimCreateRequest);
     }
 

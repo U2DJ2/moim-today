@@ -5,6 +5,7 @@ import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.dto.moim.moim.MoimSimpleResponse;
+import moim_today.dto.moim.moim.MyMoimResponse;
 import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.NotFoundException;
@@ -12,6 +13,8 @@ import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
+import moim_today.util.TestConstant;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,48 @@ class MoimFinderTest extends ImplementTest {
     private Random random = new Random();
 
     private final int MOIM_MEMBER_SIZE = 3;
+
+    @DisplayName("회원이 참여한 모임의 정보를 가져온다.")
+    @Test
+    void findAllMyMoimResponse() {
+        // given 1
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+
+        // given 2
+        MoimJpaEntity moimJpaEntity1 = MoimJpaEntity.builder()
+                .title(MOIM_TITLE.value())
+                .build();
+
+        MoimJpaEntity moimJpaEntity2 = MoimJpaEntity.builder()
+                .title(MOIM_TITLE.value())
+                .build();
+
+        moimRepository.save(moimJpaEntity1);
+        moimRepository.save(moimJpaEntity2);
+
+        // given 3
+        JoinedMoimJpaEntity joinedMoimJpaEntity1 = JoinedMoimJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .moimId(moimJpaEntity1.getId())
+                .build();
+
+        JoinedMoimJpaEntity joinedMoimJpaEntity2 = JoinedMoimJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .moimId(moimJpaEntity2.getId())
+                .build();
+
+        joinedMoimRepository.save(joinedMoimJpaEntity1);
+        joinedMoimRepository.save(joinedMoimJpaEntity2);
+
+        // when
+        List<MyMoimResponse> myMoimResponses = moimFinder.findAllMyMoimResponse(memberJpaEntity.getId());
+
+        // then
+        assertThat(myMoimResponses.size()).isEqualTo(2);
+    }
 
     @DisplayName("모임을 조회하면 모임 엔티티를 반환한다.")
     @Test
