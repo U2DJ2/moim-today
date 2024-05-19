@@ -9,11 +9,8 @@ import Filter from "../../components/Dropdown/Filter";
 import SearchIcon from "@mui/icons-material/Search";
 import CardContainer from "./CardContainer";
 
-//temporary image
-import cardImage from "../../assets/svg/card-image.svg";
-
+// API
 import { GET } from "../../utils/axios";
-
 import axios from "axios";
 
 /**
@@ -74,7 +71,7 @@ function FilterBar({
 
   return (
     <div className="flex gap-2.5 justify-between px-12 py-4 mt-9 w-full text-base text-center whitespace-nowrap text-neutral-700 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-      <div className="flex gap-0 justify-center items-center">
+      <div className="flex justify-center items-center">
         <div>
           <Dropdown
             options={[
@@ -89,7 +86,7 @@ function FilterBar({
           />
         </div>
       </div>
-      <div className="flex justify-center items-center self-start px-16 font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
+      <div className="flex justify-center items-center self-start px-16 font-Pretendard_SemiBold text-neutral-900 max-md:px-5 max-md:max-w-full">
         <div className="flex gap-3">
           <div
             className={`justify-center px-9 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
@@ -117,6 +114,7 @@ function FilterBar({
     </div>
   );
 }
+
 const getAllMoims = async (moimCategory, moimSortedFilter) => {
   await GET(`api/moims/simple/moimCategory=${moimCategory}/${moimSortedFilter}`)
     .then((res) => {
@@ -124,6 +122,7 @@ const getAllMoims = async (moimCategory, moimSortedFilter) => {
     })
     .then((error) => console.log(error));
 };
+
 export default function Home() {
   const [moimCategory, setMoimCategory] = useState("ALL");
   const [moimSortedFilter, setMoimSortedFilter] = useState("CREATED_AT");
@@ -150,6 +149,7 @@ export default function Home() {
       }
     };
   }, []);
+
   useEffect(() => {
     const fetchMoims = async () => {
       try {
@@ -172,6 +172,7 @@ export default function Home() {
     };
     fetchMoims();
   }, [moimCategory, selected]);
+
   useEffect(() => {}, [moimCategory, moimSortedFilter]);
   return (
     <div className="flex flex-col justify-between pb-20 bg-white">
@@ -186,7 +187,7 @@ export default function Home() {
         selected={selected}
         setSelected={setSelected}
       />
-      <div className="grid grid-cols-1 gap-10 mt-20 mx-auto md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
+      <div className="grid md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-10 mt-10 px-12">
         {moimInfo.length != 0 ? (
           moimInfo.map((item) => (
             <CardContainer

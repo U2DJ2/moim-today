@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import MoimContainer from "../../components/PageContainer/MoimContainer";
 import DetailedLeft from "../../components/DetailedLeft";
 import MoimHome from "./MoimHome";
@@ -82,7 +82,7 @@ function MoimJoinPage() {
         image={moimInfo.imageUrl}
         joined={true}
       />
-      <div className="flex flex-col basis-4/5 bg-white shadow-[0px_4px_12px_rgba(0,_0,_0,_0.06)] overflow-hidden rounded-3xl px-24 pb-6 gap-8 min-h-[600px] h-fit">
+      <div className="flex flex-col basis-4/5 bg-white shadow-lg overflow-hidden rounded-t-3xl px-20 pt-16 pb-6 gap-8 h-full">
         <div className="flex justify-center items-center self-start font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
           <div className="flex gap-12 font-semibold font-Roboto lg:text-xl lg:gap-8 xl:text-3xl 2xl:text-4xl">
             <div
