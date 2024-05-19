@@ -1,3 +1,4 @@
+// React
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -5,7 +6,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 // UI
-import { Datepicker, Accordion, Checkbox, Modal, Button } from "flowbite-react";
+import { Datepicker, Accordion, Checkbox, Modal } from "flowbite-react";
 import { Label, TextInput } from "flowbite-react";
 
 // Icons
@@ -493,8 +494,8 @@ function Sidebar({ onDateChange, setOpenTodoAddModal }) {
         <button
           className="w-52 justify-center px-6 py-3 text-[16px] text-center text-white bg-black whitespace-nowrap rounded-full font-semibold  hover:cursor-pointer"
           // onClick={() => setOpenTodoAddModal(true)}
+          onClick={handleAddTodo}
         >
-                    onClick={handleAddTodo}>
           TODO 추가하기
         </button>
         <div className="flex gap-2.5 mt-5"></div>
@@ -511,9 +512,8 @@ function Sidebar({ onDateChange, setOpenTodoAddModal }) {
                   return (
                     <div
                       key={todo.todoId}
-                      className={`flex items-center gap-2${
-                        isLastTodo ? "" : " mb-4"
-                      }`}
+                      className={`flex items-center gap-2${isLastTodo ? "" : " mb-4"
+                        }`}
                     >
                       <Checkbox
                         onChange={() => handleTodoCheckboxClick(todo)}
@@ -557,7 +557,7 @@ export default function Schedule() {
                 label={"모임 선택"}
                 placeHolder={"모임명을 검색해주세요!"}
                 options={["스터디", "팀 프로젝트", "취미활동", "운동", "기타"]}
-                onSelect={() => {}}
+                onSelect={() => { }}
               />
             </div>
             <div>
@@ -578,7 +578,7 @@ export default function Schedule() {
             <div>
               <div className={labelStyle}>{"운영 시간"}</div>
               <DatePicker
-                onChange={() => {}}
+                onChange={() => { }}
                 inputClassName={`w-full ${commonInputStyle}`}
               />
             </div>
