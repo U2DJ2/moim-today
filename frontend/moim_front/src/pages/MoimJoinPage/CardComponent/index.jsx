@@ -6,16 +6,15 @@ function CardComponent({ date, dday, title, btn, clickHandler, isMeeting }) {
     >
       <div className="grid grid-flow-row">
         <div className="">{date}</div>
-        <div className="grid grid-cols-2 items-center w-fit">
-          <div className="font-bold text-2xl">{title}</div>
-          {isMeeting ? (
-            <div className="text-scarlet grid grid-flow-col">
-              <div>D-</div>
-              <div>{dday}</div>
-            </div>
-          ) : null}
+        <div className="ml-1">
+          <div className="grid grid-rows-2 w-fit">
+            <div className="font-bold text-2xl">{title}</div>
+            {isMeeting ? (
+              <div className="text-scarlet text-base">D-{dday}</div>
+            ) : null}
+          </div>
         </div>
-        <div className="pt-4"></div>
+        <div className="pt-2"></div>
         {btn && (
           <button className="text-white bg-scarlet p-1.5 rounded-full font-Pretendard_SemiBold">
             참석하기
