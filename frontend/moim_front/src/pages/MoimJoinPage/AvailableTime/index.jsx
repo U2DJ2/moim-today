@@ -100,18 +100,24 @@ function AvailableTime() {
   const { MoimId } = useParams();
   return (
     <div className="flex gap-5 h-full w-full">
-      <Datepicker
-        showTodayButton={false}
-        showClearButton={false}
-        theme={calendarTheme}
-        inline
-        onSelectedDateChanged={handleMiniCalendarDateSelect}
-      />
-      <Calendar
-        selectedDate={selectedDate}
-        isAvailable={true}
-        moimId={MoimId}
-      />
+      <div className="flex-1">
+        <Datepicker
+          className="flex-1"
+          showTodayButton={false}
+          showClearButton={false}
+          theme={calendarTheme}
+          inline
+          onSelectedDateChanged={handleMiniCalendarDateSelect}
+        />
+      </div>
+      <div className="flex-[3_3_0%]">
+        <Calendar
+          className="flex-3"
+          selectedDate={selectedDate}
+          isAvailable={true}
+          moimId={MoimId}
+        />
+      </div>
     </div>
   );
 }
