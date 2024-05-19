@@ -5,14 +5,24 @@ import CreationModal from "../../../../components/CreationModal";
 import DropDown from "../../../../components/Dropdown/Simple";
 import { POST } from "../../../../utils/axios";
 
+// Material UI
+import MuiAlert from "@mui/material/Alert";
+import { Slide } from "@mui/material";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 function MeetingCreation({ moimId }) {
   const [showModal, setShowModal] = useState(false);
   const [startDateTime, setStartDateTime] = useState("");
   const [endDateTime, setEndDateTime] = useState("");
   const [agenda, setAgenda] = useState("");
   const [place, setPlace] = useState("");
-  const [meetingCategory, setMeetingCategory] = useState("");
+  const [meetingCategory, setMeetingCategory] = useState("REGULAR");
   const { MoimId } = useParams();
+
+  const [open, setOpen] = useState(false);
 
   const onSelect = (option) => {
     console.log(option);
@@ -34,14 +44,15 @@ function MeetingCreation({ moimId }) {
     try {
       const response = await POST("api/meetings", data);
       console.log(response);
+      setOpen(true);
     } catch (e) {
       console.log(e);
     }
   };
 
   return (
-    <div>
-      <div className=" font-Pretendard_Black">가용시간</div>
+    <div className="flex flex-col gap-3 px-10">
+      <div className="font-Pretendard_Black text-4xl">가용시간</div>
       <Calendar
         isPersonal={false}
         isMeeting={true}
@@ -102,6 +113,13 @@ function MeetingCreation({ moimId }) {
           </div>
         </div>
       </CreationModal>
+      <Slide direction="up" in={open} mountOnEnter unmountOnExit>
+        <div style={{ position: "fixed", bottom: 20, right: 20 }}>
+          <Alert severity="success" onClose={() => setOpen(false)}>
+            "미팅 생성이 완료됐습니다"
+          </Alert>
+        </div>
+      </Slide>
     </div>
   );
 }
