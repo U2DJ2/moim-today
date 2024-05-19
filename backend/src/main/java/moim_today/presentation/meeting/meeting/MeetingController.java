@@ -4,6 +4,7 @@ import moim_today.application.meeting.meeting.MeetingService;
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.meeting.MeetingCreateRequest;
+import moim_today.dto.meeting.MeetingCreateResponse;
 import moim_today.dto.meeting.MeetingDetailResponse;
 import moim_today.dto.meeting.MeetingSimpleResponse;
 import moim_today.global.annotation.Login;
@@ -24,8 +25,8 @@ public class MeetingController {
     }
 
     @PostMapping
-    public void createMeeting(@RequestBody final MeetingCreateRequest meetingCreateRequest) {
-        meetingService.createMeeting(meetingCreateRequest);
+    public MeetingCreateResponse createMeeting(@RequestBody final MeetingCreateRequest meetingCreateRequest) {
+        return meetingService.createMeeting(meetingCreateRequest);
     }
 
     @GetMapping("/{moimId}")

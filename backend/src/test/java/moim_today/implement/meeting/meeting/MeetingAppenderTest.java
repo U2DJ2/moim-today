@@ -29,16 +29,14 @@ class MeetingAppenderTest extends ImplementTest {
                 .build();
 
         // when
-        meetingAppender.saveMeeting(meetingJpaEntity);
+        MeetingJpaEntity saveEntity = meetingAppender.saveMeeting(meetingJpaEntity);
 
         // then
-        MeetingJpaEntity findEntity = meetingRepository.getById(meetingJpaEntity.getId());
-
         assertThat(meetingRepository.count()).isEqualTo(1);
-        assertThat(findEntity.getMoimId()).isEqualTo(Long.valueOf(MOIM_ID.value()));
-        assertThat(findEntity.getAgenda()).isEqualTo(MEETING_AGENDA.value());
-        assertThat(findEntity.getStartDateTime()).isEqualTo(LocalDateTime.of(2024,3,4, 10, 0, 0));
-        assertThat(findEntity.getEndDateTime()).isEqualTo(LocalDateTime.of(2024,6,30, 10, 0, 0));
-        assertThat(findEntity.getPlace()).isEqualTo(MEETING_PLACE.value());
+        assertThat(saveEntity.getMoimId()).isEqualTo(Long.valueOf(MOIM_ID.value()));
+        assertThat(saveEntity.getAgenda()).isEqualTo(MEETING_AGENDA.value());
+        assertThat(saveEntity.getStartDateTime()).isEqualTo(LocalDateTime.of(2024,3,4, 10, 0, 0));
+        assertThat(saveEntity.getEndDateTime()).isEqualTo(LocalDateTime.of(2024,6,30, 10, 0, 0));
+        assertThat(saveEntity.getPlace()).isEqualTo(MEETING_PLACE.value());
     }
 }

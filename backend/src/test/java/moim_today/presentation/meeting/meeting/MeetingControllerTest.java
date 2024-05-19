@@ -65,6 +65,14 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("place").type(STRING).description("미팅 장소"),
                                         fieldWithPath("meetingCategory").type(STRING).description("미팅 카테고리")
                                 )
+                                .responseFields(
+                                        fieldWithPath("meetingId").type(NUMBER).description("미팅 id"),
+                                        fieldWithPath("agenda").type(STRING).description("미팅 의제"),
+                                        fieldWithPath("startDateTime").type(STRING).description("미팅 시작 시간"),
+                                        fieldWithPath("endDateTime").type(STRING).description("미팅 종료 시간"),
+                                        fieldWithPath("place").type(STRING).description("미팅 장소"),
+                                        fieldWithPath("meetingCategory").type(STRING).description("미팅 카테고리")
+                                )
                                 .build()
                         )));
     }
@@ -95,6 +103,14 @@ class MeetingControllerTest extends ControllerTest {
                                 .summary("미팅 생성")
                                 .requestFields(
                                         fieldWithPath("moimId").type(NUMBER).description("모임 id"),
+                                        fieldWithPath("agenda").type(STRING).description("미팅 의제"),
+                                        fieldWithPath("startDateTime").type(STRING).description("미팅 시작 시간"),
+                                        fieldWithPath("endDateTime").type(STRING).description("미팅 종료 시간"),
+                                        fieldWithPath("place").type(STRING).description("미팅 장소"),
+                                        fieldWithPath("meetingCategory").type(STRING).description("미팅 카테고리")
+                                )
+                                .responseFields(
+                                        fieldWithPath("meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("agenda").type(STRING).description("미팅 의제"),
                                         fieldWithPath("startDateTime").type(STRING).description("미팅 시작 시간"),
                                         fieldWithPath("endDateTime").type(STRING).description("미팅 종료 시간"),
