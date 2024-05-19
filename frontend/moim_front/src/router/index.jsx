@@ -1,7 +1,6 @@
 // React
-import { Routes, Route } from "react-router-dom";
-
-import MainLayout from "../components/MainLayout";
+import { useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 // Pages : Home
 import HomePage from "../pages/Home/Home";
@@ -25,11 +24,35 @@ import MoimMeetingPage from "../pages/MoimMeetingPage";
 import MoimJoinPage from "../pages/MoimJoinPage";
 import MeetingCreation from "../pages/MoimJoinPage/MoimHome/MeetingCreation";
 
+// API
+import axios from "axios";
+
+// Layout
+import MainLayout from "../components/MainLayout";
+
 /**
  * Basic Router
  * @returns
  */
 function Router() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const response = await axios.get('https://api.moim.today/api/session-validation');
+        if (!response.data.isValidateMemberSession) {
+          navigate('/login');
+        }
+      } catch (error) {
+        console.error('Failed to validate session', error);
+        navigate('/login');
+      }
+    };
+
+    checkSession();
+  }, [navigate]);
+
   return (
     <Routes>
       <Route element={<MainLayout />}>
