@@ -42,3 +42,14 @@ export const fetchMembers = async (moimId) => {
 export const postMeeting = async (data) => {
   const response = await POST("api/meetings", data);
 };
+
+export const fetchWriter = async (MoimId) => {
+  try {
+    const response = await axios.get(
+      `https://api.moim.today/api/members/host-profile/${MoimId}`
+    );
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
+};

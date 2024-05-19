@@ -13,6 +13,7 @@ import MoimHome from "./MoimHome";
 import AvailableTime from "./AvailableTime";
 
 // API
+import axios from "axios";
 import { fetchMeetings, fetchMoimInfo, fetchNotices } from "../../api/moim";
 import { checkWriter } from "../../api/users";
 
@@ -85,6 +86,8 @@ function MoimJoinPage() {
   const [moimInfo, setMoimInfo] = useState([]);
   const [meetings, setMeetings] = useState([]);
 
+  const [writerInfo, setWriterInfo] = useState([]);
+
   const [isHost, setIsHost] = useState(false);
   const { MoimId } = useParams();
 
@@ -117,6 +120,17 @@ function MoimJoinPage() {
       console.log(e);
     }
   };
+  const fetchWriter = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.moim.today/api/members/host-profile/${MoimId}`
+      );
+      console.log(response.data);
+      setWriterInfo(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const getHost = async () => {
     try {
@@ -132,11 +146,12 @@ function MoimJoinPage() {
     getNotices();
     getMeetings();
     getInfo();
+    fetchWriter();
   }, []);
   return (
     <MoimContainer>
       <DetailedLeft
-        userName={"김유림"}
+        userName={writerInfo.username}
         title={moimInfo.title}
         currentCount={moimInfo.currentCount}
         capacity={moimInfo.capacity}
@@ -149,6 +164,11 @@ function MoimJoinPage() {
         <div className="flex justify-center items-center self-start font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
           <div className="flex gap-12 font-semibold font-Roboto lg:text-xl lg:gap-8 xl:text-3xl 2xl:text-4xl">
             <div
+              className={`justify-center max-md:px-5 cursor-pointer ${
+                selected === "HOME"
+                  ? "text-scarlet border-b-2 border-scarlet"
+                  : ""
+              }`}
               className={`justify-center max-md:px-5 cursor-pointer ${selected === "HOME"
                 ? "text-scarlet border-b-2 border-scarlet"
                 : ""
@@ -158,6 +178,11 @@ function MoimJoinPage() {
               HOME
             </div>
             <div
+              className={`justify-center  max-md:px-5 cursor-pointer ${
+                selected === "되는시간"
+                  ? "text-scarlet border-b-2 border-scarlet"
+                  : ""
+              }`}
               className={`justify-center  max-md:px-5 cursor-pointer ${selected === "되는시간"
                 ? "text-scarlet border-b-2 border-scarlet"
                 : ""
@@ -167,6 +192,11 @@ function MoimJoinPage() {
               되는시간
             </div>
             <div
+              className={`justify-center max-md:px-5 cursor-pointer ${
+                selected === "ToDo"
+                  ? "text-scarlet border-b-2 border-scarlet"
+                  : ""
+              }`}
               className={`justify-center max-md:px-5 cursor-pointer ${selected === "ToDo"
                 ? "text-scarlet border-b-2 border-scarlet"
                 : ""
@@ -176,6 +206,11 @@ function MoimJoinPage() {
               ToDo
             </div>
             <div
+              className={`justify-center max-md:px-5 cursor-pointer ${
+                selected === "멤버"
+                  ? "text-scarlet border-b-2 border-scarlet"
+                  : ""
+              }`}
               className={`justify-center max-md:px-5 cursor-pointer ${selected === "멤버"
                 ? "text-scarlet border-b-2 border-scarlet"
                 : ""

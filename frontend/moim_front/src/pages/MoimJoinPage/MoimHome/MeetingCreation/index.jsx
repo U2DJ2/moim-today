@@ -115,7 +115,7 @@ function MeetingCreation() {
         </div>
       </CreationModal>
       <Slide direction="up" in={open} mountOnEnter unmountOnExit>
-        <div style={{ position: "fixed", bottom: 20, right: 20 }}>
+        <div style={{ position: "fixed", bottom: 20, right: 20, zIndex: 50 }}>
           <Alert severity="success" onClose={() => setOpen(false)}>
             미팅 생성이 완료됐습니다
           </Alert>
