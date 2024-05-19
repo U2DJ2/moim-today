@@ -66,3 +66,19 @@
   font-family: "RobotoFlex-Regular";
   src: url("./assets/font/RobotoFlex-Regular.ttf") format("truetype");
 }
+body::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}
+.noScrollBar::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}
+.modal-container {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.7s ease, visibility 0.7s ease, transform 0.7s ease;
+}
+
+.modal-container.active {
+  opacity: 1;
+  visibility: visible;
+}

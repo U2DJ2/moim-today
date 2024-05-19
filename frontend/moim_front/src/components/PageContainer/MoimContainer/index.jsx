@@ -1,30 +1,14 @@
 import React from "react";
 import DetailedLeft from "../../DetailedLeft";
 import DetailedRight from "../../DetailedRight";
+import { Outlet } from "react-router";
 
-function MoimContainer({
-  userName,
-  currentCount,
-  capacity,
-  category,
-  title,
-  contents,
-}) {
+function MoimContainer({ children }) {
   return (
-    <div className="grid grid-flow-col gap-9 px-24 min-h-screen">
-      <DetailedLeft
-        userName={userName}
-        title={title}
-        currentCount={currentCount}
-        capacity={capacity}
-      />
-      <DetailedRight
-        category={category}
-        title={title}
-        currentCount={currentCount}
-        capacity={capacity}
-        contents={contents}
-      />
+    <div className="bg-gradient-to-b from-white to-[#F6F8FE] h-screen w-full min-h-[800px] px-9 ">
+      <div className="flex ">
+        <div className="flex gap-9 pt-2 flex-1 overflow-auto">{children}</div>
+      </div>
     </div>
   );
 }

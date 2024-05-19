@@ -1,6 +1,13 @@
+import { flowbite } from "flowbite-react/tailwind";
+
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/react-tailwindcss-datepicker/dist/index.esm.js",
+    "node_modules/flowbite-react/lib/esm/**/*.js",
+  ],
   theme: {
     extend: {
       colors: {
@@ -15,6 +22,9 @@ export default {
         Pretendard_Normal: ["Pretendard-Regular"],
         Pretendard_Medium: ["Pretendard-Medium"],
         Pretendard_SemiBold: ["Pretendard-SemiBold"],
+        Roboto_Bold: ["Roboto-Bold"],
+        Roboto_Medium: ["Roboto-Medium"],
+        Roboto_Flex: ["Roboto-Flex"],
       },
       rotate: {
         18: "18deg",
@@ -29,4 +39,5 @@ export default {
     },
   },
   plugins: [],
+  darkMode: "",
 };

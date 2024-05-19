@@ -29,6 +29,7 @@ function AuthLeft({
   const passwordHandler = (e) => setPassword(e.target.value);
   const memoryHandler = (e) => !setMemory;
   const navigation = useNavigate();
+
   const onClick = () => {
     const data = {
       email: email,
@@ -37,7 +38,7 @@ function AuthLeft({
     console.log("clicked");
     POST("api/login", data)
       .then((res) => {
-        console.log(res.data);
+        console.log(res);
         navigation("/");
       })
       .catch((error) => {
@@ -50,6 +51,7 @@ function AuthLeft({
         }
       });
   };
+
   return (
     <div className="flex-1 flex flex-col justify-center justify-items-center">
       <div className="w-96 ">

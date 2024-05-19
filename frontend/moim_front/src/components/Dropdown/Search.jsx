@@ -2,7 +2,7 @@
 import { useState, Fragment } from "react";
 import { Transition } from "@headlessui/react";
 
-function Search({ options, onSelect }) {
+function Search({ label, placeHolder, options, onSelect }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
@@ -29,7 +29,7 @@ function Search({ options, onSelect }) {
           className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-4 py-3 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-gray-200 hover:bg-gray-50"
           onClick={toggleDropdown}
         >
-          {selectedOption === null ? "학과를 선택해주세요" : selectedOption}
+          {selectedOption === null ? label : selectedOption}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="-mr-1 h-5 w-5 text-gray-400"
@@ -61,14 +61,13 @@ function Search({ options, onSelect }) {
             id="search-input"
             className="block w-full px-4 py-2 text-gray-800 border rounded-md border-gray-200 focus:outline-none"
             type="text"
-            placeholder="학과명을 검색해주세요"
+            placeholder={placeHolder}
             autoComplete="off"
             onChange={handleInputChange}
           />
           {options.map((option, index) => (
             <a
               key={index}
-              href="#"
               className="block px-4 py-2 text-sm"
               onClick={() => handleOptionSelect(option, index)}
               style={{

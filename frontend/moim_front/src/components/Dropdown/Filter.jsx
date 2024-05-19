@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { Fragment } from 'react';
+// React
+import { useState, Fragment } from 'react';
+
+// UI
 import { Menu, Transition } from '@headlessui/react';
 
 
@@ -38,7 +40,6 @@ export default function Filter({ options, onSelect }) {
                             <Menu.Item key={index}>
                                 {({ active }) => (
                                     <a
-                                        href="#"
                                         onClick={() => handleOptionClick(option)}
                                         className={classNames(
                                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
