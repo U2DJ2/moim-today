@@ -23,6 +23,7 @@ import MoimMeetingPage from "../pages/MoimMeetingPage";
 
 // Components
 import MoimJoinPage from "../pages/MoimJoinPage";
+import MeetingCreation from "../pages/MoimJoinPage/MoimHome/MeetingCreation";
 
 /**
  * Basic Router
@@ -39,6 +40,7 @@ function Router() {
           element={<MoimMeetingPage />}
         />
         <Route path="/detailed/:MoimId" element={<MoimDetailPage />} />
+        <Route path="/meeting/:MoimId" element={<MeetingCreation />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />

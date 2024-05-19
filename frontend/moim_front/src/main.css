@@ -77,3 +77,8 @@ body::-webkit-scrollbar {
   visibility: hidden;
   transition: opacity 0.7s ease, visibility 0.7s ease, transform 0.7s ease;
 }
+
+.modal-container.active {
+  opacity: 1;
+  visibility: visible;
+}

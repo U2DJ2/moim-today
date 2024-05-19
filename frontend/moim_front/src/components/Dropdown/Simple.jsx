@@ -8,7 +8,7 @@ function classNames(...classes) {
 }
 
 export default function Simple({ options, onSelect }) {
-  const [selectedOption, setSelectedOption] = useState("카테고리 별");
+  const [selectedOption, setSelectedOption] = useState(options[0]);
 
   const handleOptionClick = (option, index) => {
     setSelectedOption(option);
@@ -45,7 +45,6 @@ export default function Simple({ options, onSelect }) {
               <Menu.Item key={index}>
                 {({ active }) => (
                   <a
-                    href="#"
                     onClick={() => handleOptionClick(option, index)}
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
