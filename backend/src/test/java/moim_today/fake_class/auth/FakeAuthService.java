@@ -3,6 +3,7 @@ package moim_today.fake_class.auth;
 import moim_today.application.auth.AuthService;
 import moim_today.dto.auth.MemberLoginRequest;
 import moim_today.dto.auth.MemberSignUpRequest;
+import moim_today.dto.auth.MemberSessionValidateResponse;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,5 +44,10 @@ public class FakeAuthService implements AuthService {
     @Override
     public void logout(final HttpServletRequest request) {
 
+    }
+
+    @Override
+    public MemberSessionValidateResponse validateMemberSession(final HttpServletRequest request) {
+        return new MemberSessionValidateResponse(true);
     }
 }
