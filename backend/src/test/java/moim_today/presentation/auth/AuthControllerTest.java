@@ -143,7 +143,7 @@ class AuthControllerTest extends ControllerTest {
     @DisplayName("로그인 세션이 유효한지를 검증한다.")
     @Test
     void validateMemberSession() throws Exception {
-        mockMvc.perform(get("/api"))
+        mockMvc.perform(get("/api/session-validation"))
                 .andExpect(status().isOk())
                 .andDo(document("회원 세션 인증 성공",
                         resource(ResourceSnippetParameters.builder()

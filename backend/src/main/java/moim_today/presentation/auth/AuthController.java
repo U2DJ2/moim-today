@@ -35,7 +35,7 @@ public class AuthController {
         authService.signUp(memberSignUpRequest, request);
     }
 
-    @GetMapping
+    @GetMapping("/session-validation")
     public MemberSessionValidateResponse validateMemberSession(final HttpServletRequest SessionValidateResponse) {
         return authService.validateMemberSession(SessionValidateResponse);
     }
