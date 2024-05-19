@@ -26,14 +26,17 @@ function MeetingCreation() {
 
   const onSelect = (option) => {
     console.log(option);
-    option === "정기모임"
-      ? setMeetingCategory("REGULAR")
-      : setMeetingCategory("SINGLE");
+    if (option === "정기모임") {
+      setMeetingCategory("REGULAR");
+    } else {
+      setMeetingCategory("SINGLE");
+    }
+    console.log(meetingCategory);
   };
 
   const createMeeting = async () => {
     const data = {
-      moimId: moimId,
+      moimId: MoimId,
       agenda: agenda,
       startDateTime: startDateTime.replace("T", " ").split("+")[0],
       endDateTime: endDateTime.replace("T", " ").split("+")[0],
