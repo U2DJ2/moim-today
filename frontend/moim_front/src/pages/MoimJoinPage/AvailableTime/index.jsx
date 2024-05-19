@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MiniCalendar from "../ToDo/MiniCalendar";
 import Calendar from "../../../components/Calendar/PersonalCalendar";
+import { useParams } from "react-router";
 
 function AvailableTime() {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -8,10 +9,16 @@ function AvailableTime() {
   const handleMiniCalendarDateSelect = (date) => {
     setSelectedDate(date);
   };
+
+  const { MoimId } = useParams();
   return (
-    <div className="grid gap-5 h-full w-full">
+    <div className="flex gap-5 h-full w-full">
       <MiniCalendar onSelectDate={handleMiniCalendarDateSelect} />
-      <Calendar selectedDate={selectedDate} />
+      <Calendar
+        selectedDate={selectedDate}
+        isAvailable={true}
+        moimId={MoimId}
+      />
     </div>
   );
 }

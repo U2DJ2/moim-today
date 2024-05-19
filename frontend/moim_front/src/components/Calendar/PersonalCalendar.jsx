@@ -20,6 +20,7 @@ export default function Calendar({
   selectedDate,
   isPersonal,
   isMeeting,
+  isAvailable,
   moimId,
   title,
   showModal,
@@ -47,8 +48,11 @@ export default function Calendar({
       //isMeeting이 true일 경우
       fetchAvailables();
       fetchMeetings();
+    } else if (isAvailable) {
+      fetchAvailables();
     }
   }, []);
+  useEffect(() => {}, [events]);
 
   useEffect(() => {
     if (calendarRef.current && selectedDate) {
@@ -139,6 +143,7 @@ export default function Calendar({
 
   // Function to handle date selection
   function handleDateSelect(selectInfo) {
+    if (isAvailable) alert("해당 페이지에서는 선택할 수 없습니다.");
     let calendarApi = selectInfo.view.calendar;
     if (isMeeting) {
       setShowModal(true);
@@ -161,17 +166,6 @@ export default function Calendar({
       });
     }
   }
-
-  // // Function to handle event click
-  // function handleEventClick(clickInfo) {
-  //   if (
-  //     confirm(
-  //       `Are you sure you want to delete the event '${clickInfo.event.title}'`
-  //     )
-  //   ) {
-  //     // clickInfo.event.remove();
-  //   }
-  // }
 
   // Function to handle event add
   async function handleEventAdd(info) {
