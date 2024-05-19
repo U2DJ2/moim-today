@@ -26,4 +26,6 @@ public interface JoinedMeetingRepository {
     JoinedMeetingJpaEntity getById(final long joinedMeetingId);
 
     List<MemberSimpleResponse> findMembersJoinedMeeting(final long meetingId);
+
+    boolean alreadyJoinedMeeting(final long memberId, final long meetingId);
 }

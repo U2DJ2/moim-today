@@ -23,10 +23,10 @@ public class MoimManager {
     private final TodoRemover todoRemover;
     private final MeetingFinder  meetingFinder;
     private final JoinedMeetingRemover joinedMeetingRemover;
+    private final JoinedMeetingAppender joinedMeetingAppender;
     private final MeetingCommentUpdater meetingCommentUpdater;
     private final ScheduleRemover scheduleRemover;
     private final JoinedMoimAppender joinedMoimAppender;
-    private final JoinedMeetingAppender joinedMeetingAppender;
     private final MoimFinder moimFinder;
 
     public MoimManager(final JoinedMoimFinder joinedMoimFinder,
@@ -34,20 +34,20 @@ public class MoimManager {
                        final TodoRemover todoRemover,
                        final MeetingFinder meetingFinder,
                        final JoinedMeetingRemover joinedMeetingRemover,
+                       final JoinedMeetingAppender joinedMeetingAppender,
                        final MeetingCommentUpdater meetingCommentUpdater,
                        final ScheduleRemover scheduleRemover,
                        final JoinedMoimAppender joinedMoimAppender,
-                       final JoinedMeetingAppender joinedMeetingAppender,
                        final MoimFinder moimFinder) {
         this.joinedMoimFinder = joinedMoimFinder;
         this.joinedMoimRemover = joinedMoimRemover;
         this.todoRemover = todoRemover;
         this.meetingFinder = meetingFinder;
         this.joinedMeetingRemover = joinedMeetingRemover;
+        this.joinedMeetingAppender = joinedMeetingAppender;
         this.meetingCommentUpdater = meetingCommentUpdater;
         this.scheduleRemover = scheduleRemover;
         this.joinedMoimAppender = joinedMoimAppender;
-        this.joinedMeetingAppender = joinedMeetingAppender;
         this.moimFinder = moimFinder;
     }
 

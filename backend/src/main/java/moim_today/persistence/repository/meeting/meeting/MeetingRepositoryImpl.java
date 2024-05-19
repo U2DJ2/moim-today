@@ -53,8 +53,10 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                         ))
                 .from(meetingJpaEntity)
                 .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id))
-                .where(meetingJpaEntity.moimId.eq(moimId)
-                        .and(joinedMeetingJpaEntity.memberId.eq(memberId)))
+                .where(
+                        meetingJpaEntity.moimId.eq(moimId)
+                                .and(joinedMeetingJpaEntity.memberId.eq(memberId))
+                )
                 .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
     }
@@ -71,9 +73,11 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                         ))
                 .from(meetingJpaEntity)
                 .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id))
-                .where(meetingJpaEntity.moimId.eq(moimId)
-                        .and(meetingJpaEntity.startDateTime.after(currentDateTime))
-                        .and(joinedMeetingJpaEntity.memberId.eq(memberId)))
+                .where(
+                        meetingJpaEntity.moimId.eq(moimId)
+                                .and(meetingJpaEntity.startDateTime.after(currentDateTime))
+                                .and(joinedMeetingJpaEntity.memberId.eq(memberId))
+                )
                 .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
     }
@@ -90,9 +94,11 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                         ))
                 .from(meetingJpaEntity)
                 .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id))
-                .where(meetingJpaEntity.moimId.eq(moimId)
+                .where(
+                        meetingJpaEntity.moimId.eq(moimId)
                         .and(meetingJpaEntity.startDateTime.before(currentDateTime))
-                        .and(joinedMeetingJpaEntity.memberId.eq(memberId)))
+                        .and(joinedMeetingJpaEntity.memberId.eq(memberId))
+                )
                 .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
     }
