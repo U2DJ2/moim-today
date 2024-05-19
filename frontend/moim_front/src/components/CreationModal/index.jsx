@@ -17,25 +17,25 @@ function CreationModal({
 }) {
   const modalRef = useRef();
 
-  useEffect(() => {
-    console.log(startDateTime);
-    console.log(endDateTime);
-    console.log(showModal);
-  }, [showModal, startDateTime, endDateTime]);
+  if (isMeeting) {
+  }
 
-  const data = {
-    moimId: parseInt(moimId),
-    agenda: agenda,
-    startDateTime: startDateTime.replace("T", " ").split("+")[0],
-    endDateTime: endDateTime.replace("T", " ").split("+")[0],
-    place: place,
-    meetingCategory: "REGULAR",
-  };
   const closeModal = () => {
-    closeHandler;
+    closeHandler();
     setShowModal(false);
-    console.log(data);
-    isMeeting ? postMeeting(data) : null;
+
+    if (isMeeting) {
+      const data = {
+        moimId: parseInt(moimId),
+        agenda: agenda,
+        startDateTime: startDateTime.replace("T", " ").split("+")[0],
+        endDateTime: endDateTime.replace("T", " ").split("+")[0],
+        place: place,
+        meetingCategory: "REGULAR",
+      };
+      postMeeting(data);
+    } else {
+    }
   };
 
   const modalOutSideClick = (e) => {

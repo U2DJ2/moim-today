@@ -14,8 +14,6 @@ function MoimHome({
   moimId,
 }) {
   const [showModal, setShowModal] = useState(false);
-  const [title, setTitle] = useState("");
-  const [contents, setContents] = useState("");
 
   const [noticeTitle, setNoticeTitle] = useState("");
   const [noticeContent, setNoticeContent] = useState("");
@@ -49,21 +47,24 @@ function MoimHome({
   const makeMeetingHandler = () => {
     navigate(`/meeting/${moimId}`);
   };
+  const postNotice = async () => {
+    try {
+      const data = {
+        moimId: moimId,
+        title: noticeTitle,
+        contents: noticeContent,
+      };
+      const response = await POST("api/moims/notices", data);
+      console.log(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const noticeHandler = () => {
-    const data = {
-      moimId: moimId,
-      title: title,
-      contents: contents,
-    };
-    const postNotice = async () => {
-      try {
-        const response = await POST("api/moims/notices", data);
-        console.log(response.data);
-      } catch (e) {
-        console.log(e);
-      }
-    };
+    console.log("first");
+
     postNotice();
+    // postNotice();
   };
 
   return (
@@ -71,15 +72,6 @@ function MoimHome({
       <div className="grid gap-4">
         <div className="flex gap-4 text-center">
           <div className="text-4xl font-Pretendard_Black">공지사항</div>
-          <div
-            className="flex items-center font-Pretendard_Light hover:text-scarlet hover:cursor-pointer"
-            onClick={moreNoticeHandler}
-          >
-            더보기
-          </div>
-        </div>
-
-        <div className="flex gap-12">
           {isHost ? (
             <button
               onClick={makeNoticeHandler}
@@ -88,6 +80,9 @@ function MoimHome({
               공지사항 생성하기
             </button>
           ) : null}
+        </div>
+
+        <div className="flex gap-12">
           {notices.length !== 0 ? (
             notices.map((notice, index) => (
               <CardComponent
@@ -95,6 +90,7 @@ function MoimHome({
                 date={notice.createdAt}
                 title={notice.title}
                 btn={false}
+                isMeeting={false}
               />
             ))
           ) : (
@@ -106,53 +102,60 @@ function MoimHome({
       </div>
       <div>
         <div className="pb-8">
-          <div className="text-4xl font-Pretendard_Black pb-4">
-            미팅 확인하기
+          <div className="flex">
+            <div className="text-4xl font-Pretendard_Black pb-4">
+              미팅 확인하기
+            </div>
+            {isHost ? (
+              <button
+                onClick={makeMeetingHandler}
+                className="hover:cursor-pointer hover:text-scarlet"
+              >
+                미팅 생성하기
+              </button>
+            ) : null}
           </div>
+
           <SimpleDrop
             options={["다가오는 미팅", "지나간 미팅"]}
             onSelect={onSelect}
           />
         </div>
-        {isHost ? (
-          <button
-            onClick={makeMeetingHandler}
-            className="hover:cursor-pointer hover:text-scarlet"
-          >
-            미팅 생성하기
-          </button>
-        ) : null}
 
-        {meetings.length != 0 ? (
-          meetings.map((meeting, index) => (
-            <CardComponent
-              key={index}
-              date={meeting.date}
-              dday={meeting.dday}
-              title={meeting.agenda}
-              btn={true}
-              clickHandler={cardClickHandler}
-            />
-          ))
-        ) : (
-          <div className="font-Pretendard_Light flex">
-            생성된 미팅이 없습니다.
-          </div>
-        )}
+        <div className="flex gap-12">
+          {meetings.length != 0 ? (
+            meetings.map((meeting, index) => (
+              <CardComponent
+                key={index}
+                date={meeting.date}
+                dday={meeting.dDay}
+                title={meeting.agenda}
+                btn={true}
+                isMeeting={true}
+                clickHandler={cardClickHandler}
+              />
+            ))
+          ) : (
+            <div className="font-Pretendard_Light flex">
+              생성된 미팅이 없습니다.
+            </div>
+          )}
+        </div>
       </div>
       {showModal && (
         <CreationModal
+          isMeeting={false}
           showModal={showModal}
           setShowModal={setShowModal}
-          noticeHandler={noticeHandler}
+          closeHandler={noticeHandler}
         >
-          <div className="flex flex-col">
+          <div className="flex flex-col mx-auto">
             <div className="">
               <div>제목</div>
               <input
                 placeholder="제목을 입력해주세요"
                 onChange={(e) => {
-                  setTitle(e.target.value);
+                  setNoticeTitle(e.target.value);
                 }}
               />
             </div>
@@ -161,7 +164,7 @@ function MoimHome({
               <input
                 placeholder="내용을 입력해주세요"
                 onChange={(e) => {
-                  setContents(e.target.value);
+                  setNoticeContent(e.target.value);
                 }}
               />
             </div>

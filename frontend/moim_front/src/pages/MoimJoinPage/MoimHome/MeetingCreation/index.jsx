@@ -70,8 +70,8 @@ function MeetingCreation({ moimId }) {
       >
         <div className="font-Pretendard_Black text-3xl pb-8">미팅 생성하기</div>
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col items-start justify-center">
-            <div>
+          <div className="flex flex-col items-start justify-center mx-auto gap-4">
+            <div className="grid gap-1">
               <div className=" font-Pretendard_Black flex">미팅 카테고리</div>
               <DropDown
                 options={["정기모임", "단기모임"]}
@@ -79,7 +79,7 @@ function MeetingCreation({ moimId }) {
               />
             </div>
 
-            <div className="gap-4">
+            <div className="grid gap-1">
               <div className="flex font-Pretendard_Black ">미팅 의제</div>
               <input
                 className="flex items-center justify-center focus:outline-none"
@@ -89,7 +89,7 @@ function MeetingCreation({ moimId }) {
                 }}
               />
             </div>
-            <div>
+            <div className="grid grid-1">
               <div className=" font-Pretendard_Black flex">미팅 장소</div>
               <input
                 className="flex items-stretch justify-center focus:outline-none"

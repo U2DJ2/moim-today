@@ -47,7 +47,7 @@ function MoimJoinPage() {
   const getMeetings = async () => {
     try {
       const result = await fetchMeetings(MoimId, meetingOption);
-      // console.log(result.data.data);/
+      console.log(result.data.data);
 
       setMeetings(result.data.data);
     } catch (e) {

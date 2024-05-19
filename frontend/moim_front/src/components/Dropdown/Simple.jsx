@@ -45,7 +45,6 @@ export default function Simple({ options, onSelect }) {
               <Menu.Item key={index}>
                 {({ active }) => (
                   <a
-                    href="#"
                     onClick={() => handleOptionClick(option, index)}
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
