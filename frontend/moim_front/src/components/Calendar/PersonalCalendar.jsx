@@ -22,11 +22,14 @@ export default function Calendar({
   isMeeting,
   moimId,
   title,
+  showModal,
   setShowModal,
   endDateTime,
   setEndDateTime,
   startDateTime,
   setStartDateTime,
+  setScheduleTitle,
+  scheduleTitle,
 }) {
   const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
   const [events, setEvents] = useState([]);
@@ -136,12 +139,13 @@ export default function Calendar({
 
   // Function to handle date selection
   function handleDateSelect(selectInfo) {
-    setShowModal(true);
-
     let calendarApi = selectInfo.view.calendar;
-    console.log(selectInfo.endStr.replace("T", " "));
-    console.log(selectInfo.startStr);
-    console.log(selectInfo.endStr);
+    if (isMeeting) {
+      setShowModal(true);
+    } else {
+      setShowModal(true);
+    }
+
     setStartDateTime(selectInfo.startStr);
     setEndDateTime(selectInfo.endStr);
 
@@ -240,23 +244,23 @@ export default function Calendar({
           eventRemove={handleEventRemove}
         />
       </div>
-      {/* {isMeeting ? (
+      {isPersonal ? (
         <CreationModal
           showModal={showModal}
           setShowModal={setShowModal}
           closeHandler={() => calendarRef.current.getApi().unselect()}
         >
           <div>
-            <h2>새 이벤트 추가</h2>
+            <h2>개인 스케쥴 이름</h2>
             <input
               type="text"
-              value={agenda}
-              onChange={(e) => setAgenda(e.target.value)}
-              placeholder="Event Title"
+              value={scheduleTitle}
+              onChange={(e) => setScheduleTitle(e.target.value)}
+              placeholder="스케쥴 이름을 입력해주세요"
             />
           </div>
         </CreationModal>
-      ) : null} */}
+      ) : null}
     </div>
   );
 }

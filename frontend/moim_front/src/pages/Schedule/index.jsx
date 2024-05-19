@@ -534,6 +534,7 @@ export default function Schedule() {
   // States
   const [selectedDate, setSelectedDate] = useState(null);
   const [openTodoAddModal, setOpenTodoAddModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleMiniCalendarDateSelect = (date) => {
     setSelectedDate(date);
