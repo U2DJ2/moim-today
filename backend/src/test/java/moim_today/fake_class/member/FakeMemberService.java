@@ -67,7 +67,8 @@ public class FakeMemberService implements MemberService {
 
     @Override
     public MemberJoinedMoimResponse isJoinedMoim(final long moimId, final long memberId) {
-        return null;
+        boolean isJoinedMoim = true;
+        return MemberJoinedMoimResponse.from(isJoinedMoim);
     }
 
     @Override

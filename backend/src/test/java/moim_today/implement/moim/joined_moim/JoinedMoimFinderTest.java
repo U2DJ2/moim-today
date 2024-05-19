@@ -4,6 +4,7 @@ import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
+import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,5 +195,40 @@ class JoinedMoimFinderTest extends ImplementTest {
         assertThatThrownBy(() -> joinedMoimFinder.validateMemberInMoim(memberId, moimId))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(JOINED_MOIM_MEMBER_NOT_FOUND.message());
+    }
+
+    @DisplayName("모임에 참여한 회원은 true를 반환한다.")
+    @Test
+    void isJoiningTrue() {
+        // given
+        long moimId = MOIM_ID.longValue();
+        long memberId = MEMBER_ID.longValue();
+
+        JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
+                .moimId(moimId)
+                .memberId(memberId)
+                .build();
+
+        joinedMoimRepository.save(joinedMoimJpaEntity);
+
+        // when
+        boolean isJoined = joinedMoimFinder.isJoining(moimId, memberId);
+
+        // then
+        assertThat(isJoined).isTrue();
+    }
+
+    @DisplayName("모임에 참여하지 않은 회원은 false 반환한다.")
+    @Test
+    void isJoiningFalse() {
+        // given
+        long moimId = MOIM_ID.longValue();
+        long memberId = MEMBER_ID.longValue();
+
+        // when
+        boolean isJoined = joinedMoimFinder.isJoining(moimId, memberId);
+
+        // then
+        assertThat(isJoined).isFalse();
     }
 }
