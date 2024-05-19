@@ -4,7 +4,7 @@ import SimpleDrop from "../../../components/Dropdown/Simple";
 import { useNavigate, useParams } from "react-router";
 import { GET, POST } from "../../../utils/axios";
 import CreationModal from "../../../components/CreationModal";
-import { SettingsOutlined } from "@mui/icons-material";
+import { IndeterminateCheckBox, SettingsOutlined } from "@mui/icons-material";
 function MoimHome({
   notices,
   meetings,
@@ -27,7 +27,13 @@ function MoimHome({
     meetingId = 1;
   const onSelect = (option) => {
     console.log(option);
-    setMeetingOption(option);
+    if (option === "다가오는 미팅") {
+      setMeetingOption("UPCOMING");
+    } else if (option === "지나간 미팅") {
+      setMeetingOption("PAST");
+    } else {
+      setMeetingOption("ALL");
+    }
   };
   const moreNoticeHandler = () => {
     navigate(`notice/${noticeId}`);
@@ -118,13 +124,16 @@ function MoimHome({
         ) : null}
 
         {meetings.length != 0 ? (
-          <CardComponent
-            date={"4월 15일 (월)"}
-            dday={"D-1"}
-            title={"{Gathering_Title}"}
-            btn={true}
-            clickHandler={cardClickHandler}
-          />
+          meetings.map((meeting, index) => (
+            <CardComponent
+              key={index}
+              date={meeting.date}
+              dday={meeting.dday}
+              title={meeting.agenda}
+              btn={true}
+              clickHandler={cardClickHandler}
+            />
+          ))
         ) : (
           <div className="font-Pretendard_Light flex">
             생성된 미팅이 없습니다.
