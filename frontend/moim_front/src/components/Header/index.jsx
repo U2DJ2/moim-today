@@ -31,7 +31,7 @@ function Header() {
         <a href="/creation">모임 생성</a>
       </nav>
       <div className="flex gap-5 justify-center font-Pretendard_SemiBold whitespace-nowrap cursor-pointer">
-        <div className="justify-center my-auto" onClick={handleSchedule}>아주대학교</div>
+        <div className="justify-center my-auto" onClick={handleSchedule}>캘린더</div>
         <ProfileDropdown />
       </div>
     </header>
