@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { postMeeting } from "../../api/moim";
 import { parse } from "date-fns";
+import axios from "axios";
 
 function CreationModal({
   showModal,
@@ -13,13 +14,18 @@ function CreationModal({
   endDateTime,
   agenda,
   place,
+  setOpen,
+  scheduleTitle,
   meetingCategory,
 }) {
   const modalRef = useRef();
 
   if (isMeeting) {
   }
-
+  useEffect(() => {
+    console.log(startDateTime);
+    console.log(endDateTime);
+  }, []);
   const closeModal = () => {
     closeHandler();
     setShowModal(false);
@@ -34,7 +40,21 @@ function CreationModal({
         meetingCategory: "REGULAR",
       };
       postMeeting(data);
+      setOpen(true);
     } else {
+      //Personal 스케쥴 등록
+      console.log(endDateTime);
+      // const data = {
+      //   scheduleName: scheduleTitle,
+      //   startDateTime: startDateTime.replace("T", " ").split("+")[0],
+      //   endDateTime: endDateTime.replace("T", " ").split("+")[0],
+      // };
+      // try {
+      //   const result = async () => await axios.post("api/schedules", data);
+      //   console.log(result);
+      // } catch (e) {
+      //   console.log(e);
+      // }
     }
   };
 

@@ -18,6 +18,7 @@ function MoimHome({
   const [noticeTitle, setNoticeTitle] = useState("");
   const [noticeContent, setNoticeContent] = useState("");
   const [noticeDate, setNoticeDate] = useState("");
+  const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -55,6 +56,7 @@ function MoimHome({
         contents: noticeContent,
       };
       const response = await POST("api/moims/notices", data);
+
       console.log(response.data);
     } catch (e) {
       console.log(e);
@@ -149,7 +151,7 @@ function MoimHome({
           setShowModal={setShowModal}
           closeHandler={noticeHandler}
         >
-          <div className="flex flex-col mx-auto">
+          <div className="flex flex-col ">
             <div className="">
               <div>제목</div>
               <input

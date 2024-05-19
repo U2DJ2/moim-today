@@ -20,13 +20,17 @@ export default function Calendar({
   selectedDate,
   isPersonal,
   isMeeting,
+  isAvailable,
   moimId,
   title,
+  showModal,
   setShowModal,
   endDateTime,
   setEndDateTime,
   startDateTime,
   setStartDateTime,
+  setScheduleTitle,
+  scheduleTitle,
 }) {
   const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
   const [events, setEvents] = useState([]);
@@ -44,8 +48,11 @@ export default function Calendar({
       //isMeeting이 true일 경우
       fetchAvailables();
       fetchMeetings();
+    } else if (isAvailable) {
+      fetchAvailables();
     }
   }, []);
+  useEffect(() => {}, [events]);
 
   useEffect(() => {
     if (calendarRef.current && selectedDate) {
@@ -136,12 +143,14 @@ export default function Calendar({
 
   // Function to handle date selection
   function handleDateSelect(selectInfo) {
-    setShowModal(true);
-
+    if (isAvailable) alert("해당 페이지에서는 선택할 수 없습니다.");
     let calendarApi = selectInfo.view.calendar;
-    console.log(selectInfo.endStr.replace("T", " "));
-    console.log(selectInfo.startStr);
-    console.log(selectInfo.endStr);
+    if (isMeeting) {
+      setShowModal(true);
+    } else {
+      setShowModal(true);
+    }
+
     setStartDateTime(selectInfo.startStr);
     setEndDateTime(selectInfo.endStr);
 
@@ -157,17 +166,6 @@ export default function Calendar({
       });
     }
   }
-
-  // // Function to handle event click
-  // function handleEventClick(clickInfo) {
-  //   if (
-  //     confirm(
-  //       `Are you sure you want to delete the event '${clickInfo.event.title}'`
-  //     )
-  //   ) {
-  //     // clickInfo.event.remove();
-  //   }
-  // }
 
   // Function to handle event add
   async function handleEventAdd(info) {
@@ -208,6 +206,10 @@ export default function Calendar({
   //   return String(eventGuid++);
   // }
 
+  function personalSubmit() {
+    calendarRef.current.getApi().unselect();
+  }
+
   return (
     <div className="demo-app">
       <div className="demo-app-main">
@@ -240,23 +242,6 @@ export default function Calendar({
           eventRemove={handleEventRemove}
         />
       </div>
-      {/* {isMeeting ? (
-        <CreationModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          closeHandler={() => calendarRef.current.getApi().unselect()}
-        >
-          <div>
-            <h2>새 이벤트 추가</h2>
-            <input
-              type="text"
-              value={agenda}
-              onChange={(e) => setAgenda(e.target.value)}
-              placeholder="Event Title"
-            />
-          </div>
-        </CreationModal>
-      ) : null} */}
     </div>
   );
 }
