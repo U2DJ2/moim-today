@@ -73,24 +73,27 @@ function Personal({
             생년월일
           </p>
           <div className="flex gap-4 ">
-            <input
-              type="number"
-              className="border text-wrapper border-white text-white bg-scarlet placeholder:text-white placeholder:justify-items-center justify-items-center
-            text-xl rounded-lg px-4 py-1 focus:outline-none w-20"
-              placeholder="YYYY"
-              onChange={handleChangeYear}
-            />
+            <div className="borer border-white">
+              <input
+                type="number"
+                className="border text-wrapper  text-white bg-scarlet placeholder:text-white placeholder:justify-items-center justify-items-center
+            text-xl rounded-lg py-1 text-center focus:outline-none w-20 "
+                placeholder="YYYY"
+                onChange={handleChangeYear}
+              />
+            </div>
+
             <input
               type="number"
               className="border text-wrapper border-white text-white bg-scarlet placeholder:text-white 
-         text-xl rounded-lg px-4 py-1 w-20 focus:outline-none placeholder:text-center justify-items-center"
+         text-xl rounded-lg px-4 py-1 w-20 focus:outline-none placeholder:text-center justify-items-center text-center"
               placeholder="MM"
               onChange={handleChangeMonth}
             />
             <input
               type="number"
               className="border text-wrapper border-white text-white bg-scarlet placeholder:text-white 
-        text-xl rounded-lg px-4 py-1 w-20 focus:outline-none placeholder:text-center"
+        text-xl rounded-lg px-4 py-1 w-20 focus:outline-none placeholder:text-center text-center"
               placeholder="DD"
               onChange={handleChangeDay}
             />
