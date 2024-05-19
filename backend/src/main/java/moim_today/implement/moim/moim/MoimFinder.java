@@ -4,6 +4,7 @@ import moim_today.domain.moim.MoimSortedFilter;
 import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.dto.moim.moim.MoimSimpleResponse;
+import moim_today.dto.moim.moim.MyMoimResponse;
 import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
@@ -32,6 +33,12 @@ public class MoimFinder {
         this.joinedMoimFinder = joinedMoimFinder;
         this.memberFinder = memberFinder;
         this.moimRepository = moimRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public List<MyMoimResponse> findAllMyMoimResponse(final long memberId) {
+        List<Long> moimIds = joinedMoimFinder.findMoimIdsByMemberId(memberId);
+        return moimRepository.findAllMyMoimResponse(moimIds);
     }
 
     @Transactional(readOnly = true)

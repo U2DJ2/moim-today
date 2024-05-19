@@ -42,6 +42,25 @@ class MoimControllerTest extends ControllerTest {
         return new MoimController(fakeMoimService, fakeMoimNoticeService);
     }
 
+    @DisplayName("로그인한 회원이 참여한 모임리스트를 조회한다.")
+    @Test
+    void findAllMyMoimResponse() throws Exception {
+        mockMvc.perform(
+                        get("/api/moims")
+                )
+                .andExpect(status().isOk())
+                .andDo(document("로그인한 회원이 참여한 모임 리스트 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("로그인한 회원이 참여한 모임 리스트 조회")
+                                .responseFields(
+                                        fieldWithPath("data[0].moimId").type(NUMBER).description("모임 Id"),
+                                        fieldWithPath("data[0].title").type(STRING).description("모임명")
+                                )
+                                .build()
+                        )));
+    }
+
     @DisplayName("모임을 생성한다.")
     @Test
     void createPrivateMoimApiTest() throws Exception {

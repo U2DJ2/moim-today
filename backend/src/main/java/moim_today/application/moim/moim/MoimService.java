@@ -10,8 +10,10 @@ import java.util.List;
 
 public interface MoimService {
 
+    List<MyMoimResponse> findAllMyMoimResponse(final long memberId);
+
     MoimIdResponse createMoim(final long memberId, final long universityId,
-                    final MoimCreateRequest moimCreateRequest);
+                              final MoimCreateRequest moimCreateRequest);
 
     MoimImageResponse uploadMoimImage(final MultipartFile file);
 

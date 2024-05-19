@@ -6,13 +6,11 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.LockModeType;
 import moim_today.domain.moim.MoimSortedFilter;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.dto.moim.moim.MoimDateResponse;
-import moim_today.dto.moim.moim.MoimSimpleResponse;
-import moim_today.dto.moim.moim.QMoimDateResponse;
-import moim_today.dto.moim.moim.QMoimSimpleResponse;
+import moim_today.dto.moim.moim.*;
 import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
+import moim_today.persistence.entity.moim.moim.QMoimJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -119,6 +117,18 @@ public class MoimRepositoryImpl implements MoimRepository {
                 .from(moimJpaEntity)
                 .where(applyMoimCategoryFilter(moimCategoryDto))
                 .orderBy(createOrderBySpecifier(moimSortedFilter))
+                .fetch();
+    }
+
+    @Override
+    public List<MyMoimResponse> findAllMyMoimResponse(final List<Long> moimIds) {
+        return queryFactory.select(
+                        new QMyMoimResponse(
+                                moimJpaEntity.id,
+                                moimJpaEntity.title
+                        ))
+                .from(moimJpaEntity)
+                .where(moimJpaEntity.id.in(moimIds))
                 .fetch();
     }
 

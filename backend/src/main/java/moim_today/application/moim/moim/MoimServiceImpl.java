@@ -69,6 +69,11 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
+    public List<MyMoimResponse> findAllMyMoimResponse(final long memberId) {
+        return moimFinder.findAllMyMoimResponse(memberId);
+    }
+
+    @Override
     public MoimIdResponse createMoim(final long memberId, final long universityId,
                            final MoimCreateRequest moimCreateRequest) {
         MoimJpaEntity moim = moimAppender.createMoim(memberId, universityId, moimCreateRequest);
