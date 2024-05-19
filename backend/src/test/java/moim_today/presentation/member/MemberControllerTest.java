@@ -9,6 +9,7 @@ import moim_today.dto.member.PasswordUpdateRequest;
 import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.fake_class.member.FakeMemberService;
 import moim_today.util.ControllerTest;
+import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
@@ -210,9 +211,9 @@ class MemberControllerTest extends ControllerTest {
 
     @DisplayName("멤버가 모임의 호스트인지 검사한다")
     @Test
-    void isHostTest() throws Exception {
+    void isHost() throws Exception {
         mockMvc.perform(
-                        get("/api/members/{moimId}/hosts", 1L)
+                        get("/api/members/{moimId}/hosts", MOIM_ID.longValue())
                                 .param("moimId", MOIM_ID.value())
                                 .contentType(APPLICATION_JSON)
                 )
@@ -231,4 +232,26 @@ class MemberControllerTest extends ControllerTest {
                         )));
     }
 
+    @DisplayName("회원이 참여한 모임인지 확인한다.")
+    @Test
+    void isJoinedMoim() throws Exception {
+        mockMvc.perform(
+                        get("/api/members/{moimId}/joining", MOIM_ID.longValue())
+                                .param("moimId", MOIM_ID.value())
+                                .contentType(APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("회원이 참여한 모임인지 검사",
+                        pathParameters(
+                                parameterWithName("moimId").description("모임 id")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("회원")
+                                .summary("회원이 참여한 모임인지 검사")
+                                .responseFields(
+                                        fieldWithPath("isJoined").type(BOOLEAN).description("모임 참여 여부")
+                                )
+                                .build()
+                        )));
+    }
 }

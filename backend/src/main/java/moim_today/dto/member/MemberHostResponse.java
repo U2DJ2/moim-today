@@ -6,4 +6,10 @@ import lombok.Builder;
 public record MemberHostResponse(
         boolean isHost
 ) {
+
+    public static MemberHostResponse from(final boolean isHost) {
+        return MemberHostResponse.builder()
+                .isHost(isHost)
+                .build();
+    }
 }
