@@ -12,6 +12,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.4'
     id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
     id 'org.hidetake.swagger.generator' version '2.18.2'
+    id 'jacoco'
 }
 
 group = 'u2dj2'
@@ -118,6 +119,7 @@ dependencies {
 tasks.named('test') {
     outputs.dir snippetsDir
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
 
 tasks.withType(GenerateSwaggerUI) {
@@ -145,3 +147,25 @@ bootJar {
 }
 
 jar.enabled = false
+
+jacoco {
+    toolVersion = "0.8.10"
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'moim_today/dto/**',
+                    'moim_today/global/**',
+                    'moim_today/application/**',
+                    '**/Q*.*'
+            ])
+        }))
+    }
+}
