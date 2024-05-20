@@ -258,6 +258,7 @@ export default function MoimCreation() {
         <DateRangePicker
           onChange={handleDateRange}
           inputClassName={`w-full ${commonInputStyle}`}
+          useMinDate={true}
         />
         <InputField
           label="참여 인원"

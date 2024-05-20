@@ -47,6 +47,9 @@ function RegisterPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [everytimeUrl, setEverytimeUrl] = useState("");
 
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
   const client = axios.create({
     baseURL: "https://api.moim.today/",
     withCredentials: true,
@@ -69,8 +72,8 @@ function RegisterPage() {
 
   const everytimeInfo = {
     everytimeUrl: everytimeUrl,
-    startDate: "2024-03-04",
-    endDate: "2024-06-30",
+    startDate: startDate,
+    endDate: endDate,
   };
 
   const nextClick = async () => {
@@ -191,6 +194,8 @@ function RegisterPage() {
           />
         ) : (
           <TimeTable
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
             setEverytimeUrl={setEverytimeUrl}
             everytimeUrl={everytimeUrl}
           />
@@ -206,10 +211,11 @@ function RegisterPage() {
                 이전
               </button>
               <button
-                className={`${activeNext
+                className={`${
+                  activeNext
                     ? "w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-scarlet bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer "
                     : "w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-[#8D8D8D] bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer "
-                  }`}
+                }`}
                 disabled={!activeNext}
                 onClick={() => nextClick()}
               >
@@ -228,10 +234,11 @@ function RegisterPage() {
                 건너뛰기
               </button>
               <button
-                className={`${activeNext
+                className={`${
+                  activeNext
                     ? "w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-scarlet bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer "
                     : "w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-[#8D8D8D] bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer "
-                  }`}
+                }`}
                 disabled={!activeNext}
                 onClick={() => nextClick()}
               >

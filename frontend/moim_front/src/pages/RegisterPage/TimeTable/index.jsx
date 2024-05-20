@@ -1,9 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import AuthTitle from "../../../components/Authentification/AuthTitle";
-function TimeTable({ everytimeUrl, setEverytimeUrl }) {
+import DateRangePicker from "../../../components/DatePicker/Range";
+
+function TimeTable({
+  everytimeUrl,
+  setEverytimeUrl,
+  setStartDate,
+  setEndDate,
+}) {
   const onChangeHandler = (e) => {
     setEverytimeUrl(e.target.value);
   };
+  const handleDateRange = (dateRange) => {
+    console.log(dateRange);
+    setStartDate(dateRange.startDate);
+    setEndDate(dateRange.endDate);
+  };
+
+  const commonInputStyle =
+    "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
   return (
     <div className="flex flex-col gap-16 ">
       <AuthTitle
@@ -14,16 +29,15 @@ function TimeTable({ everytimeUrl, setEverytimeUrl }) {
         contentColor={"white"}
       />
       <div className="flex flex-col gap-16">
-        <div className="gap-1">
-          <p className=" font-Pretendard_Black block text-xl text-white">
-            학기 이름을 선택해주세요.
+        <div className="gap-8">
+          <p className=" font-Pretendard_Black block text-xl pb-4 text-white">
+            학기 기간을 선택해주세요.
           </p>
-          <input
-            type="text"
-            name="timetableName"
-            autoComplete="off"
-            placeholder="ex) 24년도 1학기"
-            className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white`}
+
+          <DateRangePicker
+            onChange={handleDateRange}
+            inputClassName={`w-full flex ${commonInputStyle}`}
+            useMinDate={false}
           />
         </div>
         <div className="gap-1">

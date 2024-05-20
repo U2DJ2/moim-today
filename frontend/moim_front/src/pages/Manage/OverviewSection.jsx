@@ -1,7 +1,21 @@
 import CardComponent from "../Home/CardContainer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { GET } from "../../utils/axios";
 function Overview() {
   const [selected, setSelected] = useState("전체");
+  const getCardInfo = async () => {
+    try {
+      const result = await GET("api/moims");
+      console.log(result);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getCardInfo();
+  }, []);
+
   const data = [
     {
       id: 1,
@@ -86,13 +100,16 @@ function Overview() {
           </button>
         </div>
         <div className="flex flex-col mt-3 max-md:max-w-full">
-          <CardComponent
-            title={"titile"}
-            category={"# category"}
-            capacity={12}
-            currentCount={3}
-            moimId={1}
-          />
+          {data.map((data, index) => (
+            <CardComponent
+              key={index}
+              title={data.title}
+              category={"# category"}
+              capacity={12}
+              currentCount={3}
+              moimId={1}
+            />
+          ))}
         </div>
       </div>
     </section>
