@@ -3,6 +3,7 @@ package moim_today.dto.meeting;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import moim_today.domain.meeting.enums.MeetingCategory;
+import moim_today.dto.meeting.meeting.MeetingCreateRequest;
 
 import java.time.LocalDateTime;
 

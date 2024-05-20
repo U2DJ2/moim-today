@@ -34,7 +34,7 @@ public class MoimController {
     @GetMapping
     public CollectionResponse<List<MyMoimResponse>> findAllMyMoimResponse(@Login final MemberSession memberSession) {
         List<MyMoimResponse> myMoimResponses = moimService.findAllMyMoimResponse(memberSession.id());
-        return CollectionResponse.of(myMoimResponses);
+        return CollectionResponse.from(myMoimResponses);
     }
 
     @PostMapping

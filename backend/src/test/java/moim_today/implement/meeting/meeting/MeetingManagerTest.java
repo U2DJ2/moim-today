@@ -1,8 +1,8 @@
 package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingCategory;
-import moim_today.dto.meeting.MeetingCreateRequest;
 import moim_today.dto.meeting.MeetingCreateResponse;
+import moim_today.dto.meeting.meeting.MeetingCreateRequest;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
@@ -16,9 +16,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import static moim_today.util.TestConstant.*;
-import static moim_today.util.TestConstant.MEETING_AGENDA;
-import static moim_today.util.TestConstant.MEETING_PLACE;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class MeetingManagerTest extends ImplementTest {
 
