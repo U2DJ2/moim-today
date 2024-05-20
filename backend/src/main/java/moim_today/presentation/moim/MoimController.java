@@ -60,7 +60,7 @@ public class MoimController {
             @Login final MemberSession memberSession,
             @RequestParam final MoimCategoryDto moimCategoryDto,
             @RequestParam final MoimSortedFilter moimSortedFilter) {
-        return CollectionResponse.from(moimService.findAllMoimResponse(memberSession.universityId(), moimCategoryDto, moimSortedFilter));
+        return CollectionResponse.from(moimService.findAllMoimResponses(memberSession.universityId(), moimCategoryDto, moimSortedFilter));
     }
 
     @PatchMapping

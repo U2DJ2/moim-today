@@ -95,7 +95,7 @@ class MeetingManagerTest extends ImplementTest {
                 .build();
 
         // when
-        MeetingCreateResponse meetingCreateResponse = meetingManager.createMeeting(meetingCreateRequest, currentDate);
+        MeetingCreateResponse meetingCreateResponse = meetingManager.createMeeting(memberId, meetingCreateRequest, currentDate);
 
         // then
         long between = ChronoUnit.WEEKS.between(currentDate, endDate) + 1;
