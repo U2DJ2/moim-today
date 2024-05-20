@@ -5,6 +5,7 @@ import moim_today.dto.meeting.MeetingCreateResponse;
 import moim_today.dto.meeting.meeting.MeetingCreateRequest;
 import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.global.annotation.Implement;
+import moim_today.global.error.ForbiddenException;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingAppender;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingFinder;
 import moim_today.implement.moim.moim.MoimFinder;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static moim_today.global.constant.NumberConstant.SCHEDULE_MEETING_ID;
 import static moim_today.global.constant.TimeConstant.ONE_WEEK;
+import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
 
 
 @Implement
@@ -42,8 +44,10 @@ public class MeetingManager {
     }
 
     @Transactional
-    public MeetingCreateResponse createMeeting(final MeetingCreateRequest meetingCreateRequest,
+    public MeetingCreateResponse createMeeting(final long memberId,
+                                               final MeetingCreateRequest meetingCreateRequest,
                                                final LocalDate currentDate) {
+        validateMemberIsHost(memberId, meetingCreateRequest);
         MeetingCategory meetingCategory = meetingCreateRequest.meetingCategory();
         String moimTitle = moimFinder.getTitleById(meetingCreateRequest.moimId());
 
@@ -51,6 +55,12 @@ public class MeetingManager {
             return createSingleMeeting(meetingCreateRequest, moimTitle);
         } else {
             return createRegularMeeting(meetingCreateRequest, moimTitle, currentDate);
+        }
+    }
+
+    private void validateMemberIsHost(final long memberId, final MeetingCreateRequest meetingCreateRequest) {
+        if (!moimFinder.isHost(memberId, meetingCreateRequest.moimId())) {
+            throw new ForbiddenException(ORGANIZER_FORBIDDEN_ERROR.message());
         }
     }
 

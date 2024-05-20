@@ -15,7 +15,6 @@ import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.repository.moim.moim.MoimRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_CAPACITY_ERROR;
@@ -73,8 +72,8 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
-        return moimRepository.findAllMoimResponse(moimCategoryDto, moimSortedFilter);
+    public List<MoimSimpleResponse> findAllMoimResponses(final long universityId, final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
+        return moimRepository.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
     }
 
     @Transactional(readOnly = true)
@@ -94,13 +93,7 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<MoimSimpleResponse> searchMoim(final String searchParam) {
-        return moimRepository.searchMoimBySearchParam(searchParam);
-    }
-
-    private List<Long> extractMemberIds(final List<JoinedMoimJpaEntity> joinedMoimJpaEntities) {
-        List<Long> memberIds = new ArrayList<>();
-        joinedMoimJpaEntities.forEach(e -> memberIds.add(e.getMemberId()));
-        return memberIds;
+    public List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam) {
+        return moimRepository.searchMoimBySearchParam(universityId, searchParam);
     }
 }

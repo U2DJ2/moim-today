@@ -19,7 +19,7 @@ import static moim_today.util.TestConstant.*;
 public class FakeMeetingService implements MeetingService {
 
     @Override
-    public MeetingCreateResponse createMeeting(final MeetingCreateRequest meetingCreateRequest) {
+    public MeetingCreateResponse createMeeting(final long memberId, final MeetingCreateRequest meetingCreateRequest) {
         return MeetingCreateResponse.of(MEETING_ID.longValue(), meetingCreateRequest);
     }
 

@@ -160,12 +160,16 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
-        return moimFinder.findAllMoimResponse(moimCategoryDto, moimSortedFilter);
+    public List<MoimSimpleResponse> findAllMoimResponses(
+            final long universityId,
+            final MoimCategoryDto moimCategoryDto,
+            final MoimSortedFilter moimSortedFilter) {
+
+        return moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
     }
 
     @Override
-    public List<MoimSimpleResponse> searchMoim(final String searchParam) {
-        return moimFinder.searchMoim(searchParam);
+    public List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam) {
+        return moimFinder.searchMoim(universityId, searchParam);
     }
 }

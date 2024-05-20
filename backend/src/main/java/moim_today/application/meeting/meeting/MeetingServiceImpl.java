@@ -30,8 +30,8 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public MeetingCreateResponse createMeeting(final MeetingCreateRequest meetingCreateRequest) {
-        return meetingManager.createMeeting(meetingCreateRequest, LocalDate.now());
+    public MeetingCreateResponse createMeeting(final long memberId, final MeetingCreateRequest meetingCreateRequest) {
+        return meetingManager.createMeeting(memberId, meetingCreateRequest, LocalDate.now());
     }
 
     @Override

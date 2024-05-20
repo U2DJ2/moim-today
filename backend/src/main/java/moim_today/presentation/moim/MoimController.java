@@ -56,9 +56,11 @@ public class MoimController {
     }
 
     @GetMapping("/simple")
-    public CollectionResponse<List<MoimSimpleResponse>> findAllMoimResponse(@RequestParam final MoimCategoryDto moimCategoryDto,
-                                                                            @RequestParam final MoimSortedFilter moimSortedFilter) {
-        return CollectionResponse.from(moimService.findAllMoimResponse(moimCategoryDto, moimSortedFilter));
+    public CollectionResponse<List<MoimSimpleResponse>> findAllMoimResponses(
+            @Login final MemberSession memberSession,
+            @RequestParam final MoimCategoryDto moimCategoryDto,
+            @RequestParam final MoimSortedFilter moimSortedFilter) {
+        return CollectionResponse.from(moimService.findAllMoimResponses(memberSession.universityId(), moimCategoryDto, moimSortedFilter));
     }
 
     @PatchMapping
@@ -128,8 +130,10 @@ public class MoimController {
     }
 
     @GetMapping("/search")
-    public CollectionResponse<List<MoimSimpleResponse>> searchMoim(@RequestParam final String searchParam) {
-        return CollectionResponse.from(moimService.searchMoim(searchParam));
+    public CollectionResponse<List<MoimSimpleResponse>> searchMoim(
+            @Login final MemberSession memberSession,
+            @RequestParam final String searchParam) {
+        return CollectionResponse.from(moimService.searchMoim(memberSession.universityId(), searchParam));
     }
 
     @GetMapping("/categories")

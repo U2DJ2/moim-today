@@ -31,7 +31,7 @@ public interface MoimService {
 
     void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest);
 
-    List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter);
+    List<MoimSimpleResponse> findAllMoimResponses(final long universityId, final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter);
 
-    List<MoimSimpleResponse> searchMoim(final String searchParam);
+    List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam);
 }
