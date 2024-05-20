@@ -16,8 +16,19 @@ public class EmailSubscribeRepositoryImpl implements EmailSubscribeRepository {
     }
 
     @Override
+    public EmailSubscribeJpaEntity getById(final long emailSubscribeId) {
+        return emailSubscribeJpaRepository.findById(emailSubscribeId)
+                .orElseThrow(() -> new NotFoundException(MAIL_SUBSCRIBE_NOT_FOUND_ERROR.message()));
+    }
+
+    @Override
     public EmailSubscribeJpaEntity getByMemberId(final long memberId) {
         return emailSubscribeJpaRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new NotFoundException(MAIL_SUBSCRIBE_NOT_FOUND_ERROR.message()));
+    }
+
+    @Override
+    public EmailSubscribeJpaEntity save(final EmailSubscribeJpaEntity emailSubscribeJpaEntity) {
+        return emailSubscribeJpaRepository.save(emailSubscribeJpaEntity);
     }
 }
