@@ -34,7 +34,7 @@ export default function Calendar({
 }) {
   const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
   const [events, setEvents] = useState([]);
-
+  const [calendarStart, setCalendarStart] = useState("");
   useEffect(() => {
     // Get current year
     const currentYear = new Date().getFullYear();
@@ -52,7 +52,9 @@ export default function Calendar({
       fetchAvailables();
     }
   }, []);
-  useEffect(() => {}, [events]);
+  useEffect(() => {
+    fetchAvailables();
+  }, [calendarStart]);
 
   useEffect(() => {
     if (calendarRef.current && selectedDate) {
@@ -110,7 +112,7 @@ export default function Calendar({
         `https://api.moim.today/api/schedules/weekly/available-time/moims/${moimId}`,
         {
           params: {
-            startDate: "2024-05-19",
+            startDate: calendarStart,
           },
         }
       );
@@ -142,6 +144,7 @@ export default function Calendar({
   }
 
   // Function to handle date selection
+
   function handleDateSelect(selectInfo) {
     if (isAvailable) alert("해당 페이지에서는 선택할 수 없습니다.");
     let calendarApi = selectInfo.view.calendar;
@@ -209,7 +212,13 @@ export default function Calendar({
   function personalSubmit() {
     calendarRef.current.getApi().unselect();
   }
-
+  const handleDateSet = (dateInfo) => {
+    fetchAvailables();
+  };
+  const onChangeDate = (dateInfo) => {
+    console.log(dateInfo.startStr.split("T")[0]);
+    setCalendarStart(dateInfo.startStr.split("T")[0]);
+  };
   return (
     <div className="demo-app">
       <div className="demo-app-main">
@@ -240,6 +249,9 @@ export default function Calendar({
           eventAdd={handleEventAdd}
           eventChange={handleEventChange}
           eventRemove={handleEventRemove}
+          datesSet={(dateInfo) => {
+            onChangeDate(dateInfo);
+          }}
         />
       </div>
     </div>
