@@ -2,8 +2,8 @@ package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
-import moim_today.dto.meeting.MeetingDetailResponse;
-import moim_today.dto.meeting.MeetingSimpleDao;
+import moim_today.dto.meeting.meeting.MeetingDetailResponse;
+import moim_today.dto.meeting.meeting.MeetingSimpleDao;
 import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingFinder;
@@ -37,7 +37,7 @@ public class MeetingFinder {
                                                   final LocalDateTime currentDateTime) {
         if (meetingStatus.equals(MeetingStatus.ALL)) {
             return meetingRepository.findAllByMoimId(moimId, memberId, currentDateTime);
-        } else if(meetingStatus.equals(MeetingStatus.PAST)) {
+        } else if (meetingStatus.equals(MeetingStatus.PAST)) {
             return meetingRepository.findAllPastByMoimId(moimId, memberId, currentDateTime);
         }
 
@@ -54,5 +54,10 @@ public class MeetingFinder {
     @Transactional(readOnly = true)
     public List<UpcomingMeetingNoticeResponse> findUpcomingNotices(final LocalDateTime currentDateTime) {
         return meetingRepository.findUpcomingNotices(currentDateTime);
+    }
+
+    @Transactional(readOnly = true)
+    public long getMoimIdByMeetingId(final long meetingId) {
+        return meetingRepository.findMoimIdByMeetingId(meetingId);
     }
 }

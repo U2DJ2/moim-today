@@ -2,8 +2,9 @@ package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
-import moim_today.dto.meeting.MeetingDetailResponse;
-import moim_today.dto.meeting.MeetingSimpleDao;
+import moim_today.dto.meeting.meeting.MeetingDetailResponse;
+import moim_today.dto.meeting.meeting.MeetingSimpleDao;
+import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
@@ -15,9 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_NOT_FOUND_ERROR;
 import static moim_today.util.TestConstant.*;
-import static moim_today.util.TestConstant.MOIM_ID;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MeetingFinderTest extends ImplementTest {
 
@@ -635,5 +637,34 @@ class MeetingFinderTest extends ImplementTest {
 
         // then
         assertThat(upcomingNotices.size()).isEqualTo(1);
+    }
+
+    @DisplayName("미팅 Id로 모임 Id를 조회한다.")
+    @Test
+    void getMoimIdByMeetingId() {
+        // given
+        long expectedMoimId = MOIM_ID.longValue();
+
+        MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
+                .moimId(expectedMoimId)
+                .build();
+
+        meetingRepository.save(meetingJpaEntity);
+        long meetingId = meetingJpaEntity.getId();
+
+        // when
+        long actualMoimId = meetingFinder.getMoimIdByMeetingId(meetingId);
+
+        // then
+        assertThat(expectedMoimId).isEqualTo(actualMoimId);
+    }
+
+    @DisplayName("미팅 Id로 모임 Id를 조회할때, 미팅이 존재하지 않으면 예외가 발생한다.")
+    @Test
+    void getMoimIdByMeetingIdThrowsNotFoundException() {
+        // expected
+        assertThatThrownBy(() -> meetingFinder.getMoimIdByMeetingId(MEETING_ID.longValue()))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage(MEETING_NOT_FOUND_ERROR.message());
     }
 }

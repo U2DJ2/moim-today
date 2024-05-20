@@ -34,7 +34,7 @@ public class MoimController {
     @GetMapping
     public CollectionResponse<List<MyMoimResponse>> findAllMyMoimResponse(@Login final MemberSession memberSession) {
         List<MyMoimResponse> myMoimResponses = moimService.findAllMyMoimResponse(memberSession.id());
-        return CollectionResponse.of(myMoimResponses);
+        return CollectionResponse.from(myMoimResponses);
     }
 
     @PostMapping
@@ -58,7 +58,7 @@ public class MoimController {
     @GetMapping("/simple")
     public CollectionResponse<List<MoimSimpleResponse>> findAllMoimResponse(@RequestParam final MoimCategoryDto moimCategoryDto,
                                                                             @RequestParam final MoimSortedFilter moimSortedFilter) {
-        return CollectionResponse.of(moimService.findAllMoimResponse(moimCategoryDto, moimSortedFilter));
+        return CollectionResponse.from(moimService.findAllMoimResponse(moimCategoryDto, moimSortedFilter));
     }
 
     @PatchMapping
@@ -106,7 +106,7 @@ public class MoimController {
     @GetMapping("/notices/simple")
     public CollectionResponse<List<MoimNoticeSimpleResponse>> findAllMoimNotice(@Login final MemberSession memberSession,
                                                                                 @RequestParam final long moimId) {
-        return CollectionResponse.of(moimNoticeService.findAllMoimNotice(memberSession.id(), moimId));
+        return CollectionResponse.from(moimNoticeService.findAllMoimNotice(memberSession.id(), moimId));
     }
 
     @GetMapping("/notices/detail")
@@ -129,11 +129,11 @@ public class MoimController {
 
     @GetMapping("/search")
     public CollectionResponse<List<MoimSimpleResponse>> searchMoim(@RequestParam final String searchParam) {
-        return CollectionResponse.of(moimService.searchMoim(searchParam));
+        return CollectionResponse.from(moimService.searchMoim(searchParam));
     }
 
     @GetMapping("/categories")
     public CollectionResponse<MoimCategory[]> getMoimCategories() {
-        return CollectionResponse.of(MoimCategory.values());
+        return CollectionResponse.from(MoimCategory.values());
     }
 }

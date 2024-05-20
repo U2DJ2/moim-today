@@ -1,10 +1,10 @@
 package moim_today.application.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingStatus;
-import moim_today.dto.meeting.MeetingCreateRequest;
 import moim_today.dto.meeting.MeetingCreateResponse;
-import moim_today.dto.meeting.MeetingDetailResponse;
-import moim_today.dto.meeting.MeetingSimpleResponse;
+import moim_today.dto.meeting.meeting.MeetingCreateRequest;
+import moim_today.dto.meeting.meeting.MeetingDetailResponse;
+import moim_today.dto.meeting.meeting.MeetingSimpleResponse;
 
 import java.util.List;
 

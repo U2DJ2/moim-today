@@ -1,8 +1,8 @@
 package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingCategory;
-import moim_today.dto.meeting.MeetingCreateRequest;
 import moim_today.dto.meeting.MeetingCreateResponse;
+import moim_today.dto.meeting.meeting.MeetingCreateRequest;
 import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingAppender;
@@ -19,7 +19,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static moim_today.global.constant.NumberConstant.SCHEDULE_MEETING_ID;
-import static moim_today.global.constant.TimeConstant.*;
+import static moim_today.global.constant.TimeConstant.ONE_WEEK;
 
 
 @Implement

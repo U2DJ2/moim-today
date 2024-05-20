@@ -259,6 +259,8 @@ class MoimFinderTest extends ImplementTest {
 
         Thread.sleep(10);
 
+        Thread.sleep(10);
+
         MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
                 .title(SECOND_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.STUDY)
@@ -288,6 +290,8 @@ class MoimFinderTest extends ImplementTest {
                 .build();
 
         moimRepository.save(firstCreatedMoimJpaEntity);
+
+        Thread.sleep(10);
 
         Thread.sleep(10);
 

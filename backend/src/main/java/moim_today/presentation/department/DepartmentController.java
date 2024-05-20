@@ -28,12 +28,12 @@ public class DepartmentController {
     @GetMapping("/university-name")
     public CollectionResponse<List<DepartmentResponse>> getDepartmentsByUniversityName(
             @RequestParam(defaultValue = BLANK) final String universityName) {
-        return CollectionResponse.of(departmentService.getAllDepartmentByUniversityName(universityName));
+        return CollectionResponse.from(departmentService.getAllDepartmentByUniversityName(universityName));
     }
 
     @GetMapping("/university-id")
     public CollectionResponse<List<DepartmentResponse>> getDepartmentsByUniversityId(
             @RequestParam(defaultValue = NO_UNIVERSITY_ID) final long universityId) {
-        return CollectionResponse.of(departmentService.getAllDepartmentById(universityId));
+        return CollectionResponse.from(departmentService.getAllDepartmentById(universityId));
     }
 }

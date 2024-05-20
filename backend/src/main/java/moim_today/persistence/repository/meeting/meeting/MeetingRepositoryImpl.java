@@ -3,8 +3,8 @@ package moim_today.persistence.repository.meeting.meeting;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.dto.mail.QUpcomingMeetingNoticeResponse;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
-import moim_today.dto.meeting.MeetingSimpleDao;
-import moim_today.dto.meeting.QMeetingSimpleDao;
+import moim_today.dto.meeting.meeting.MeetingSimpleDao;
+import moim_today.dto.meeting.meeting.QMeetingSimpleDao;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import org.springframework.stereotype.Repository;
@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_NOT_FOUND_ERROR;
-import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.*;
+import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.joinedMeetingJpaEntity;
 import static moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity.meetingJpaEntity;
-import static moim_today.persistence.entity.member.QMemberJpaEntity.*;
-import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.*;
+import static moim_today.persistence.entity.member.QMemberJpaEntity.memberJpaEntity;
+import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.moimJpaEntity;
 
 @Repository
 public class MeetingRepositoryImpl implements MeetingRepository {
@@ -157,5 +157,14 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     @Override
     public long count() {
         return meetingJpaRepository.count();
+    }
+
+    @Override
+    public long findMoimIdByMeetingId(final long meetingId) {
+        return queryFactory.select(meetingJpaEntity.moimId)
+                .from(meetingJpaEntity)
+                .where(meetingJpaEntity.id.eq(meetingId))
+                .stream().findAny()
+                .orElseThrow(() -> new NotFoundException(MEETING_NOT_FOUND_ERROR.message()));
     }
 }

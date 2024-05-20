@@ -77,8 +77,11 @@ public enum TestConstant {
 
     //미팅
     MEETING_ID("123"),
+    NOT_FOUND_MEETING_ID("0"),
     MEETING_AGENDA("meeting agenda"),
     MEETING_PLACE("meeting place"),
+    MEETING_COMMENT_ID("456"),
+    MEETING_COMMENT_CONTENTS("meeting comment contents"),
 
     FIRST_CREATED_MEETING_AGENDA("first agenda"),
     SECOND_CREATED_MEETING_AGENDA("second agenda"),

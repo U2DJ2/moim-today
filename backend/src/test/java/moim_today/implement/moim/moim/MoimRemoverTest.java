@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static moim_today.util.TestConstant.MOIM_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MoimRemoverTest extends ImplementTest {
@@ -22,6 +23,19 @@ class MoimRemoverTest extends ImplementTest {
 
         moimRepository.save(moimJpaEntity);
         long moimId = moimJpaEntity.getId();
+
+        //when
+        moimRemover.deleteById(moimId);
+
+        //then
+        assertThat(moimRepository.count()).isEqualTo(0);
+    }
+
+    @DisplayName("모임이 존재하지 않아도 삭제시 예외가 발생하지 않는다.")
+    @Test
+    void deleteMoimWithNotExist(){
+        //given
+        long moimId = MOIM_ID.longValue();
 
         //when
         moimRemover.deleteById(moimId);
