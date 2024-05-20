@@ -3,11 +3,9 @@ package moim_today.presentation.email_subscribe;
 import moim_today.application.email_subscribe.EmailSubscribeService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.mail.EmailSubscribeRequest;
+import moim_today.dto.mail.EmailSubscriptionResponse;
 import moim_today.global.annotation.Login;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api")
 @RestController
@@ -17,6 +15,11 @@ public class EmailSubscribeController {
 
     public EmailSubscribeController(final EmailSubscribeService emailSubscribeService) {
         this.emailSubscribeService = emailSubscribeService;
+    }
+
+    @GetMapping("/email-subscription")
+    public EmailSubscriptionResponse getEmailSubscriptionStatus(@Login final MemberSession memberSession) {
+        return emailSubscribeService.getSubscriptionStatus(memberSession.id());
     }
 
     @PostMapping("/email-subscription")
