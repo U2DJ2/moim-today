@@ -12,6 +12,6 @@ public class FakeEmailSubscribeService implements EmailSubscribeService {
 
     @Override
     public EmailSubscriptionResponse getSubscriptionStatus(final long memberId) {
-        return null;
+        return EmailSubscriptionResponse.of(true);
     }
 }

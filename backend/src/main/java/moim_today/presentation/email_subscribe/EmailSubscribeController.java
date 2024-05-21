@@ -23,7 +23,7 @@ public class EmailSubscribeController {
     }
 
     @PostMapping("/email-subscription")
-    public void subscribeEmail(@Login final MemberSession memberSession,
+    public void updateEmailSubscribeStatus(@Login final MemberSession memberSession,
                                @RequestBody final EmailSubscribeRequest emailSubscribeRequest) {
         emailSubscribeService.updateSubscribeStatus(memberSession.id(), emailSubscribeRequest.subscribeStatus());
     }

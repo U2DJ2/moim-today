@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -26,9 +27,27 @@ class EmailSubscribeControllerTest extends ControllerTest {
         return new EmailSubscribeController(emailSubscribeService);
     }
 
+    @DisplayName("해당 회원의 이메일 수신 여부 정보를 조회한다.")
+    @Test
+    void getEmailSubscriptionStatus() throws Exception {
+        mockMvc.perform(
+                        get("/api/email-subscription")
+                )
+                .andExpect(status().isOk())
+                .andDo(document("해당 회원의 이메일 수신 여부를 조회한다.",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅")
+                                .summary("이메일 수신 정보 조회")
+                                .responseFields(
+                                        fieldWithPath("subscribeStatus").type(BOOLEAN).description("수신 여부")
+                                )
+                                .build()
+                        )));
+    }
+
     @DisplayName("이메일 수신 여부 정보를 변경한다.")
     @Test
-    void subscribeEmail() throws Exception {
+    void updateEmailSubscribeStatus() throws Exception {
         EmailSubscribeRequest emailSubscribeRequest = EmailSubscribeRequest.of(true);
         String json = objectMapper.writeValueAsString(emailSubscribeRequest);
 
