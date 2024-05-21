@@ -52,7 +52,7 @@ class MoimControllerTest extends ControllerTest {
                 .andDo(document("로그인한 회원이 참여한 모임 리스트 조회",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
-                                .summary("로그인한 회원이 참여한 모임 리스트 조회")
+                                .summary("로그인한 회원이 참여한 모임 리스트 간단한 정보 조회")
                                 .responseFields(
                                         fieldWithPath("data[0].moimId").type(NUMBER).description("모임 Id"),
                                         fieldWithPath("data[0].title").type(STRING).description("모임명")
@@ -809,7 +809,7 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("자신이 참여한 모임의 모임들을 완료 여부에 따라 카드 정보로 반환한다")
+    @DisplayName("로그인한 회원이 참여한 모임들을 완료 여부에 따라 카드 정보로 반환한다")
     @Test
     void findAllMyJoinedMoimSimpleResponse() throws Exception {
 
@@ -819,9 +819,9 @@ class MoimControllerTest extends ControllerTest {
                 .andDo(document("자신이 참여한 모임 리스트를 완료 여부로 조회 성공",
                                 resource(ResourceSnippetParameters.builder()
                                         .tag("모임")
-                                        .summary("자신이 참여한 모임 리스트 정보 조회")
+                                        .summary("로그인한 회원이 참여한 모임 리스트 자세한 정보 조회")
                                         .queryParameters(
-                                                parameterWithName("ended").description("완료된 모임을 찾을 지 여부")
+                                                parameterWithName("ended").description("완료된 모임을 찾을 지 여부 - [true, false]")
                                         )
                                         .responseFields(
                                                 fieldWithPath("data[0].moimId").type(NUMBER).description("모임 Id"),
