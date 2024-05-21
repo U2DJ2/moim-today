@@ -44,4 +44,9 @@ public class EmailSubscribeRepositoryImpl implements EmailSubscribeRepository {
                 .where(emailSubscribeJpaEntity.memberId.eq(memberId))
                 .fetchFirst();
     }
+
+    @Override
+    public long count() {
+        return emailSubscribeJpaRepository.count();
+    }
 }

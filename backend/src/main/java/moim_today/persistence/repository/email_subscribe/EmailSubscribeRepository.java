@@ -12,4 +12,6 @@ public interface EmailSubscribeRepository {
     EmailSubscribeJpaEntity save(final EmailSubscribeJpaEntity emailSubscribeJpaEntity);
 
     boolean getSubscriptionStatus(final long memberId);
+
+    long count();
 }
