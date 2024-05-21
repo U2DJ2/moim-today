@@ -23,7 +23,7 @@ public class MoimManager {
     private final JoinedMoimFinder joinedMoimFinder;
     private final JoinedMoimRemover joinedMoimRemover;
     private final TodoRemover todoRemover;
-    private final MeetingFinder  meetingFinder;
+    private final MeetingFinder meetingFinder;
     private final JoinedMeetingRemover joinedMeetingRemover;
     private final JoinedMeetingAppender joinedMeetingAppender;
     private final MeetingCommentUpdater meetingCommentUpdater;
@@ -80,7 +80,7 @@ public class MoimManager {
     }
 
     @Transactional(readOnly = true)
-    public boolean isHost(final long memberId, final long moimId){
+    public boolean isHost(final long memberId, final long moimId) {
         return moimFinder.isHost(memberId, moimId);
     }
 
@@ -97,13 +97,22 @@ public class MoimManager {
     @Transactional(readOnly = true)
     public List<MoimSimpleResponse> findAllJoinedMoimSimpleResponseByEndStatus(final long memberId, final LocalDate now, final boolean ended) {
         List<Long> joinedMoims = joinedMoimFinder.findMoimIdsByMemberId(memberId);
-        return getMoimSimpleResponses(ended, joinedMoims, now);
+        return getMoimSimpleResponses(joinedMoims, now, ended);
     }
 
     @Transactional(readOnly = true)
-    public List<MoimSimpleResponse> getMoimSimpleResponses(final boolean ended, final List<Long> joinedMoims, final LocalDate now) {
-        if(ended){
-           return moimFinder.findEndedMoimSimpleResponsesByMoimIds(joinedMoims, now);
+    public List<MoimSimpleResponse> findAllHostMoimSimpleResponsesByEndStatus(final long hostMemberId, final LocalDate now, final boolean ended) {
+        List<Long> joinedMoims = joinedMoimFinder.findMoimIdsByMemberId(hostMemberId);
+        List<Long> hostMoims = joinedMoims.stream()
+                .filter(moimId -> moimFinder.isHost(hostMemberId, moimId))
+                .toList();
+        return getMoimSimpleResponses(hostMoims, now, ended);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MoimSimpleResponse> getMoimSimpleResponses(final List<Long> joinedMoims, final LocalDate now, final boolean ended) {
+        if (ended) {
+            return moimFinder.findEndedMoimSimpleResponsesByMoimIds(joinedMoims, now);
         }
         return moimFinder.findInProgressMoimSimpleResponsesByMoimIds(joinedMoims, now);
     }

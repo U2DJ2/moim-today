@@ -40,9 +40,10 @@ public class MoimController {
     @GetMapping("/joined/simple")
     public CollectionResponse<List<MoimSimpleResponse>> findAllMyJoinedMoimSimpleResponse(
             @Login final MemberSession memberSession,
-            @RequestParam final Boolean ended){
+            @RequestParam final Boolean ended,
+            @RequestParam(required = false, defaultValue = "false") final Boolean onlyHost){
         List<MoimSimpleResponse> myMoimSimpleResponses = moimService.findAllMyJoinedMoimSimpleResponse(
-                memberSession.id(), ended
+                memberSession.id(), ended, onlyHost
         );
         return CollectionResponse.from(myMoimSimpleResponses);
     }

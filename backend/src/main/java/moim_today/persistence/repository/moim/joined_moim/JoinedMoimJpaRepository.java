@@ -14,4 +14,6 @@ public interface JoinedMoimJpaRepository extends JpaRepository<JoinedMoimJpaEnti
     void deleteByMoimIdAndMemberId(final long moimId, final long memberId);
 
     boolean existsByMoimIdAndMemberId(final long moimId, final long memberId);
+
+    List<JoinedMoimJpaEntity> findAllByMemberId(final long memberId);
 }
