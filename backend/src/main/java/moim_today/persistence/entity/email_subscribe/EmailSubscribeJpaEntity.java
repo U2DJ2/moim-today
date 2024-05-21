@@ -29,6 +29,13 @@ public class EmailSubscribeJpaEntity extends BaseTimeEntity {
         this.subscribeStatus = subscribeStatus;
     }
 
+    public static EmailSubscribeJpaEntity toEntity(final long memberId, final boolean subscribeStatus) {
+        return EmailSubscribeJpaEntity.builder()
+                .memberId(memberId)
+                .subscribeStatus(subscribeStatus)
+                .build();
+    }
+
     public void updateSubscribeStatus(final boolean subscribeStatus) {
         this.subscribeStatus = subscribeStatus;
     }
