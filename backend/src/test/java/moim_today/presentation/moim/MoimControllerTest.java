@@ -813,7 +813,7 @@ class MoimControllerTest extends ControllerTest {
     @Test
     void findAllMyJoinedMoimSimpleResponse() throws Exception {
 
-        mockMvc.perform(get("/api/moims/joined/detail")
+        mockMvc.perform(get("/api/moims/joined/simple")
                         .queryParam("ended", "false"))
                 .andExpect(status().isOk())
                 .andDo(document("자신이 참여한 모임 리스트를 완료 여부로 조회 성공",

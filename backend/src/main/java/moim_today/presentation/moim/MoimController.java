@@ -37,7 +37,7 @@ public class MoimController {
         return CollectionResponse.from(myMoimResponses);
     }
 
-    @GetMapping("/joined/detail")
+    @GetMapping("/joined/simple")
     public CollectionResponse<List<MoimSimpleResponse>> findAllMyJoinedMoimSimpleResponse(
             @Login final MemberSession memberSession,
             @RequestParam final Boolean ended){
