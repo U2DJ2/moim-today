@@ -15,6 +15,7 @@ import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.repository.moim.moim.MoimRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_CAPACITY_ERROR;
@@ -95,5 +96,14 @@ public class MoimFinder {
     @Transactional(readOnly = true)
     public List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam) {
         return moimRepository.searchMoimBySearchParam(universityId, searchParam);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MoimSimpleResponse> findEndedMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now) {
+        return moimRepository.findEndedMoimSimpleResponsesByMoimIds(moimIds, now);
+    }
+
+    public List<MoimSimpleResponse> findInProgressMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now) {
+        return moimRepository.findInProgressMoimSimpleResponsesByMoimIds(moimIds, now);
     }
 }

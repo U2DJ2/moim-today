@@ -1,5 +1,6 @@
 package moim_today.implement.moim.moim;
 
+import moim_today.dto.moim.moim.MoimSimpleResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingAppender;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
@@ -13,6 +14,7 @@ import moim_today.implement.todo.TodoRemover;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Implement
@@ -90,5 +92,19 @@ public class MoimManager {
     @Transactional(readOnly = true)
     public String getTitleById(final Long moimId) {
         return moimFinder.getTitleById(moimId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MoimSimpleResponse> findAllJoinedMoimSimpleResponseByEndStatus(final long memberId, final LocalDate now, final boolean ended) {
+        List<Long> joinedMoims = joinedMoimFinder.findMoimIdsByMemberId(memberId);
+        return getMoimSimpleResponses(ended, joinedMoims, now);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MoimSimpleResponse> getMoimSimpleResponses(final boolean ended, final List<Long> joinedMoims, final LocalDate now) {
+        if(ended){
+           return moimFinder.findEndedMoimSimpleResponsesByMoimIds(joinedMoims, now);
+        }
+        return moimFinder.findInProgressMoimSimpleResponsesByMoimIds(joinedMoims, now);
     }
 }

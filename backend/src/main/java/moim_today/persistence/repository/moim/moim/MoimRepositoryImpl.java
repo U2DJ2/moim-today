@@ -13,6 +13,7 @@ import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,10 +78,10 @@ public class MoimRepositoryImpl implements MoimRepository {
     @Override
     public MoimJpaEntity getByIdWithPessimisticLock(final long moimId) {
         return Optional.ofNullable(queryFactory
-                .selectFrom(moimJpaEntity)
-                .where(moimJpaEntity.id.eq(moimId))
-                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
-                .fetchFirst())
+                        .selectFrom(moimJpaEntity)
+                        .where(moimJpaEntity.id.eq(moimId))
+                        .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+                        .fetchFirst())
                 .orElseThrow(() -> new NotFoundException(MOIM_NOT_FOUND_ERROR.message()));
     }
 
@@ -99,6 +100,38 @@ public class MoimRepositoryImpl implements MoimRepository {
                 .where(moimJpaEntity.universityId.eq(universityId)
                         .and(moimJpaEntity.title.likeIgnoreCase(PERCENT.value() + searchParam.trim() + PERCENT.value()))
                 )
+                .fetch();
+    }
+
+    @Override
+    public List<MoimSimpleResponse> findEndedMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now) {
+        return queryFactory.select(new QMoimSimpleResponse(
+                        moimJpaEntity.id,
+                        moimJpaEntity.title,
+                        moimJpaEntity.capacity,
+                        moimJpaEntity.currentCount,
+                        moimJpaEntity.imageUrl,
+                        moimJpaEntity.moimCategory,
+                        moimJpaEntity.displayStatus
+                ))
+                .from(moimJpaEntity)
+                .where(moimJpaEntity.id.in(moimIds).and(moimJpaEntity.endDate.before(now)))
+                .fetch();
+    }
+
+    @Override
+    public List<MoimSimpleResponse> findInProgressMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now) {
+        return queryFactory.select(new QMoimSimpleResponse(
+                        moimJpaEntity.id,
+                        moimJpaEntity.title,
+                        moimJpaEntity.capacity,
+                        moimJpaEntity.currentCount,
+                        moimJpaEntity.imageUrl,
+                        moimJpaEntity.moimCategory,
+                        moimJpaEntity.displayStatus
+                ))
+                .from(moimJpaEntity)
+                .where(moimJpaEntity.id.in(moimIds).and(moimJpaEntity.endDate.goe(now)))
                 .fetch();
     }
 

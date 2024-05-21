@@ -32,10 +32,21 @@ public class MoimController {
     }
 
     @GetMapping
-    public CollectionResponse<List<MyMoimResponse>> findAllMyMoimResponse(@Login final MemberSession memberSession) {
-        List<MyMoimResponse> myMoimResponses = moimService.findAllMyMoimResponse(memberSession.id());
+    public CollectionResponse<List<MyMoimResponse>> findAllMyJoinedMoimResponse(@Login final MemberSession memberSession) {
+        List<MyMoimResponse> myMoimResponses = moimService.findAllMyJoinedMoimResponse(memberSession.id());
         return CollectionResponse.from(myMoimResponses);
     }
+
+    @GetMapping("/joined/detail")
+    public CollectionResponse<List<MoimSimpleResponse>> findAllMyJoinedMoimSimpleResponse(
+            @Login final MemberSession memberSession,
+            @RequestParam final boolean ended){
+        List<MoimSimpleResponse> myMoimSimpleResponses = moimService.findAllMyJoinedMoimSimpleResponse(
+                memberSession.id(), ended
+        );
+        return CollectionResponse.from(myMoimSimpleResponses);
+    }
+
 
     @PostMapping
     public MoimIdResponse createMoim(@Login final MemberSession memberSession,
