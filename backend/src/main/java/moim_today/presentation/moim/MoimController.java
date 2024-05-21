@@ -40,7 +40,7 @@ public class MoimController {
     @GetMapping("/joined/detail")
     public CollectionResponse<List<MoimSimpleResponse>> findAllMyJoinedMoimSimpleResponse(
             @Login final MemberSession memberSession,
-            @RequestParam final boolean ended){
+            @RequestParam final Boolean ended){
         List<MoimSimpleResponse> myMoimSimpleResponses = moimService.findAllMyJoinedMoimSimpleResponse(
                 memberSession.id(), ended
         );
