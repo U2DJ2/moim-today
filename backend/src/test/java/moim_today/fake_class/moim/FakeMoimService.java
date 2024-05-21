@@ -198,7 +198,9 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponse(final long memberId, final boolean ended, final boolean host) {
+    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponse(final long memberId,
+                                                                      final boolean ended,
+                                                                      final boolean onlyHost) {
         MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
                 .moimId(1L)
                 .title(MOIM_TITLE.value())
