@@ -1,7 +1,9 @@
 package moim_today.implement.meeting.joined_meeting;
 
 import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
+import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.util.ImplementTest;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +91,34 @@ class JoinedMeetingRemoverTest extends ImplementTest {
 
         // then
         assertThat(joinedMeetingRepository.count()).isEqualTo(0L);
+    }
+
+    @DisplayName("해당 미팅의 참여 정보를 삭제한다.")
+    @Test
+    void deleteAllByMeetingId() {
+        // given 1
+        MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
+                .build();
+
+        meetingRepository.save(meetingJpaEntity);
+
+        // given 2
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
+                .meetingId(meetingJpaEntity.getId())
+                .build();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity2 = JoinedMeetingJpaEntity.builder()
+                .meetingId(meetingJpaEntity.getId())
+                .build();
+
+        joinedMeetingRepository.save(joinedMeetingJpaEntity1);
+        joinedMeetingRepository.save(joinedMeetingJpaEntity2);
+
+        // when
+        joinedMeetingRemover.deleteAllByMeetingId(meetingJpaEntity.getId());
+
+        // then
+        assertThat(joinedMeetingRepository.count()).isEqualTo(0);
     }
 
     @DisplayName("미팅에서 특정 멤버만 삭제된다")

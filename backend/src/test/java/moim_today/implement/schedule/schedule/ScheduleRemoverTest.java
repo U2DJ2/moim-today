@@ -2,8 +2,10 @@ package moim_today.implement.schedule.schedule;
 
 import moim_today.global.error.ForbiddenException;
 import moim_today.global.error.NotFoundException;
+import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import moim_today.util.ImplementTest;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,6 +105,34 @@ class ScheduleRemoverTest extends ImplementTest {
 
         //then
         assertThat(scheduleRepository.count()).isEqualTo(1L);
+    }
+
+    @DisplayName("미팅에 있는 모든 스케줄을 삭제한다.")
+    @Test
+    void deleteAllByMeetingId() {
+        // given 1
+        MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
+                .build();
+
+        meetingRepository.save(meetingJpaEntity);
+
+        // given 2
+        ScheduleJpaEntity scheduleJpaEntity1 = ScheduleJpaEntity.builder()
+                .meetingId(meetingJpaEntity.getId())
+                .build();
+
+        ScheduleJpaEntity scheduleJpaEntity2 = ScheduleJpaEntity.builder()
+                .meetingId(meetingJpaEntity.getId())
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity1);
+        scheduleRepository.save(scheduleJpaEntity2);
+
+        // when
+        scheduleRemover.deleteAllByMeetingId(meetingJpaEntity.getId());
+
+        // then
+        assertThat(scheduleRepository.count()).isEqualTo(0);
     }
 
     @DisplayName("한 멤버의 미팅에 참여하는 기록들을 삭제한다")
