@@ -117,7 +117,49 @@ public class TodoControllerTest extends ControllerTest {
                 );
     }
 
-    @DisplayName("모임 안에 있는 모든 Todo를 조회한다")
+    @DisplayName("모임 안에 있는 모든 멤버의 Todo를 조회한다")
+    @Test
+    void findMembersTodosInMoim() throws Exception {
+        final String TWO_MONTHS = "2";
+        final String MEMBER_ID = "100";
+
+        mockMvc.perform(
+                        get("/api/todos/moim/{moimId}", MOIM_ID.longValue())
+                                .contentType(APPLICATION_JSON)
+                                .queryParam("memberId",MEMBER_ID)
+                                .queryParam("requestDate", String.valueOf(
+                                        YearMonth.of(2024, 5)
+                                ))
+                                .queryParam("months", TWO_MONTHS)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("모임 안에 특정 멤버의 모든 투두 조회",
+                        pathParameters(
+                                parameterWithName("moimId").description("모임 ID")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("투두")
+                                .summary("모임의 모든 투두 조회")
+                                .queryParameters(
+                                        parameterWithName("requestDate").description("조회를 시작할 월 - ex) 2024-05"),
+                                        parameterWithName("months").description("조회를 시작할 월로부터 n개월 - ex) n=2 -> 2024-05-01 ~ 2024-07-31"),
+                                        parameterWithName("memberId").description("조회할 멤버 id")
+                                )
+                                .responseFields(
+                                        fieldWithPath("data[].memberId").type(NUMBER).description("투두 주인 id"),
+                                        fieldWithPath("data[].todoResponses[].todoId").type(NUMBER).description("투두 id"),
+                                        fieldWithPath("data[].todoResponses[].contents").type(STRING).description("투두 내용"),
+                                        fieldWithPath("data[].todoResponses[].todoProgress").type(VARIES).description(
+                                                String.format("투두 진행 상황 - %s", EnumDocsUtils.getEnumNames(TodoProgress.class))
+                                        ),
+                                        fieldWithPath("data[].todoResponses[].todoDate").type(NUMBER).description("투두 시작 시간")
+                                )
+                                .build()
+                        ))
+                );
+    }
+
+    @DisplayName("memberId가 0일 경우 모임 안의 모든 멤버의 할일을 가져온다")
     @Test
     void findAllMembersTodosInMoim() throws Exception {
         final String TWO_MONTHS = "2";
@@ -125,7 +167,8 @@ public class TodoControllerTest extends ControllerTest {
         mockMvc.perform(
                         get("/api/todos/moim/{moimId}", MOIM_ID.longValue())
                                 .contentType(APPLICATION_JSON)
-                                .queryParam("startDate", String.valueOf(
+                                .queryParam("memberId","0")
+                                .queryParam("requestDate", String.valueOf(
                                         YearMonth.of(2024, 5)
                                 ))
                                 .queryParam("months", TWO_MONTHS)
@@ -139,11 +182,12 @@ public class TodoControllerTest extends ControllerTest {
                                 .tag("투두")
                                 .summary("모임의 모든 투두 조회")
                                 .queryParameters(
-                                        parameterWithName("startDate").description("조회를 시작할 월 - ex) 2024-05"),
-                                        parameterWithName("months").description("조회를 시작할 월로부터 n개월 - ex) n=2 -> 2024-05-01 ~ 2024-07-31")
+                                        parameterWithName("requestDate").description("조회를 시작할 월 - ex) 2024-05"),
+                                        parameterWithName("months").description("조회를 시작할 월로부터 n개월 - ex) n=2 -> 2024-05-01 ~ 2024-07-31"),
+                                        parameterWithName("memberId").description("조회할 멤버 id")
                                 )
                                 .responseFields(
-                                        fieldWithPath("data[].memberId").type(NUMBER).description("요청한 멤버 id"),
+                                        fieldWithPath("data[].memberId").type(NUMBER).description("투두 주인 id"),
                                         fieldWithPath("data[].todoResponses[].todoId").type(NUMBER).description("투두 id"),
                                         fieldWithPath("data[].todoResponses[].contents").type(STRING).description("투두 내용"),
                                         fieldWithPath("data[].todoResponses[].todoProgress").type(VARIES).description(
@@ -201,7 +245,8 @@ public class TodoControllerTest extends ControllerTest {
         mockMvc.perform(
                         get("/api/todos/moim/{moimId}", MOIM_ID.longValue() + 1L)
                                 .contentType(APPLICATION_JSON)
-                                .queryParam("startDate", String.valueOf(
+                                .queryParam("memberId","0")
+                                .queryParam("requestDate", String.valueOf(
                                         YearMonth.of(2024, 5)
                                 ))
                                 .queryParam("months", TWO_MONTHS)
@@ -215,8 +260,9 @@ public class TodoControllerTest extends ControllerTest {
                                 .tag("투두")
                                 .summary("모임의 모든 투두 조회")
                                 .queryParameters(
-                                        parameterWithName("startDate").description("조회를 시작할 월 - ex) 2024-05"),
-                                        parameterWithName("months").description("[조회를 시작할 월로부터 n개월] 을 지정하는 n")
+                                        parameterWithName("requestDate").description("조회를 시작할 월 - ex) 2024-05"),
+                                        parameterWithName("months").description("[조회를 시작할 월로부터 n개월] 을 지정하는 n"),
+                                        parameterWithName("memberId").description("조회할 멤버 id")
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),

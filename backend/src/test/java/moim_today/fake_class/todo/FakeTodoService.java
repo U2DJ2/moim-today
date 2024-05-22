@@ -14,6 +14,7 @@ import java.util.List;
 
 import static moim_today.domain.todo.enums.TodoProgress.COMPLETED;
 import static moim_today.domain.todo.enums.TodoProgress.PENDING;
+import static moim_today.global.constant.MemberConstant.UNKNOWN_MEMBER;
 import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_NOT_FOUND;
 import static moim_today.global.constant.exception.TodoExceptionConstant.TODO_NOT_FOUND_ERROR;
 import static moim_today.global.constant.exception.TodoExceptionConstant.TODO_NOT_OWNER_ERROR;
@@ -36,11 +37,12 @@ public class FakeTodoService implements TodoService {
     }
 
     @Override
-    public List<MemberTodoResponse> findAllMembersTodosInMoim(final long memberId, final long moimId,
-                                                              final YearMonth startDate, final int months) {
+    public List<MemberTodoResponse> findMembersTodosInMoim(final long requestMemberId, final long memberId, final long moimId,
+                                                           final YearMonth startDate, final int months) {
         if (moimId == MOIM_ID.longValue() + 1L) {
             throw new NotFoundException(JOINED_MOIM_MEMBER_NOT_FOUND.message());
         }
+
         TodoResponse todoResponse1 = TodoResponse.builder()
                 .todoId(1L)
                 .contents("첫 번째 할 일")
@@ -79,7 +81,10 @@ public class FakeTodoService implements TodoService {
                 .todoResponses(Arrays.asList(todoResponse3, todoResponse4))
                 .build();
 
-        return List.of(memberTodoResponse1, memberTodoResponse2);
+        if (memberId == UNKNOWN_MEMBER.longValue()){
+            return List.of(memberTodoResponse1, memberTodoResponse2);
+        }
+        return List.of(memberTodoResponse1);
     }
 
     @Override
@@ -122,7 +127,7 @@ public class FakeTodoService implements TodoService {
     }
 
     @Override
-    public List<MemberMoimTodoResponse> findAllMembersTodos(final long memberId, final YearMonth startDate, final int months) {
+    public List<MemberMoimTodoResponse> findAllMemberTodos(final long memberId, final YearMonth startDate, final int months) {
         TodoResponse todo1 = TodoResponse.builder()
                 .todoId(TODO_ID.longValue())
                 .todoProgress(COMPLETED)
@@ -168,7 +173,7 @@ public class FakeTodoService implements TodoService {
     }
 
     @Override
-    public MemberMoimTodoResponse findMemberTodosInMoim(final long memberId, final Long moimId, final YearMonth startDate, final int months) {
+    public MemberMoimTodoResponse findMemberMoimTodosInMoim(final long memberId, final long moimId, final YearMonth startDate, final int months) {
         return null;
     }
 }

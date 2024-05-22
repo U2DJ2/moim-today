@@ -32,17 +32,17 @@ public class TodoController {
             @Login final MemberSession memberSession,
             @RequestParam final YearMonth startDate,
             @RequestParam final int months){
-        return CollectionResponse.from(todoService.findAllMembersTodos(memberSession.id(), startDate, months));
+        return CollectionResponse.from(todoService.findAllMemberTodos(memberSession.id(), startDate, months));
     }
 
     @GetMapping("moim/{moimId}")
-    public CollectionResponse<List<MemberTodoResponse>> findAllMembersTodosInMoim(
+    public CollectionResponse<List<MemberTodoResponse>> findMembersTodosInMoim(
             @Login final MemberSession memberSession,
+            @RequestParam(required = false, defaultValue = "0") final long memberId,
             @PathVariable final long moimId,
-            @RequestParam final YearMonth startDate,
+            @RequestParam final YearMonth requestDate,
             @RequestParam final int months) {
-
-        return CollectionResponse.from(todoService.findAllMembersTodosInMoim(memberSession.id(), moimId, startDate, months));
+        return CollectionResponse.from(todoService.findMembersTodosInMoim(memberSession.id(), memberId, moimId, requestDate, months));
     }
 
     @GetMapping("/{todoId}")
