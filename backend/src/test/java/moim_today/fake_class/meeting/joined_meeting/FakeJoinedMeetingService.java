@@ -13,4 +13,9 @@ public class FakeJoinedMeetingService implements JoinedMeetingService {
     public void refuseJoinMeeting(final long memberId, final long meetingId) {
 
     }
+
+    @Override
+    public void deleteAllByMeetingId(final long meetingId) {
+
+    }
 }

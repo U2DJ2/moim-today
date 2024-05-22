@@ -201,4 +201,9 @@ public class FakeScheduleService implements ScheduleService {
             throw new ForbiddenException(SCHEDULE_FORBIDDEN.message());
         }
     }
+
+    @Override
+    public void deleteAllByMeetingId(final long meetingId) {
+
+    }
 }

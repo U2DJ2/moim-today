@@ -2,11 +2,8 @@ package moim_today.persistence.repository.schedule.schedule;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.domain.schedule.Schedule;
-import moim_today.dto.moim.moim.QMoimMemberResponse;
 import moim_today.dto.schedule.*;
 import moim_today.global.error.NotFoundException;
-import moim_today.persistence.entity.member.QMemberJpaEntity;
-import moim_today.persistence.entity.schedule.schedule.QScheduleJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -183,5 +180,10 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                 .where(scheduleJpaEntity.memberId.eq(memberId)
                         .and(scheduleJpaEntity.meetingId.in(meetingIds)))
                 .execute();
+    }
+
+    @Override
+    public void deleteAllByMeetingId(final long meetingId) {
+        scheduleJpaRepository.deleteAllByMeetingId(meetingId);
     }
 }

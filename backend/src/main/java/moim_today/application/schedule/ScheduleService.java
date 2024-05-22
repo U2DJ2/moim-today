@@ -24,4 +24,6 @@ public interface ScheduleService {
     void updateSchedule(final long memberId, final ScheduleUpdateRequest scheduleUpdateRequest);
 
     void deleteSchedule(final long memberId, final long scheduleId);
+
+    void deleteAllByMeetingId(final long meetingId);
 }

@@ -23,6 +23,11 @@ public class JoinedMeetingRemover {
     }
 
     @Transactional
+    public void deleteAllByMeetingId(final long meetingId) {
+        joinedMeetingRepository.deleteAllByMeetingId(meetingId);
+    }
+
+    @Transactional
     public void deleteAllByMemberInMeeting(final long memberId, final List<Long> meetingIds) {
         if(!meetingIds.isEmpty()){
             joinedMeetingRepository.deleteAllByMemberInMeeting(memberId, meetingIds);
