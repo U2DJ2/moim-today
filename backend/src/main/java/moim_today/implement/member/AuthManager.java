@@ -8,6 +8,7 @@ import moim_today.dto.auth.MemberLoginRequest;
 import moim_today.dto.auth.MemberSignUpRequest;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.NotFoundException;
+import moim_today.implement.email_subscribe.EmailSubscribeAppender;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.persistence.repository.member.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,13 +22,16 @@ public class AuthManager {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final ObjectMapper objectMapper;
+    private final EmailSubscribeAppender emailSubscribeAppender;
 
     public AuthManager(final MemberRepository memberRepository,
                        final PasswordEncoder passwordEncoder,
-                       final ObjectMapper objectMapper) {
+                       final ObjectMapper objectMapper,
+                       final EmailSubscribeAppender emailSubscribeAppender) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
         this.objectMapper = objectMapper;
+        this.emailSubscribeAppender = emailSubscribeAppender;
     }
 
     @Transactional(readOnly = true)
@@ -58,6 +62,7 @@ public class AuthManager {
         MemberSession memberSession = MemberSession.from(saveMember);
         String memberSessionJson = memberSession.toJson(objectMapper);
         memberSession.setSession(request, memberSessionJson, false);
+        emailSubscribeAppender.saveEmailSubscription(memberSession.id(), true);
     }
 
     private String passwordEncode(final String password){

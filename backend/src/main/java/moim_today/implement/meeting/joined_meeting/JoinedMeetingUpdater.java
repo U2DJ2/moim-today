@@ -17,7 +17,7 @@ public class JoinedMeetingUpdater {
     @Transactional
     public void updateAttendance(final long memberId, final long meetingId, final boolean attendance) {
         JoinedMeetingJpaEntity joinedMeetingJpaEntity =
-                joinedMeetingRepository.findByMemberIdAndMeetingId(memberId, meetingId);
+                joinedMeetingRepository.getByMemberIdAndMeetingId(memberId, meetingId);
         joinedMeetingJpaEntity.updateAttendance(attendance);
     }
 

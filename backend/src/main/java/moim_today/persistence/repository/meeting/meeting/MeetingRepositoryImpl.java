@@ -6,7 +6,9 @@ import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
 import moim_today.dto.meeting.meeting.MeetingSimpleDao;
 import moim_today.dto.meeting.meeting.QMeetingSimpleDao;
 import moim_today.global.error.NotFoundException;
+import moim_today.persistence.entity.email_subscribe.QEmailSubscribeJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
+import moim_today.persistence.entity.member.QMemberJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_NOT_FOUND_ERROR;
+import static moim_today.persistence.entity.email_subscribe.QEmailSubscribeJpaEntity.*;
 import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.joinedMeetingJpaEntity;
 import static moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity.meetingJpaEntity;
 import static moim_today.persistence.entity.member.QMemberJpaEntity.memberJpaEntity;
@@ -130,10 +133,13 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                 .from(meetingJpaEntity)
                 .innerJoin(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id))
                 .innerJoin(memberJpaEntity).on(memberJpaEntity.id.eq(joinedMeetingJpaEntity.memberId))
+                .innerJoin(emailSubscribeJpaEntity).on(memberJpaEntity.id.eq(emailSubscribeJpaEntity.memberId))
                 .where(
                         meetingJpaEntity.startDateTime.loe(upcomingDateTime)
                                 .and(meetingJpaEntity.startDateTime.after(currentDateTime)
-                                        .and(joinedMeetingJpaEntity.upcomingNoticeSent.isFalse()))
+                                        .and(joinedMeetingJpaEntity.upcomingNoticeSent.isFalse())
+                                        .and(emailSubscribeJpaEntity.subscribeStatus.isTrue())
+                                )
                 )
                 .fetch();
     }

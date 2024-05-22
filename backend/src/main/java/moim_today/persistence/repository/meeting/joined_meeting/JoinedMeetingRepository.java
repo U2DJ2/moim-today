@@ -15,7 +15,7 @@ public interface JoinedMeetingRepository {
 
     List<Long> findAllMemberIdByMeetingId(final long meetingId);
 
-    JoinedMeetingJpaEntity findByMemberIdAndMeetingId(final long memberId, final long meetingId);
+    JoinedMeetingJpaEntity getByMemberIdAndMeetingId(final long memberId, final long meetingId);
 
     List<JoinedMeetingJpaEntity> findAll();
 

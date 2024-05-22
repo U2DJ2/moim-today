@@ -9,6 +9,7 @@ import moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEnt
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static moim_today.global.constant.exception.MeetingExceptionConstant.JOINED_MEETING_NOT_FOUND_ERROR;
 import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.joinedMeetingJpaEntity;
@@ -50,8 +51,9 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
     }
 
     @Override
-    public JoinedMeetingJpaEntity findByMemberIdAndMeetingId(final long memberId, final long meetingId) {
-        return joinedMeetingJpaRepository.findByMemberIdAndMeetingId(memberId, meetingId);
+    public JoinedMeetingJpaEntity getByMemberIdAndMeetingId(final long memberId, final long meetingId) {
+        return joinedMeetingJpaRepository.findByMemberIdAndMeetingId(memberId, meetingId)
+                .orElseThrow(() -> new NotFoundException(JOINED_MEETING_NOT_FOUND_ERROR.message()));
     }
 
     @Override

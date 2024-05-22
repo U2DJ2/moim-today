@@ -126,7 +126,7 @@ class AuthManagerTest extends ImplementTest {
 
     @DisplayName("정상적으로 회원가입을 완료하면 멤버 데이터를 넣고 세션에 등록한다")
     @Test
-    void register() throws JsonProcessingException {
+    void signUp() throws JsonProcessingException {
         // given
         LocalDate birthDate = LocalDate.now();
         MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
@@ -152,5 +152,6 @@ class AuthManagerTest extends ImplementTest {
         assertThat(memberSessionObject).isNotBlank();
         MemberSession memberSession = objectMapper.readValue(memberSessionObject, MemberSession.class);
         assertThat(memberSession.username()).isEqualTo(USERNAME.value());
+        assertThat(emailSubscribeRepository.count()).isEqualTo(1);
     }
 }
