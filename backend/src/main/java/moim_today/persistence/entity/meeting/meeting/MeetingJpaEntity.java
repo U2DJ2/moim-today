@@ -40,4 +40,9 @@ public class MeetingJpaEntity extends BaseTimeEntity {
         this.endDateTime = endDateTime;
         this.place = place;
     }
+
+    public void updateMeeting(final String agenda, final String place) {
+        this.agenda = agenda;
+        this.place = place;
+    }
 }

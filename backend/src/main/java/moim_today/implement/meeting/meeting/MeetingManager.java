@@ -1,7 +1,7 @@
 package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingCategory;
-import moim_today.dto.meeting.MeetingCreateResponse;
+import moim_today.dto.meeting.meeting.MeetingCreateResponse;
 import moim_today.dto.meeting.meeting.MeetingCreateRequest;
 import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.global.annotation.Implement;
