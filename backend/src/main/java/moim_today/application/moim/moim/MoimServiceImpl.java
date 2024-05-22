@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static moim_today.global.constant.FileTypeConstant.MOIM_IMAGE;
@@ -69,7 +70,7 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public List<MyMoimResponse> findAllMyMoimResponse(final long memberId) {
+    public List<MyMoimResponse> findAllMyJoinedMoimResponse(final long memberId) {
         return moimFinder.findAllMyMoimResponse(memberId);
     }
 
@@ -171,5 +172,15 @@ public class MoimServiceImpl implements MoimService{
     @Override
     public List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam) {
         return moimFinder.searchMoim(universityId, searchParam);
+    }
+
+    @Override
+    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponse(final long memberId,
+                                                                      final boolean ended,
+                                                                      final boolean onlyHost) {
+        if(onlyHost){
+            return moimManager.findAllHostMoimSimpleResponsesByEndStatus(memberId, LocalDate.now(), ended);
+        }
+        return moimManager.findAllJoinedMoimSimpleResponseByEndStatus(memberId, LocalDate.now(), ended);
     }
 }

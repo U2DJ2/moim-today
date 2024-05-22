@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface MoimService {
 
-    List<MyMoimResponse> findAllMyMoimResponse(final long memberId);
+    List<MyMoimResponse> findAllMyJoinedMoimResponse(final long memberId);
 
     MoimIdResponse createMoim(final long memberId, final long universityId,
                               final MoimCreateRequest moimCreateRequest);
@@ -34,4 +34,6 @@ public interface MoimService {
     List<MoimSimpleResponse> findAllMoimResponses(final long universityId, final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter);
 
     List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam);
+
+    List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponse(final long memberId, final boolean ended, final boolean onlyHost);
 }
