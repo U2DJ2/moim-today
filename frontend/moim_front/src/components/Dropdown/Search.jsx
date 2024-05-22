@@ -22,7 +22,7 @@ function Search({ label, placeHolder, options, onSelect }) {
   };
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left w-full">
       <div>
         <button
           id="dropdown-button"
@@ -68,7 +68,7 @@ function Search({ label, placeHolder, options, onSelect }) {
           {options.map((option, index) => (
             <a
               key={index}
-              className="block px-4 py-2 text-sm"
+              className="block px-4 py-2 text-sm cursor-pointer hover:bg-gray-50"
               onClick={() => handleOptionSelect(option, index)}
               style={{
                 display: option.toLowerCase().includes(searchTerm)

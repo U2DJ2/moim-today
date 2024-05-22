@@ -99,7 +99,7 @@ function LoginPage() {
                 className="py-3 px-5 w-fit text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer"
                 onClick={() => setOpenAlertModal(false)}
               >
-                네.. 그럴게요
+                헉! 오또케
               </button>
             </div>
           </div>
