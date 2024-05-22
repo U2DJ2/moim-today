@@ -1,7 +1,12 @@
-import { useEffect } from "react";
-import people from "../../../assets/svg/personIcon.svg";
+// React
 import { useNavigate } from "react-router";
+
+// API
 import { GET } from "../../../utils/axios";
+
+// Images
+import people from "../../../assets/svg/personIcon.svg";
+
 function CardContainer({
   image,
   category,
@@ -31,7 +36,7 @@ function CardContainer({
   };
 
   return (
-    <div className=" hover:cursor-pointer w-[360px] " onClick={onClickHandler}>
+    <div className=" hover:cursor-pointer w-auto" onClick={onClickHandler}>
       <img
         src={image}
         alt="cardContainer"
