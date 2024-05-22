@@ -14,6 +14,8 @@ function AvailableTime({ moimId }) {
   const [memberId, setMemberId] = useState(null);
   const [memberSchedule, setMemberSchedule] = useState([]);
 
+  const [selected, setSelected] = useState();
+
   const [events, setEvents] = useState([]);
 
   const handleMiniCalendarDateSelect = (date) => {
@@ -134,6 +136,7 @@ function AvailableTime({ moimId }) {
   };
   const onClickMember = (member) => {
     console.log(member);
+    setSelected(member.memberId);
     setMemberId(member.memberId);
   };
 
@@ -162,7 +165,12 @@ function AvailableTime({ moimId }) {
                         className="focus:cursor-pointer w-6 h-6 "
                         src={member.profileImageUrl}
                       />
-                      <div className="flex font-Pretendard_Light ">
+                      <div
+                        className={`flex font-Pretendard_Light focus:text-scarlet
+                        ${
+                          selected === member.memberId ? "text-scarlet" : null
+                        }`}
+                      >
                         {member.memberName}
                       </div>
                     </div>

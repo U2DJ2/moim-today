@@ -46,6 +46,9 @@ export default function Calendar({
   }, []);
 
   useEffect(() => {
+    if (memberId != null) {
+      GetMemberWeekly(memberId);
+    }
     fetchAvailables();
   }, [calendarStart]);
 
@@ -57,36 +60,36 @@ export default function Calendar({
     }
   }, [selectedDate]);
 
+  const GetMemberWeekly = async (memberId) => {
+    try {
+      let allEvents = [];
+      const memberSchedule = await axios.get(
+        `https://api.moim.today/api/schedules/weekly/available-time/members/${memberId}`,
+        {
+          params: {
+            startDate: calendarStart,
+          },
+        }
+      );
+      console.log(memberSchedule);
+      allEvents = [
+        ...allEvents,
+        ...memberSchedule.data.data.map((event) => mapEventData(event, true)),
+      ];
+      return setEvents(allEvents);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   useEffect(() => {
     const calendarApi = calendarRef.current.getApi();
     calendarApi.refetchEvents(); // 이벤트 데이터를 다시 가져옴
   }, [memberId]); // memberId가 변경될 때마다 실행
 
-  // useEffect(() => {
-  //   const GetMemberWeekly = async (memberId) => {
-  //     try {
-  //       let allEvents = [];
-  //       const memberSchedule = await axios.get(
-  //         `https://api.moim.today/api/schedules/weekly/available-time/members/${memberId}`,
-  //         {
-  //           params: {
-  //             startDate: selectedDate.split("T")[0],
-  //           },
-  //         }
-  //       );
-  //       console.log(memberSchedule);
-  //       allEvents = [
-  //         ...allEvents,
-  //         ...memberSchedule.data.data.map((event) => mapEventData(event, true)),
-  //       ];
-  //       return setEvents(allEvents);
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   };
-  //   console.log(memberId);
-  //   GetMemberWeekly(memberId);
-  // }, [memberId, selectedDate]);
+  useEffect(() => {
+    console.log(memberId);
+    if (memberId != null) GetMemberWeekly(memberId);
+  }, [memberId, calendarStart]);
 
   async function fetchAllEvents(year) {
     try {
@@ -181,7 +184,7 @@ export default function Calendar({
       setShowModal(true);
     }
 
-    setStartDateTime(selectInfo.startStr);
+    setStartDateTime(selectInfo.startStr.split("T")[0]);
     setEndDateTime(selectInfo.endStr);
 
     calendarApi.unselect(); // clear date selection
