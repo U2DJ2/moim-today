@@ -75,6 +75,7 @@ class MoimManagerTest extends ImplementTest {
         LocalDate localDate2 = LocalDate.of(2024, 5, 16);
         LocalDate localDate3 = LocalDate.of(2025, 6, 5);
 
+        // given2
         MoimJpaEntity moimJpaEntity1 = MoimJpaEntity.builder()
                 .memberId(member1.getId())
                 .endDate(localDate1)
@@ -92,6 +93,7 @@ class MoimManagerTest extends ImplementTest {
         moimRepository.save(moimJpaEntity2);
         moimRepository.save(moimJpaEntity3);
 
+        // given3
         JoinedMoimJpaEntity j1 = JoinedMoimJpaEntity.builder()
                 .memberId(member1.getId())
                 .moimId(moimJpaEntity1.getId())
@@ -109,11 +111,13 @@ class MoimManagerTest extends ImplementTest {
         joinedMoimRepository.save(j2);
         joinedMoimRepository.save(j3);
 
+        // when
         List<MoimSimpleResponse> endedMoims = moimManager.findAllJoinedMoimSimpleResponseByEndStatus(
                 member1.getId(), LocalDate.of(2024, 5, 16), true);
         List<MoimSimpleResponse> inProgressMoims = moimManager.findAllJoinedMoimSimpleResponseByEndStatus(
                 member1.getId(), LocalDate.of(2024, 5, 16), false);
 
+        // then
         assertThat(endedMoims.size()).isEqualTo(1);
         assertThat(inProgressMoims.size()).isEqualTo(2);
     }
