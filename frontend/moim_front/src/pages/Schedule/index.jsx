@@ -10,13 +10,12 @@ import { Datepicker, Accordion, Checkbox, Modal } from "flowbite-react";
 import { Label, TextInput } from "flowbite-react";
 
 // Icons
-import { LuListTodo } from "react-icons/lu";
 import HomeIcon from "@mui/icons-material/Home";
 
 // Components
 import PersonalSection from "./PersonalSection";
-import DatePicker from "../../components/DatePicker/Single";
 import Dropdown from "../../components/Dropdown/Search";
+import DatePicker from "../../components/DatePicker/Single";
 
 // CSS
 import "./style.css";
@@ -105,38 +104,6 @@ const calendarTheme = {
           disabled: "text-gray-500",
         },
       },
-    },
-  },
-};
-
-const accordionTheme = {
-  root: {
-    base: "divide-y divide-gray-200 border-gray-200 dark:divide-gray-700 dark:border-gray-700",
-    flush: {
-      off: "rounded-lg border",
-      on: "border-b",
-    },
-  },
-  content: {
-    base: "p-5 first:rounded-t-lg last:rounded-b-lg dark:bg-gray-900",
-  },
-  title: {
-    arrow: {
-      base: "h-6 w-6 shrink-0",
-      open: {
-        off: "",
-        on: "rotate-180",
-      },
-    },
-    base: "flex w-full items-center justify-between p-5 text-left font-medium text-gray-500 first:rounded-t-lg last:rounded-b-lg dark:text-gray-400",
-    flush: {
-      off: "hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:hover:bg-gray-800 dark:focus:ring-gray-800",
-      on: "bg-transparent dark:bg-transparent",
-    },
-    heading: "",
-    open: {
-      off: "",
-      on: "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white",
     },
   },
 };
@@ -252,6 +219,11 @@ const labelStyle = "mt-2.5 mb-2.5 font-Pretendard_SemiBold leading-5 text-sm tex
 const commonInputStyle = "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
 
 async function fetchAllTodos(startDate, setMoimData) {
+
+  // Parse start date
+  startDate = new Date(startDate);
+  startDate = startDate.toISOString().slice(0, 7);
+
   try {
     const response = await axios.get(
       `https://api.moim.today/api/todos?startDate=${startDate}&months=12`,
@@ -267,9 +239,15 @@ async function fetchAllTodos(startDate, setMoimData) {
   }
 }
 
-async function addTodo(moimId, contents, todoDate, setMoimData) {
+async function addTodo(moimId, contents, todoDate) {
+  // 만약 moimId, contents, todoDate가 제대로 전달되지 않으면 에러 출력
+  if (!moimId || !contents || !todoDate) {
+    alert("모임 ID, 내용, 날짜를 모두 입력해주세요.");
+    return;
+  }
+
   try {
-    const response = await axios.post(
+    await axios.post(
       "https://api.moim.today/api/todos",
       {
         moimId: moimId,
@@ -283,10 +261,8 @@ async function addTodo(moimId, contents, todoDate, setMoimData) {
       }
     );
 
-    console.log("Todo added successfully:", response.data);
-
-    // 추가한 후에 todo 리스트 다시 불러오기
-    fetchAllTodos(todoDate.slice(0, 7), setMoimData);
+    // 현재 페이지 새로고침
+    window.location.reload();
   } catch (error) {
     console.error("Error adding todo:", error);
   }
@@ -322,9 +298,7 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
   const [todoData, setTodoData] = useState([]);
 
   useEffect(() => {
-    const firstDate = new Date(new Date().getFullYear(), 0, 1)
-      .toISOString()
-      .slice(0, 7);
+    const firstDate = new Date(new Date().getFullYear(), 0, 1);
     fetchAllTodos(firstDate, setTodoData);
   }, []);
 
@@ -362,19 +336,19 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
           inline
           onSelectedDateChanged={onDateChange}
         />
-        <div className="flex gap-2.5 mt-5"></div>
+        <div className="mt-4"></div>
         <button
           className="w-52 justify-center px-6 py-3 text-[16px] text-center text-white bg-black whitespace-nowrap rounded-full font-semibold  hover:cursor-pointer"
           onClick={handleAddTodo}
         >
           TODO 추가하기
         </button>
-        <div className="flex gap-2.5 mt-5"></div>
+        <div className="mt-8"></div>
         {todoData.map((moim) => (
-          <Accordion key={moim.moimId} className="w-72" theme={accordionTheme}>
+          <Accordion key={moim.moimId} className="w-72">
             <Accordion.Panel>
-              <Accordion.Title>
-                {moim.moimTitle} (ID : {moim.moimId})
+              <Accordion.Title className="font-Pretendard_SemiBold text-[16px]">
+                {moim.moimTitle}
               </Accordion.Title>
               <Accordion.Content>
                 {moim.todoResponses.map((todo, todoIndex) => {
@@ -383,13 +357,13 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
                   return (
                     <div
                       key={todo.todoId}
-                      className={`flex items-center gap-2${isLastTodo ? "" : " mb-4"
+                      className={`flex items-center gap-2 ${isLastTodo ? "" : " mb-4"
                         }`}
                     >
                       <Checkbox
                         onChange={() => handleTodoCheckboxClick(todo)}
                       />
-                      <Label>{todo.contents}</Label>
+                      <Label className="font-Pretendard_Medium">{todo.contents}</Label>
                     </div>
                   );
                 })}
@@ -406,6 +380,9 @@ export default function Schedule() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [openTodoAddModal, setOpenAddTodoModal] = useState(false);
   const [moimList, setMoimList] = useState([]); // 모임 리스트 상태 추가
+  const [selectedMoimId, setSelectedMoimId] = useState(null); // state for selected moim
+  const [todoContent, setTodoContent] = useState(""); // state for TODO content
+  const [todoDate, setTodoDate] = useState(null); // state for TODO date
 
   useEffect(() => {
     fetchMoimList(); // 모임 리스트를 가져오는 함수 호출
@@ -421,11 +398,16 @@ export default function Schedule() {
   };
 
   const handleMoimSelect = (index) => {
-    console.log("Selected moim ID:", moimList[index].moimId);
+    setSelectedMoimId(moimList[index].moimId); // store the selected moim ID
   };
 
   const handleMiniCalendarDateSelect = (date) => {
     setSelectedDate(date);
+  };
+
+  const handleAddTodo = () => {
+    addTodo(selectedMoimId, todoContent, todoDate);
+    setOpenAddTodoModal(false); // close the modal after adding TODO
   };
 
   return (
@@ -433,7 +415,6 @@ export default function Schedule() {
       <Modal show={openTodoAddModal} size="xl" onClose={() => setOpenAddTodoModal(false)} theme={modalTheme}>
         <Modal.Header>TODO 추가</Modal.Header>
         <Modal.Body>
-          <LuListTodo className="mx-auto mb-4 h-48 w-48 text-gray-400 dark:text-gray-200" />
           <div className="flex w-full flex-col gap-4">
             <Dropdown
               label={"모임 선택"}
@@ -454,15 +435,30 @@ export default function Schedule() {
                 type="text"
                 sizing="md"
                 theme={textInputTheme}
+                onChange={(e) => setTodoContent(e.target.value)} // update todoContent state
               />
             </div>
             <div>
               <div className={labelStyle}>{"운영 시간"}</div>
               <DatePicker
-                onChange={() => { }}
                 inputClassName={`w-full ${commonInputStyle}`}
+                onChange={(date) => setTodoDate(date.startDate)} // update todoDate state
               />
             </div>
+          </div>
+          <div className="pt-6 grid grid-flow-col gap-4">
+            <button
+              className="w-auto justify-center px-6 py-3 text-[16px] text-center text-white bg-black whitespace-nowrap rounded-full font-semibold  hover:cursor-pointer"
+              onClick={() => { setOpenAddTodoModal(false); }}
+            >
+              취소
+            </button>
+            <button
+              className="w-auto justify-center px-6 py-3 text-[16px] text-center text-white bg-scarlet whitespace-nowrap rounded-full font-semibold  hover:cursor-pointer"
+              onClick={handleAddTodo}
+            >
+              추가
+            </button>
           </div>
         </Modal.Body>
       </Modal>

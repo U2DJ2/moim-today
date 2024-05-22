@@ -1,8 +1,13 @@
+// React
+import { useState } from "react";
+
+// API
+import { POST } from "../../utils/axios";
+
 // Components
 import Calendar from "../../components/Calendar/PersonalCalendar";
-import { useState } from "react";
 import CreationModal from "../../components/CreationModal";
-import { POST } from "../../utils/axios";
+
 
 export default function ProfileSection({ selectedDate }) {
   const [startDateTime, setStartDateTime] = useState("");
