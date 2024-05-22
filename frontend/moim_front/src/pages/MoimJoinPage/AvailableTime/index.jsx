@@ -11,6 +11,10 @@ function AvailableTime({ moimId }) {
     new Date().toISOString().split("T")[0]
   );
   const [members, setMembers] = useState([]);
+  const [memberId, setMemberId] = useState(null);
+  const [memberSchedule, setMemberSchedule] = useState([]);
+
+  const [events, setEvents] = useState([]);
 
   const handleMiniCalendarDateSelect = (date) => {
     setSelectedDate(date);
@@ -24,27 +28,24 @@ function AvailableTime({ moimId }) {
       console.log(e);
     }
   };
-
-  const GetMemberWeekly = async (memberId) => {
-    try {
-      const memberSchedule = await axios.get(
-        `https://api.moim.today/api/schedules/weekly/available-time/members/${memberId}`,
-        {
-          params: {
-            startDate: selectedDate,
-          },
-        }
-      );
-      return console.log(memberSchedule);
-    } catch (e) {
-      console.log(e);
+  function mapEventData(event, backgroundEvent) {
+    const formattedEvent = {
+      id: event.scheduleId || event.calendarId,
+      title: event.scheduleName || "",
+      start: event.startDateTime.replace(" ", "T"),
+      end: event.endDateTime.replace(" ", "T"),
+      allDay: false, // Assuming all events fetched are not all-day events
+      backgroundColor: event.colorHex,
+    };
+    if (backgroundEvent) {
+      formattedEvent.display = "background";
     }
-  };
+    return formattedEvent;
+  }
 
   useEffect(() => {
     GetMembers(moimId);
   }, []);
-
   const calendarTheme = {
     root: {
       base: "relative",
@@ -133,7 +134,7 @@ function AvailableTime({ moimId }) {
   };
   const onClickMember = (member) => {
     console.log(member);
-    GetMemberWeekly(member.memberId);
+    setMemberId(member.memberId);
   };
 
   const { MoimId } = useParams();
@@ -175,9 +176,12 @@ function AvailableTime({ moimId }) {
       <div className="flex-[3_3_0%]">
         <Calendar
           selectedDate={selectedDate}
+          isPersonal={false}
           isAvailable={true}
           isMeeting={false}
           moimId={MoimId}
+          memberId={memberId}
+          events={memberSchedule}
         />
       </div>
     </div>

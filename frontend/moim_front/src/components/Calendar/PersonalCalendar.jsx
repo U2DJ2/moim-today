@@ -25,12 +25,13 @@ export default function Calendar({
   setStartDateTime,
   setScheduleTitle,
   scheduleTitle,
+  memberId,
 }) {
   const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
+  const today = new Date().toISOString().split("T")[0];
   const [events, setEvents] = useState([]);
-  const [calendarStart, setCalendarStart] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [calendarStart, setCalendarStart] = useState(new Date());
+
   useEffect(() => {
     const currentYear = new Date().getFullYear();
 
@@ -50,9 +51,42 @@ export default function Calendar({
 
   useEffect(() => {
     if (calendarRef.current && selectedDate) {
-      calendarRef.current.getApi().gotoDate(selectedDate);
+      Promise.resolve().then(() => {
+        calendarRef.current.getApi().gotoDate(selectedDate);
+      });
     }
   }, [selectedDate]);
+
+  useEffect(() => {
+    const calendarApi = calendarRef.current.getApi();
+    calendarApi.refetchEvents(); // 이벤트 데이터를 다시 가져옴
+  }, [memberId]); // memberId가 변경될 때마다 실행
+
+  // useEffect(() => {
+  //   const GetMemberWeekly = async (memberId) => {
+  //     try {
+  //       let allEvents = [];
+  //       const memberSchedule = await axios.get(
+  //         `https://api.moim.today/api/schedules/weekly/available-time/members/${memberId}`,
+  //         {
+  //           params: {
+  //             startDate: selectedDate.split("T")[0],
+  //           },
+  //         }
+  //       );
+  //       console.log(memberSchedule);
+  //       allEvents = [
+  //         ...allEvents,
+  //         ...memberSchedule.data.data.map((event) => mapEventData(event, true)),
+  //       ];
+  //       return setEvents(allEvents);
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+  //   console.log(memberId);
+  //   GetMemberWeekly(memberId);
+  // }, [memberId, selectedDate]);
 
   async function fetchAllEvents(year) {
     try {
@@ -101,8 +135,9 @@ export default function Calendar({
       const isPast = new Date(calendarStart) < new Date();
       const startDate = isPast
         ? new Date().toISOString().split("T")[0]
-        : calendarStart;
-
+        : calendarStart instanceof Date
+        ? calendarStart.toISOString().split("T")[0]
+        : new Date(calendarStart).toISOString().split("T")[0];
       const response = await axios.get(
         `https://api.moim.today/api/schedules/weekly/available-time/moims/${moimId}`,
         {
@@ -196,11 +231,6 @@ export default function Calendar({
     console.log("Event removed:", info.event);
   }
 
-  // Function to create unique event ID
-  // function createEventId() {
-  //   return String(eventGuid++);
-  // }
-
   function personalSubmit() {
     calendarRef.current.getApi().unselect();
   }
@@ -215,6 +245,7 @@ export default function Calendar({
     <div className="demo-app">
       <div className="demo-app-main">
         <FullCalendar
+          key={memberId}
           ref={calendarRef} // 2. FullCalendar 컴포넌트에 ref 추가
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
@@ -230,14 +261,7 @@ export default function Calendar({
           dayMaxEvents={true}
           events={events}
           select={handleDateSelect}
-          eventContent={renderEventContent} // custom render function
-          // eventClick={handleEventClick}
-          // you can update a remote database when these fire:
-          /*
-        eventAdd={function(){}}
-        eventChange={function(){}}
-        eventRemove={function(){}}
-        */
+          eventContent={renderEventContent}
           eventAdd={handleEventAdd}
           eventChange={handleEventChange}
           eventRemove={handleEventRemove}
