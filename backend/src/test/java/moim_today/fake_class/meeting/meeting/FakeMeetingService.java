@@ -5,6 +5,7 @@ import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.meeting.*;
 import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.global.error.ForbiddenException;
+import moim_today.util.TestConstant;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -79,7 +80,9 @@ public class FakeMeetingService implements MeetingService {
 
     @Override
     public void updateMeeting(final long memberId, final MeetingUpdateRequest meetingUpdateRequest) {
-
+        if (meetingUpdateRequest.meetingId() != MEETING_ID.longValue()) {
+            throw new ForbiddenException(MEETING_FORBIDDEN_ERROR.message());
+        }
     }
 
     @Override

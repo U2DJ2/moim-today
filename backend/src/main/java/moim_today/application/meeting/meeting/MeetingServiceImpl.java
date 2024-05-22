@@ -8,6 +8,7 @@ import moim_today.implement.meeting.meeting.MeetingFinder;
 import moim_today.implement.meeting.meeting.MeetingManager;
 import moim_today.implement.meeting.meeting.MeetingRemover;
 import moim_today.implement.meeting.meeting.MeetingUpdater;
+import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
