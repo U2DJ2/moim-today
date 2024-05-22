@@ -5,11 +5,9 @@ import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.dto.member.QMemberSimpleResponse;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
-import moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import static moim_today.global.constant.exception.MeetingExceptionConstant.JOINED_MEETING_NOT_FOUND_ERROR;
 import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.joinedMeetingJpaEntity;
@@ -30,6 +28,11 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
     @Override
     public void deleteAllByMeetingIdIn(final List<Long> meetingIds) {
         joinedMeetingJpaRepository.deleteAllByMeetingIdIn(meetingIds);
+    }
+
+    @Override
+    public void deleteAllByMeetingId(final long meetingId) {
+        joinedMeetingJpaRepository.deleteAllByMeetingId(meetingId);
     }
 
     @Override

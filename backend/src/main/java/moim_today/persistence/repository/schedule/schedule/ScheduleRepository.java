@@ -35,4 +35,6 @@ public interface ScheduleRepository {
     void deleteAllByMeetingIdIn(final List<Long> meetingIds);
 
     void deleteAllByMemberInMeeting(final long memberId, final List<Long> meetingIds);
+
+    void deleteAllByMeetingId(final long meetingId);
 }
