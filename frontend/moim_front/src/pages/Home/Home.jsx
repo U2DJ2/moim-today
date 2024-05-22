@@ -10,8 +10,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import CardContainer from "./CardContainer";
 
 // API
-import { GET } from "../../utils/axios";
 import axios from "axios";
+import { GET } from "../../utils/axios";
 
 /**
  * SearchBar Component
@@ -162,7 +162,6 @@ export default function Home() {
         );
         console.log(response.data);
         setMoimInfo(response.data.data);
-        console.log(moimInfo);
       } catch (error) {
         console.log(error);
       }

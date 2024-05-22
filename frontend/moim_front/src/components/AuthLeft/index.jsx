@@ -36,12 +36,16 @@ function AuthLeft({
         navigation("/");
       })
       .catch((error) => {
-        console.log(error.response.data.statusCode);
         const errorCode = error.response.data.statusCode;
+
         if (errorCode === "404") {
           setOpenAlertModal(true);
           setMessage(error.response.data.message);
-          console.log(error.response.message);
+        }
+        else
+        {
+          setOpenAlertModal(true);
+          setMessage(error.message);
         }
       });
   };

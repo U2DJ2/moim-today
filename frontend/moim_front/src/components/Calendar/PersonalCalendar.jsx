@@ -83,7 +83,6 @@ export default function Calendar({
         ];
       }
       setEvents(allEvents);
-      console.log(events);
     } catch (error) {
       console.error("Error fetching events:", error);
     }

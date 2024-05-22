@@ -75,20 +75,23 @@ const modalTheme = {
   }
 }
 
+const homeKey = "홈";
+const availableTimeKey = "되는 시간";
+const todoKey = "할 일";
+const memberKey = "멤버";
+
+
 function MoimJoinPage() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isAlertModalOpen, setAlertModalOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const [selected, setSelected] = useState("HOME");
-
+  const [selected, setSelected] = useState(homeKey);
   const [meetingOption, setMeetingOption] = useState("ALL");
-
   const [notices, setNotices] = useState([]);
   const [moimInfo, setMoimInfo] = useState([]);
   const [meetings, setMeetings] = useState([]);
-
   const [writerInfo, setWriterInfo] = useState([]);
-
   const [isHost, setIsHost] = useState(false);
+
   const { MoimId } = useParams();
 
   const getNotices = async () => {
@@ -162,34 +165,34 @@ function MoimJoinPage() {
       />
       <div className="flex flex-col basis-4/5 bg-white shadow-lg overflow-hidden rounded-t-3xl px-20 pt-16 pb-6 gap-8 h-full">
         <div className="flex justify-center items-center self-start font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
-          <div className="flex gap-12 font-semibold font-Roboto lg:text-xl lg:gap-8 xl:text-3xl 2xl:text-4xl">
+          <div className="flex gap-12 font-semibold font-bold lg:text-xl lg:gap-8 xl:text-3xl 2xl:text-4xl">
             <div
-              className={`justify-center max-md:px-5 cursor-pointer ${selected === "HOME" ? "text-scarlet border-b-2 border-scarlet" : "" }`}
-              onClick={() => setSelected("HOME")}
+              className={`justify-center max-md:px-5 cursor-pointer ${selected === homeKey ? "text-scarlet border-b-2 border-scarlet" : "" }`}
+              onClick={() => setSelected(homeKey)}
             >
-              HOME
+              {homeKey}
             </div>
             <div
-              className={`justify-center  max-md:px-5 cursor-pointer ${selected === "되는시간" ? "text-scarlet border-b-2 border-scarlet" : ""}`}
-              onClick={() => setSelected("되는시간")}
+              className={`justify-center  max-md:px-5 cursor-pointer ${selected === availableTimeKey ? "text-scarlet border-b-2 border-scarlet" : ""}`}
+              onClick={() => setSelected(availableTimeKey)}
             >
-              되는시간
+              {availableTimeKey}
             </div>
             <div
-              className={`justify-center max-md:px-5 cursor-pointer ${selected === "ToDo" ? "text-scarlet border-b-2 border-scarlet" : "" }`}
-              onClick={() => setSelected("ToDo")}
+              className={`justify-center max-md:px-5 cursor-pointer ${selected === todoKey ? "text-scarlet border-b-2 border-scarlet" : "" }`}
+              onClick={() => setSelected(todoKey)}
             >
-              ToDo
+              {todoKey}
             </div>
             <div
-              className={`justify-center max-md:px-5 cursor-pointer ${selected === "멤버" ? "text-scarlet border-b-2 border-scarlet" : "" }`}
-              onClick={() => setSelected("멤버")}
+              className={`justify-center max-md:px-5 cursor-pointer ${selected === memberKey ? "text-scarlet border-b-2 border-scarlet" : "" }`}
+              onClick={() => setSelected(memberKey)}
             >
-              멤버
+              {memberKey}
             </div>
           </div>
         </div>
-        {selected === "HOME" ? (
+        {selected === homeKey ? (
           <MoimHome
             notices={notices}
             meetings={meetings}
@@ -198,15 +201,15 @@ function MoimJoinPage() {
             isHost={isHost}
             moimId={MoimId}
           />
-        ) : selected === "되는시간" ? (
+        ) : selected === availableTimeKey ? (
           <AvailableTime />
-        ) : selected === "ToDo" ? (
+        ) : selected === todoKey ? (
           <ToDo />
-        ) : selected === "멤버" ? (
+        ) : selected === memberKey ? (
           <Member isHost={isHost} MoimId={MoimId} />
         ) : null}
       </div>
-      <Modal show={isOpen} size="sm" onClose={() => setIsOpen(false)} theme={modalTheme} popup>
+      <Modal show={isAlertModalOpen} size="sm" onClose={() => setAlertModalOpen(false)} theme={modalTheme} popup>
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
@@ -218,7 +221,7 @@ function MoimJoinPage() {
               <button
                 className="py-3 px-5 w-fit text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer"
                 onClick={() => {
-                  setIsOpen(false);
+                  setAlertModalOpen(false);
                 }}
               >
                 확인

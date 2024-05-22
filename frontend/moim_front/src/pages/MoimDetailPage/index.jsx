@@ -13,6 +13,7 @@ import DetailedRight from "../../components/DetailedRight";
 import { Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
+
 const modalTheme = {
   "root": {
     "base": "fixed inset-x-0 top-0 z-50 h-screen overflow-y-auto overflow-x-hidden md:inset-0 md:h-full",
@@ -73,6 +74,7 @@ function MoimDetailPage() {
   const [message, setMessage] = useState("");
   const [moimInfo, setMoimInfo] = useState([]);
   const [writerInfo, setWriterInfo] = useState([]);
+
   const fetchWriter = async () => {
     try {
       const response = await axios.get(
@@ -84,21 +86,23 @@ function MoimDetailPage() {
       console.log(e);
     }
   };
-  
-  useEffect(() => {
-    const fetchMoimDetail = async () => {
-      try {
-        const response = await axios.get(
-          `https://api.moim.today/api/moims/detail/${MoimId}`
-        );
-        setMoimInfo(response.data);
-      } catch (error) {
-        setMessage(error.response.data.message);
-      }
-    };
 
+  const fetchMoimDetail = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.moim.today/api/moims/detail/${MoimId}`
+      );
+      setMoimInfo(response.data);
+    } catch (error) {
+      setMessage(error.response.data.message);
+    }
+  };
+
+  useEffect(() => {
     fetchWriter();
     fetchMoimDetail();
+
+    // eslint-disable-next-line
   }, []);
 
   return (
