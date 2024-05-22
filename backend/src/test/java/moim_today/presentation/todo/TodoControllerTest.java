@@ -143,7 +143,7 @@ public class TodoControllerTest extends ControllerTest {
                                 .queryParameters(
                                         parameterWithName("requestDate").description("조회를 시작할 월 - ex) 2024-05"),
                                         parameterWithName("months").description("조회를 시작할 월로부터 n개월 - ex) n=2 -> 2024-05-01 ~ 2024-07-31"),
-                                        parameterWithName("memberId").description("조회할 멤버 id")
+                                        parameterWithName("memberId").description("조회할 멤버 id , 0을 입력할 경우 모든 멤버의 투두 조회")
                                 )
                                 .responseFields(
                                         fieldWithPath("data[].memberId").type(NUMBER).description("투두 주인 id"),
@@ -184,7 +184,7 @@ public class TodoControllerTest extends ControllerTest {
                                 .queryParameters(
                                         parameterWithName("requestDate").description("조회를 시작할 월 - ex) 2024-05"),
                                         parameterWithName("months").description("조회를 시작할 월로부터 n개월 - ex) n=2 -> 2024-05-01 ~ 2024-07-31"),
-                                        parameterWithName("memberId").description("조회할 멤버 id")
+                                        parameterWithName("memberId").description("조회할 멤버 id , 0을 입력할 경우 모든 멤버의 투두 조회")
                                 )
                                 .responseFields(
                                         fieldWithPath("data[].memberId").type(NUMBER).description("투두 주인 id"),
