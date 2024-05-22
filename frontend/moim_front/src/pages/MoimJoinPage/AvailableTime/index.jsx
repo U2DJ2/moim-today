@@ -1,15 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MiniCalendar from "../ToDo/MiniCalendar";
 import { Datepicker } from "flowbite-react";
 import Calendar from "../../../components/Calendar/PersonalCalendar";
 import { useParams } from "react-router";
+import { fetchMembers } from "../../../api/moim";
+import axios from "axios";
 
-function AvailableTime() {
-  const [selectedDate, setSelectedDate] = useState(null);
+function AvailableTime({ moimId }) {
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [members, setMembers] = useState([]);
 
   const handleMiniCalendarDateSelect = (date) => {
     setSelectedDate(date);
   };
+
+  const GetMembers = async () => {
+    try {
+      const result = await fetchMembers(moimId);
+      setMembers(result.data.moimMembers);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const GetMemberWeekly = async (memberId) => {
+    try {
+      const memberSchedule = await axios.get(
+        `https://api.moim.today/api/schedules/weekly/available-time/members/${memberId}`,
+        {
+          params: {
+            startDate: selectedDate,
+          },
+        }
+      );
+      return console.log(memberSchedule);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    GetMembers(moimId);
+  }, []);
+
   const calendarTheme = {
     root: {
       base: "relative",
@@ -96,23 +131,52 @@ function AvailableTime() {
       },
     },
   };
+  const onClickMember = (member) => {
+    console.log(member);
+    GetMemberWeekly(member.memberId);
+  };
 
   const { MoimId } = useParams();
   return (
     <div className="flex gap-5 h-full w-full">
-      <div className="flex-1">
-        <Datepicker
-          showTodayButton={false}
-          showClearButton={false}
-          theme={calendarTheme}
-          inline
-          onSelectedDateChanged={handleMiniCalendarDateSelect}
-        />
+      <div className="flex flex-col">
+        <div className="flex-1">
+          <Datepicker
+            showTodayButton={false}
+            showClearButton={false}
+            theme={calendarTheme}
+            inline
+            onSelectedDateChanged={handleMiniCalendarDateSelect}
+          />
+          <div className="grid justify-items-center gap-3">
+            {members != null
+              ? members.map((member, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="flex justify-items-center gap-2 cursor-pointer focus:text-scarlet"
+                      onClick={() => onClickMember(member)}
+                    >
+                      <img
+                        className="focus:cursor-pointer w-6 h-6 "
+                        src={member.profileImageUrl}
+                      />
+                      <div className="flex font-Pretendard_Light ">
+                        {member.memberName}
+                      </div>
+                    </div>
+                  );
+                })
+              : null}
+          </div>
+        </div>
       </div>
+
       <div className="flex-[3_3_0%]">
         <Calendar
           selectedDate={selectedDate}
           isAvailable={true}
+          isMeeting={false}
           moimId={MoimId}
         />
       </div>

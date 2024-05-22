@@ -10,12 +10,6 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
-// Modal for Meeting Creation
-import CreationModal from "../../components/CreationModal";
-
-// Temporary event ID generator
-// let eventGuid = 0;
-
 export default function Calendar({
   selectedDate,
   isPersonal,
@@ -34,24 +28,22 @@ export default function Calendar({
 }) {
   const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
   const [events, setEvents] = useState([]);
-  const [calendarStart, setCalendarStart] = useState("");
+  const [calendarStart, setCalendarStart] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   useEffect(() => {
-    // Get current year
     const currentYear = new Date().getFullYear();
-
-    // Fetch all events on component mount
-    // fetchAllEvents(currentYear).catch(console.error);
 
     if (isPersonal) {
       fetchAllEvents(currentYear).catch(console.error);
     } else if (isMeeting) {
-      //isMeeting이 true일 경우
       fetchAvailables();
       fetchMeetings();
     } else if (isAvailable) {
       fetchAvailables();
     }
   }, []);
+
   useEffect(() => {
     fetchAvailables();
   }, [calendarStart]);
@@ -74,7 +66,6 @@ export default function Calendar({
             headers: {
               "Content-Type": "application/json",
             },
-            // Add any other necessary headers or configurations
           }
         );
         allEvents = [
@@ -107,11 +98,16 @@ export default function Calendar({
   async function fetchAvailables() {
     try {
       let allEvents = [];
+      const isPast = new Date(calendarStart) < new Date();
+      const startDate = isPast
+        ? new Date().toISOString().split("T")[0]
+        : calendarStart;
+
       const response = await axios.get(
         `https://api.moim.today/api/schedules/weekly/available-time/moims/${moimId}`,
         {
           params: {
-            startDate: calendarStart,
+            startDate: startDate,
           },
         }
       );
@@ -135,21 +131,18 @@ export default function Calendar({
       allDay: false, // Assuming all events fetched are not all-day events
       backgroundColor: event.colorHex,
     };
-    // display: "background" 속성을 추가
     if (backgroundEvent) {
       formattedEvent.display = "background";
     }
     return formattedEvent;
   }
 
-  // Function to handle date selection
-
   function handleDateSelect(selectInfo) {
-    if (isAvailable) alert("해당 페이지에서는 선택할 수 없습니다.");
+    if (isAvailable) {
+      console.log(selectInfo);
+    }
     let calendarApi = selectInfo.view.calendar;
     if (isMeeting) {
-      setShowModal(true);
-    } else {
       setShowModal(true);
     }
 
