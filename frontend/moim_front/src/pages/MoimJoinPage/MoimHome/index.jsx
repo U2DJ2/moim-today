@@ -73,7 +73,9 @@ function MoimHome({
     <div className="flex flex-col gap-24">
       <div className="grid gap-4">
         <div className="flex gap-4 text-center">
-          <div className="text-3xl font-semibold">공지사항</div>
+          <div className="text-3xl font-Pretendard_Medium font-semibold">
+            공지사항
+          </div>
           {isHost ? (
             <button
               onClick={makeNoticeHandler}
@@ -105,7 +107,9 @@ function MoimHome({
       <div>
         <div className="pb-8">
           <div className="flex">
-            <div className="text-3xl font-semibold pb-4">미팅 확인하기</div>
+            <div className="text-3xl font-Pretendard_Medium font-semibold pb-4">
+              미팅 확인하기
+            </div>
             {isHost ? (
               <button
                 onClick={makeMeetingHandler}

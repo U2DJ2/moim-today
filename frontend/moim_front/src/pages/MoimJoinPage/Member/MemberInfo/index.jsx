@@ -24,7 +24,7 @@ function MemberInfo({
     <div className="flex justify-items-center items-center gap-7 pl-11">
       <img src={profileImg} className="w-12 h-12" />
       <div className="font-Pretendard_Normal text-2xl">{name}</div>
-      {isHost ? (
+      {isHost && memberId ? (
         <button className="hover:text-scarlet" onClick={onClickHandler}>
           내보내기
         </button>
