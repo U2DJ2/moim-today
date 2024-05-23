@@ -3,10 +3,7 @@ package moim_today.presentation.meeting.meeting;
 import moim_today.application.meeting.meeting.MeetingService;
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.domain.member.MemberSession;
-import moim_today.dto.meeting.MeetingCreateResponse;
-import moim_today.dto.meeting.meeting.MeetingCreateRequest;
-import moim_today.dto.meeting.meeting.MeetingDetailResponse;
-import moim_today.dto.meeting.meeting.MeetingSimpleResponse;
+import moim_today.dto.meeting.meeting.*;
 import moim_today.global.annotation.Login;
 import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +41,12 @@ public class MeetingController {
     @GetMapping("/detail/{meetingId}")
     public MeetingDetailResponse findDetailsByMoimId(@PathVariable final long meetingId) {
         return meetingService.findDetailsById(meetingId);
+    }
+
+    @PatchMapping
+    public void updateMeeting(@Login final MemberSession memberSession,
+                              @RequestBody final MeetingUpdateRequest meetingUpdateRequest) {
+        meetingService.updateMeeting(memberSession.id(), meetingUpdateRequest);
     }
 
     @DeleteMapping("/{meetingId}")

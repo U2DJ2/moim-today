@@ -107,11 +107,12 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     }
 
     @Override
-    public long findHostIdByMeetingId(final long meetingId) {
+    public long getHostIdByMeetingId(final long meetingId) {
         return queryFactory.select(moimJpaEntity.memberId)
                 .from(meetingJpaEntity)
                 .join(moimJpaEntity).on(moimJpaEntity.id.eq(meetingJpaEntity.moimId))
-                .fetchFirst();
+                .stream().findAny()
+                .orElseThrow(() -> new NotFoundException(MEETING_NOT_FOUND_ERROR.message()));
     }
 
     @Override

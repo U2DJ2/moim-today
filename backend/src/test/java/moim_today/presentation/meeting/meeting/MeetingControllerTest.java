@@ -5,9 +5,11 @@ import moim_today.application.meeting.meeting.MeetingService;
 import moim_today.domain.meeting.enums.MeetingCategory;
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.meeting.MeetingCreateRequest;
+import moim_today.dto.meeting.meeting.MeetingUpdateRequest;
 import moim_today.fake_class.meeting.meeting.FakeMeetingService;
 import moim_today.util.ControllerTest;
 import moim_today.util.EnumDocsUtils;
+import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -221,6 +223,66 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("members[0].username").type(STRING).description("회원 이름"),
                                         fieldWithPath("members[0].memberProfileImageUrl").type(STRING)
                                                 .description("프로필 이미지 url")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("미팅 정보를 수정한다.")
+    @Test
+    void updateMeeting() throws Exception {
+        MeetingUpdateRequest meetingUpdateRequest = MeetingUpdateRequest.builder()
+                .meetingId(MEETING_ID.longValue())
+                .agenda(MEETING_AGENDA.value())
+                .place(MEETING_PLACE.value())
+                .build();
+
+        String json = objectMapper.writeValueAsString(meetingUpdateRequest);
+
+        mockMvc.perform(
+                        patch("/api/meetings")
+                                .contentType(APPLICATION_JSON)
+                                .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("미팅 정보 수정 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅")
+                                .summary("미팅 정보 수정")
+                                .requestFields(
+                                        fieldWithPath("meetingId").type(NUMBER).description("미팅 id"),
+                                        fieldWithPath("agenda").type(STRING).description("미팅 의제"),
+                                        fieldWithPath("place").type(STRING).description("미팅 장소")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("해당 미팅의 주최자가 아닌 사람은 미팅을 수정할 수 없다.")
+    @Test
+    void updateMeetingFail() throws Exception {
+        MeetingUpdateRequest meetingUpdateRequest = MeetingUpdateRequest.builder()
+                .meetingId(9999L)
+                .agenda(MEETING_AGENDA.value())
+                .place(MEETING_PLACE.value())
+                .build();
+
+        String json = objectMapper.writeValueAsString(meetingUpdateRequest);
+
+        mockMvc.perform(
+                        patch("/api/meetings")
+                                .contentType(APPLICATION_JSON)
+                                .content(json)
+                )
+                .andExpect(status().isForbidden())
+                .andDo(document("미팅 수정 실패 - 주최자가 아님",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅")
+                                .summary("미팅 정보 수정")
+                                .requestFields(
+                                        fieldWithPath("meetingId").type(NUMBER).description("미팅 id"),
+                                        fieldWithPath("agenda").type(STRING).description("미팅 의제"),
+                                        fieldWithPath("place").type(STRING).description("미팅 장소")
                                 )
                                 .build()
                         )));
