@@ -46,13 +46,6 @@ export default function Calendar({
   }, []);
 
   useEffect(() => {
-    if (memberId != null) {
-      GetMemberWeekly(memberId);
-    }
-    fetchAvailables();
-  }, [calendarStart]);
-
-  useEffect(() => {
     if (calendarRef.current && selectedDate) {
       Promise.resolve().then(() => {
         calendarRef.current.getApi().gotoDate(selectedDate);
@@ -63,6 +56,7 @@ export default function Calendar({
   const GetMemberWeekly = async (memberId) => {
     try {
       let allEvents = [];
+      console.log(calendarStart);
       const memberSchedule = await axios.get(
         `https://api.moim.today/api/schedules/weekly/available-time/members/${memberId}`,
         {
@@ -89,6 +83,7 @@ export default function Calendar({
   useEffect(() => {
     console.log(memberId);
     if (memberId != null) GetMemberWeekly(memberId);
+    fetchAvailables();
   }, [memberId, calendarStart]);
 
   async function fetchAllEvents(year) {
