@@ -21,8 +21,10 @@ public interface TodoService {
 
     TodoResponse getById(final long todoId);
 
-    List<MemberMoimTodoResponse> findAllMemberTodos(final long memberId, final YearMonth startDate, final int months);
+    List<MemberMoimTodoResponse> findAllMemberTodos(final long memberId, final YearMonth requestDate, final int months);
 
-    MemberMoimTodoResponse findMemberMoimTodosInMoim(final long memberId, final long moimId, final YearMonth startDate,
+    MemberMoimTodoResponse findMemberMoimTodosInMoim(final long memberId, final long moimId, final YearMonth requestDate,
                                                      final int months);
+
+    TodoUpdateResponse updateTodoProgress(final long memberId, final TodoProgressUpdateRequest todoProgressUpdateRequest);
 }

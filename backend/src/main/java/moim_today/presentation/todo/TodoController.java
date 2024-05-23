@@ -30,9 +30,9 @@ public class TodoController {
     @GetMapping
     public CollectionResponse<List<MemberMoimTodoResponse>> findAllTodoByMemberId(
             @Login final MemberSession memberSession,
-            @RequestParam final YearMonth startDate,
+            @RequestParam final YearMonth requestDate,
             @RequestParam final int months){
-        return CollectionResponse.from(todoService.findAllMemberTodos(memberSession.id(), startDate, months));
+        return CollectionResponse.from(todoService.findAllMemberTodos(memberSession.id(), requestDate, months));
     }
 
     @GetMapping("moim/{moimId}")
@@ -54,6 +54,12 @@ public class TodoController {
     public TodoUpdateResponse updateTodo(@Login final MemberSession memberSession,
                                          @RequestBody final TodoUpdateRequest todoUpdateRequest) {
         return todoService.updateTodo(memberSession.id(), todoUpdateRequest);
+    }
+
+    @PatchMapping("/todo-progress")
+    public TodoUpdateResponse updateTodoProgress(@Login final MemberSession memberSession,
+                                                 @RequestBody final TodoProgressUpdateRequest todoProgressUpdateRequest){
+        return todoService.updateTodoProgress(memberSession.id(), todoProgressUpdateRequest);
     }
 
     @DeleteMapping

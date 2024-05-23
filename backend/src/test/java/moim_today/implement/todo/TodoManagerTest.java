@@ -256,4 +256,23 @@ class TodoManagerTest extends ImplementTest {
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(TODO_NOT_FOUND_ERROR.message());
     }
+
+    @DisplayName("투두의 진행상황을 업데이트한다")
+    @Test
+    void updateTodoProgress() {
+        // given
+        TodoJpaEntity todoJpaEntity = TodoJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .todoProgress(PENDING)
+                .build();
+
+        todoRepository.save(todoJpaEntity);
+
+        // when
+        todoManager.updateTodoProgress(MEMBER_ID.longValue(), todoJpaEntity.getId(), COMPLETED);
+        TodoJpaEntity updatedTodo = todoRepository.getById(todoJpaEntity.getId());
+
+        // then
+        assertThat(updatedTodo.getTodoProgress()).isEqualTo(COMPLETED);
+    }
 }

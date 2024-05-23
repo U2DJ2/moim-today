@@ -49,4 +49,8 @@ public class TodoJpaEntity extends BaseTimeEntity {
         this.contents = todoUpdateRequest.contents();
         this.todoDate = todoUpdateRequest.todoDate();
     }
+
+    public void updateTodoProgress(final TodoProgress todoProgress) {
+        this.todoProgress = todoProgress;
+    }
 }
