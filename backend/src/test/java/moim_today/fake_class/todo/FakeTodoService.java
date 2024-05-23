@@ -38,7 +38,7 @@ public class FakeTodoService implements TodoService {
 
     @Override
     public List<MemberTodoResponse> findMembersTodosInMoim(final long requestMemberId, final long memberId, final long moimId,
-                                                           final YearMonth startDate, final int months) {
+                                                           final YearMonth requestDate, final int months) {
         if (moimId == MOIM_ID.longValue() + 1L) {
             throw new NotFoundException(JOINED_MOIM_MEMBER_NOT_FOUND.message());
         }
@@ -127,7 +127,7 @@ public class FakeTodoService implements TodoService {
     }
 
     @Override
-    public List<MemberMoimTodoResponse> findAllMemberTodos(final long memberId, final YearMonth startDate, final int months) {
+    public List<MemberMoimTodoResponse> findAllMemberTodos(final long memberId, final YearMonth requestDate, final int months) {
         TodoResponse todo1 = TodoResponse.builder()
                 .todoId(TODO_ID.longValue())
                 .todoProgress(COMPLETED)
@@ -173,7 +173,16 @@ public class FakeTodoService implements TodoService {
     }
 
     @Override
-    public MemberMoimTodoResponse findMemberMoimTodosInMoim(final long memberId, final long moimId, final YearMonth startDate, final int months) {
+    public MemberMoimTodoResponse findMemberMoimTodosInMoim(final long memberId, final long moimId, final YearMonth requestDate, final int months) {
         return null;
+    }
+
+    @Override
+    public TodoUpdateResponse updateTodoProgress(final long memberId, final TodoProgressUpdateRequest todoProgressUpdateRequest) {
+        return TodoUpdateResponse.from(TodoJpaEntity.builder()
+                .todoProgress(COMPLETED)
+                .contents("투두 완성하기")
+                .todoDate(LocalDate.of(2024, 5, 15))
+                .build());
     }
 }

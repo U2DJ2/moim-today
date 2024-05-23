@@ -1,10 +1,12 @@
 package moim_today.implement.todo;
 
+import moim_today.domain.todo.enums.TodoProgress;
 import moim_today.dto.todo.*;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.ForbiddenException;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -31,6 +33,7 @@ public class TodoManager {
         this.joinedMoimFinder = joinedMoimFinder;
     }
 
+    @Transactional(readOnly = true)
     public  List<TodoResponse> findMemberTodosInMoim(final long memberId, final Long moimId,
                                                         final YearMonth fromDate, final int months) {
         LocalDate startDate = fromDate.atDay(MONTH_START_POINT.time());
@@ -39,6 +42,7 @@ public class TodoManager {
         return todoFinder.findAllByDateRange(memberId, moimId, startDate, endDate);
     }
 
+    @Transactional(readOnly = true)
     public List<MemberTodoResponse> findAllMembersTodosInMoim(final long moimId,
                                                               final YearMonth fromDate,
                                                               final int months) {
@@ -53,17 +57,32 @@ public class TodoManager {
         }).toList();
     }
 
+    @Transactional(readOnly = true)
+    public TodoJpaEntity getById(final long todoId) {
+        return todoFinder.getById(todoId);
+    }
+
+    @Transactional
     public TodoUpdateResponse updateTodo(final long memberId, final TodoUpdateRequest todoUpdateRequest) {
         TodoJpaEntity originalTodo = todoFinder.getById(todoUpdateRequest.todoId());
         validateTodoOwner(memberId, originalTodo);
         return todoUpdater.updateTodo(originalTodo, todoUpdateRequest);
     }
 
+    @Transactional
     public void deleteTodo(final long memberId, final TodoRemoveRequest todoRemoveRequest) {
         long deleteTodoId = todoRemoveRequest.todoId();
         TodoJpaEntity originalTodo = todoFinder.getById(deleteTodoId);
         validateTodoOwner(memberId, originalTodo);
         todoRemover.deleteById(deleteTodoId);
+    }
+
+    @Transactional
+    public TodoUpdateResponse updateTodoProgress(final long memberId, final long todoId, final TodoProgress todoProgress) {
+        TodoJpaEntity findTodo = todoFinder.getById(todoId);
+        validateTodoOwner(memberId, findTodo);
+        findTodo.updateTodoProgress(todoProgress);
+        return TodoUpdateResponse.from(findTodo);
     }
 
     private void validateTodoOwner(final long memberId, final TodoJpaEntity todoJpaEntity) {
@@ -74,9 +93,5 @@ public class TodoManager {
 
     private boolean isTodoOwner(final long memberId, final TodoJpaEntity todoJpaEntity) {
         return todoJpaEntity.getMemberId() == memberId;
-    }
-
-    public TodoJpaEntity getById(final long todoId) {
-        return todoFinder.getById(todoId);
     }
 }
