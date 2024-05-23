@@ -18,6 +18,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static java.util.Objects.*;
 import static moim_today.global.constant.MoimConstant.VIEWED_MOIM_COOKIE_NAME;
@@ -200,5 +203,58 @@ class MoimUpdaterTest extends ImplementTest {
         // then
         MoimJpaEntity updatedMoim = moimRepository.getById(moimId);
         assertThat(updatedMoim.getViews()).isEqualTo(1);
+    }
+
+    @DisplayName("모임의 현재 인원을 업데이트한다")
+    @Test
+    void updateMoimCurrentCount() {
+        // given
+        MoimJpaEntity moim = MoimJpaEntity.builder()
+                .currentCount(0)
+                .build();
+
+        moimRepository.save(moim);
+
+        // when
+        moimUpdater.updateMoimCurrentCount(moim.getId(), 1);
+        MoimJpaEntity m = moimRepository.getById(moim.getId());
+
+        // then
+        assertThat(m.getCurrentCount()).isEqualTo(1);
+    }
+
+    @DisplayName("모임의 현재 인원을 2명이 동시에 1씩 증가시켜도 2로 업데이트 되어야한다.")
+    @Test
+    void updateConcurrentMoimCurrentCount() throws Exception{
+        // given
+        final int TWO_PEOPLE = 2;
+        final int MOIM_MAXIMUM_PEOPLE = 2;
+
+        ExecutorService executorService = Executors.newFixedThreadPool(TWO_PEOPLE);
+        CountDownLatch latch = new CountDownLatch(TWO_PEOPLE);
+
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .capacity(MOIM_MAXIMUM_PEOPLE)
+                .memberId(MEMBER_ID.longValue())
+                .build();
+
+        MoimJpaEntity savedMoim = moimRepository.save(moimJpaEntity);
+
+        // when
+        for (int i = 0; i < TWO_PEOPLE; i++) {
+            executorService.submit(() -> {
+                try {
+                    moimUpdater.updateMoimCurrentCount(savedMoim.getId(), 1);
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+
+        latch.await();
+        MoimJpaEntity resultMoim = moimRepository.getById(savedMoim.getId());
+
+        // then
+        assertThat(resultMoim.getCurrentCount()).isEqualTo(MOIM_MAXIMUM_PEOPLE);
     }
 }

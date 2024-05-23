@@ -69,11 +69,13 @@ public class MoimServiceImpl implements MoimService{
         this.moimManager = moimManager;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<MyMoimResponse> findAllMyJoinedMoimResponse(final long memberId) {
         return moimFinder.findAllMyMoimResponse(memberId);
     }
 
+    @Transactional
     @Override
     public MoimIdResponse createMoim(final long memberId, final long universityId,
                            final MoimCreateRequest moimCreateRequest) {
@@ -82,12 +84,14 @@ public class MoimServiceImpl implements MoimService{
         return MoimIdResponse.from(moim.getId());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public MoimImageResponse uploadMoimImage(final MultipartFile file) {
         String imageUrl = fileUploader.uploadFile(MOIM_IMAGE.value(), file);
         return MoimImageResponse.from(imageUrl);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public MoimDetailResponse getMoimDetail(final long moimId,
                                             final String viewedMoimsCookieByUrlEncoded,
@@ -97,6 +101,7 @@ public class MoimServiceImpl implements MoimService{
         return MoimDetailResponse.from(moimJpaEntity);
     }
 
+    @Transactional
     @Override
     public void updateMoim(final long memberId, final MoimUpdateRequest moimUpdateRequest) {
         moimUpdater.updateMoim(memberId, moimUpdateRequest);
@@ -118,6 +123,7 @@ public class MoimServiceImpl implements MoimService{
         scheduleRemover.deleteAllByMeetingIdIn(meetingIds);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public MoimMemberTabResponse findMoimMembers(final long memberId, final long moimId) {
         MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);

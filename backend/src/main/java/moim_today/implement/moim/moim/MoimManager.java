@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
+import static moim_today.global.constant.NumberConstant.MINUS_ONE;
+import static moim_today.global.constant.NumberConstant.PLUS_ONE;
+
 @Implement
 public class MoimManager {
 
@@ -30,6 +33,7 @@ public class MoimManager {
     private final ScheduleRemover scheduleRemover;
     private final JoinedMoimAppender joinedMoimAppender;
     private final MoimFinder moimFinder;
+    private final MoimUpdater moimUpdater;
 
     public MoimManager(final JoinedMoimFinder joinedMoimFinder,
                        final JoinedMoimRemover joinedMoimRemover,
@@ -40,7 +44,8 @@ public class MoimManager {
                        final MeetingCommentUpdater meetingCommentUpdater,
                        final ScheduleRemover scheduleRemover,
                        final JoinedMoimAppender joinedMoimAppender,
-                       final MoimFinder moimFinder) {
+                       final MoimFinder moimFinder,
+                       final MoimUpdater moimUpdater) {
         this.joinedMoimFinder = joinedMoimFinder;
         this.joinedMoimRemover = joinedMoimRemover;
         this.todoRemover = todoRemover;
@@ -51,6 +56,7 @@ public class MoimManager {
         this.scheduleRemover = scheduleRemover;
         this.joinedMoimAppender = joinedMoimAppender;
         this.moimFinder = moimFinder;
+        this.moimUpdater = moimUpdater;
     }
 
     @Transactional
@@ -59,6 +65,7 @@ public class MoimManager {
         joinedMoimFinder.validateMemberInMoim(memberId, moimId);
 
         joinedMoimRemover.deleteMoimMember(moimId, memberId);
+        moimUpdater.updateMoimCurrentCount(moimId, MINUS_ONE.value());
         todoRemover.deleteAllTodosCreatedByMemberInMoim(moimId, memberId);
 
         List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId);
@@ -73,6 +80,7 @@ public class MoimManager {
         MoimJpaEntity enterMoimEntity = moimFinder.getByIdWithPessimisticLock(moimId);
         moimFinder.validateCapacity(enterMoimEntity);
         joinedMoimFinder.validateMemberNotInMoim(moimId, requestMemberId);
+        moimUpdater.updateMoimCurrentCount(moimId, PLUS_ONE.value());
 
         joinedMoimAppender.createJoinedMoim(requestMemberId, moimId);
         List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId);

@@ -382,7 +382,7 @@ class MoimControllerTest extends ControllerTest {
                 .andDo(document("모임 멤버 삭제 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
-                                .summary("모임에서 멤버 삭제")
+                                .summary("모임에서 멤버가 탈퇴한다")
                                 .requestFields(
                                         fieldWithPath("moimId").type(NUMBER).description("탈퇴할 모임 ID")
                                 )
