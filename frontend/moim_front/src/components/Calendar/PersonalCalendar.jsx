@@ -38,8 +38,7 @@ export default function Calendar({
     if (isPersonal) {
       fetchAllEvents(currentYear).catch(console.error);
     } else if (isMeeting) {
-      fetchAvailables();
-      fetchMeetings();
+      memberId != null ? fetchAvailables() : fetchMeetings();
     } else if (isAvailable) {
       fetchAvailables();
     }
@@ -54,6 +53,7 @@ export default function Calendar({
   }, [selectedDate]);
 
   const GetMemberWeekly = async (memberId) => {
+    //모임 내 멤버 별 가용시간
     try {
       let allEvents = [];
       console.log(calendarStart);
@@ -65,25 +65,27 @@ export default function Calendar({
           },
         }
       );
-      console.log(memberSchedule);
       allEvents = [
         ...allEvents,
-        ...memberSchedule.data.data.map((event) => mapEventData(event, true)),
+        ...memberSchedule.data.data.map((event) =>
+          mapEventData(event, true, true)
+        ),
       ];
-      return setEvents(allEvents);
+      console.log(memberSchedule);
+      console.log(allEvents);
+      setEvents(allEvents);
     } catch (e) {
       console.log(e);
     }
   };
-  useEffect(() => {
-    const calendarApi = calendarRef.current.getApi();
-    calendarApi.refetchEvents(); // 이벤트 데이터를 다시 가져옴
-  }, [memberId]); // memberId가 변경될 때마다 실행
 
   useEffect(() => {
-    console.log(memberId);
+    console.log("member:", memberId);
+    console.log(calendarStart);
     if (memberId != null) GetMemberWeekly(memberId);
-    fetchAvailables();
+    else {
+      fetchAvailables();
+    }
   }, [memberId, calendarStart]);
 
   async function fetchAllEvents(year) {
@@ -128,6 +130,7 @@ export default function Calendar({
   }
 
   async function fetchAvailables() {
+    //모임 가용시간
     try {
       let allEvents = [];
       const isPast = new Date(calendarStart) < new Date();
@@ -146,8 +149,10 @@ export default function Calendar({
       );
       allEvents = [
         ...allEvents,
-        ...response.data.data.map((event) => mapEventData(event, true)),
+        ...response.data.data.map((event) => mapEventData(event, true, true)),
       ];
+      console.log(response);
+      console.log(allEvents);
       setEvents(allEvents);
     } catch (e) {
       console.log(e);
@@ -155,9 +160,9 @@ export default function Calendar({
   }
 
   // Function to map event data
-  function mapEventData(event, backgroundEvent) {
+  function mapEventData(event, backgroundEvent, calendar) {
     const formattedEvent = {
-      id: event.scheduleId || event.calendarId,
+      id: calendar ? event.calenderId : event.scheduleId,
       title: event.scheduleName || "",
       start: event.startDateTime.replace(" ", "T"),
       end: event.endDateTime.replace(" ", "T"),
@@ -172,7 +177,7 @@ export default function Calendar({
 
   function handleDateSelect(selectInfo) {
     if (isAvailable) {
-      console.log(selectInfo);
+      console.log("handleDateSelected", selectInfo);
     }
     let calendarApi = selectInfo.view.calendar;
     if (isMeeting) {
@@ -183,16 +188,6 @@ export default function Calendar({
     setEndDateTime(selectInfo.endStr);
 
     calendarApi.unselect(); // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
-      });
-    }
   }
 
   // Function to handle event add

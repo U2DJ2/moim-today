@@ -1,12 +1,19 @@
 import CardComponent from "../Home/CardContainer";
 import { useEffect, useState } from "react";
-import { GET } from "../../utils/axios";
+import axios from "axios";
 function Overview() {
   const [selected, setSelected] = useState("전체");
   const getCardInfo = async () => {
     try {
-      const result = await GET("api/moims");
-      console.log(result);
+      const result = await axios.get(
+        "https://api.moim.today/api/moims/joined/simple",
+        {
+          parmas: {
+            ended: true,
+          },
+        }
+      );
+      return result;
     } catch (e) {
       console.log(e);
     }
@@ -19,18 +26,12 @@ function Overview() {
   const data = [
     {
       id: 1,
-      status: "신청 중",
-      count: 6,
-      icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/720c1ca45e519369b2e6a4ef49ba13891dab6bf813521c27420e80ccdd5b6238?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&",
-    },
-    {
-      id: 2,
       status: "진행 중",
       count: 12,
       icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/9f6d72af111237b40dbc9c87a58fd534ce36155aa7ac714e7ca1e4bd8f683743?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&",
     },
     {
-      id: 3,
+      id: 2,
       status: "완료 됨",
       count: 8,
       icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/9011c6a31110b1d66dd0ea1aa7077c3c448b229dbff2aa32eca37b71e373b39c?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&",
