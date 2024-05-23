@@ -101,6 +101,7 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
                 .where(joinedMoimJpaEntity.memberId.eq(memberId).and(
                         applyEndedFilter(now, ended)
                 ))
+                .orderBy(joinedMoimJpaEntity.createdAt.desc())
                 .fetch();
     }
 
