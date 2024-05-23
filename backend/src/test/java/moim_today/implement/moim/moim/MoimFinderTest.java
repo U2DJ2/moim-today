@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static moim_today.global.constant.NumberConstant.DEFAULT_JOINED_MOIM_PAGE_SIZE;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_CAPACITY_ERROR;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_NOT_FOUND_ERROR;
 import static moim_today.util.TestConstant.*;
@@ -610,6 +611,7 @@ class MoimFinderTest extends ImplementTest {
     @Test
     void findAllMyMoimSimpleResponses() {
         // given1
+        long lastMoimId = 0;
         long memberId = MEMBER_ID.longValue();
         long otherMemberId = MEMBER_ID.longValue() + 1;
 
@@ -635,12 +637,71 @@ class MoimFinderTest extends ImplementTest {
         moimRepository.save(moimC);
 
         //when
-        List<MoimSimpleResponse> inProgressAllMyMoimSimpleResponses = moimFinder.findAllMyMoimSimpleResponses(memberId, LocalDate.of(2024, 5, 24), false);
-        List<MoimSimpleResponse> endedAllMyMoimSimpleResponses = moimFinder.findAllMyMoimSimpleResponses(memberId, LocalDate.of(2024, 5, 24), true);
+        List<MoimSimpleResponse> inProgressAllMyMoimSimpleResponses = moimFinder.findAllMyMoimSimpleResponses(memberId, lastMoimId, LocalDate.of(2024, 5, 24), false);
+        List<MoimSimpleResponse> endedAllMyMoimSimpleResponses = moimFinder.findAllMyMoimSimpleResponses(memberId, lastMoimId, LocalDate.of(2024, 5, 24), true);
 
         //then
         assertThat(inProgressAllMyMoimSimpleResponses.size()).isEqualTo(0);
         assertThat(endedAllMyMoimSimpleResponses.size()).isEqualTo(2);
+    }
+
+    @DisplayName("내가 생성한 모임 지난모임/진행중인모임 별로 전부 조회할때, No Offset 페이징 처리를 한다.")
+    @Test
+    void findAllMyMoimSimpleResponsesPaging() {
+        // given1
+        long lastMoimId = 0;
+        long memberId = MEMBER_ID.longValue();
+        long otherMemberId = MEMBER_ID.longValue() + 1;
+
+        MoimJpaEntity moimA = MoimJpaEntity.builder()
+                .memberId(memberId)
+                .endDate(LocalDate.of(2024,5,23))
+                .build();
+
+        // given2
+        MoimJpaEntity moimB = MoimJpaEntity.builder()
+                .memberId(memberId)
+                .endDate(LocalDate.of(2024,5,23))
+                .build();
+
+        // given3
+        MoimJpaEntity moimC = MoimJpaEntity.builder()
+                .memberId(memberId)
+                .endDate(LocalDate.of(2024,5,23))
+                .build();
+
+        MoimJpaEntity moimD = MoimJpaEntity.builder()
+                .memberId(memberId)
+                .endDate(LocalDate.of(2024,5,23))
+                .build();
+
+        MoimJpaEntity moimE = MoimJpaEntity.builder()
+                .memberId(memberId)
+                .endDate(LocalDate.of(2024,5,23))
+                .build();
+
+        MoimJpaEntity moimF = MoimJpaEntity.builder()
+                .memberId(otherMemberId)
+                .endDate(LocalDate.of(2024,5,23))
+                .build();
+
+        moimRepository.save(moimA);
+        moimRepository.save(moimB);
+        moimRepository.save(moimC);
+        moimRepository.save(moimD);
+        moimRepository.save(moimE);
+        moimRepository.save(moimF);
+
+        //when
+        List<MoimSimpleResponse> endedAllMyMoimSimpleResponses1 = moimFinder.findAllMyMoimSimpleResponses(memberId, lastMoimId, LocalDate.of(2024, 5, 24), true);
+        MoimSimpleResponse lastMoim = endedAllMyMoimSimpleResponses1.get(DEFAULT_JOINED_MOIM_PAGE_SIZE.value() - 1);
+        lastMoimId = lastMoim.moimId();
+        List<MoimSimpleResponse> endedAllMyMoimSimpleResponses2 = moimFinder.findAllMyMoimSimpleResponses(memberId, lastMoimId, LocalDate.of(2024, 5, 24), true);
+
+
+        //then
+        assertThat(endedAllMyMoimSimpleResponses1.size()).isEqualTo(4);
+        assertThat(endedAllMyMoimSimpleResponses2.size()).isEqualTo(1);
     }
 
     private MemberJpaEntity saveRandomMember() {

@@ -175,12 +175,16 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMyMoimSimpleResponses(final long hostMemberId, final Boolean ended) {
-        return moimManager.findAllMyMoimSimpleResponses(hostMemberId, LocalDate.now(), ended);
+    public List<MoimSimpleResponse> findAllMyMoimSimpleResponses(final long hostMemberId,
+                                                                 final long lastMoimId,
+                                                                 final Boolean ended) {
+        return moimManager.findAllMyMoimSimpleResponses(hostMemberId, lastMoimId, LocalDate.now(), ended);
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId, final boolean ended) {
-        return moimManager.findAllMyJoinedMoimSimpleResponses(memberId, LocalDate.now(), ended);
+    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId,
+                                                                       final long lastMoimId,
+                                                                       final boolean ended) {
+        return moimManager.findAllMyJoinedMoimSimpleResponses(memberId, lastMoimId, LocalDate.now(), ended);
     }
 }

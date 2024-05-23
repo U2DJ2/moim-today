@@ -59,8 +59,9 @@ public class JoinedMoimFinder {
     }
 
     public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId,
+                                                                       final long lastMoimId,
                                                                        final LocalDate now,
                                                                        final boolean ended) {
-        return joinedMoimRepository.findAllMyJoinedMoimSimpleResponses(memberId, now, ended);
+        return joinedMoimRepository.findAllMyJoinedMoimSimpleResponses(memberId, lastMoimId, now, ended);
     }
 }

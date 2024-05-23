@@ -95,12 +95,18 @@ public class MoimManager {
     }
 
     @Transactional(readOnly = true)
-    public List<MoimSimpleResponse> findAllMyMoimSimpleResponses(final long hostMemberId, final LocalDate now, final boolean ended) {
-        return moimFinder.findAllMyMoimSimpleResponses(hostMemberId, now, ended);
+    public List<MoimSimpleResponse> findAllMyMoimSimpleResponses(final long hostMemberId,
+                                                                 final long lastMoimId,
+                                                                 final LocalDate now,
+                                                                 final boolean ended) {
+        return moimFinder.findAllMyMoimSimpleResponses(hostMemberId, lastMoimId, now, ended);
     }
 
     @Transactional(readOnly = true)
-    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId, final LocalDate now, final boolean ended) {
-        return joinedMoimFinder.findAllMyJoinedMoimSimpleResponses(memberId, now, ended);
+    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId,
+                                                                       final long lastMoimId,
+                                                                       final LocalDate now,
+                                                                       final boolean ended) {
+        return joinedMoimFinder.findAllMyJoinedMoimSimpleResponses(memberId, lastMoimId, now, ended);
     }
 }

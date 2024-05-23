@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
+import static moim_today.global.constant.NumberConstant.DEFAULT_JOINED_MOIM_PAGE_SIZE;
 import static moim_today.global.constant.exception.MoimExceptionConstant.JOINED_MOIM_MEMBER_IS_EMPTY;
 import static moim_today.persistence.entity.moim.joined_moim.QJoinedMoimJpaEntity.joinedMoimJpaEntity;
 import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.moimJpaEntity;
@@ -86,7 +87,10 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId, final LocalDate now, final boolean ended) {
+    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId,
+                                                                       final long lastMoimId,
+                                                                       final LocalDate now,
+                                                                       final boolean ended) {
         return queryFactory.select(new QMoimSimpleResponse(
                         moimJpaEntity.id,
                         moimJpaEntity.title,
@@ -98,10 +102,13 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
                 ))
                 .from(joinedMoimJpaEntity)
                 .join(moimJpaEntity).on(joinedMoimJpaEntity.moimId.eq(moimJpaEntity.id))
-                .where(joinedMoimJpaEntity.memberId.eq(memberId).and(
-                        applyEndedFilter(now, ended)
-                ))
-                .orderBy(joinedMoimJpaEntity.createdAt.desc())
+                .where(
+                        joinedMoimJpaEntity.memberId.eq(memberId),
+                        applyEndedFilter(now, ended),
+                        ltLastMoimId(lastMoimId)
+                )
+                .orderBy(moimJpaEntity.id.desc())
+                .limit(DEFAULT_JOINED_MOIM_PAGE_SIZE.value())
                 .fetch();
     }
 
@@ -110,5 +117,12 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
             return moimJpaEntity.endDate.before(now);
         }
         return moimJpaEntity.endDate.goe(now);
+    }
+
+    private BooleanExpression ltLastMoimId(final long lastMoimId) {
+        if (lastMoimId == 0) {
+            return null;
+        }
+        return moimJpaEntity.id.lt(lastMoimId);
     }
 }

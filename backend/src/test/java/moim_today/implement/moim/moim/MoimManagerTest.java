@@ -65,6 +65,8 @@ class MoimManagerTest extends ImplementTest {
     @Test
     void findAllMyMoimSimpleResponses() {
         // given1
+        long lastMoimId = 0;
+
         MemberJpaEntity member1 = MemberJpaEntity.builder()
                 .username(USERNAME.value())
                 .build();
@@ -113,9 +115,9 @@ class MoimManagerTest extends ImplementTest {
 
         // when
         List<MoimSimpleResponse> endedMoims = moimManager.findAllMyMoimSimpleResponses(
-                member1.getId(), LocalDate.of(2024, 5, 16), true);
+                member1.getId(), lastMoimId, LocalDate.of(2024, 5, 16), true);
         List<MoimSimpleResponse> inProgressMoims = moimManager.findAllMyMoimSimpleResponses(
-                member1.getId(), LocalDate.of(2024, 5, 16), false);
+                member1.getId(), lastMoimId, LocalDate.of(2024, 5, 16), false);
 
         // then
         assertThat(endedMoims.size()).isEqualTo(1);
@@ -125,6 +127,8 @@ class MoimManagerTest extends ImplementTest {
     @Test
     void findAllJoinedMoimSimpleResponseExceptOtherMembers() {
         // given
+        long lastMoimId = 0;
+
         MemberJpaEntity me = MemberJpaEntity.builder()
                 .username(USERNAME.value())
                 .build();
@@ -184,9 +188,9 @@ class MoimManagerTest extends ImplementTest {
 
         // when
         List<MoimSimpleResponse> myEndedMoims = moimManager.findAllMyMoimSimpleResponses(
-                me.getId(), LocalDate.of(2023,5,12), true);
+                me.getId(), lastMoimId, LocalDate.of(2023,5,12), true);
         List<MoimSimpleResponse> myInProgressMoims = moimManager.findAllMyMoimSimpleResponses(
-                me.getId(), LocalDate.of(2023, 5, 12), false);
+                me.getId(), lastMoimId, LocalDate.of(2023, 5, 12), false);
 
         // then
         assertThat(myEndedMoims.size()).isEqualTo(0);
@@ -197,6 +201,8 @@ class MoimManagerTest extends ImplementTest {
     @Test
     void findAllMyJoinedMoimSimpleResponses() {
         // given
+        long lastMoimId = 0;
+
         MemberJpaEntity me = MemberJpaEntity.builder()
                 .username(USERNAME.value())
                 .build();
@@ -234,9 +240,9 @@ class MoimManagerTest extends ImplementTest {
 
         // when
         List<MoimSimpleResponse> myEndedMoims = moimManager.findAllMyMoimSimpleResponses(
-                me.getId(), LocalDate.of(2023,5,12), true);
+                me.getId(), lastMoimId, LocalDate.of(2023,5,12), true);
         List<MoimSimpleResponse> myInProgressMoims = moimManager.findAllMyMoimSimpleResponses(
-                me.getId(), LocalDate.of(2023, 5, 12), false);
+                me.getId(), lastMoimId, LocalDate.of(2023, 5, 12), false);
 
         // then
         assertThat(myEndedMoims.size()).isEqualTo(0);

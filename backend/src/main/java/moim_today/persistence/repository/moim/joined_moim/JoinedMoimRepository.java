@@ -26,5 +26,5 @@ public interface JoinedMoimRepository {
 
     boolean existsByMoimIdAndMemberId(final long moimId, final long memberId);
 
-    List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId, final LocalDate now, final boolean ended);
+    List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId, final long lastMoimId, final LocalDate now, final boolean ended);
 }

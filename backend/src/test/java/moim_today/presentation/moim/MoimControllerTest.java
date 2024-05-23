@@ -814,28 +814,31 @@ class MoimControllerTest extends ControllerTest {
     void findMyJoinedMoimSimpleResponses() throws Exception {
 
         mockMvc.perform(get("/api/moims/joined")
-                        .queryParam("ended", "false"))
+                        .queryParam("lastMoimId", "0")
+                        .queryParam("ended", "false")
+                )
                 .andExpect(status().isOk())
                 .andDo(document("자신이 참여한 모임 리스트를 완료 여부로 조회 성공",
-                                resource(ResourceSnippetParameters.builder()
-                                        .tag("모임")
-                                        .summary("로그인한 회원이 참여한 모임 리스트 자세한 정보 조회")
-                                        .queryParameters(
-                                                parameterWithName("ended").description("완료된 모임을 찾을 지 여부 - [true, false]")
-                                        )
-                                        .responseFields(
-                                                fieldWithPath("data[0].moimId").type(NUMBER).description("모임 Id"),
-                                                fieldWithPath("data[0].title").type(STRING).description("모임명"),
-                                                fieldWithPath("data[0].capacity").type(NUMBER).description("모집 인원"),
-                                                fieldWithPath("data[0].currentCount").type(NUMBER).description("현재 인원"),
-                                                fieldWithPath("data[0].imageUrl").type(STRING).description("모임 사진 URL"),
-                                                fieldWithPath("data[0].moimCategory").type(VARIES).description(String.format("카테고리 - %s",
-                                                        EnumDocsUtils.getEnumNames(MoimCategory.class))),
-                                                fieldWithPath("data[0].displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
-                                                        EnumDocsUtils.getEnumNames(DisplayStatus.class)))
-                                        )
-                                        .build())
-                        ));
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("로그인한 회원이 참여한 모임 리스트 자세한 정보 조회")
+                                .queryParameters(
+                                        parameterWithName("lastMoimId").description("마지막 모임 Id"),
+                                        parameterWithName("ended").description("완료된 모임을 찾을 지 여부 - [true, false]")
+                                )
+                                .responseFields(
+                                        fieldWithPath("data[0].moimId").type(NUMBER).description("모임 Id"),
+                                        fieldWithPath("data[0].title").type(STRING).description("모임명"),
+                                        fieldWithPath("data[0].capacity").type(NUMBER).description("모집 인원"),
+                                        fieldWithPath("data[0].currentCount").type(NUMBER).description("현재 인원"),
+                                        fieldWithPath("data[0].imageUrl").type(STRING).description("모임 사진 URL"),
+                                        fieldWithPath("data[0].moimCategory").type(VARIES).description(String.format("카테고리 - %s",
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
+                                        fieldWithPath("data[0].displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
+                                                EnumDocsUtils.getEnumNames(DisplayStatus.class)))
+                                )
+                                .build())
+                ));
     }
 
     @DisplayName("회원이 호스트인 모임들을 완료 여부에 따라 카드 정보로 반환한다")
@@ -843,6 +846,7 @@ class MoimControllerTest extends ControllerTest {
     void findAllHostMoimSimpleResponse() throws Exception {
 
         mockMvc.perform(get("/api/moims/joined/host")
+                        .queryParam("lastMoimId", "0")
                         .queryParam("ended", "false"))
                 .andExpect(status().isOk())
                 .andDo(document("자신이 호스트인 모임 리스트를 완료 여부로 조회 성공",
@@ -850,6 +854,7 @@ class MoimControllerTest extends ControllerTest {
                                 .tag("모임")
                                 .summary("로그인한 회원이 호스트인 모임 리스트 자세한 정보 조회")
                                 .queryParameters(
+                                        parameterWithName("lastMoimId").description("마지막 모임 Id"),
                                         parameterWithName("ended").description("완료된 모임을 찾을 지 여부 - [true, false]")
                                 )
                                 .responseFields(

@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static moim_today.global.constant.NumberConstant.DEFAULT_JOINED_MOIM_PAGE_SIZE;
 import static moim_today.global.constant.SymbolConstant.PERCENT;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_NOT_FOUND_ERROR;
 import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.moimJpaEntity;
@@ -106,6 +107,7 @@ public class MoimRepositoryImpl implements MoimRepository {
 
     @Override
     public List<MoimSimpleResponse> findAllMyMoimSimpleResponses(final long hostMemberId,
+                                                                 final long lastMoimId,
                                                                  final LocalDate now,
                                                                  final boolean ended) {
         return queryFactory.select(new QMoimSimpleResponse(
@@ -118,10 +120,13 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.displayStatus
                 ))
                 .from(moimJpaEntity)
-                .where(moimJpaEntity.memberId.eq(hostMemberId).and(
-                        applyEndedFilter(now, ended)
-                ))
-                .orderBy(moimJpaEntity.createdAt.desc())
+                .where(
+                        moimJpaEntity.memberId.eq(hostMemberId),
+                        applyEndedFilter(now, ended),
+                        ltLastMoimId(lastMoimId)
+                )
+                .orderBy(moimJpaEntity.id.desc())
+                .limit(DEFAULT_JOINED_MOIM_PAGE_SIZE.value())
                 .fetch();
     }
 
@@ -140,8 +145,9 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.displayStatus
                 ))
                 .from(moimJpaEntity)
-                .where(moimJpaEntity.universityId.eq(universityId)
-                        .and(applyMoimCategoryFilter(moimCategoryDto))
+                .where(
+                        moimJpaEntity.universityId.eq(universityId),
+                        applyMoimCategoryFilter(moimCategoryDto)
                 )
                 .orderBy(createOrderBySpecifier(moimSortedFilter))
                 .fetch();
@@ -179,5 +185,12 @@ public class MoimRepositoryImpl implements MoimRepository {
             return moimJpaEntity.endDate.before(now);
         }
         return moimJpaEntity.endDate.goe(now);
+    }
+
+    private BooleanExpression ltLastMoimId(final long lastMoimId) {
+        if (lastMoimId == 0) {
+            return null;
+        }
+        return moimJpaEntity.id.lt(lastMoimId);
     }
 }
