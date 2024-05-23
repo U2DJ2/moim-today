@@ -24,7 +24,6 @@ public enum ColorHex {
     GRAY("#999999"),
     CORAL("#CC6666");
 
-
     private final String value;
 
     ColorHex(final String value) {

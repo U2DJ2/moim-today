@@ -1,9 +1,11 @@
 package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingCategory;
-import moim_today.dto.meeting.MeetingCreateRequest;
+import moim_today.dto.meeting.meeting.MeetingCreateResponse;
+import moim_today.dto.meeting.meeting.MeetingCreateRequest;
 import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.global.annotation.Implement;
+import moim_today.global.error.ForbiddenException;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingAppender;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingFinder;
 import moim_today.implement.moim.moim.MoimFinder;
@@ -17,7 +19,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-import static moim_today.global.constant.TimeConstant.*;
+import static moim_today.global.constant.NumberConstant.SCHEDULE_MEETING_ID;
+import static moim_today.global.constant.TimeConstant.ONE_WEEK;
+import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
 
 
 @Implement
@@ -40,46 +44,73 @@ public class MeetingManager {
     }
 
     @Transactional
-    public void createMeeting(final MeetingCreateRequest meetingCreateRequest) {
+    public MeetingCreateResponse createMeeting(final long memberId,
+                                               final MeetingCreateRequest meetingCreateRequest,
+                                               final LocalDate currentDate) {
+        validateMemberIsHost(memberId, meetingCreateRequest);
         MeetingCategory meetingCategory = meetingCreateRequest.meetingCategory();
         String moimTitle = moimFinder.getTitleById(meetingCreateRequest.moimId());
 
         if (meetingCategory.equals(MeetingCategory.SINGLE)) {
-            createSingleMeeting(meetingCreateRequest, moimTitle);
-
-        } else if (meetingCategory.equals(MeetingCategory.REGULAR)) {
-            createRegularMeeting(meetingCreateRequest, moimTitle);
+            return createSingleMeeting(meetingCreateRequest, moimTitle);
+        } else {
+            return createRegularMeeting(meetingCreateRequest, moimTitle, currentDate);
         }
     }
 
-    private void createSingleMeeting(final MeetingCreateRequest meetingCreateRequest, final String moimTitle) {
+    private void validateMemberIsHost(final long memberId, final MeetingCreateRequest meetingCreateRequest) {
+        if (!moimFinder.isHost(memberId, meetingCreateRequest.moimId())) {
+            throw new ForbiddenException(ORGANIZER_FORBIDDEN_ERROR.message());
+        }
+    }
+
+    private MeetingCreateResponse createSingleMeeting(final MeetingCreateRequest meetingCreateRequest, final String moimTitle) {
         MeetingJpaEntity meetingJpaEntity = meetingCreateRequest.toEntity(
                         meetingCreateRequest.startDateTime(),
                         meetingCreateRequest.endDateTime()
                 );
 
-        meetingAppender.saveMeeting(meetingJpaEntity);
+        MeetingJpaEntity saveEntity = meetingAppender.saveMeeting(meetingJpaEntity);
         joinedMeetingAppender.saveJoinedMeeting(meetingCreateRequest.moimId(), meetingJpaEntity.getId());
         createSchedules(moimTitle, meetingJpaEntity);
+
+        return MeetingCreateResponse.of(saveEntity.getId(), meetingCreateRequest);
     }
 
-    private void createRegularMeeting(final MeetingCreateRequest meetingCreateRequest, final String moimTitle) {
+    private MeetingCreateResponse createRegularMeeting(final MeetingCreateRequest meetingCreateRequest,
+                                                       final String moimTitle, final LocalDate currentDate) {
         MoimDateResponse moimDateResponse = moimFinder.findMoimDate(meetingCreateRequest.moimId());
-        LocalDate startDate = moimDateResponse.startDate();
-        LocalDate endDate = moimDateResponse.endDate();
+        LocalDate moimEndDate = moimDateResponse.endDate();
 
-        LocalTime startTime = meetingCreateRequest.startDateTime().toLocalTime();
-        LocalTime endTime = meetingCreateRequest.endDateTime().toLocalTime();
+        LocalTime meetingStartTime = meetingCreateRequest.startDateTime().toLocalTime();
+        LocalTime meetingEndTime = meetingCreateRequest.endDateTime().toLocalTime();
+        LocalDate meetingStartDate = getMeetingStartDate(meetingCreateRequest, currentDate);
 
-        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusWeeks(ONE_WEEK.time())) {
-            LocalDateTime startDateTime = LocalDateTime.of(date, startTime);
-            LocalDateTime endDateTime = LocalDateTime.of(date, endTime);
+        long firstMeetingId = SCHEDULE_MEETING_ID.value();
+
+        for (LocalDate date = meetingStartDate; !date.isAfter(moimEndDate); date = date.plusWeeks(ONE_WEEK.time())) {
+            LocalDateTime startDateTime = LocalDateTime.of(date, meetingStartTime);
+            LocalDateTime endDateTime = LocalDateTime.of(date, meetingEndTime);
 
             MeetingJpaEntity meetingJpaEntity = meetingCreateRequest.toEntity(startDateTime, endDateTime);
-            meetingAppender.saveMeeting(meetingJpaEntity);
+            MeetingJpaEntity saveEntity = meetingAppender.saveMeeting(meetingJpaEntity);
+            if(firstMeetingId == SCHEDULE_MEETING_ID.value()) {
+                firstMeetingId = saveEntity.getId();
+            }
+
             joinedMeetingAppender.saveJoinedMeeting(meetingCreateRequest.moimId(), meetingJpaEntity.getId());
             createSchedules(moimTitle, meetingJpaEntity);
         }
+
+        return MeetingCreateResponse.of(firstMeetingId, meetingCreateRequest);
+    }
+
+    private LocalDate getMeetingStartDate(final MeetingCreateRequest meetingCreateRequest,
+                                          final LocalDate currentDate) {
+        LocalDate meetingStartDate = meetingCreateRequest.startDateTime().toLocalDate();
+        meetingStartDate = meetingStartDate.isAfter(currentDate) ? meetingStartDate : currentDate;
+
+        return meetingStartDate;
     }
 
     private void createSchedules(final String moimTitle, final MeetingJpaEntity meetingJpaEntity) {

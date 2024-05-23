@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static moim_today.global.constant.FileTypeConstant.MOIM_IMAGE;
@@ -66,6 +67,11 @@ public class MoimServiceImpl implements MoimService{
         this.joinedMoimRemover = joinedMoimRemover;
         this.scheduleRemover = scheduleRemover;
         this.moimManager = moimManager;
+    }
+
+    @Override
+    public List<MyMoimResponse> findAllMyJoinedMoimResponse(final long memberId) {
+        return moimFinder.findAllMyMoimResponse(memberId);
     }
 
     @Override
@@ -151,17 +157,30 @@ public class MoimServiceImpl implements MoimService{
     @Override
     public void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest) {
         long enterMoimId = moimJoinRequest.moimId();
-
         moimManager.appendMemberToMoim(requestMemberId, enterMoimId);
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
-        return moimFinder.findAllMoimResponse(moimCategoryDto, moimSortedFilter);
+    public List<MoimSimpleResponse> findAllMoimResponses(
+            final long universityId,
+            final MoimCategoryDto moimCategoryDto,
+            final MoimSortedFilter moimSortedFilter) {
+
+        return moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
     }
 
     @Override
-    public List<MoimSimpleResponse> searchMoim(final String searchParam) {
-        return moimFinder.searchMoim(searchParam);
+    public List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam) {
+        return moimFinder.searchMoim(universityId, searchParam);
+    }
+
+    @Override
+    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponse(final long memberId,
+                                                                      final boolean ended,
+                                                                      final boolean onlyHost) {
+        if(onlyHost){
+            return moimManager.findAllHostMoimSimpleResponsesByEndStatus(memberId, LocalDate.now(), ended);
+        }
+        return moimManager.findAllJoinedMoimSimpleResponseByEndStatus(memberId, LocalDate.now(), ended);
     }
 }

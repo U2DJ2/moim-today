@@ -9,7 +9,7 @@ build/
 **/src/main/generated/
 
 ### initDB ###
-**/src/main/java/moim_today/global/init/**
+**/src/main/java/moim_today/**/init/**
 
 ### Properties ###
 application.yml

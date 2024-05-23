@@ -26,7 +26,7 @@ public class ScheduleController {
     public CollectionResponse<List<ScheduleResponse>> findAllByWeekly(@Login final MemberSession memberSession,
                                                                       @RequestParam final LocalDate startDate) {
         List<ScheduleResponse> scheduleResponses = scheduleService.findAllByWeekly(memberSession.id(), startDate);
-        return CollectionResponse.of(scheduleResponses);
+        return CollectionResponse.from(scheduleResponses);
     }
 
     @GetMapping("/weekly/available-time/moims/{moimId}")
@@ -35,7 +35,7 @@ public class ScheduleController {
             @RequestParam final LocalDate startDate) {
         List<AvailableTimeInMoimResponse> availableTimeInMoimResponses =
                 scheduleService.findWeeklyAvailableTimeInMoim(moimId, startDate);
-        return CollectionResponse.of(availableTimeInMoimResponses);
+        return CollectionResponse.from(availableTimeInMoimResponses);
     }
 
     @GetMapping("/weekly/available-time/members/{memberId}")
@@ -44,14 +44,14 @@ public class ScheduleController {
             @RequestParam final LocalDate startDate) {
         List<AvailableTimeForMemberResponse> availableTimeInMoimResponses =
                 scheduleService.findWeeklyAvailableTimeForMember(memberId, startDate);
-        return CollectionResponse.of(availableTimeInMoimResponses);
+        return CollectionResponse.from(availableTimeInMoimResponses);
     }
 
     @GetMapping("/monthly")
     public CollectionResponse<List<ScheduleResponse>> findAllByMonthly(@Login final MemberSession memberSession,
                                                                        @RequestParam final YearMonth yearMonth) {
         List<ScheduleResponse> scheduleResponses = scheduleService.findAllByMonthly(memberSession.id(), yearMonth);
-        return CollectionResponse.of(scheduleResponses);
+        return CollectionResponse.from(scheduleResponses);
     }
 
     @PostMapping("/timetable")

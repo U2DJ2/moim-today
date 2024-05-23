@@ -17,7 +17,7 @@ import static moim_today.global.constant.MailConstant.*;
 @Implement
 public class MailScheduler {
 
-    private static final int ONE_HOUR_IN_MILLISECONDS = 60 * 60 * 1000;
+    private static final String HOURLY_CRON_EXPRESSION = "0 0 * * * *";
 
     private final MailSender mailSender;
     private final MeetingFinder meetingFinder;
@@ -30,7 +30,7 @@ public class MailScheduler {
         this.joinedMeetingUpdater = joinedMeetingUpdater;
     }
 
-    @Scheduled(fixedRate = ONE_HOUR_IN_MILLISECONDS)
+    @Scheduled(cron = HOURLY_CRON_EXPRESSION)
     public void sendUpcomingMeetingMails() {
         LocalDateTime currentDateTime = LocalDateTime.now();
         List<UpcomingMeetingNoticeResponse> upcomingNotices = meetingFinder.findUpcomingNotices(currentDateTime);

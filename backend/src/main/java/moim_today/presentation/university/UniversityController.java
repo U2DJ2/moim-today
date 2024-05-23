@@ -27,6 +27,6 @@ public class UniversityController {
 
     @GetMapping
     public CollectionResponse<List<UniversityResponse>> getUniversity(){
-        return CollectionResponse.of(universityService.getUniversities());
+        return CollectionResponse.from(universityService.getUniversities());
     }
 }

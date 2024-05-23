@@ -66,9 +66,13 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberHostResponse isHost(final long memberId, final long moimId) {
         boolean isHost = moimManager.isHost(memberId, moimId);
-        return MemberHostResponse.builder()
-                .isHost(isHost)
-                .build();
+        return MemberHostResponse.from(isHost);
+    }
+
+    @Override
+    public MemberJoinedMoimResponse isJoinedMoim(final long moimId, final long memberId) {
+        boolean isJoinedMoim = moimManager.isJoinedMoim(moimId, memberId);
+        return MemberJoinedMoimResponse.from(isJoinedMoim);
     }
 
     @Override

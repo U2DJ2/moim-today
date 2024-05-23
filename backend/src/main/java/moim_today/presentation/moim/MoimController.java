@@ -31,9 +31,27 @@ public class MoimController {
         this.moimNoticeService = moimNoticeService;
     }
 
+    @GetMapping
+    public CollectionResponse<List<MyMoimResponse>> findAllMyJoinedMoimResponse(@Login final MemberSession memberSession) {
+        List<MyMoimResponse> myMoimResponses = moimService.findAllMyJoinedMoimResponse(memberSession.id());
+        return CollectionResponse.from(myMoimResponses);
+    }
+
+    @GetMapping("/joined/simple")
+    public CollectionResponse<List<MoimSimpleResponse>> findAllMyJoinedMoimSimpleResponse(
+            @Login final MemberSession memberSession,
+            @RequestParam final Boolean ended,
+            @RequestParam(required = false, defaultValue = "false") final Boolean onlyHost){
+        List<MoimSimpleResponse> myMoimSimpleResponses = moimService.findAllMyJoinedMoimSimpleResponse(
+                memberSession.id(), ended, onlyHost
+        );
+        return CollectionResponse.from(myMoimSimpleResponses);
+    }
+
+
     @PostMapping
     public MoimIdResponse createMoim(@Login final MemberSession memberSession,
-                           @RequestBody final MoimCreateRequest moimCreateRequest) {
+                                     @RequestBody final MoimCreateRequest moimCreateRequest) {
         return moimService.createMoim(memberSession.id(), memberSession.universityId(), moimCreateRequest);
     }
 
@@ -50,9 +68,11 @@ public class MoimController {
     }
 
     @GetMapping("/simple")
-    public CollectionResponse<List<MoimSimpleResponse>> findAllMoimResponse(@RequestParam final MoimCategoryDto moimCategoryDto,
-                                                                            @RequestParam final MoimSortedFilter moimSortedFilter) {
-        return CollectionResponse.of(moimService.findAllMoimResponse(moimCategoryDto, moimSortedFilter));
+    public CollectionResponse<List<MoimSimpleResponse>> findAllMoimResponses(
+            @Login final MemberSession memberSession,
+            @RequestParam final MoimCategoryDto moimCategoryDto,
+            @RequestParam final MoimSortedFilter moimSortedFilter) {
+        return CollectionResponse.from(moimService.findAllMoimResponses(memberSession.universityId(), moimCategoryDto, moimSortedFilter));
     }
 
     @PatchMapping
@@ -100,7 +120,7 @@ public class MoimController {
     @GetMapping("/notices/simple")
     public CollectionResponse<List<MoimNoticeSimpleResponse>> findAllMoimNotice(@Login final MemberSession memberSession,
                                                                                 @RequestParam final long moimId) {
-        return CollectionResponse.of(moimNoticeService.findAllMoimNotice(memberSession.id(), moimId));
+        return CollectionResponse.from(moimNoticeService.findAllMoimNotice(memberSession.id(), moimId));
     }
 
     @GetMapping("/notices/detail")
@@ -122,12 +142,14 @@ public class MoimController {
     }
 
     @GetMapping("/search")
-    public CollectionResponse<List<MoimSimpleResponse>> searchMoim(@RequestParam final String searchParam) {
-        return CollectionResponse.of(moimService.searchMoim(searchParam));
+    public CollectionResponse<List<MoimSimpleResponse>> searchMoim(
+            @Login final MemberSession memberSession,
+            @RequestParam final String searchParam) {
+        return CollectionResponse.from(moimService.searchMoim(memberSession.universityId(), searchParam));
     }
 
     @GetMapping("/categories")
     public CollectionResponse<MoimCategory[]> getMoimCategories() {
-        return CollectionResponse.of(MoimCategory.values());
+        return CollectionResponse.from(MoimCategory.values());
     }
 }

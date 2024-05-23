@@ -2,9 +2,7 @@ package moim_today.fake_class.meeting.meeting;
 
 import moim_today.application.meeting.meeting.MeetingService;
 import moim_today.domain.meeting.enums.MeetingStatus;
-import moim_today.dto.meeting.MeetingCreateRequest;
-import moim_today.dto.meeting.MeetingDetailResponse;
-import moim_today.dto.meeting.MeetingSimpleResponse;
+import moim_today.dto.meeting.meeting.*;
 import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.global.error.ForbiddenException;
 import moim_today.util.TestConstant;
@@ -19,8 +17,8 @@ import static moim_today.util.TestConstant.*;
 public class FakeMeetingService implements MeetingService {
 
     @Override
-    public void createMeeting(final MeetingCreateRequest meetingCreateRequest) {
-
+    public MeetingCreateResponse createMeeting(final long memberId, final MeetingCreateRequest meetingCreateRequest) {
+        return MeetingCreateResponse.of(MEETING_ID.longValue(), meetingCreateRequest);
     }
 
     @Override
@@ -78,6 +76,13 @@ public class FakeMeetingService implements MeetingService {
                 .place(MEETING_PLACE.value())
                 .members(List.of(memberSimpleResponse1, memberSimpleResponse2, memberSimpleResponse3))
                 .build();
+    }
+
+    @Override
+    public void updateMeeting(final long memberId, final MeetingUpdateRequest meetingUpdateRequest) {
+        if (meetingUpdateRequest.meetingId() != MEETING_ID.longValue()) {
+            throw new ForbiddenException(MEETING_FORBIDDEN_ERROR.message());
+        }
     }
 
     @Override

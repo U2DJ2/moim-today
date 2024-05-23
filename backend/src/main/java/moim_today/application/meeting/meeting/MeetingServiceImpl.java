@@ -1,15 +1,18 @@
 package moim_today.application.meeting.meeting;
 
+import moim_today.application.meeting.joined_meeting.JoinedMeetingService;
+import moim_today.application.schedule.ScheduleService;
 import moim_today.domain.meeting.enums.MeetingStatus;
-import moim_today.dto.meeting.MeetingCreateRequest;
-import moim_today.dto.meeting.MeetingDetailResponse;
-import moim_today.dto.meeting.MeetingSimpleDao;
-import moim_today.dto.meeting.MeetingSimpleResponse;
+import moim_today.dto.meeting.meeting.*;
 import moim_today.implement.meeting.meeting.MeetingFinder;
 import moim_today.implement.meeting.meeting.MeetingManager;
 import moim_today.implement.meeting.meeting.MeetingRemover;
+import moim_today.implement.meeting.meeting.MeetingUpdater;
+import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,18 +21,25 @@ public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingManager meetingManager;
     private final MeetingFinder meetingFinder;
+    private final MeetingUpdater meetingUpdater;
     private final MeetingRemover meetingRemover;
+    private final ScheduleService scheduleService;
+    private final JoinedMeetingService joinedMeetingService;
 
     public MeetingServiceImpl(final MeetingManager meetingManager, final MeetingFinder meetingFinder,
-                              final MeetingRemover meetingRemover) {
+                              final MeetingUpdater meetingUpdater, final MeetingRemover meetingRemover,
+                              final ScheduleService scheduleService, final JoinedMeetingService joinedMeetingService) {
         this.meetingManager = meetingManager;
         this.meetingFinder = meetingFinder;
+        this.meetingUpdater = meetingUpdater;
         this.meetingRemover = meetingRemover;
+        this.scheduleService = scheduleService;
+        this.joinedMeetingService = joinedMeetingService;
     }
 
     @Override
-    public void createMeeting(final MeetingCreateRequest meetingCreateRequest) {
-        meetingManager.createMeeting(meetingCreateRequest);
+    public MeetingCreateResponse createMeeting(final long memberId, final MeetingCreateRequest meetingCreateRequest) {
+        return meetingManager.createMeeting(memberId, meetingCreateRequest, LocalDate.now());
     }
 
     @Override
@@ -46,7 +56,15 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
+    public void updateMeeting(final long memberId, final MeetingUpdateRequest meetingUpdateRequest) {
+        meetingUpdater.updateMeeting(memberId, meetingUpdateRequest);
+    }
+
+    @Transactional
+    @Override
     public void deleteMeeting(final long memberId, final long meetingId) {
         meetingRemover.deleteMeeting(meetingId, meetingId);
+        scheduleService.deleteAllByMeetingId(meetingId);
+        joinedMeetingService.deleteAllByMeetingId(meetingId);
     }
 }

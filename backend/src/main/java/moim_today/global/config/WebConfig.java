@@ -29,6 +29,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/login",
                         "/api/certification/**",
                         "/api/sign-up",
+                        "/api/session-validation",
+                        "/api",
                         "/api/universities",
                         "/api/universities/departments/**",
                         "/api/departments/university-name",

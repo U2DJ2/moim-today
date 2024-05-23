@@ -96,4 +96,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     public void deleteSchedule(final long memberId, final long scheduleId) {
         scheduleRemover.deleteSchedule(memberId, scheduleId);
     }
+
+    @Override
+    public void deleteAllByMeetingId(final long meetingId) {
+        scheduleRemover.deleteAllByMeetingId(meetingId);
+    }
 }

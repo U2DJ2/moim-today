@@ -17,6 +17,7 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.docume
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static moim_today.util.TestConstant.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -56,7 +57,7 @@ class AuthControllerTest extends ControllerTest {
                 ));
     }
 
-    @DisplayName("이메일/비밀번호가 틀리면 예오가 발생한다.")
+    @DisplayName("이메일/비밀번호가 틀리면 예외가 발생한다.")
     @Test
     void loginTestFail() throws Exception {
         MemberLoginRequest memberLoginRequest = new MemberLoginRequest(WRONG_EMAIL.value(), WRONG_PASSWORD.value(), true);
@@ -136,6 +137,23 @@ class AuthControllerTest extends ControllerTest {
                                         fieldWithPath("username").type(STRING).description("이름")
                                 )
                                 .build())
+                ));
+    }
+
+    @DisplayName("로그인 세션이 유효한지를 검증한다.")
+    @Test
+    void validateMemberSession() throws Exception {
+        mockMvc.perform(get("/api/session-validation"))
+                .andExpect(status().isOk())
+                .andDo(document("회원 세션 인증 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("인증")
+                                .summary("회원 세션 인증")
+                                .responseFields(
+                                        fieldWithPath("isValidateMemberSession").type(BOOLEAN).description("세션 인증 여부")
+                                )
+                                .build()
+                        )
                 ));
     }
 }

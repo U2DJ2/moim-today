@@ -23,6 +23,21 @@ import static moim_today.util.TestConstant.*;
 public class FakeMoimService implements MoimService {
 
     @Override
+    public List<MyMoimResponse> findAllMyJoinedMoimResponse(final long memberId) {
+        MyMoimResponse myMoimResponse1 = MyMoimResponse.builder()
+                .moimId(1L)
+                .title(MOIM_TITLE.value())
+                .build();
+
+        MyMoimResponse myMoimResponse2 = MyMoimResponse.builder()
+                .moimId(2L)
+                .title(MOIM_TITLE.value())
+                .build();
+
+        return List.of(myMoimResponse1, myMoimResponse2);
+    }
+
+    @Override
     public MoimIdResponse createMoim(final long memberId, final long universityId, final MoimCreateRequest moimCreateRequest) {
         return MoimIdResponse.from(MOIM_ID.longValue());
     }
@@ -131,7 +146,9 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
+    public List<MoimSimpleResponse> findAllMoimResponses(final long universityId,
+                                                         final MoimCategoryDto moimCategoryDto,
+                                                         final MoimSortedFilter moimSortedFilter) {
         MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
                 .moimId(1L)
                 .title(MOIM_TITLE.value())
@@ -156,7 +173,34 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public List<MoimSimpleResponse> searchMoim(final String searchParam) {
+    public List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam) {
+        MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
+                .moimId(1L)
+                .title(MOIM_TITLE.value())
+                .capacity(CAPACITY.intValue())
+                .currentCount(CURRENT_COUNT.intValue())
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PUBLIC)
+                .build();
+
+        MoimSimpleResponse moimSimpleResponse2 = MoimSimpleResponse.builder()
+                .moimId(2L)
+                .title(MOIM_TITLE.value())
+                .capacity(CAPACITY.intValue())
+                .currentCount(CURRENT_COUNT.intValue())
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PUBLIC)
+                .build();
+
+        return List.of(moimSimpleResponse1, moimSimpleResponse2);
+    }
+
+    @Override
+    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponse(final long memberId,
+                                                                      final boolean ended,
+                                                                      final boolean onlyHost) {
         MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
                 .moimId(1L)
                 .title(MOIM_TITLE.value())

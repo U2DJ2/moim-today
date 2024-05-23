@@ -4,6 +4,7 @@ import moim_today.domain.moim.MoimSortedFilter;
 import moim_today.dto.moim.moim.MoimDateResponse;
 import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.dto.moim.moim.MoimSimpleResponse;
+import moim_today.dto.moim.moim.MyMoimResponse;
 import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
@@ -14,7 +15,7 @@ import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.repository.moim.moim.MoimRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_CAPACITY_ERROR;
@@ -32,6 +33,12 @@ public class MoimFinder {
         this.joinedMoimFinder = joinedMoimFinder;
         this.memberFinder = memberFinder;
         this.moimRepository = moimRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public List<MyMoimResponse> findAllMyMoimResponse(final long memberId) {
+        List<Long> moimIds = joinedMoimFinder.findMoimIdsByMemberId(memberId);
+        return moimRepository.findAllMyMoimResponse(moimIds);
     }
 
     @Transactional(readOnly = true)
@@ -66,8 +73,8 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
-        return moimRepository.findAllMoimResponse(moimCategoryDto, moimSortedFilter);
+    public List<MoimSimpleResponse> findAllMoimResponses(final long universityId, final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
+        return moimRepository.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
     }
 
     @Transactional(readOnly = true)
@@ -87,13 +94,16 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<MoimSimpleResponse> searchMoim(final String searchParam) {
-        return moimRepository.searchMoimBySearchParam(searchParam);
+    public List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam) {
+        return moimRepository.searchMoimBySearchParam(universityId, searchParam);
     }
 
-    private List<Long> extractMemberIds(final List<JoinedMoimJpaEntity> joinedMoimJpaEntities) {
-        List<Long> memberIds = new ArrayList<>();
-        joinedMoimJpaEntities.forEach(e -> memberIds.add(e.getMemberId()));
-        return memberIds;
+    @Transactional(readOnly = true)
+    public List<MoimSimpleResponse> findEndedMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now) {
+        return moimRepository.findEndedMoimSimpleResponsesByMoimIds(moimIds, now);
+    }
+
+    public List<MoimSimpleResponse> findInProgressMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now) {
+        return moimRepository.findInProgressMoimSimpleResponsesByMoimIds(moimIds, now);
     }
 }

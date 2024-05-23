@@ -31,6 +31,11 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
     }
 
     @Override
+    public void deleteAllByMeetingId(final long meetingId) {
+        joinedMeetingJpaRepository.deleteAllByMeetingId(meetingId);
+    }
+
+    @Override
     public JoinedMeetingJpaEntity save(final JoinedMeetingJpaEntity joinedMeetingJpaEntity) {
         return joinedMeetingJpaRepository.save(joinedMeetingJpaEntity);
     }
@@ -49,8 +54,9 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
     }
 
     @Override
-    public JoinedMeetingJpaEntity findByMemberIdAndMeetingId(final long memberId, final long meetingId) {
-        return joinedMeetingJpaRepository.findByMemberIdAndMeetingId(memberId, meetingId);
+    public JoinedMeetingJpaEntity getByMemberIdAndMeetingId(final long memberId, final long meetingId) {
+        return joinedMeetingJpaRepository.findByMemberIdAndMeetingId(memberId, meetingId)
+                .orElseThrow(() -> new NotFoundException(JOINED_MEETING_NOT_FOUND_ERROR.message()));
     }
 
     @Override
@@ -89,5 +95,13 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
                 .join(memberJpaEntity).on(memberJpaEntity.id.eq(joinedMeetingJpaEntity.memberId))
                 .where(joinedMeetingJpaEntity.meetingId.eq(meetingId))
                 .fetch();
+    }
+
+    @Override
+    public boolean alreadyJoinedMeeting(final long memberId, final long meetingId) {
+        return queryFactory.selectFrom(joinedMeetingJpaEntity)
+                .where(joinedMeetingJpaEntity.memberId.eq(memberId)
+                        .and(joinedMeetingJpaEntity.meetingId.eq(meetingId)))
+                .fetchOne() != null;
     }
 }

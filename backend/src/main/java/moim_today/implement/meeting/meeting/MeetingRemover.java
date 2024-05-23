@@ -20,7 +20,7 @@ public class MeetingRemover {
     @Transactional
     public void deleteMeeting(final long memberId, final long meetingId) {
         MeetingJpaEntity meetingJpaEntity = meetingRepository.getById(meetingId);
-        long hostId = meetingRepository.findHostIdByMeetingId(meetingId);
+        long hostId = meetingRepository.getHostIdByMeetingId(meetingId);
         validateHostId(memberId, hostId);
 
         meetingRepository.delete(meetingJpaEntity);

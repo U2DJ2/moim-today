@@ -15,7 +15,7 @@ public class MeetingAppender {
     }
 
     @Transactional
-    public void saveMeeting(final MeetingJpaEntity meetingJpaEntity) {
-        meetingRepository.save(meetingJpaEntity);
+    public MeetingJpaEntity saveMeeting(final MeetingJpaEntity meetingJpaEntity) {
+        return meetingRepository.save(meetingJpaEntity);
     }
 }

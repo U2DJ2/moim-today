@@ -18,7 +18,7 @@ public class JoinedMeetingController {
     @PostMapping("/members/meetings/{meetingId}/acceptance")
     public void acceptanceJoinMeeting(@Login final MemberSession memberSession,
                                       @PathVariable final long meetingId) {
-        joinedMeetingService.refuseJoinMeeting(memberSession.id(), meetingId);
+        joinedMeetingService.acceptanceJoinMeeting(memberSession.id(), meetingId);
     }
 
     @PostMapping("/members/meetings/{meetingId}/refusal")

@@ -3,12 +3,12 @@ package moim_today.persistence.repository.meeting.meeting;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.dto.mail.QUpcomingMeetingNoticeResponse;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
-import moim_today.dto.meeting.MeetingSimpleDao;
-import moim_today.dto.meeting.QMeetingSimpleDao;
+import moim_today.dto.meeting.meeting.MeetingSimpleDao;
+import moim_today.dto.meeting.meeting.QMeetingSimpleDao;
 import moim_today.global.error.NotFoundException;
+import moim_today.persistence.entity.email_subscribe.QEmailSubscribeJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
-import moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity;
-import moim_today.persistence.entity.moim.moim.QMoimJpaEntity;
+import moim_today.persistence.entity.member.QMemberJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +16,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_NOT_FOUND_ERROR;
-import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.*;
+import static moim_today.persistence.entity.email_subscribe.QEmailSubscribeJpaEntity.*;
+import static moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity.joinedMeetingJpaEntity;
 import static moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity.meetingJpaEntity;
-import static moim_today.persistence.entity.member.QMemberJpaEntity.*;
-import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.*;
+import static moim_today.persistence.entity.member.QMemberJpaEntity.memberJpaEntity;
+import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.moimJpaEntity;
 
 @Repository
 public class MeetingRepositoryImpl implements MeetingRepository {
@@ -54,9 +55,11 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                                 joinedMeetingJpaEntity.attendance
                         ))
                 .from(meetingJpaEntity)
-                .where(meetingJpaEntity.moimId.eq(moimId))
-                .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id)
-                        .and(joinedMeetingJpaEntity.memberId.eq(memberId)))
+                .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id))
+                .where(
+                        meetingJpaEntity.moimId.eq(moimId)
+                                .and(joinedMeetingJpaEntity.memberId.eq(memberId))
+                )
                 .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
     }
@@ -64,17 +67,20 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     @Override
     public List<MeetingSimpleDao> findAllUpcomingByMoimId(final long moimId, final long memberId,
                                                           final LocalDateTime currentDateTime) {
-        return queryFactory.select(new QMeetingSimpleDao(
-                        meetingJpaEntity.id,
-                        meetingJpaEntity.agenda,
-                        meetingJpaEntity.startDateTime,
-                        joinedMeetingJpaEntity.attendance
-                ))
+        return queryFactory.select(
+                        new QMeetingSimpleDao(
+                                meetingJpaEntity.id,
+                                meetingJpaEntity.agenda,
+                                meetingJpaEntity.startDateTime,
+                                joinedMeetingJpaEntity.attendance
+                        ))
                 .from(meetingJpaEntity)
-                .where(meetingJpaEntity.moimId.eq(moimId)
-                        .and(meetingJpaEntity.startDateTime.after(currentDateTime)))
-                .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id)
-                        .and(joinedMeetingJpaEntity.memberId.eq(memberId)))
+                .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id))
+                .where(
+                        meetingJpaEntity.moimId.eq(moimId)
+                                .and(meetingJpaEntity.startDateTime.after(currentDateTime))
+                                .and(joinedMeetingJpaEntity.memberId.eq(memberId))
+                )
                 .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
     }
@@ -82,27 +88,31 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     @Override
     public List<MeetingSimpleDao> findAllPastByMoimId(final long moimId, final long memberId,
                                                       final LocalDateTime currentDateTime) {
-        return queryFactory.select(new QMeetingSimpleDao(
-                        meetingJpaEntity.id,
-                        meetingJpaEntity.agenda,
-                        meetingJpaEntity.startDateTime,
-                        joinedMeetingJpaEntity.attendance
-                ))
+        return queryFactory.select(
+                        new QMeetingSimpleDao(
+                                meetingJpaEntity.id,
+                                meetingJpaEntity.agenda,
+                                meetingJpaEntity.startDateTime,
+                                joinedMeetingJpaEntity.attendance
+                        ))
                 .from(meetingJpaEntity)
-                .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id)
-                        .and(joinedMeetingJpaEntity.memberId.eq(memberId)))
-                .where(meetingJpaEntity.moimId.eq(moimId)
-                        .and(meetingJpaEntity.startDateTime.before(currentDateTime)))
+                .join(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id))
+                .where(
+                        meetingJpaEntity.moimId.eq(moimId)
+                        .and(meetingJpaEntity.startDateTime.before(currentDateTime))
+                        .and(joinedMeetingJpaEntity.memberId.eq(memberId))
+                )
                 .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
     }
 
     @Override
-    public long findHostIdByMeetingId(final long meetingId) {
+    public long getHostIdByMeetingId(final long meetingId) {
         return queryFactory.select(moimJpaEntity.memberId)
                 .from(meetingJpaEntity)
                 .join(moimJpaEntity).on(moimJpaEntity.id.eq(meetingJpaEntity.moimId))
-                .fetchFirst();
+                .stream().findAny()
+                .orElseThrow(() -> new NotFoundException(MEETING_NOT_FOUND_ERROR.message()));
     }
 
     @Override
@@ -124,10 +134,13 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                 .from(meetingJpaEntity)
                 .innerJoin(joinedMeetingJpaEntity).on(joinedMeetingJpaEntity.meetingId.eq(meetingJpaEntity.id))
                 .innerJoin(memberJpaEntity).on(memberJpaEntity.id.eq(joinedMeetingJpaEntity.memberId))
+                .innerJoin(emailSubscribeJpaEntity).on(memberJpaEntity.id.eq(emailSubscribeJpaEntity.memberId))
                 .where(
                         meetingJpaEntity.startDateTime.loe(upcomingDateTime)
                                 .and(meetingJpaEntity.startDateTime.after(currentDateTime)
-                                        .and(joinedMeetingJpaEntity.upcomingNoticeSent.isFalse()))
+                                        .and(joinedMeetingJpaEntity.upcomingNoticeSent.isFalse())
+                                        .and(emailSubscribeJpaEntity.subscribeStatus.isTrue())
+                                )
                 )
                 .fetch();
     }
@@ -151,5 +164,14 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     @Override
     public long count() {
         return meetingJpaRepository.count();
+    }
+
+    @Override
+    public long findMoimIdByMeetingId(final long meetingId) {
+        return queryFactory.select(meetingJpaEntity.moimId)
+                .from(meetingJpaEntity)
+                .where(meetingJpaEntity.id.eq(meetingId))
+                .stream().findAny()
+                .orElseThrow(() -> new NotFoundException(MEETING_NOT_FOUND_ERROR.message()));
     }
 }

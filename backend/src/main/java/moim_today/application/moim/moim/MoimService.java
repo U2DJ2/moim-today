@@ -10,8 +10,10 @@ import java.util.List;
 
 public interface MoimService {
 
+    List<MyMoimResponse> findAllMyJoinedMoimResponse(final long memberId);
+
     MoimIdResponse createMoim(final long memberId, final long universityId,
-                    final MoimCreateRequest moimCreateRequest);
+                              final MoimCreateRequest moimCreateRequest);
 
     MoimImageResponse uploadMoimImage(final MultipartFile file);
 
@@ -29,7 +31,9 @@ public interface MoimService {
 
     void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest);
 
-    List<MoimSimpleResponse> findAllMoimResponse(final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter);
+    List<MoimSimpleResponse> findAllMoimResponses(final long universityId, final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter);
 
-    List<MoimSimpleResponse> searchMoim(final String searchParam);
+    List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam);
+
+    List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponse(final long memberId, final boolean ended, final boolean onlyHost);
 }

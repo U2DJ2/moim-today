@@ -2,8 +2,10 @@ package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
-import moim_today.dto.meeting.MeetingDetailResponse;
-import moim_today.dto.meeting.MeetingSimpleDao;
+import moim_today.dto.meeting.meeting.MeetingDetailResponse;
+import moim_today.dto.meeting.meeting.MeetingSimpleDao;
+import moim_today.global.error.NotFoundException;
+import moim_today.persistence.entity.email_subscribe.EmailSubscribeJpaEntity;
 import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
@@ -15,9 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_NOT_FOUND_ERROR;
 import static moim_today.util.TestConstant.*;
-import static moim_today.util.TestConstant.MOIM_ID;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MeetingFinderTest extends ImplementTest {
 
@@ -306,7 +309,6 @@ class MeetingFinderTest extends ImplementTest {
         assertThat(meetingSimpleDaos.get(1).agenda()).isEqualTo(SECOND_CREATED_MEETING_AGENDA.value());
     }
 
-
     @DisplayName("하나의 모임의 모든 미팅의 엔티티 정보를 반환한다.")
     @Test
     void findAllByMoimId() {
@@ -454,6 +456,13 @@ class MeetingFinderTest extends ImplementTest {
 
         joinedMeetingRepository.save(joinedMeetingJpaEntity);
 
+        EmailSubscribeJpaEntity emailSubscribeJpaEntity = EmailSubscribeJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .subscribeStatus(true)
+                .build();
+
+        emailSubscribeRepository.save(emailSubscribeJpaEntity);
+
         // when
         List<UpcomingMeetingNoticeResponse> upcomingNotices = meetingFinder.findUpcomingNotices(currentDateTime);
 
@@ -467,6 +476,100 @@ class MeetingFinderTest extends ImplementTest {
         assertThat(upcomingNotice.endDateTime()).isEqualTo(meetingJpaEntity.getEndDateTime());
         assertThat(upcomingNotice.place()).isEqualTo(meetingJpaEntity.getPlace());
         assertThat(upcomingNotice.attendance()).isEqualTo(joinedMeetingJpaEntity.isAttendance());
+    }
+
+    @DisplayName("이메일 수신 여부를 수락한 사람만 다가오는 미팅 정보를 조회한다.")
+    @Test
+    void findUpcomingNoticesOnlySubscribeStatusTrue() {
+        // given 1
+        LocalDateTime currentDateTime = LocalDateTime.of(2024, 3, 4, 8, 0, 0);
+
+        // given 2
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .email(EMAIL.value())
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+
+        // given 3
+        MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
+                .agenda(MEETING_AGENDA.value())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
+                .place(MEETING_PLACE.value())
+                .build();
+
+        meetingRepository.save(meetingJpaEntity);
+
+        // given 4
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity = JoinedMeetingJpaEntity.builder()
+                .meetingId(meetingJpaEntity.getId())
+                .memberId(memberJpaEntity.getId())
+                .attendance(true)
+                .upcomingNoticeSent(false)
+                .build();
+
+        joinedMeetingRepository.save(joinedMeetingJpaEntity);
+
+        EmailSubscribeJpaEntity emailSubscribeJpaEntity = EmailSubscribeJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .subscribeStatus(true)
+                .build();
+
+        emailSubscribeRepository.save(emailSubscribeJpaEntity);
+
+        // when
+        List<UpcomingMeetingNoticeResponse> upcomingNotices = meetingFinder.findUpcomingNotices(currentDateTime);
+
+        // then
+        assertThat(upcomingNotices.size()).isEqualTo(1);
+    }
+
+    @DisplayName("이메일 수신 여부를 거절한 사람은 다가오는 미팅 정보가 조회되지 않는다.")
+    @Test
+    void findUpcomingNoticesOnlySubscribeStatusFalse() {
+        // given 1
+        LocalDateTime currentDateTime = LocalDateTime.of(2024, 3, 4, 8, 0, 0);
+
+        // given 2
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .email(EMAIL.value())
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+
+        // given 3
+        MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
+                .agenda(MEETING_AGENDA.value())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
+                .place(MEETING_PLACE.value())
+                .build();
+
+        meetingRepository.save(meetingJpaEntity);
+
+        // given 4
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity = JoinedMeetingJpaEntity.builder()
+                .meetingId(meetingJpaEntity.getId())
+                .memberId(memberJpaEntity.getId())
+                .attendance(true)
+                .upcomingNoticeSent(false)
+                .build();
+
+        joinedMeetingRepository.save(joinedMeetingJpaEntity);
+
+        EmailSubscribeJpaEntity emailSubscribeJpaEntity = EmailSubscribeJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .subscribeStatus(false)
+                .build();
+
+        emailSubscribeRepository.save(emailSubscribeJpaEntity);
+
+        // when
+        List<UpcomingMeetingNoticeResponse> upcomingNotices = meetingFinder.findUpcomingNotices(currentDateTime);
+
+        // then
+        assertThat(upcomingNotices.size()).isEqualTo(0);
     }
 
     @DisplayName("다가오는 미팅은 시작 시간이 현재 시간보다 뒤에 있는 시간대를 조회한다.")
@@ -517,6 +620,13 @@ class MeetingFinderTest extends ImplementTest {
 
         joinedMeetingRepository.save(beforeJoinedMeetingJpaEntity);
         joinedMeetingRepository.save(afterJoinedMeetingJpaEntity);
+
+        EmailSubscribeJpaEntity emailSubscribeJpaEntity = EmailSubscribeJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .subscribeStatus(true)
+                .build();
+
+        emailSubscribeRepository.save(emailSubscribeJpaEntity);
 
         // when
         List<UpcomingMeetingNoticeResponse> upcomingNotices = meetingFinder.findUpcomingNotices(currentDateTime);
@@ -574,6 +684,13 @@ class MeetingFinderTest extends ImplementTest {
         joinedMeetingRepository.save(beforeJoinedMeetingJpaEntity);
         joinedMeetingRepository.save(afterJoinedMeetingJpaEntity);
 
+        EmailSubscribeJpaEntity emailSubscribeJpaEntity = EmailSubscribeJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .subscribeStatus(true)
+                .build();
+
+        emailSubscribeRepository.save(emailSubscribeJpaEntity);
+
         // when
         List<UpcomingMeetingNoticeResponse> upcomingNotices = meetingFinder.findUpcomingNotices(currentDateTime);
 
@@ -630,10 +747,46 @@ class MeetingFinderTest extends ImplementTest {
         joinedMeetingRepository.save(beforeJoinedMeetingJpaEntity);
         joinedMeetingRepository.save(afterJoinedMeetingJpaEntity);
 
+        EmailSubscribeJpaEntity emailSubscribeJpaEntity = EmailSubscribeJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .subscribeStatus(true)
+                .build();
+
+        emailSubscribeRepository.save(emailSubscribeJpaEntity);
+
         // when
         List<UpcomingMeetingNoticeResponse> upcomingNotices = meetingFinder.findUpcomingNotices(currentDateTime);
 
         // then
         assertThat(upcomingNotices.size()).isEqualTo(1);
+    }
+
+    @DisplayName("미팅 Id로 모임 Id를 조회한다.")
+    @Test
+    void getMoimIdByMeetingId() {
+        // given
+        long expectedMoimId = MOIM_ID.longValue();
+
+        MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
+                .moimId(expectedMoimId)
+                .build();
+
+        meetingRepository.save(meetingJpaEntity);
+        long meetingId = meetingJpaEntity.getId();
+
+        // when
+        long actualMoimId = meetingFinder.getMoimIdByMeetingId(meetingId);
+
+        // then
+        assertThat(expectedMoimId).isEqualTo(actualMoimId);
+    }
+
+    @DisplayName("미팅 Id로 모임 Id를 조회할때, 미팅이 존재하지 않으면 예외가 발생한다.")
+    @Test
+    void getMoimIdByMeetingIdThrowsNotFoundException() {
+        // expected
+        assertThatThrownBy(() -> meetingFinder.getMoimIdByMeetingId(MEETING_ID.longValue()))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage(MEETING_NOT_FOUND_ERROR.message());
     }
 }
