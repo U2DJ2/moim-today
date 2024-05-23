@@ -1,7 +1,27 @@
-function CardComponent({ date, dday, title, btn, clickHandler, isMeeting }) {
+import axios from "axios";
+
+function CardComponent({
+  date,
+  dday,
+  title,
+  btn,
+  clickHandler,
+  isMeeting,
+  meetingId,
+}) {
+  const onClickHandler = async () => {
+    try {
+      const response = await axios.post(
+        `https://api.moim.today/api/members/meetings/${meetingId}/acceptance`
+      );
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <div
-      className="w-auto p-8 grid font-Pretendard_SemiBold text-xl bg-white shadow-[0px_1px_4px_rgba(0,_0,_0,_0.08)] rounded-3xl hover:cursor-pointer"
+      className="w-auto p-8 grid font-Pretendard_SemiBold text-xl bg-white shadow-[0px_1px_16px_rgba(0,_0,_0,_0.08)] rounded-3xl hover:cursor-pointer"
       onClick={clickHandler}
     >
       <div className="grid grid-flow-row gap-4">
@@ -16,7 +36,10 @@ function CardComponent({ date, dday, title, btn, clickHandler, isMeeting }) {
         </div>
         <div className="pt-2"></div>
         {btn && (
-          <button className="text-white bg-scarlet p-1.5 rounded-full font-Pretendard_SemiBold">
+          <button
+            className="text-white bg-scarlet p-1.5 rounded-full font-Pretendard_SemiBold"
+            onClick={onClickHandler}
+          >
             참석하기
           </button>
         )}
