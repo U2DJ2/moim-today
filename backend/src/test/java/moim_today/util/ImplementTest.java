@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import moim_today.persistence.repository.certification.email.EmailCertificationRepository;
 import moim_today.persistence.repository.certification.password.PasswordCertificationRepository;
 import moim_today.persistence.repository.department.department.DepartmentRepository;
+import moim_today.persistence.repository.department.request_department.RequestDepartmentRepository;
 import moim_today.persistence.repository.email_subscribe.EmailSubscribeRepository;
 import moim_today.persistence.repository.meeting.joined_meeting.JoinedMeetingRepository;
 import moim_today.persistence.repository.meeting.meeting.MeetingRepository;
@@ -79,6 +80,9 @@ public abstract class ImplementTest {
 
     @Autowired
     protected EmailSubscribeRepository emailSubscribeRepository;
+
+    @Autowired
+    protected RequestDepartmentRepository requestDepartmentRepository;
 
     @BeforeEach
     void setUpDatabase() {

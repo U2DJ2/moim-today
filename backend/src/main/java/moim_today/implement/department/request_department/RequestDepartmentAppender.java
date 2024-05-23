@@ -16,7 +16,7 @@ public class RequestDepartmentAppender {
     }
 
     @Transactional
-    public void addDepartmentName(final AddDepartmentRequest addDepartmentRequest) {
+    public void addDepartment(final AddDepartmentRequest addDepartmentRequest) {
         RequestDepartmentJpaEntity requestDepartmentJpaEntity = addDepartmentRequest.toEntity();
         requestDepartmentRepository.save(requestDepartmentJpaEntity);
     }

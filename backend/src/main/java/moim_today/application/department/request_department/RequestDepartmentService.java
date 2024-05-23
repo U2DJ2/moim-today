@@ -4,5 +4,5 @@ import moim_today.dto.department.AddDepartmentRequest;
 
 public interface RequestDepartmentService {
 
-    void addDepartmentName(final AddDepartmentRequest addDepartmentRequest);
+    void addDepartment(final AddDepartmentRequest addDepartmentRequest);
 }

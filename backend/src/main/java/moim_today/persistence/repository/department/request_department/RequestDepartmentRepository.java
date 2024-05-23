@@ -5,4 +5,6 @@ import moim_today.persistence.entity.department.request_deparment.RequestDepartm
 public interface RequestDepartmentRepository {
 
     void save(final RequestDepartmentJpaEntity requestDepartmentJpaEntity);
+
+    long count();
 }

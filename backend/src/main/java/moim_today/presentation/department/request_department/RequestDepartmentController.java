@@ -19,6 +19,6 @@ public class RequestDepartmentController {
 
     @PostMapping("/request-departments")
     public void requestAddDepartment(@RequestBody final AddDepartmentRequest addDepartmentRequest) {
-        requestDepartmentService.addDepartmentName(addDepartmentRequest);
+        requestDepartmentService.addDepartment(addDepartmentRequest);
     }
 }

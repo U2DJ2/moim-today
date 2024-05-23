@@ -1,4 +1,4 @@
-package moim_today.fake_class.department;
+package moim_today.fake_class.department.department;
 
 import moim_today.application.department.department.DepartmentService;
 import moim_today.dto.department.DepartmentResponse;

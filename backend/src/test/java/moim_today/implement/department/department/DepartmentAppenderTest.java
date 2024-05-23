@@ -1,8 +1,6 @@
-package moim_today.implement.department;
+package moim_today.implement.department.department;
 
 import moim_today.dto.department.DepartmentResponse;
-import moim_today.implement.department.department.DepartmentAppender;
-import moim_today.implement.department.department.DepartmentFinder;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
 import moim_today.util.ImplementTest;

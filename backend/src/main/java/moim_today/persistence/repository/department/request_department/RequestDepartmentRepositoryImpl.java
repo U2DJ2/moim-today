@@ -16,4 +16,9 @@ public class RequestDepartmentRepositoryImpl implements RequestDepartmentReposit
     public void save(final RequestDepartmentJpaEntity requestDepartmentJpaEntity) {
         requestDepartmentJpaRepository.save(requestDepartmentJpaEntity);
     }
+
+    @Override
+    public long count() {
+        return requestDepartmentJpaRepository.count();
+    }
 }

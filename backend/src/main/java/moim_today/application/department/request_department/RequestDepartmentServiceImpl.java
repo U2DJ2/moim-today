@@ -14,7 +14,7 @@ public class RequestDepartmentServiceImpl implements RequestDepartmentService {
     }
 
     @Override
-    public void addDepartmentName(final AddDepartmentRequest addDepartmentRequest) {
-        requestDepartmentAppender.addDepartmentName(addDepartmentRequest);
+    public void addDepartment(final AddDepartmentRequest addDepartmentRequest) {
+        requestDepartmentAppender.addDepartment(addDepartmentRequest);
     }
 }
