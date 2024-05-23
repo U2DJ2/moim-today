@@ -162,7 +162,7 @@ export default function Calendar({
   // Function to map event data
   function mapEventData(event, backgroundEvent, calendar) {
     const formattedEvent = {
-      id: calendar ? event.calenderId : event.scheduleId,
+      id: calendar ? event.calendarId : event.scheduleId,
       title: event.scheduleName || "",
       start: event.startDateTime.replace(" ", "T"),
       end: event.endDateTime.replace(" ", "T"),
