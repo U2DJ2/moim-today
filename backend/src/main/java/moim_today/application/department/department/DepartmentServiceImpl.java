@@ -1,8 +1,8 @@
-package moim_today.application.department;
+package moim_today.application.department.department;
 
 import moim_today.dto.department.DepartmentResponse;
-import moim_today.implement.department.DepartmentAppender;
-import moim_today.implement.department.DepartmentFinder;
+import moim_today.implement.department.department.DepartmentAppender;
+import moim_today.implement.department.department.DepartmentFinder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

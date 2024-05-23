@@ -1,11 +1,11 @@
-package moim_today.implement.department;
+package moim_today.implement.department.department;
 
 import moim_today.domain.department.Department;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.university.UniversityFinder;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
-import moim_today.persistence.repository.department.DepartmentRepository;
+import moim_today.persistence.repository.department.department.DepartmentRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;

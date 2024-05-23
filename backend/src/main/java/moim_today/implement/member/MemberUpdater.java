@@ -4,7 +4,7 @@ import moim_today.domain.certification.Certification;
 import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.certification.password.PasswordCertificationFinder;
-import moim_today.implement.department.DepartmentFinder;
+import moim_today.implement.department.department.DepartmentFinder;
 import moim_today.persistence.entity.certification.password.PasswordCertificationJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.persistence.repository.member.MemberRepository;

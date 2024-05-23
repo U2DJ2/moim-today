@@ -2,6 +2,7 @@ package moim_today.presentation.department;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.fake_class.department.FakeDepartmentService;
+import moim_today.presentation.department.department.DepartmentController;
 import moim_today.util.ControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

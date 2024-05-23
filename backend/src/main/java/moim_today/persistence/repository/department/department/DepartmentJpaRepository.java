@@ -1,4 +1,4 @@
-package moim_today.persistence.repository.department;
+package moim_today.persistence.repository.department.department;
 
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -3,7 +3,7 @@ package moim_today.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import moim_today.persistence.repository.certification.email.EmailCertificationRepository;
 import moim_today.persistence.repository.certification.password.PasswordCertificationRepository;
-import moim_today.persistence.repository.department.DepartmentRepository;
+import moim_today.persistence.repository.department.department.DepartmentRepository;
 import moim_today.persistence.repository.email_subscribe.EmailSubscribeRepository;
 import moim_today.persistence.repository.meeting.joined_meeting.JoinedMeetingRepository;
 import moim_today.persistence.repository.meeting.meeting.MeetingRepository;
