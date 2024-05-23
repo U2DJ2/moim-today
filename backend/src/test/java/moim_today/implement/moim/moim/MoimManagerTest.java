@@ -63,8 +63,10 @@ class MoimManagerTest extends ImplementTest {
 
     @DisplayName("자신이 참여한 모임들 중 완료 여부에 따라 반환한다.")
     @Test
-    void findAllJoinedMoimSimpleResponseByEndStatus() {
+    void findAllMyMoimSimpleResponses() {
         // given1
+        long lastMoimId = 0;
+
         MemberJpaEntity member1 = MemberJpaEntity.builder()
                 .username(USERNAME.value())
                 .build();
@@ -112,10 +114,10 @@ class MoimManagerTest extends ImplementTest {
         joinedMoimRepository.save(j3);
 
         // when
-        List<MoimSimpleResponse> endedMoims = moimManager.findAllJoinedMoimSimpleResponseByEndStatus(
-                member1.getId(), LocalDate.of(2024, 5, 16), true);
-        List<MoimSimpleResponse> inProgressMoims = moimManager.findAllJoinedMoimSimpleResponseByEndStatus(
-                member1.getId(), LocalDate.of(2024, 5, 16), false);
+        List<MoimSimpleResponse> endedMoims = moimManager.findAllMyMoimSimpleResponses(
+                member1.getId(), lastMoimId, LocalDate.of(2024, 5, 16), true);
+        List<MoimSimpleResponse> inProgressMoims = moimManager.findAllMyMoimSimpleResponses(
+                member1.getId(), lastMoimId, LocalDate.of(2024, 5, 16), false);
 
         // then
         assertThat(endedMoims.size()).isEqualTo(1);
@@ -125,6 +127,8 @@ class MoimManagerTest extends ImplementTest {
     @Test
     void findAllJoinedMoimSimpleResponseExceptOtherMembers() {
         // given
+        long lastMoimId = 0;
+
         MemberJpaEntity me = MemberJpaEntity.builder()
                 .username(USERNAME.value())
                 .build();
@@ -183,10 +187,10 @@ class MoimManagerTest extends ImplementTest {
         joinedMoimRepository.save(j4);
 
         // when
-        List<MoimSimpleResponse> myEndedMoims = moimManager.findAllJoinedMoimSimpleResponseByEndStatus(
-                me.getId(), LocalDate.of(2023,5,12), true);
-        List<MoimSimpleResponse> myInProgressMoims = moimManager.findAllJoinedMoimSimpleResponseByEndStatus(
-                me.getId(), LocalDate.of(2023, 5, 12), false);
+        List<MoimSimpleResponse> myEndedMoims = moimManager.findAllMyMoimSimpleResponses(
+                me.getId(), lastMoimId, LocalDate.of(2023,5,12), true);
+        List<MoimSimpleResponse> myInProgressMoims = moimManager.findAllMyMoimSimpleResponses(
+                me.getId(), lastMoimId, LocalDate.of(2023, 5, 12), false);
 
         // then
         assertThat(myEndedMoims.size()).isEqualTo(0);
@@ -195,8 +199,10 @@ class MoimManagerTest extends ImplementTest {
 
     @DisplayName("자신이 호스트인 모임들의 정보만 완료 여부에 따라 가져온다")
     @Test
-    void findAllHostMoimSimpleResponsesByEndStatus() {
+    void findAllMyJoinedMoimSimpleResponses() {
         // given
+        long lastMoimId = 0;
+
         MemberJpaEntity me = MemberJpaEntity.builder()
                 .username(USERNAME.value())
                 .build();
@@ -232,43 +238,11 @@ class MoimManagerTest extends ImplementTest {
         moimRepository.save(otherMoim1);
         moimRepository.save(otherMoim2);
 
-        JoinedMoimJpaEntity j1 = JoinedMoimJpaEntity.builder()
-                .memberId(me.getId())
-                .moimId(myMoim1.getId())
-                .build();
-        JoinedMoimJpaEntity j2 = JoinedMoimJpaEntity.builder()
-                .memberId(me.getId())
-                .moimId(myMoim2.getId())
-                .build();
-        JoinedMoimJpaEntity j3 = JoinedMoimJpaEntity.builder()
-                .memberId(other.getId())
-                .moimId(otherMoim1.getId())
-                .build();
-        JoinedMoimJpaEntity j4 = JoinedMoimJpaEntity.builder()
-                .memberId(other.getId())
-                .moimId(otherMoim2.getId())
-                .build();
-        JoinedMoimJpaEntity j5 = JoinedMoimJpaEntity.builder()
-                .memberId(me.getId())
-                .moimId(otherMoim1.getId())
-                .build();
-        JoinedMoimJpaEntity j6 = JoinedMoimJpaEntity.builder()
-                .memberId(me.getId())
-                .moimId(otherMoim2.getId())
-                .build();
-
-        joinedMoimRepository.save(j1);
-        joinedMoimRepository.save(j2);
-        joinedMoimRepository.save(j3);
-        joinedMoimRepository.save(j4);
-        joinedMoimRepository.save(j5);
-        joinedMoimRepository.save(j6);
-
         // when
-        List<MoimSimpleResponse> myEndedMoims = moimManager.findAllHostMoimSimpleResponsesByEndStatus(
-                me.getId(), LocalDate.of(2023,5,12), true);
-        List<MoimSimpleResponse> myInProgressMoims = moimManager.findAllHostMoimSimpleResponsesByEndStatus(
-                me.getId(), LocalDate.of(2023, 5, 12), false);
+        List<MoimSimpleResponse> myEndedMoims = moimManager.findAllMyMoimSimpleResponses(
+                me.getId(), lastMoimId, LocalDate.of(2023,5,12), true);
+        List<MoimSimpleResponse> myInProgressMoims = moimManager.findAllMyMoimSimpleResponses(
+                me.getId(), lastMoimId, LocalDate.of(2023, 5, 12), false);
 
         // then
         assertThat(myEndedMoims.size()).isEqualTo(0);

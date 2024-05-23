@@ -1,7 +1,9 @@
 package moim_today.persistence.repository.moim.joined_moim;
 
+import moim_today.dto.moim.moim.MoimSimpleResponse;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface JoinedMoimRepository {
@@ -23,4 +25,6 @@ public interface JoinedMoimRepository {
     boolean isJoining(final long moimId, final long memberId);
 
     boolean existsByMoimIdAndMemberId(final long moimId, final long memberId);
+
+    List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId, final long lastMoimId, final LocalDate now, final boolean ended);
 }

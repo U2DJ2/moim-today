@@ -198,9 +198,37 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponse(final long memberId,
-                                                                      final boolean ended,
-                                                                      final boolean onlyHost) {
+    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId,
+                                                                       final long lastMoimId,
+                                                                       final boolean ended) {
+        MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
+                .moimId(1L)
+                .title(MOIM_TITLE.value())
+                .capacity(CAPACITY.intValue())
+                .currentCount(CURRENT_COUNT.intValue())
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PUBLIC)
+                .build();
+
+        MoimSimpleResponse moimSimpleResponse2 = MoimSimpleResponse.builder()
+                .moimId(2L)
+                .title(MOIM_TITLE.value())
+                .capacity(CAPACITY.intValue())
+                .currentCount(CURRENT_COUNT.intValue())
+                .imageUrl(MOIM_IMAGE_URL.value())
+                .moimCategory(MoimCategory.STUDY)
+                .displayStatus(DisplayStatus.PUBLIC)
+                .build();
+
+        return List.of(moimSimpleResponse1, moimSimpleResponse2);
+    }
+
+    @Override
+    public List<MoimSimpleResponse> findAllMyMoimSimpleResponses(final long memberId,
+                                                                 final long lastMoimId,
+                                                                 final Boolean ended) {
+
         MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
                 .moimId(1L)
                 .title(MOIM_TITLE.value())

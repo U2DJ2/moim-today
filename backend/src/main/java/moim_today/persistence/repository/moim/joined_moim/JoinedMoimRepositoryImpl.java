@@ -1,15 +1,21 @@
 package moim_today.persistence.repository.moim.joined_moim;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import moim_today.dto.moim.moim.MoimSimpleResponse;
+import moim_today.dto.moim.moim.QMoimSimpleResponse;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import static moim_today.global.constant.NumberConstant.DEFAULT_JOINED_MOIM_PAGE_SIZE;
 import static moim_today.global.constant.exception.MoimExceptionConstant.JOINED_MOIM_MEMBER_IS_EMPTY;
 import static moim_today.persistence.entity.moim.joined_moim.QJoinedMoimJpaEntity.joinedMoimJpaEntity;
+import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.moimJpaEntity;
 
 @Repository
 public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
@@ -78,5 +84,45 @@ public class JoinedMoimRepositoryImpl implements JoinedMoimRepository {
     @Override
     public boolean existsByMoimIdAndMemberId(final long moimId, final long memberId) {
         return joinedMoimJpaRepository.existsByMoimIdAndMemberId(moimId, memberId);
+    }
+
+    @Override
+    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId,
+                                                                       final long lastMoimId,
+                                                                       final LocalDate now,
+                                                                       final boolean ended) {
+        return queryFactory.select(new QMoimSimpleResponse(
+                        moimJpaEntity.id,
+                        moimJpaEntity.title,
+                        moimJpaEntity.capacity,
+                        moimJpaEntity.currentCount,
+                        moimJpaEntity.imageUrl,
+                        moimJpaEntity.moimCategory,
+                        moimJpaEntity.displayStatus
+                ))
+                .from(joinedMoimJpaEntity)
+                .join(moimJpaEntity).on(joinedMoimJpaEntity.moimId.eq(moimJpaEntity.id))
+                .where(
+                        joinedMoimJpaEntity.memberId.eq(memberId),
+                        applyEndedFilter(now, ended),
+                        ltLastMoimId(lastMoimId)
+                )
+                .orderBy(moimJpaEntity.id.desc())
+                .limit(DEFAULT_JOINED_MOIM_PAGE_SIZE.value())
+                .fetch();
+    }
+
+    private BooleanExpression applyEndedFilter(final LocalDate now, final boolean ended) {
+        if (ended) {
+            return moimJpaEntity.endDate.before(now);
+        }
+        return moimJpaEntity.endDate.goe(now);
+    }
+
+    private BooleanExpression ltLastMoimId(final long lastMoimId) {
+        if (lastMoimId == 0) {
+            return null;
+        }
+        return moimJpaEntity.id.lt(lastMoimId);
     }
 }

@@ -37,17 +37,27 @@ public class MoimController {
         return CollectionResponse.from(myMoimResponses);
     }
 
-    @GetMapping("/joined/simple")
-    public CollectionResponse<List<MoimSimpleResponse>> findAllMyJoinedMoimSimpleResponse(
+    @GetMapping("/joined")
+    public CollectionResponse<List<MoimSimpleResponse>> findMyJoinedMoimSimpleResponses(
             @Login final MemberSession memberSession,
-            @RequestParam final Boolean ended,
-            @RequestParam(required = false, defaultValue = "false") final Boolean onlyHost){
-        List<MoimSimpleResponse> myMoimSimpleResponses = moimService.findAllMyJoinedMoimSimpleResponse(
-                memberSession.id(), ended, onlyHost
-        );
+            @RequestParam final long lastMoimId,
+            @RequestParam(required = false, defaultValue = "true") final boolean ended
+    ){
+        List<MoimSimpleResponse> myMoimSimpleResponses = moimService.findAllMyJoinedMoimSimpleResponses(
+                memberSession.id(), lastMoimId, ended);
         return CollectionResponse.from(myMoimSimpleResponses);
     }
 
+    @GetMapping("/joined/host")
+    public CollectionResponse<List<MoimSimpleResponse>> findMyMoimSimpleResponses(
+            @Login final MemberSession memberSession,
+            @RequestParam final long lastMoimId,
+            @RequestParam(required = false, defaultValue = "true") final boolean ended
+    ){
+        List<MoimSimpleResponse> myMoimSimpleResponses = moimService.findAllMyMoimSimpleResponses(
+                memberSession.id(), lastMoimId, ended);
+        return CollectionResponse.from(myMoimSimpleResponses);
+    }
 
     @PostMapping
     public MoimIdResponse createMoim(@Login final MemberSession memberSession,
