@@ -74,6 +74,7 @@ public class MoimServiceImpl implements MoimService{
         return moimFinder.findAllMyMoimResponse(memberId);
     }
 
+    @Transactional
     @Override
     public MoimIdResponse createMoim(final long memberId, final long universityId,
                            final MoimCreateRequest moimCreateRequest) {
@@ -131,7 +132,6 @@ public class MoimServiceImpl implements MoimService{
         return MoimMemberTabResponse.of(isHostRequest, moimMemberResponses);
     }
 
-    @Transactional
     @Override
     public void kickMember(final long requestMemberId, final MoimMemberKickRequest moimMemberKickRequest) {
         long moimId = moimMemberKickRequest.moimId();
@@ -144,7 +144,6 @@ public class MoimServiceImpl implements MoimService{
         moimManager.deleteMemberFromMoim(deleteMemberId, moimId);
     }
 
-    @Transactional
     @Override
     public void deleteMember(final long deleteMemberId, final MoimMemberDeleteRequest moimMemberDeleteRequest) {
         long moimId = moimMemberDeleteRequest.moimId();
