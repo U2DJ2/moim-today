@@ -48,7 +48,7 @@ public class TodoServiceImpl implements TodoService {
         List<Long> moimIds = joinedMoimManager.findMoimIdsByMemberId(memberId);
         return moimIds.stream()
                 .map(moimId -> findMemberMoimTodosInMoim(memberId, moimId, requestDate, months))
-                .filter(memberMoimTodoResponse -> !memberMoimTodoResponse.todoResponses().isEmpty())
+                .filter(memberMoimTodoResponse -> !memberMoimTodoResponse.todoGroupByDates().isEmpty())
                 .toList();
     }
 
@@ -88,11 +88,7 @@ public class TodoServiceImpl implements TodoService {
                                                             final int months) {
         List<TodoResponse> todoResponses = todoManager.findMemberTodosInMoim(memberId, moimId, requestDate, months);
         String moimTitle = moimManager.getTitleById(moimId);
-        return MemberMoimTodoResponse.builder()
-                .moimId(moimId)
-                .moimTitle(moimTitle)
-                .todoResponses(todoResponses)
-                .build();
+        return MemberMoimTodoResponse.of(moimId, moimTitle, todoResponses);
     }
 
     @Override

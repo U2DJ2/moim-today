@@ -151,21 +151,9 @@ public class FakeTodoService implements TodoService {
                 .todoDate(LocalDate.of(2024, 5, 20))
                 .build();
 
-        MemberMoimTodoResponse m1 = MemberMoimTodoResponse.builder()
-                .moimId(MOIM_ID.longValue())
-                .moimTitle("U2DJ2 캡스톤 디자인")
-                .todoResponses(List.of(todo1, todo2))
-                .build();
-        MemberMoimTodoResponse m2 = MemberMoimTodoResponse.builder()
-                .moimId(MOIM_ID.longValue() + 2L)
-                .moimTitle("오늘의 운동 완료 모임")
-                .todoResponses(List.of(todo3))
-                .build();
-        MemberMoimTodoResponse m3 = MemberMoimTodoResponse.builder()
-                .moimId(MOIM_ID.longValue() + 5L)
-                .moimTitle("술이 문제야")
-                .todoResponses(List.of(todo4))
-                .build();
+        MemberMoimTodoResponse m1 = MemberMoimTodoResponse.of(MOIM_ID.longValue(), "U2DJ2 캡스톤 디자인", List.of(todo1, todo2));
+        MemberMoimTodoResponse m2 = MemberMoimTodoResponse.of(MOIM_ID.longValue() + 2L, "오늘의 운동 완료 모임", List.of(todo3));
+        MemberMoimTodoResponse m3 = MemberMoimTodoResponse.of(MOIM_ID.longValue() + 5L, "술이 문제야", List.of(todo4));
 
         return List.of(m1, m2, m3);
     }

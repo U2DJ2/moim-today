@@ -226,12 +226,12 @@ public class TodoControllerTest extends ControllerTest {
                                 .responseFields(
                                         fieldWithPath("data[].moimId").type(NUMBER).description("자신이 만든 투두를 가지고 있는 모임 id"),
                                         fieldWithPath("data[].moimTitle").type(STRING).description("자신이 만든 투두를 가지고 있는 모임 title"),
-                                        fieldWithPath("data[].todoResponses[].todoId").type(NUMBER).description("투두 id"),
-                                        fieldWithPath("data[].todoResponses[].contents").type(STRING).description("투두 내용"),
-                                        fieldWithPath("data[].todoResponses[].todoProgress").type(VARIES).description(
+                                        fieldWithPath("data[].todoGroupByDates[].todoDate").type(NUMBER).description("투두 시작 시간"),
+                                        fieldWithPath("data[].todoGroupByDates[].todoContents[].todoId").type(STRING).description("투두 id"),
+                                        fieldWithPath("data[].todoGroupByDates[].todoContents[].todoProgress").type(VARIES).description(
                                                 String.format("투두 진행 상황 - %s", EnumDocsUtils.getEnumNames(TodoProgress.class))
                                         ),
-                                        fieldWithPath("data[].todoResponses[].todoDate").type(NUMBER).description("투두 시작 시간")
+                                        fieldWithPath("data[].todoGroupByDates[].todoContents[].contents").type(NUMBER).description("투두 내용")
                                 )
                                 .build()
                         ))
