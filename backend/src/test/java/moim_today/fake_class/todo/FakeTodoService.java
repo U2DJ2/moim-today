@@ -57,10 +57,9 @@ public class FakeTodoService implements TodoService {
                 .todoDate(LocalDate.of(2024, 5, 11))
                 .build();
 
-        MemberTodoResponse memberTodoResponse1 = MemberTodoResponse.builder()
-                .memberId(100L)
-                .todoResponses(Arrays.asList(todoResponse1, todoResponse2))
-                .build();
+        MemberTodoResponse memberTodoResponse1 = MemberTodoResponse.of(
+                100L,
+                Arrays.asList(todoResponse1, todoResponse2));
 
         TodoResponse todoResponse3 = TodoResponse.builder()
                 .todoId(3L)
@@ -76,10 +75,9 @@ public class FakeTodoService implements TodoService {
                 .todoDate(LocalDate.of(2024, 5, 13))
                 .build();
 
-        MemberTodoResponse memberTodoResponse2 = MemberTodoResponse.builder()
-                .memberId(101L)
-                .todoResponses(Arrays.asList(todoResponse3, todoResponse4))
-                .build();
+        MemberTodoResponse memberTodoResponse2 = MemberTodoResponse.of(
+                101L,
+                Arrays.asList(todoResponse3, todoResponse4));
 
         if (memberId == UNKNOWN_MEMBER.longValue()){
             return List.of(memberTodoResponse1, memberTodoResponse2);
