@@ -34,11 +34,9 @@ function MoimHome({
       setMeetingOption("ALL");
     }
   };
-  const moreNoticeHandler = () => {
-    navigate(`notice/${noticeId}`);
-  };
+
   const cardClickHandler = () => {
-    navigate(`meeting/${meetingId}`);
+    navigate(`notice/${noticeId}`);
   };
 
   const makeNoticeHandler = () => {
@@ -93,6 +91,7 @@ function MoimHome({
                 title={notice.title}
                 btn={false}
                 isMeeting={false}
+                clickHandler={cardClickHandler}
               />
             ))
           ) : (
@@ -135,7 +134,6 @@ function MoimHome({
                 btn={true}
                 isMeeting={true}
                 meetingId={meeting.meetingId}
-                clickHandler={cardClickHandler}
               />
             ))
           ) : (

@@ -34,27 +34,27 @@ import MainLayout from "../components/MainLayout";
 function Router() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const response = await axios.get(
-          "https://api.moim.today/api/session-validation"
-        );
+  // useEffect(() => {
+  //   const checkSession = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://api.moim.today/api/session-validation"
+  //       );
 
-        if (!response.data.isValidateMemberSession) {
-          navigate("/login");
-        }
-      } catch (error) {
-        navigate("/login");
-      }
-    };
+  //       if (!response.data.isValidateMemberSession) {
+  //         navigate("/login");
+  //       }
+  //     } catch (error) {
+  //       navigate("/login");
+  //     }
+  //   };
 
-    const pathname = window.location.pathname;
-    // register 페이지에 대한 예외처리
-    if (pathname !== "/register") {
-      checkSession();
-    }
-  }, [navigate]);
+  //   const pathname = window.location.pathname;
+  //   // register 페이지에 대한 예외처리
+  //   if (pathname !== "/register") {
+  //     checkSession();
+  //   }
+  // }, [navigate]);
 
   return (
     <Routes>

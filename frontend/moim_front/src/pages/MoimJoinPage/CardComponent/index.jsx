@@ -25,10 +25,12 @@ function CardComponent({
       onClick={clickHandler}
     >
       <div className="grid grid-flow-row gap-4">
-        <div className="">{date}</div>
+        <div className=" font-Pretendard_Light">{date}</div>
         <div className="ml-1">
           <div className="grid grid-rows-2 w-fit">
-            <div className="font-bold text-2xl">{title}</div>
+            <div className=" font-Pretendard_Medium font-bold text-2xl">
+              {title}
+            </div>
             {isMeeting ? (
               <div className="text-scarlet text-base">D-{dday}</div>
             ) : null}
@@ -37,7 +39,7 @@ function CardComponent({
         <div className="pt-2"></div>
         {btn && (
           <button
-            className="text-white bg-scarlet p-1.5 rounded-full font-Pretendard_SemiBold"
+            className="text-white bg-scarlet p-1.5 rounded-full font-Pretendard_SemiBold hover:bg-slate-400"
             onClick={onClickHandler}
           >
             참석하기

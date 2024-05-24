@@ -18,6 +18,7 @@ function MemberInfo({
       refreshMembers();
     } catch (e) {
       console.log(e);
+      
     }
   };
   return (
