@@ -1,8 +1,10 @@
 import axios from "axios";
 
 function CardComponent({
-  date,
+  month,
+  day,
   dday,
+  dayOfWeek,
   title,
   btn,
   clickHandler,
@@ -25,7 +27,11 @@ function CardComponent({
       onClick={clickHandler}
     >
       <div className="grid grid-flow-row gap-4">
-        <div className=" font-Pretendard_Light">{date}</div>
+        {isMeeting ? null : (
+          <div className=" text-base font-Pretendard_Light">
+            {month}월 {day}일 ({dayOfWeek})
+          </div>
+        )}
         <div className="ml-1">
           <div className="grid grid-rows-2 w-fit">
             <div className=" font-Pretendard_Medium font-bold text-2xl">

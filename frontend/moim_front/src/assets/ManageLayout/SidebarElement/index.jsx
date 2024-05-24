@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import SidebarElementIcon from "./Icon";
 import SidebarElementLink from "./navigation";
 import { useNavigate } from "react-router";
@@ -8,8 +8,9 @@ import ArticleIcon from "@mui/icons-material/Article";
 import PersonIcon from "@mui/icons-material/Person";
 
 function Sidebar() {
+  const [selected, setSelected] = useState();
+
   const navigate = useNavigate();
-  const [selected, setSelected] = useState("프로필 설정");
 
   const sections = ["홈", "프로필 설정", "모임 관리"];
   const links = [<HomeIcon />, <PersonIcon />, <ArticleIcon />];
@@ -17,10 +18,17 @@ function Sidebar() {
   const onClickHandler = (section) => {
     console.log(section);
     setSelected(section);
+    localStorage.setItem("selected", section);
     if (section === "홈") navigate("/");
-    else if (section === "프로필 설정") navigate("/manage");
-    else navigate("/manage/moim");
+    else if (section === "프로필 설정") {
+      navigate("/manage");
+    } else navigate("/manage/moim");
   };
+
+  const currentSection = useMemo(
+    () => selected || localStorage.getItem("selected"),
+    [selected, localStorage]
+  );
 
   return (
     <aside className="flex  flex-col w-[30%] max-md:ml-0 max-md:w-full">
@@ -37,7 +45,9 @@ function Sidebar() {
                 icon={links[index]}
                 text={section}
                 className="mt-16 max-md:mt-10"
-                color={selected === section ? "text-scarlet" : "text-gray-400"}
+                color={
+                  currentSection === section ? "text-scarlet" : "text-gray-400"
+                }
                 onClick={() => onClickHandler(section)}
               />
             );

@@ -87,7 +87,9 @@ function MoimHome({
             notices.map((notice, index) => (
               <CardComponent
                 key={index}
-                date={notice.createdAt}
+                month={notice.month}
+                day={notice.day}
+                dayOfWeek={notice.dayOfWeek}
                 title={notice.title}
                 btn={false}
                 isMeeting={false}
