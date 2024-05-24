@@ -20,6 +20,7 @@ public record TodoGroupByDate(
     public static List<TodoGroupByDate> todoGroupByDates(final List<TodoResponse> todos){
         Map<LocalDate, List<TodoResponse>> todoGroupByDates = groupedByDate(todos);
         return todoGroupByDates.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
                 .map(entry -> new TodoGroupByDate(
                         entry.getKey(),
                         entry.getValue().stream()
