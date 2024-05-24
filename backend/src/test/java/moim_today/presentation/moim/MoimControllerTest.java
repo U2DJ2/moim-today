@@ -587,7 +587,10 @@ class MoimControllerTest extends ControllerTest {
                                 .responseFields(
                                         fieldWithPath("data[0].moimNoticeId").type(NUMBER).description("공지 Id"),
                                         fieldWithPath("data[0].title").type(STRING).description("공지 제목"),
-                                        fieldWithPath("data[0].createdAt").type(STRING).description("생성 일자")
+                                        fieldWithPath("data[0].year").type(NUMBER).description("년"),
+                                        fieldWithPath("data[0].month").type(NUMBER).description("월"),
+                                        fieldWithPath("data[0].day").type(NUMBER).description("일"),
+                                        fieldWithPath("data[0].dayOfWeek").type(STRING).description("요일")
                                 )
                                 .build()
                         )));
