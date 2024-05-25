@@ -1,34 +1,33 @@
 import { useState, useEffect, useMemo } from "react";
 import SidebarElementIcon from "./Icon";
 import SidebarElementLink from "./navigation";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 import HomeIcon from "@mui/icons-material/Home";
 import ArticleIcon from "@mui/icons-material/Article";
 import PersonIcon from "@mui/icons-material/Person";
 
 function Sidebar() {
-  const [selected, setSelected] = useState();
-
+  const location = useLocation();
   const navigate = useNavigate();
 
   const sections = ["홈", "프로필 설정", "모임 관리"];
   const links = [<HomeIcon />, <PersonIcon />, <ArticleIcon />];
 
   const onClickHandler = (section) => {
-    console.log(section);
-    setSelected(section);
-    localStorage.setItem("selected", section);
     if (section === "홈") navigate("/");
     else if (section === "프로필 설정") {
       navigate("/manage");
     } else navigate("/manage/moim");
   };
 
-  const currentSection = useMemo(
-    () => selected || localStorage.getItem("selected"),
-    [selected, localStorage]
-  );
+  const currentSection = useMemo(() => {
+    if (location.pathname === "/manage") {
+      return "프로필 설정";
+    } else {
+      return "모임 관리";
+    }
+  }, [location.pathname]);
 
   return (
     <aside className="flex  flex-col w-[30%] max-md:ml-0 max-md:w-full">
