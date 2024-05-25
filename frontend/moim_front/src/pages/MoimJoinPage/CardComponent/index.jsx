@@ -13,6 +13,7 @@ function CardComponent({
   isMeeting,
   meetingId,
   initialAttendance,
+  startDate,
 }) {
   const [attendance, setAttendance] = useState(initialAttendance);
   const meetingCancel = async () => {
@@ -76,12 +77,16 @@ function CardComponent({
         )}
         <div className="ml-1">
           <div className="grid grid-rows-2 w-fit">
+            <div className="flex items-center gap-4">
+              <div>{startDate}</div>
+              {isMeeting ? (
+                <div className="text-xl text-scarlet ">{dateConverter}</div>
+              ) : null}
+            </div>
+
             <div className=" font-Pretendard_Medium font-bold text-2xl">
               {title}
             </div>
-            {isMeeting ? (
-              <div className="text-scarlet text-base">{dateConverter}</div>
-            ) : null}
           </div>
         </div>
         <div className="pt-2"></div>

@@ -34,24 +34,7 @@ function MeetingCreation() {
     console.log(meetingCategory);
   };
 
-  const createMeeting = async () => {
-    const data = {
-      moimId: MoimId,
-      agenda: agenda,
-      startDateTime: startDateTime.replace("T", " ").split("+")[0],
-      endDateTime: endDateTime.replace("T", " ").split("+")[0],
-      place: place,
-      meetingCategory: meetingCategory,
-    };
-    console.log("create Meeting");
-    try {
-      const response = await POST("api/meetings", data);
-      console.log(response);
-      setOpen(true);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  useEffect(() => {}, [meetingCategory]);
 
   return (
     <div className="flex flex-col gap-3 px-10">
@@ -72,7 +55,6 @@ function MeetingCreation() {
         setShowModal={setShowModal}
         noticeHandler={null}
         isMeeting={true}
-        closeHandler={createMeeting}
         moimId={MoimId}
         agenda={agenda}
         setAgenda={setAgenda}
@@ -80,6 +62,7 @@ function MeetingCreation() {
         startDateTime={startDateTime}
         setEndDateTime={setEndDateTime}
         endDateTime={endDateTime}
+        meetingCategory={meetingCategory}
         place={place}
         setOpen={setOpen}
       >

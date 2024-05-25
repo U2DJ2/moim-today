@@ -131,10 +131,11 @@ function MoimHome({
               <CardComponent
                 key={index}
                 date={meeting.date}
+                startDate={meeting.startDate}
                 dday={meeting.dDay}
                 title={meeting.agenda}
                 attendance={meeting.attendance}
-                btn={true}
+                btn={false}
                 isMeeting={true}
                 meetingId={meeting.meetingId}
               />
