@@ -70,12 +70,12 @@ function MoimHome({
   return (
     <div className="flex flex-col gap-24">
       <div className="grid gap-4">
-        <div className="flex gap-4 text-center">
-          <div className="text-4xl font-Pretendard_SemiBold ">공지사항</div>
+        <div className="flex gap-4 text-center items-center">
+          <div className="text-4xl font-Pretendard_Black ">공지사항</div>
           {isHost ? (
             <button
               onClick={makeNoticeHandler}
-              className="font-Pretendard_Light hover:cursor-pointer hover:text-scarlet"
+              className="hover:cursor-pointer bg-black text-white rounded-full h-fit px-4 py-1 font-Pretendard_Light hover:bg-scarlet"
             >
               공지사항 생성하기
             </button>
@@ -105,14 +105,14 @@ function MoimHome({
       </div>
       <div>
         <div className="pb-8">
-          <div className="flex">
-            <div className="text-4xl font-Pretendard_SemiBold font-semibold pb-4">
+          <div className="flex items-center gap-4 pb-4">
+            <div className="text-4xl font-Pretendard_Black font-semibold">
               미팅 확인하기
             </div>
             {isHost ? (
               <button
                 onClick={makeMeetingHandler}
-                className="hover:cursor-pointer font-Pretendard_Light hover:text-scarlet"
+                className="hover:cursor-pointer bg-black text-white rounded-full h-fit px-4 py-1 font-Pretendard_Light hover:bg-scarlet"
               >
                 미팅 생성하기
               </button>
