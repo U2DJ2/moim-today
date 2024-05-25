@@ -14,7 +14,10 @@ function CreationModal({
   place,
   setOpen,
   scheduleTitle,
+
   meetingCategory,
+  isRefresh,
+  setIsRefresh,
 }) {
   const modalRef = useRef();
 
@@ -35,6 +38,7 @@ function CreationModal({
     console.log("create Meeting");
     try {
       const response = await POST("api/meetings", data);
+      setIsRefresh(!isRefresh);
       console.log(response);
       setOpen(true);
     } catch (e) {

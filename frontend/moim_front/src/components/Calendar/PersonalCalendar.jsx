@@ -26,6 +26,8 @@ export default function Calendar({
   setScheduleTitle,
   scheduleTitle,
   memberId,
+  isRefresh,
+  setIsRefresh,
 }) {
   const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
   const today = new Date().toISOString().split("T")[0];
@@ -34,11 +36,10 @@ export default function Calendar({
 
   useEffect(() => {
     const currentYear = new Date().getFullYear();
-
     if (isPersonal) {
       fetchAllEvents(currentYear).catch(console.error);
     } else if (isMeeting) {
-      memberId != null ? fetchAvailables() : fetchMeetings();
+      memberId != null ? fetchAvailables() : null;
     } else if (isAvailable) {
       fetchAvailables();
     }
@@ -51,6 +52,11 @@ export default function Calendar({
       });
     }
   }, [selectedDate]);
+
+  useEffect(() => {
+    setIsRefresh(false);
+    fetchAvailables();
+  }, [isRefresh]);
 
   const GetMemberWeekly = async (memberId) => {
     //모임 내 멤버 별 가용시간
@@ -110,22 +116,6 @@ export default function Calendar({
       setEvents(allEvents);
     } catch (error) {
       console.error("Error fetching events:", error);
-    }
-  }
-
-  async function fetchMeetings() {
-    try {
-      const response = await axios.get(
-        `https://api.moim.today/api/meetings/${moimId}`,
-        {
-          params: {
-            meetingStatus: "ALL",
-          },
-        }
-      );
-      console.log(response);
-    } catch (e) {
-      console.log(e);
     }
   }
 

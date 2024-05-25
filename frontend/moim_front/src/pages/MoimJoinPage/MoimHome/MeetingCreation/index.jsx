@@ -20,6 +20,8 @@ function MeetingCreation() {
   const [agenda, setAgenda] = useState("");
   const [place, setPlace] = useState("");
   const [meetingCategory, setMeetingCategory] = useState("REGULAR");
+  const [isRefresh, setIsRefresh] = useState(false);
+
   const { MoimId } = useParams();
 
   const [open, setOpen] = useState(false);
@@ -49,6 +51,8 @@ function MeetingCreation() {
         setShowModal={setShowModal}
         setStartDateTime={setStartDateTime}
         setEndDateTime={setEndDateTime}
+        isRefresh={isRefresh}
+        setIsRefresh={setIsRefresh}
       />
       <CreationModal
         showModal={showModal}
@@ -65,6 +69,8 @@ function MeetingCreation() {
         meetingCategory={meetingCategory}
         place={place}
         setOpen={setOpen}
+        isRefresh={isRefresh}
+        setIsRefresh={setIsRefresh}
       >
         <div className="font-Pretendard_Black text-3xl pb-8">미팅 생성하기</div>
         <div className="flex flex-col gap-4">
