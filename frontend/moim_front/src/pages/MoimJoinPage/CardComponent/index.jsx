@@ -54,10 +54,14 @@ function CardComponent({
       }
     }
   };
-  const dateConverter = useMemo(
-    () => (dday === 0 ? "DAY" : `D-${dday}`),
-    [dday]
-  );
+  const dateConverter = useMemo(() => {
+    const modifiedDday = dday * -1;
+    return dday === 0
+      ? "DAY"
+      : modifiedDday > 0
+      ? `D+${modifiedDday}`
+      : `D${modifiedDday}`;
+  }, [dday]);
 
   return (
     <div
@@ -76,7 +80,7 @@ function CardComponent({
               {title}
             </div>
             {isMeeting ? (
-              <div className="text-scarlet text-base">D-{dateConverter}</div>
+              <div className="text-scarlet text-base">{dateConverter}</div>
             ) : null}
           </div>
         </div>

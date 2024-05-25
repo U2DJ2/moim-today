@@ -12,6 +12,7 @@ function Sidebar() {
   const navigate = useNavigate();
 
   const sections = ["홈", "프로필 설정", "모임 관리"];
+
   const links = [<HomeIcon />, <PersonIcon />, <ArticleIcon />];
 
   const onClickHandler = (section) => {
