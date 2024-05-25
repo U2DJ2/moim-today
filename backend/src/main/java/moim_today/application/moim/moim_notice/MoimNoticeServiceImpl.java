@@ -2,7 +2,6 @@ package moim_today.application.moim.moim_notice;
 
 import moim_today.dto.moim.moim_notice.*;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
-import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.implement.moim.moim_notice.MoimNoticeAppender;
 import moim_today.implement.moim.moim_notice.MoimNoticeFinder;
 import moim_today.implement.moim.moim_notice.MoimNoticeRemover;
@@ -40,9 +39,9 @@ public class MoimNoticeServiceImpl implements MoimNoticeService{
     }
 
     @Override
-    public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long memberId, final long moimId) {
+    public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long memberId, final long moimId, final long lastMoimNoticeId) {
         joinedMoimFinder.validateMemberInMoim(memberId, moimId);
-        return moimNoticeFinder.findAllMoimNotice(moimId);
+        return moimNoticeFinder.findAllMoimNotice(moimId, lastMoimNoticeId);
     }
 
     @Override

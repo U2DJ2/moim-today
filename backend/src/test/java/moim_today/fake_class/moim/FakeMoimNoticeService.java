@@ -22,7 +22,7 @@ public class FakeMoimNoticeService implements MoimNoticeService {
     }
 
     @Override
-    public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long memberId, final long moimId) {
+    public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long memberId, final long moimId, final long lastMoimNoticeId) {
         if (moimId == FORBIDDEN_MOIM_ID.longValue()) {
             throw new ForbiddenException(MOIM_FORBIDDEN_ERROR.message());
         }

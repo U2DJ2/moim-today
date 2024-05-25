@@ -18,10 +18,9 @@ public class MoimNoticeFinder {
         this.moimNoticeRepository = moimNoticeRepository;
     }
 
-    @Cacheable(value = "moimNotices", key = "#moimId")
     @Transactional(readOnly = true)
-    public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long moimId) {
-        return moimNoticeRepository.findAllMoimNotice(moimId);
+    public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long moimId, final long lastMoimNoticeId) {
+        return moimNoticeRepository.findAllMoimNotice(moimId, lastMoimNoticeId);
     }
 
     @Cacheable(value = "moimNotice", key = "#moimNoticeId")

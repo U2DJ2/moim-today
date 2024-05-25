@@ -119,8 +119,9 @@ public class MoimController {
 
     @GetMapping("/notices/simple")
     public CollectionResponse<List<MoimNoticeSimpleResponse>> findAllMoimNotice(@Login final MemberSession memberSession,
-                                                                                @RequestParam final long moimId) {
-        return CollectionResponse.from(moimNoticeService.findAllMoimNotice(memberSession.id(), moimId));
+                                                                                @RequestParam final long moimId,
+                                                                                @RequestParam final long lastMoimNoticeId) {
+        return CollectionResponse.from(moimNoticeService.findAllMoimNotice(memberSession.id(), moimId, lastMoimNoticeId));
     }
 
     @GetMapping("/notices/detail")

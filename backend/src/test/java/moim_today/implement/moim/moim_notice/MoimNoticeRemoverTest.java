@@ -87,6 +87,7 @@ class MoimNoticeRemoverTest extends ImplementTest {
     @Test
     void deleteMoimNoticeCachingTest(){
         //given
+        long lastMoimNoticeId = 0;
         long memberId = MEMBER_ID.longValue();
 
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
@@ -106,7 +107,7 @@ class MoimNoticeRemoverTest extends ImplementTest {
 
         //given
         clearCache();
-        moimNoticeFinder.findAllMoimNotice(moimId);
+        moimNoticeFinder.findAllMoimNotice(moimId, lastMoimNoticeId);
         moimNoticeFinder.getById(noticeId);
 
         //when

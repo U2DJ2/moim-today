@@ -21,7 +21,6 @@ public class MoimNoticeAppender {
         this.moimFinder = moimFinder;
     }
 
-    @CacheEvict(value = "moimNotices", key = "#moimId")
     @Transactional
     public void createMoimNotice(final long memberId, final long moimId, final MoimNoticeCreateRequest moimNoticeCreateRequest) {
         MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);

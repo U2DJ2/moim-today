@@ -8,7 +8,7 @@ public interface MoimNoticeService {
 
     void createMoimNotice(final long memberId, final MoimNoticeCreateRequest moimNoticeCreateRequest);
 
-    List<MoimNoticeSimpleResponse> findAllMoimNotice(final long memberId, final long moimId);
+    List<MoimNoticeSimpleResponse> findAllMoimNotice(final long memberId, final long moimId, final long lastMoimNoticeId);
 
     MoimNoticeDetailResponse getMoimNoticeDetail(final long memberId, final long moimNoticeId);
 

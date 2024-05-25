@@ -90,7 +90,6 @@ public abstract class ImplementTest {
     }
 
     @Caching(evict = {
-            @CacheEvict(value = "moimNotices", allEntries = true),
             @CacheEvict(value = "moimNotice", allEntries = true)
     })
     protected void clearCache() {

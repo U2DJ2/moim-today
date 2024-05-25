@@ -575,14 +575,16 @@ class MoimControllerTest extends ControllerTest {
     void findAllMoimNoticeTest() throws Exception {
 
         mockMvc.perform(get("/api/moims/notices/simple")
-                        .queryParam("moimId", MOIM_ID.value()))
+                        .param("moimId", MOIM_ID.value())
+                        .param("lastMoimNoticeId", "0"))
                 .andExpect(status().isOk())
                 .andDo(document("모든 공지 조회 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임 공지")
                                 .summary("모든 공지 조회")
                                 .queryParameters(
-                                        parameterWithName("moimId").description("모임 Id")
+                                        parameterWithName("moimId").description("모임 Id"),
+                                        parameterWithName("lastMoimNoticeId").description("마지막으로 조회한 공지 Id - 처음 조회 시 0")
                                 )
                                 .responseFields(
                                         fieldWithPath("data[0].moimNoticeId").type(NUMBER).description("공지 Id"),
@@ -601,14 +603,16 @@ class MoimControllerTest extends ControllerTest {
     void findAllMoimNoticeForbiddenTest() throws Exception {
 
         mockMvc.perform(get("/api/moims/notices/simple")
-                        .queryParam("moimId", FORBIDDEN_MOIM_ID.value()))
+                        .param("moimId", FORBIDDEN_MOIM_ID.value())
+                        .param("lastMoimNoticeId", "0"))
                 .andExpect(status().isForbidden())
                 .andDo(document("모든 공지 조회 실패 - 모임에 소속되지 않은 회원이 요청했을 때",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임 공지")
                                 .summary("모든 공지 조회")
                                 .queryParameters(
-                                        parameterWithName("moimId").description("접근 권한이 없는 모임 Id")
+                                        parameterWithName("moimId").description("접근 권한이 없는 모임 Id"),
+                                        parameterWithName("lastMoimNoticeId").description("마지막으로 조회한 공지 Id - 처음 조회 시 0")
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),

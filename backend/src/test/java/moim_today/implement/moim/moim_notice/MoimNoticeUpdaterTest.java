@@ -103,6 +103,7 @@ class MoimNoticeUpdaterTest extends ImplementTest {
     @Test
     void deleteMoimNoticeCachingTest(){
         //given
+        long lastMoimNoticeId = 0;
         long memberId = MEMBER_ID.longValue();
 
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
@@ -129,20 +130,16 @@ class MoimNoticeUpdaterTest extends ImplementTest {
 
         //given
         clearCache();
-        moimNoticeFinder.findAllMoimNotice(moimId);
+        moimNoticeFinder.findAllMoimNotice(moimId, lastMoimNoticeId);
         moimNoticeFinder.getById(noticeId);
-        Object noticesCacheObject = requireNonNull(cacheManager.getCache("moimNotices")).get(moimId, Object.class);
         Object noticeCacheObject = requireNonNull(cacheManager.getCache("moimNotice")).get(noticeId, Object.class);
-        assertThat(noticesCacheObject).isNotNull();
         assertThat(noticeCacheObject).isNotNull();
 
         //when
         moimNoticeUpdater.updateMoimNotice(memberId, moimId, updateRequest);
 
         //then
-        noticesCacheObject = requireNonNull(cacheManager.getCache("moimNotices")).get(moimId, Object.class);
         noticeCacheObject = requireNonNull(cacheManager.getCache("moimNotice")).get(noticeId, Object.class);
-        assertThat(noticesCacheObject).isNull();
         assertThat(noticeCacheObject).isNull();
     }
 }

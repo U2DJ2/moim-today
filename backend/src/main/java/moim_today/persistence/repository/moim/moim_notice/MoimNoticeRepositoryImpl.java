@@ -1,5 +1,6 @@
 package moim_today.persistence.repository.moim.moim_notice;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import moim_today.dto.moim.moim_notice.MoimNoticeSimpleResponse;
 import moim_today.dto.moim.moim_notice.QMoimNoticeSimpleResponse;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static moim_today.global.constant.NumberConstant.MAX_MOIMHONE_NOTICE_DISPLAY_COUNT;
 import static moim_today.global.constant.exception.MoimExceptionConstant.NOTICE_NOT_FOUND_ERROR;
 import static moim_today.persistence.entity.moim.moim_notice.QMoimNoticeJpaEntity.moimNoticeJpaEntity;
 
@@ -35,14 +37,19 @@ public class MoimNoticeRepositoryImpl implements MoimNoticeRepository {
     }
 
     @Override
-    public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long moimId) {
+    public List<MoimNoticeSimpleResponse> findAllMoimNotice(final long moimId, final long lastMoimNoticeId) {
         return queryFactory.select(new QMoimNoticeSimpleResponse(
                         moimNoticeJpaEntity.id,
                         moimNoticeJpaEntity.title,
                         moimNoticeJpaEntity.createdAt
                 ))
                 .from(moimNoticeJpaEntity)
-                .where(moimNoticeJpaEntity.moimId.eq(moimId))
+                .where(
+                        moimNoticeJpaEntity.moimId.eq(moimId),
+                        ltlastMoimNoticeId(lastMoimNoticeId)
+                )
+                .orderBy(moimNoticeJpaEntity.id.desc())
+                .limit(MAX_MOIMHONE_NOTICE_DISPLAY_COUNT.value())
                 .fetch();
     }
 
@@ -55,5 +62,12 @@ public class MoimNoticeRepositoryImpl implements MoimNoticeRepository {
     @Override
     public void deleteById(final long moimNoticeId) {
         moimNoticeJpaRepository.deleteById(moimNoticeId);
+    }
+
+    private BooleanExpression ltlastMoimNoticeId(final long lastMoimNoticeId) {
+        if (lastMoimNoticeId == 0) {
+            return null;
+        }
+        return moimNoticeJpaEntity.id.lt(lastMoimNoticeId);
     }
 }
