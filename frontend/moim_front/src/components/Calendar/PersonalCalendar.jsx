@@ -184,7 +184,7 @@ export default function Calendar({
       setShowModal(true);
     }
 
-    setStartDateTime(selectInfo.startStr.split("T")[0]);
+    setStartDateTime(selectInfo.startStr);
     setEndDateTime(selectInfo.endStr);
 
     calendarApi.unselect(); // clear date selection

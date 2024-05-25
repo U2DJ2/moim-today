@@ -1,4 +1,6 @@
 import axios from "axios";
+import { useMemo, useState } from "react";
+import CardBtn from "./CardBtn";
 
 function CardComponent({
   month,
@@ -10,17 +12,53 @@ function CardComponent({
   clickHandler,
   isMeeting,
   meetingId,
+  initialAttendance,
 }) {
-  const onClickHandler = async () => {
+  const [attendance, setAttendance] = useState(initialAttendance);
+  const meetingCancel = async () => {
     try {
       const response = await axios.post(
-        `https://api.moim.today/api/members/meetings/${meetingId}/acceptance`
+        `https://api.moim.today/api/members/meetings/${meetingId}/refusal`
       );
-      console.log(response);
+      return response;
     } catch (e) {
       console.log(e);
     }
   };
+  const meetingJoin = async () => {
+    try {
+      const response = await axios.post(
+        `https://api.moim.today/api/members/meetings/${meetingId}/acceptance`
+      );
+      return response;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const onClickHandler = async (attendance) => {
+    if (attendance) {
+      try {
+        const result = await meetingCancel();
+        setAttendance(false);
+        console.log(result);
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        const result = await meetingJoin();
+        console.log(result);
+        setAttendance(true);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+  const dateConverter = useMemo(
+    () => (dday === 0 ? "DAY" : `D-${dday}`),
+    [dday]
+  );
+
   return (
     <div
       className="w-auto p-8 grid font-Pretendard_SemiBold text-xl bg-white shadow-[0px_1px_16px_rgba(0,_0,_0,_0.08)] rounded-3xl hover:cursor-pointer"
@@ -38,18 +76,17 @@ function CardComponent({
               {title}
             </div>
             {isMeeting ? (
-              <div className="text-scarlet text-base">D-{dday}</div>
+              <div className="text-scarlet text-base">D-{dateConverter}</div>
             ) : null}
           </div>
         </div>
         <div className="pt-2"></div>
+
         {btn && (
-          <button
-            className="text-white bg-scarlet p-1.5 rounded-full font-Pretendard_SemiBold hover:bg-slate-400"
-            onClick={onClickHandler}
-          >
-            참석하기
-          </button>
+          <CardBtn
+            name={attendance ? "취소하기" : "참여하기"}
+            clickHandler={() => onClickHandler(attendance)}
+          />
         )}
       </div>
     </div>

@@ -133,6 +133,7 @@ function MoimHome({
                 date={meeting.date}
                 dday={meeting.dDay}
                 title={meeting.agenda}
+                attendance={meeting.attendance}
                 btn={true}
                 isMeeting={true}
                 meetingId={meeting.meetingId}
