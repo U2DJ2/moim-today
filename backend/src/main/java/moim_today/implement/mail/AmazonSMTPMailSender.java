@@ -1,11 +1,10 @@
 package moim_today.implement.mail;
 
-import moim_today.dto.mail.MailSendRequest;
-import moim_today.global.annotation.Implement;
-import moim_today.global.error.InternalServerException;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.*;
 import lombok.extern.slf4j.Slf4j;
+import moim_today.dto.mail.MailSendRequest;
+import moim_today.global.error.InternalServerException;
 import org.springframework.beans.factory.annotation.Value;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -14,12 +13,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
-import static moim_today.global.constant.MailConstant.*;
+import static moim_today.global.constant.MailConstant.DATA;
 import static moim_today.global.constant.exception.MailExceptionConstant.MAIL_SEND_ERROR;
 
 @Slf4j
-@Implement
-public class MailSender {
+public class AmazonSMTPMailSender implements SMTPMailSender {
 
     private final AmazonSimpleEmailService amazonSimpleEmailService;
 
@@ -28,7 +26,7 @@ public class MailSender {
     @Value("${cloud.aws.ses.from}")
     private String from;
 
-    public MailSender(
+    public AmazonSMTPMailSender(
             final AmazonSimpleEmailService amazonSimpleEmailService,
             final TemplateEngine htmlTemplateEngine
     ) {
@@ -72,7 +70,7 @@ public class MailSender {
                 );
     }
 
-    private Content createContent(String text){
+    private Content createContent(final String text){
         return new Content()
                 .withCharset(StandardCharsets.UTF_8.name())
                 .withData(text);

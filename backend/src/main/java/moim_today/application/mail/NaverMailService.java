@@ -2,15 +2,17 @@ package moim_today.application.mail;
 
 import moim_today.dto.mail.MailSendRequest;
 import moim_today.implement.mail.SMTPMailSender;
+import org.springframework.stereotype.Service;
 
 import static moim_today.global.constant.MailConstant.EMAIL_CERTIFICATION_MAIL;
 import static moim_today.global.constant.MailConstant.PASSWORD_FIND_MAIL;
 
-public class AmazonSesService implements MailService {
+@Service
+public class NaverMailService implements MailService{
 
     private final SMTPMailSender mailSender;
 
-    public AmazonSesService(final SMTPMailSender mailSender) {
+    public NaverMailService(SMTPMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
