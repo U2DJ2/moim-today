@@ -66,7 +66,6 @@ public class NaverSMTPMailSender implements SMTPMailSender {
         return context;
     }
 
-    //메일 양식 작성
     public MimeMessage createEmailForm(final String content, final String subject, final String to) throws MessagingException, UnsupportedEncodingException {
 
         MimeMessage message = emailSender.createMimeMessage();
