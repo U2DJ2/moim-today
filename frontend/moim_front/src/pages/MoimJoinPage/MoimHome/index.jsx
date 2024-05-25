@@ -6,12 +6,7 @@ import { GET, POST } from "../../../utils/axios";
 import CreationModal from "../../../components/CreationModal";
 import { IndeterminateCheckBox, SettingsOutlined } from "@mui/icons-material";
 import { fetchMeetings } from "../../../api/moim";
-function MoimHome({
-  notices,
-
-  isHost,
-  moimId,
-}) {
+function MoimHome({ notices, isHost, moimId }) {
   const [showModal, setShowModal] = useState(false);
   const [meetingOption, setMeetingOption] = useState("UPCOMING");
 
@@ -24,8 +19,6 @@ function MoimHome({
 
   const navigate = useNavigate();
 
-  let noticeId = 1,
-    meetingId = 1;
   const onSelect = (option) => {
     console.log(option);
     if (option === "다가오는 미팅") {
@@ -75,6 +68,9 @@ function MoimHome({
   const noticeHandler = () => {
     console.log("first");
     postNotice();
+  };
+  const meetingCardHandler = (meetingId) => {
+    navigate(`/meeting/${moimId}/${meetingId}`);
   };
   useEffect(() => {
     getMeetings();
@@ -153,6 +149,7 @@ function MoimHome({
                 btn={false}
                 isMeeting={true}
                 meetingId={meeting.meetingId}
+                clickHandler={() => meetingCardHandler(meeting.meetingId)}
               />
             ))
           ) : (

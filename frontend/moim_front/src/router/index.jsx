@@ -17,6 +17,9 @@ import Schedule from "../pages/Schedule";
 // Page : Moim Detail Page
 import MoimDetailPage from "../pages/MoimDetailPage";
 
+// Page : Meeting Detail PAge
+import MeetingDetailPage from "../pages/MeetingDetailPage";
+
 // Components
 import MoimJoinPage from "../pages/MoimJoinPage";
 import MeetingCreation from "../pages/MoimJoinPage/MoimHome/MeetingCreation";
@@ -72,6 +75,11 @@ function Router() {
         <Route path="/manage" element={<ManageProfilePage />} />
         <Route path="/manage/moim" element={<ManageMoimPage />} />
       </Route>
+
+      <Route
+        path="/meeting/:moimId/:meetingId"
+        element={<MeetingDetailPage />}
+      />
 
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
