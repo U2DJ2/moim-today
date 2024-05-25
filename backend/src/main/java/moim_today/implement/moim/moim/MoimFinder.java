@@ -73,8 +73,8 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<MoimSimpleResponse> findAllMoimResponses(final long universityId, final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
-        return moimRepository.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
+    public List<MoimSimpleResponse> findAllMoimResponses(final long universityId, final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter, final long lastMoimId) {
+        return moimRepository.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter, lastMoimId);
     }
 
     @Transactional(readOnly = true)
@@ -94,8 +94,8 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam) {
-        return moimRepository.searchMoimBySearchParam(universityId, searchParam);
+    public List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam, final long lastMoimId) {
+        return moimRepository.searchMoimBySearchParam(universityId, searchParam, lastMoimId);
     }
 
     @Transactional(readOnly = true)

@@ -148,7 +148,7 @@ public class FakeMoimService implements MoimService {
     @Override
     public List<MoimSimpleResponse> findAllMoimResponses(final long universityId,
                                                          final MoimCategoryDto moimCategoryDto,
-                                                         final MoimSortedFilter moimSortedFilter) {
+                                                         final MoimSortedFilter moimSortedFilter, final long lastMoimId) {
         MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
                 .moimId(1L)
                 .title(MOIM_TITLE.value())
@@ -173,7 +173,7 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam) {
+    public List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam, final long lastMoimId) {
         MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
                 .moimId(1L)
                 .title(MOIM_TITLE.value())

@@ -24,13 +24,13 @@ public interface MoimRepository {
 
     void deleteById(final long moimId);
 
-    List<MoimSimpleResponse> findAllMoimResponses(final long universityId, final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter);
+    List<MoimSimpleResponse> findAllMoimResponses(final long universityId, final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter, final long lastMoimId);
 
     List<MyMoimResponse> findAllMyMoimResponse(final List<Long> moimIds);
 
     MoimJpaEntity getByIdWithPessimisticLock(final long moimId);
 
-    List<MoimSimpleResponse> searchMoimBySearchParam(final long universityId, final String searchParam);
+    List<MoimSimpleResponse> searchMoimBySearchParam(final long universityId, final String searchParam, final long lastMoimId);
 
     List<MoimSimpleResponse> findEndedMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now);
 

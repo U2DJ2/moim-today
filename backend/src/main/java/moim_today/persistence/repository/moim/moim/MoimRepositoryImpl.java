@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static moim_today.global.constant.NumberConstant.MAX_DASHBOARD_MOIM_DISPLAY_COUNT;
+import static moim_today.global.constant.NumberConstant.MAX_MAIN_MOIM_DISPLAY_COUNT;
 import static moim_today.global.constant.SymbolConstant.PERCENT;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_NOT_FOUND_ERROR;
 import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.moimJpaEntity;
@@ -87,7 +88,7 @@ public class MoimRepositoryImpl implements MoimRepository {
     }
 
     @Override
-    public List<MoimSimpleResponse> searchMoimBySearchParam(final long universityId, final String searchParam) {
+    public List<MoimSimpleResponse> searchMoimBySearchParam(final long universityId, final String searchParam, final long lastMoimId) {
         return queryFactory.select(new QMoimSimpleResponse(
                         moimJpaEntity.id,
                         moimJpaEntity.title,
@@ -98,10 +99,15 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.displayStatus
                 ))
                 .from(moimJpaEntity)
-                .where(moimJpaEntity.universityId.eq(universityId)
-                        .and(moimJpaEntity.title.likeIgnoreCase(PERCENT.value() + searchParam.trim() + PERCENT.value()))
+                .where(
+                        moimJpaEntity.universityId.eq(universityId),
+                        moimJpaEntity.title.likeIgnoreCase(PERCENT.value() + searchParam.trim() + PERCENT.value()),
+                        ltLastMoimId(lastMoimId)
                 )
-                .orderBy(moimJpaEntity.views.desc())
+                .orderBy(
+                        moimJpaEntity.views.desc(),
+                        moimJpaEntity.id.desc())
+                .limit(MAX_MAIN_MOIM_DISPLAY_COUNT.value())
                 .fetch();
     }
 
@@ -133,7 +139,8 @@ public class MoimRepositoryImpl implements MoimRepository {
     @Override
     public List<MoimSimpleResponse> findAllMoimResponses(final long universityId,
                                                          final MoimCategoryDto moimCategoryDto,
-                                                         final MoimSortedFilter moimSortedFilter) {
+                                                         final MoimSortedFilter moimSortedFilter,
+                                                         final long lastMoimId) {
 
         return queryFactory.select(new QMoimSimpleResponse(
                         moimJpaEntity.id,
@@ -147,9 +154,11 @@ public class MoimRepositoryImpl implements MoimRepository {
                 .from(moimJpaEntity)
                 .where(
                         moimJpaEntity.universityId.eq(universityId),
-                        applyMoimCategoryFilter(moimCategoryDto)
+                        applyMoimCategoryFilter(moimCategoryDto),
+                        ltLastMoimId(lastMoimId)
                 )
                 .orderBy(createOrderBySpecifier(moimSortedFilter))
+                .limit(MAX_MAIN_MOIM_DISPLAY_COUNT.value())
                 .fetch();
     }
 
@@ -173,11 +182,16 @@ public class MoimRepositoryImpl implements MoimRepository {
         return moimJpaEntity.moimCategory.eq(moimCategory);
     }
 
-    private OrderSpecifier<?> createOrderBySpecifier(final MoimSortedFilter moimSortedFilter) {
+    private OrderSpecifier<?>[] createOrderBySpecifier(final MoimSortedFilter moimSortedFilter) {
         if (moimSortedFilter == MoimSortedFilter.VIEWS) {
-            return moimJpaEntity.views.desc();
+            return new OrderSpecifier<?>[]{
+                    moimJpaEntity.views.desc(),
+                    moimJpaEntity.id.asc()
+            };
         }
-        return moimJpaEntity.createdAt.desc();
+        return new OrderSpecifier<?>[]{
+                moimJpaEntity.id.desc()
+        };
     }
 
     private BooleanExpression applyEndedFilter(final LocalDate now, final boolean ended) {

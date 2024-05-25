@@ -174,8 +174,9 @@ class MoimControllerTest extends ControllerTest {
     void findAllMoimSimpleResponseTest() throws Exception {
 
         mockMvc.perform(get("/api/moims/simple")
-                        .queryParam("moimCategoryDto", MoimCategoryDto.EXERCISE.name())
-                        .queryParam("moimSortedFilter", MoimSortedFilter.CREATED_AT.name()))
+                        .param("moimCategoryDto", MoimCategoryDto.EXERCISE.name())
+                        .param("moimSortedFilter", MoimSortedFilter.CREATED_AT.name())
+                        .param("lastMoimId", "0"))
                 .andExpect(status().isOk())
                 .andDo(document("모임 리스트 조회 성공",
                         resource(ResourceSnippetParameters.builder()
@@ -185,7 +186,8 @@ class MoimControllerTest extends ControllerTest {
                                         parameterWithName("moimCategoryDto").description(String.format("카테고리 - %s",
                                                 EnumDocsUtils.getEnumNames(MoimCategoryDto.class))),
                                         parameterWithName("moimSortedFilter").description(String.format("정렬 기준 - %s",
-                                                EnumDocsUtils.getEnumNames(MoimSortedFilter.class)))
+                                                EnumDocsUtils.getEnumNames(MoimSortedFilter.class))),
+                                        parameterWithName("lastMoimId").description("마지막으로 조회한 모임Id - 첫 조회 시 0")
                                 )
                                 .responseFields(
                                         fieldWithPath("data[0].moimId").type(NUMBER).description("모임 Id"),
@@ -774,14 +776,16 @@ class MoimControllerTest extends ControllerTest {
     void searchMoimTest() throws Exception {
 
         mockMvc.perform(get("/api/moims/search")
-                        .queryParam("searchParam", "검색어"))
+                        .param("searchParam", "검색어")
+                        .param("lastMoimId", "0"))
                 .andExpect(status().isOk())
                 .andDo(document("모임 검색 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
                                 .summary("모임 검색")
                                 .queryParameters(
-                                        parameterWithName("searchParam").description("검색어")
+                                        parameterWithName("searchParam").description("검색어"),
+                                        parameterWithName("lastMoimId").description("마지막 조회한 모임Id - 처음 조회시 0")
                                 )
                                 .responseFields(
                                         fieldWithPath("data[0].moimId").type(NUMBER).description("모임 Id"),

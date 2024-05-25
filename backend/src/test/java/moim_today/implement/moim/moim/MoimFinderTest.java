@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 import static moim_today.global.constant.NumberConstant.MAX_DASHBOARD_MOIM_DISPLAY_COUNT;
+import static moim_today.global.constant.NumberConstant.MAX_MAIN_MOIM_DISPLAY_COUNT;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_CAPACITY_ERROR;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_NOT_FOUND_ERROR;
 import static moim_today.util.TestConstant.*;
@@ -249,6 +250,7 @@ class MoimFinderTest extends ImplementTest {
     @Test
     void findAllMoim() throws InterruptedException {
         // given
+        long lastMoimId = 0;
         long universityId = UNIV_ID.longValue();
 
         MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
@@ -258,8 +260,6 @@ class MoimFinderTest extends ImplementTest {
                 .build();
 
         moimRepository.save(firstCreatedMoimJpaEntity);
-
-        Thread.sleep(10);
 
         Thread.sleep(10);
 
@@ -275,7 +275,7 @@ class MoimFinderTest extends ImplementTest {
         MoimSortedFilter moimSortedFilter = null;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter, lastMoimId);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
@@ -287,6 +287,7 @@ class MoimFinderTest extends ImplementTest {
     @Test
     void findAllMoimOrderByCreatedAt() throws InterruptedException {
         // given
+        long lastMoimId = 0;
         long universityId = UNIV_ID.longValue();
 
         MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
@@ -296,8 +297,6 @@ class MoimFinderTest extends ImplementTest {
                 .build();
 
         moimRepository.save(firstCreatedMoimJpaEntity);
-
-        Thread.sleep(10);
 
         Thread.sleep(10);
 
@@ -313,7 +312,7 @@ class MoimFinderTest extends ImplementTest {
         MoimSortedFilter moimSortedFilter = MoimSortedFilter.CREATED_AT;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter, lastMoimId);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
@@ -325,6 +324,7 @@ class MoimFinderTest extends ImplementTest {
     @Test
     void findAllMoimOrderByViews() {
         // given
+        long lastMoimId = 0;
         long universityId = UNIV_ID.longValue();
 
         MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
@@ -347,7 +347,7 @@ class MoimFinderTest extends ImplementTest {
         MoimSortedFilter moimSortedFilter = MoimSortedFilter.VIEWS;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter, lastMoimId);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
@@ -379,9 +379,10 @@ class MoimFinderTest extends ImplementTest {
 
         MoimCategoryDto moimCategoryDto = MoimCategoryDto.TEAM_PROJECT;
         MoimSortedFilter moimSortedFilter = null;
+        long lastMoimId = 0;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter, lastMoimId);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(1);
@@ -413,9 +414,10 @@ class MoimFinderTest extends ImplementTest {
 
         MoimCategoryDto moimCategoryDto = MoimCategoryDto.ALL;
         MoimSortedFilter moimSortedFilter = null;
+        long lastMoimId = 0;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter, lastMoimId);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(1);
@@ -526,6 +528,7 @@ class MoimFinderTest extends ImplementTest {
     @Test
     void searchMoimBySearchParam() {
         // given1
+        long lastMoimId = 0;
         long universityId = UNIV_ID.longValue();
 
         MoimJpaEntity moimA = MoimJpaEntity.builder()
@@ -550,11 +553,11 @@ class MoimFinderTest extends ImplementTest {
         moimRepository.save(moimC);
 
         //when
-        List<MoimSimpleResponse> appleResponses = moimFinder.searchMoim(universityId, "apple");
-        List<MoimSimpleResponse> mangoResponses = moimFinder.searchMoim(universityId, "mango");
-        List<MoimSimpleResponse> blankResponses = moimFinder.searchMoim(universityId, " ");
-        List<MoimSimpleResponse> noneResponses = moimFinder.searchMoim(universityId, "none");
-        List<MoimSimpleResponse> applemangoResponses = moimFinder.searchMoim(universityId, "apple mango");
+        List<MoimSimpleResponse> appleResponses = moimFinder.searchMoim(universityId, "apple", lastMoimId);
+        List<MoimSimpleResponse> mangoResponses = moimFinder.searchMoim(universityId, "mango", lastMoimId);
+        List<MoimSimpleResponse> blankResponses = moimFinder.searchMoim(universityId, " ", lastMoimId);
+        List<MoimSimpleResponse> noneResponses = moimFinder.searchMoim(universityId, "none", lastMoimId);
+        List<MoimSimpleResponse> applemangoResponses = moimFinder.searchMoim(universityId, "apple mango", lastMoimId);
 
         //then
         assertThat(appleResponses.size()).isEqualTo(3);
@@ -568,6 +571,7 @@ class MoimFinderTest extends ImplementTest {
     @Test
     void searchMoimBySearchParamAndUniversityId() {
         // given1
+        long lastMoimId = 0;
         long universityId = UNIV_ID.longValue();
         long otherUniversityId = UNIV_ID.longValue() + 1;
 
@@ -593,11 +597,11 @@ class MoimFinderTest extends ImplementTest {
         moimRepository.save(moimC);
 
         //when
-        List<MoimSimpleResponse> appleResponses = moimFinder.searchMoim(universityId, "apple");
-        List<MoimSimpleResponse> mangoResponses = moimFinder.searchMoim(universityId, "mango");
-        List<MoimSimpleResponse> blankResponses = moimFinder.searchMoim(universityId, " ");
-        List<MoimSimpleResponse> noneResponses = moimFinder.searchMoim(universityId, "none");
-        List<MoimSimpleResponse> applemangoResponses = moimFinder.searchMoim(otherUniversityId, "apple mango");
+        List<MoimSimpleResponse> appleResponses = moimFinder.searchMoim(universityId, "apple", lastMoimId);
+        List<MoimSimpleResponse> mangoResponses = moimFinder.searchMoim(universityId, "mango", lastMoimId);
+        List<MoimSimpleResponse> blankResponses = moimFinder.searchMoim(universityId, " ", lastMoimId);
+        List<MoimSimpleResponse> noneResponses = moimFinder.searchMoim(universityId, "none", lastMoimId);
+        List<MoimSimpleResponse> applemangoResponses = moimFinder.searchMoim(otherUniversityId, "apple mango", lastMoimId);
 
         //then
         assertThat(appleResponses.size()).isEqualTo(2);
@@ -702,6 +706,70 @@ class MoimFinderTest extends ImplementTest {
         //then
         assertThat(endedAllMyMoimSimpleResponses1.size()).isEqualTo(4);
         assertThat(endedAllMyMoimSimpleResponses2.size()).isEqualTo(1);
+    }
+
+    @DisplayName("모임 리스트를 최신순으로 가져올 때, 페이징 처리한 후 가져온다.")
+    @Test
+    void findAllMoimOrderByCreatedAtPaging() {
+        // given
+        long universityId = UNIV_ID.longValue();
+        int moimCount = 10;
+
+        for (int i = 0; i < moimCount; i++) {
+            MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                    .universityId(universityId)
+                    .title(MOIM_TITLE.value() + i)
+                    .build();
+
+            moimRepository.save(moimJpaEntity);
+        }
+
+        MoimCategoryDto moimCategoryDto = MoimCategoryDto.ALL;
+        MoimSortedFilter moimSortedFilter = MoimSortedFilter.CREATED_AT;
+
+        // when
+        long lastMoimId = 0;
+        List<MoimSimpleResponse> pageResponse1 = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter, lastMoimId);
+
+        lastMoimId = pageResponse1.get(MAX_MAIN_MOIM_DISPLAY_COUNT.value() - 1).moimId();
+        List<MoimSimpleResponse> pageResponse2 = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter, lastMoimId);
+
+        // then
+        assertThat(pageResponse1.size())
+                .isEqualTo(MAX_MAIN_MOIM_DISPLAY_COUNT.value());
+        assertThat(pageResponse2.size())
+                .isEqualTo(moimCount - MAX_MAIN_MOIM_DISPLAY_COUNT.value());
+
+    }
+
+    @DisplayName("검색어로 모임을 검색할 때, 페이징 처리를 한다.")
+    @Test
+    void searchMoimBySearchParamPaging() {
+        // given1
+        long universityId = UNIV_ID.longValue();
+        int moimCount = 10;
+
+        for (int i = 0; i < moimCount; i++) {
+            MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                    .universityId(universityId)
+                    .title(MOIM_TITLE.value() + i)
+                    .build();
+
+            moimRepository.save(moimJpaEntity);
+        }
+
+        //when
+        long lastMoimId = 0;
+        List<MoimSimpleResponse> pageResponse1 = moimFinder.searchMoim(universityId, MOIM_TITLE.value(), lastMoimId);
+
+        lastMoimId = pageResponse1.get(MAX_MAIN_MOIM_DISPLAY_COUNT.value() - 1).moimId();
+        List<MoimSimpleResponse> pageResponse2 = moimFinder.searchMoim(universityId, MOIM_TITLE.value(), lastMoimId);
+
+        //then
+        assertThat(pageResponse1.size())
+                .isEqualTo(MAX_MAIN_MOIM_DISPLAY_COUNT.value());
+        assertThat(pageResponse2.size())
+                .isEqualTo(moimCount - MAX_MAIN_MOIM_DISPLAY_COUNT.value());
     }
 
     private MemberJpaEntity saveRandomMember() {
