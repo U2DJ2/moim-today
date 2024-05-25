@@ -26,8 +26,8 @@ export default function Calendar({
   setScheduleTitle,
   scheduleTitle,
   memberId,
-  isRefresh,
-  setIsRefresh,
+  isRefresh = false,
+  setIsRefresh = null,
 }) {
   const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
   const today = new Date().toISOString().split("T")[0];
@@ -54,8 +54,10 @@ export default function Calendar({
   }, [selectedDate]);
 
   useEffect(() => {
-    setIsRefresh(false);
-    fetchAvailables();
+    if (setIsRefresh) {
+      setIsRefresh(false);
+      fetchAvailables();
+    }
   }, [isRefresh]);
 
   const GetMemberWeekly = async (memberId) => {

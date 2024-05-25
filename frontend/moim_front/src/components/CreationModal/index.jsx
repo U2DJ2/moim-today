@@ -38,7 +38,7 @@ function CreationModal({
     console.log("create Meeting");
     try {
       const response = await POST("api/meetings", data);
-      setIsRefresh(!isRefresh);
+      setIsRefresh(true);
       console.log(response);
       setOpen(true);
     } catch (e) {
