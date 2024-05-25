@@ -5,15 +5,17 @@ import { useNavigate, useParams } from "react-router";
 import { GET, POST } from "../../../utils/axios";
 import CreationModal from "../../../components/CreationModal";
 import { IndeterminateCheckBox, SettingsOutlined } from "@mui/icons-material";
+import { fetchMeetings } from "../../../api/moim";
 function MoimHome({
   notices,
-  meetings,
-  meetingOption,
-  setMeetingOption,
+
   isHost,
   moimId,
 }) {
   const [showModal, setShowModal] = useState(false);
+  const [meetingOption, setMeetingOption] = useState("UPCOMING");
+
+  const [meetings, setMeetings] = useState([]);
 
   const [noticeTitle, setNoticeTitle] = useState("");
   const [noticeContent, setNoticeContent] = useState("");
@@ -60,13 +62,26 @@ function MoimHome({
       console.log(e);
     }
   };
+  const getMeetings = async () => {
+    try {
+      const result = await fetchMeetings(moimId, meetingOption);
+      console.log(result.data.data);
+
+      setMeetings(result.data.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const noticeHandler = () => {
     console.log("first");
-
     postNotice();
-    // postNotice();
   };
-
+  useEffect(() => {
+    getMeetings();
+  }, []);
+  useEffect(() => {
+    getMeetings();
+  }, [meetingOption]);
   return (
     <div className="flex flex-col gap-24">
       <div className="grid gap-4">

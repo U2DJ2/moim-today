@@ -86,7 +86,6 @@ function MoimJoinPage() {
   const [isAlertModalOpen, setAlertModalOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [selected, setSelected] = useState(homeKey);
-  const [meetingOption, setMeetingOption] = useState("ALL");
   const [notices, setNotices] = useState([]);
   const [moimInfo, setMoimInfo] = useState([]);
   const [meetings, setMeetings] = useState([]);
@@ -114,16 +113,6 @@ function MoimJoinPage() {
     }
   };
 
-  const getMeetings = async () => {
-    try {
-      const result = await fetchMeetings(MoimId, meetingOption);
-      console.log(result.data.data);
-
-      setMeetings(result.data.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
   const fetchWriter = async () => {
     try {
       const response = await axios.get(
@@ -148,7 +137,6 @@ function MoimJoinPage() {
   useEffect(() => {
     getHost();
     getNotices();
-    getMeetings();
     getInfo();
     fetchWriter();
   }, []);
@@ -213,8 +201,6 @@ function MoimJoinPage() {
           <MoimHome
             notices={notices}
             meetings={meetings}
-            meetingOption={meetingOption}
-            setMeetingOption={setMeetingOption}
             isHost={isHost}
             moimId={MoimId}
           />

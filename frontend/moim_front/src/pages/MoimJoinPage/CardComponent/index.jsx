@@ -58,7 +58,7 @@ function CardComponent({
   const dateConverter = useMemo(() => {
     const modifiedDday = dday * -1;
     return dday === 0
-      ? "DAY"
+      ? "D-DAY"
       : modifiedDday > 0
       ? `D+${modifiedDday}`
       : `D${modifiedDday}`;
