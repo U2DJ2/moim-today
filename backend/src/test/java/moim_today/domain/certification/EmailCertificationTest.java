@@ -1,7 +1,6 @@
 package moim_today.domain.certification;
 
 import moim_today.global.error.BadRequestException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
