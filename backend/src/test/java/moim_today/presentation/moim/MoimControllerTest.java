@@ -42,7 +42,7 @@ class MoimControllerTest extends ControllerTest {
         return new MoimController(fakeMoimService, fakeMoimNoticeService);
     }
 
-    @DisplayName("로그인한 회원이 참여한 모임리스트를 조회한다.")
+    @DisplayName("로그인한 회원이 참여한 모임리스트를 조회한다.(투두 생성시 모임을 선택하기 위한 API)")
     @Test
     void findAllMyMoimResponse() throws Exception {
         mockMvc.perform(

@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -248,7 +249,7 @@ class MoimFinderTest extends ImplementTest {
 
     @DisplayName("필터가 없으면 모든 카테고리의 모임 리스트를 최신 생성 순으로 가져온다.")
     @Test
-    void findAllMoim() throws InterruptedException {
+    void findAllMoim(){
         // given
         long lastMoimId = 0;
         long universityId = UNIV_ID.longValue();
@@ -259,33 +260,36 @@ class MoimFinderTest extends ImplementTest {
                 .moimCategory(MoimCategory.TEAM_PROJECT)
                 .build();
 
-        moimRepository.save(firstCreatedMoimJpaEntity);
-
-        Thread.sleep(10);
-
         MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
                 .universityId(universityId)
                 .title(SECOND_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.STUDY)
                 .build();
 
+        moimRepository.save(firstCreatedMoimJpaEntity);
         moimRepository.save(secondCreatedMoimJpaEntity);
+
+        List<Long> expectedList = new ArrayList<>();
+        expectedList.add(firstCreatedMoimJpaEntity.getId());
+        expectedList.add(secondCreatedMoimJpaEntity.getId());
+        expectedList.sort(Collections.reverseOrder());
 
         MoimCategoryDto moimCategoryDto = MoimCategoryDto.ALL;
         MoimSortedFilter moimSortedFilter = null;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter, lastMoimId);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder
+                .findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter, lastMoimId);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
-        assertThat(moimSimpleResponses.get(0).title()).isEqualTo(SECOND_CREATED_MOIM_TITLE.value());
-        assertThat(moimSimpleResponses.get(1).title()).isEqualTo(FIRST_CREATED_MOIM_TITLE.value());
+        assertThat(moimSimpleResponses.get(0).moimId()).isEqualTo(expectedList.get(0));
+        assertThat(moimSimpleResponses.get(1).moimId()).isEqualTo(expectedList.get(1));
     }
 
     @DisplayName("모임 리스트를 최신 생성 순으로 가져온다.")
     @Test
-    void findAllMoimOrderByCreatedAt() throws InterruptedException {
+    void findAllMoimOrderByCreatedAt(){
         // given
         long lastMoimId = 0;
         long universityId = UNIV_ID.longValue();
@@ -296,9 +300,6 @@ class MoimFinderTest extends ImplementTest {
                 .moimCategory(MoimCategory.TEAM_PROJECT)
                 .build();
 
-        moimRepository.save(firstCreatedMoimJpaEntity);
-
-        Thread.sleep(10);
 
         MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
                 .universityId(universityId)
@@ -306,18 +307,25 @@ class MoimFinderTest extends ImplementTest {
                 .moimCategory(MoimCategory.STUDY)
                 .build();
 
+        moimRepository.save(firstCreatedMoimJpaEntity);
         moimRepository.save(secondCreatedMoimJpaEntity);
+
+        List<Long> expectedList = new ArrayList<>();
+        expectedList.add(firstCreatedMoimJpaEntity.getId());
+        expectedList.add(secondCreatedMoimJpaEntity.getId());
+        expectedList.sort(Collections.reverseOrder());
 
         MoimCategoryDto moimCategoryDto = MoimCategoryDto.ALL;
         MoimSortedFilter moimSortedFilter = MoimSortedFilter.CREATED_AT;
 
         // when
-        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter, lastMoimId);
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder
+                .findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter, lastMoimId);
 
         // then
         assertThat(moimSimpleResponses.size()).isEqualTo(2);
-        assertThat(moimSimpleResponses.get(0).title()).isEqualTo(SECOND_CREATED_MOIM_TITLE.value());
-        assertThat(moimSimpleResponses.get(1).title()).isEqualTo(FIRST_CREATED_MOIM_TITLE.value());
+        assertThat(moimSimpleResponses.get(0).moimId()).isEqualTo(expectedList.get(0));
+        assertThat(moimSimpleResponses.get(1).moimId()).isEqualTo(expectedList.get(1));
     }
 
     @DisplayName("모임 리스트를 조회수 순으로 가져온다.")
