@@ -129,12 +129,19 @@ class MeetingControllerTest extends ControllerTest {
         mockMvc.perform(
                         get("/api/meetings/{moimId}", 1L)
                                 .param("meetingStatus", String.valueOf(UPCOMING))
+                                .param("lastStartDateTime", LocalDateTime.now().toString())
                 )
                 .andExpect(status().isOk())
                 .andDo(document("모임내 다가오는 미팅 정보 조회",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("미팅")
                                 .summary("미팅 목록 조회")
+                                .queryParameters(
+                                        parameterWithName("meetingStatus").description(
+                                                String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(MeetingStatus.class))
+                                        ),
+                                        parameterWithName("lastStartDateTime").description("마지막으로 조회한 미팅의 startDateTime(시작일자), 처음 조회라면 null")
+                                )
                                 .responseFields(
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
@@ -152,6 +159,7 @@ class MeetingControllerTest extends ControllerTest {
         mockMvc.perform(
                         get("/api/meetings/{moimId}", 1L)
                                 .param("meetingStatus", String.valueOf(PAST))
+                                .param("lastStartDateTime", LocalDateTime.now().toString())
                 )
                 .andExpect(status().isOk())
                 .andDo(document("모임내 이전 미팅 정보 조회",
@@ -161,7 +169,8 @@ class MeetingControllerTest extends ControllerTest {
                                 .queryParameters(
                                         parameterWithName("meetingStatus").description(
                                                 String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(MeetingStatus.class))
-                                        )
+                                        ),
+                                        parameterWithName("lastStartDateTime").description("마지막으로 조회한 미팅의 startDateTime(시작일자), 처음 조회라면 null")
                                 )
                                 .responseFields(
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
@@ -180,6 +189,7 @@ class MeetingControllerTest extends ControllerTest {
         mockMvc.perform(
                         get("/api/meetings/{moimId}", 1L)
                                 .param("meetingStatus", String.valueOf(ALL))
+                                .param("lastStartDateTime", LocalDateTime.now().toString())
                 )
                 .andExpect(status().isOk())
                 .andDo(document("모임내 모든 미팅 정보 조회",
@@ -189,7 +199,8 @@ class MeetingControllerTest extends ControllerTest {
                                 .queryParameters(
                                         parameterWithName("meetingStatus").description(
                                                 String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(MeetingStatus.class))
-                                        )
+                                        ),
+                                        parameterWithName("lastStartDateTime").description("마지막으로 조회한 미팅의 startDateTime(시작일자), 처음 조회라면 null")
                                 )
                                 .responseFields(
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),

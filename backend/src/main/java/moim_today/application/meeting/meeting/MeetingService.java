@@ -3,13 +3,14 @@ package moim_today.application.meeting.meeting;
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.meeting.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MeetingService {
 
     MeetingCreateResponse createMeeting(final long memberId, final MeetingCreateRequest meetingCreateRequest);
 
-    List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final long memberId, final MeetingStatus meetingStatus);
+    List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final long memberId, final MeetingStatus meetingStatus, final LocalDateTime lastStartDateTime);
 
     MeetingDetailResponse findDetailsById(final long meetingId);
 

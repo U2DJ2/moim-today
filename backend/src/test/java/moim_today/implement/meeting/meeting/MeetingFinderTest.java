@@ -87,6 +87,7 @@ class MeetingFinderTest extends ImplementTest {
 
         // given 2
         long memberId = MEMBER_ID.longValue();
+        LocalDateTime lastStartDateTime = null;
 
         JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
                 .memberId(memberId)
@@ -112,7 +113,7 @@ class MeetingFinderTest extends ImplementTest {
 
         // when
         List<MeetingSimpleDao> meetingSimpleDaos =
-                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.UPCOMING, currentDateTime);
+                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.UPCOMING, currentDateTime, lastStartDateTime);
 
         // then
         assertThat(meetingSimpleDaos.size()).isEqualTo(2);
@@ -150,6 +151,7 @@ class MeetingFinderTest extends ImplementTest {
 
         // given 2
         long memberId = MEMBER_ID.longValue();
+        LocalDateTime lastStartDateTime = null;
 
         JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
                 .memberId(memberId)
@@ -175,7 +177,7 @@ class MeetingFinderTest extends ImplementTest {
 
         // when
         List<MeetingSimpleDao> meetingSimpleDaos =
-                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.UPCOMING, currentDateTime);
+                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.UPCOMING, currentDateTime, lastStartDateTime);
 
         // then
         assertThat(meetingSimpleDaos.size()).isEqualTo(2);
@@ -213,6 +215,7 @@ class MeetingFinderTest extends ImplementTest {
 
         // given 2
         long memberId = MEMBER_ID.longValue();
+        LocalDateTime lastStartDateTime = null;
 
         JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
                 .memberId(memberId)
@@ -238,7 +241,7 @@ class MeetingFinderTest extends ImplementTest {
 
         // when
         List<MeetingSimpleDao> meetingSimpleDaos =
-                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.PAST, currentDateTime);
+                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.PAST, currentDateTime, lastStartDateTime);
 
         // then
         assertThat(meetingSimpleDaos.size()).isEqualTo(2);
@@ -276,6 +279,7 @@ class MeetingFinderTest extends ImplementTest {
 
         // given 2
         long memberId = MEMBER_ID.longValue();
+        LocalDateTime lastStartDateTime = null;
 
         JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
                 .memberId(memberId)
@@ -301,7 +305,7 @@ class MeetingFinderTest extends ImplementTest {
 
         // when
         List<MeetingSimpleDao> meetingSimpleDaos =
-                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.PAST, currentDateTime);
+                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.PAST, currentDateTime, lastStartDateTime);
 
         // then
         assertThat(meetingSimpleDaos.size()).isEqualTo(2);
@@ -339,6 +343,7 @@ class MeetingFinderTest extends ImplementTest {
 
         // given 2
         long memberId = MEMBER_ID.longValue();
+        LocalDateTime lastStartDateTime = null;
 
         JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
                 .memberId(memberId)
@@ -364,7 +369,7 @@ class MeetingFinderTest extends ImplementTest {
 
         // when
         List<MeetingSimpleDao> meetingSimpleDaos =
-                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.ALL, currentDateTime);
+                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.ALL, currentDateTime, lastStartDateTime);
 
         // then
         assertThat(meetingSimpleDaos.size()).isEqualTo(3);
@@ -788,5 +793,97 @@ class MeetingFinderTest extends ImplementTest {
         assertThatThrownBy(() -> meetingFinder.getMoimIdByMeetingId(MEETING_ID.longValue()))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(MEETING_NOT_FOUND_ERROR.message());
+    }
+
+    @DisplayName("하나의 모임의 모든 미팅의 엔티티 정보를 모임의 시작시간을 기준으로 정렬하여 반환한다.")
+    @Test
+    void findAllByMoimIdPaging() {
+        // given 1
+        long moimId = MOIM_ID.longValue();
+        LocalDateTime pastDateTime = LocalDateTime.of(2024, 3, 4, 8, 0, 0);
+        LocalDateTime upcomingDateTime1 = LocalDateTime.of(2024, 3, 4, 12, 0, 0);
+        LocalDateTime upcomingDateTime2 = LocalDateTime.of(2024, 3, 4, 14, 0, 0);
+        LocalDateTime currentDateTime = LocalDateTime.of(2024, 3, 4, 10, 0, 0);
+
+        MeetingJpaEntity meetingJpaEntity1 = MeetingJpaEntity.builder()
+                .moimId(moimId)
+                .startDateTime(pastDateTime)
+                .build();
+
+        MeetingJpaEntity meetingJpaEntity2 = MeetingJpaEntity.builder()
+                .moimId(moimId)
+                .startDateTime(currentDateTime)
+                .build();
+
+        MeetingJpaEntity meetingJpaEntity3 = MeetingJpaEntity.builder()
+                .moimId(moimId)
+                .startDateTime(upcomingDateTime1)
+                .build();
+
+        MeetingJpaEntity meetingJpaEntity4 = MeetingJpaEntity.builder()
+                .moimId(moimId)
+                .startDateTime(upcomingDateTime2)
+                .build();
+
+        meetingRepository.save(meetingJpaEntity1);
+        meetingRepository.save(meetingJpaEntity2);
+        meetingRepository.save(meetingJpaEntity3);
+        meetingRepository.save(meetingJpaEntity4);
+
+        // given 2
+        long memberId = MEMBER_ID.longValue();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity1.getId())
+                .attendance(true)
+                .build();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity2 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity2.getId())
+                .attendance(true)
+                .build();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity3 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity3.getId())
+                .attendance(false)
+                .build();
+
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity4 = JoinedMeetingJpaEntity.builder()
+                .memberId(memberId)
+                .meetingId(meetingJpaEntity4.getId())
+                .attendance(false)
+                .build();
+
+        joinedMeetingRepository.save(joinedMeetingJpaEntity1);
+        joinedMeetingRepository.save(joinedMeetingJpaEntity2);
+        joinedMeetingRepository.save(joinedMeetingJpaEntity3);
+        joinedMeetingRepository.save(joinedMeetingJpaEntity4);
+
+        // when
+        LocalDateTime lastStartDateTime = null;
+        List<MeetingSimpleDao> meetingSimpleDaos1 =
+                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.ALL, currentDateTime, lastStartDateTime);
+
+        lastStartDateTime = currentDateTime;
+        List<MeetingSimpleDao> meetingSimpleDaos2 =
+                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.ALL, currentDateTime, lastStartDateTime);
+
+        lastStartDateTime = upcomingDateTime1;
+        List<MeetingSimpleDao> meetingSimpleDaos3 =
+                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.ALL, currentDateTime, lastStartDateTime);
+
+
+        lastStartDateTime = upcomingDateTime2;
+        List<MeetingSimpleDao> meetingSimpleDaos4 =
+                meetingFinder.findAllByMoimId(moimId, memberId, MeetingStatus.ALL, currentDateTime, lastStartDateTime);
+
+        // then
+        assertThat(meetingSimpleDaos1.size()).isEqualTo(3);
+        assertThat(meetingSimpleDaos2.size()).isEqualTo(2);
+        assertThat(meetingSimpleDaos3.size()).isEqualTo(1);
+        assertThat(meetingSimpleDaos4.size()).isEqualTo(0);
     }
 }

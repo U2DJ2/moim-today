@@ -5,7 +5,6 @@ import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.meeting.*;
 import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.global.error.ForbiddenException;
-import moim_today.util.TestConstant;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,7 +22,8 @@ public class FakeMeetingService implements MeetingService {
 
     @Override
     public List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final long memberId,
-                                                       final MeetingStatus meetingStatus) {
+                                                       final MeetingStatus meetingStatus,
+                                                       final LocalDateTime lastStartDateTime) {
         MeetingSimpleResponse meetingSimpleResponse1 = MeetingSimpleResponse.builder()
                 .meetingId(MEETING_ID.longValue())
                 .agenda(MEETING_AGENDA.value())

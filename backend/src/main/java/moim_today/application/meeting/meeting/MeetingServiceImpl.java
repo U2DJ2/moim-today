@@ -43,9 +43,10 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final long memberId,
-                                                       final MeetingStatus meetingStatus) {
+                                                       final MeetingStatus meetingStatus,
+                                                       final LocalDateTime lastStartDateTime) {
         List<MeetingSimpleDao> meetingSimpleDaos =
-                meetingFinder.findAllByMoimId(moimId, memberId, meetingStatus, LocalDateTime.now());
+                meetingFinder.findAllByMoimId(moimId, memberId, meetingStatus, LocalDateTime.now(), lastStartDateTime);
         return MeetingSimpleResponse.toResponses(meetingSimpleDaos);
     }
 

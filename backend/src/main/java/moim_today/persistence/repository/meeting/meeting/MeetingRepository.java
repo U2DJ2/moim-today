@@ -11,11 +11,11 @@ public interface MeetingRepository {
 
     List<Long> findMeetingIdsByMoimId(final long moimId);
 
-    List<MeetingSimpleDao> findAllByMoimId(final long moimId, final long memberId, final LocalDateTime currentDateTime);
+    List<MeetingSimpleDao> findAllByMoimId(final long moimId, final long memberId, final LocalDateTime currentDateTime, final LocalDateTime lastStartDateTime);
 
-    List<MeetingSimpleDao> findAllUpcomingByMoimId(final long moimId, final long memberId, final LocalDateTime currentDateTime);
+    List<MeetingSimpleDao> findAllUpcomingByMoimId(final long moimId, final long memberId, final LocalDateTime currentDateTime, final LocalDateTime lastStartDateTime);
 
-    List<MeetingSimpleDao> findAllPastByMoimId(final long moimId, final long memberId, final LocalDateTime currentDateTime);
+    List<MeetingSimpleDao> findAllPastByMoimId(final long moimId, final long memberId, final LocalDateTime currentDateTime, final LocalDateTime lastStartDateTime);
 
     long getHostIdByMeetingId(final long meetingId);
 

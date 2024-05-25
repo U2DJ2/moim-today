@@ -8,6 +8,7 @@ import moim_today.global.annotation.Login;
 import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -32,9 +33,10 @@ public class MeetingController {
     public CollectionResponse<List<MeetingSimpleResponse>> findAllByMoimId(
             @Login final MemberSession memberSession,
             @PathVariable final long moimId,
-            @RequestParam final MeetingStatus meetingStatus) {
+            @RequestParam final MeetingStatus meetingStatus,
+            @RequestParam final LocalDateTime lastStartDateTime) {
         List<MeetingSimpleResponse> meetingSimpleResponses =
-                meetingService.findAllByMoimId(moimId, memberSession.id(), meetingStatus);
+                meetingService.findAllByMoimId(moimId, memberSession.id(), meetingStatus, lastStartDateTime);
         return CollectionResponse.from(meetingSimpleResponses);
     }
 

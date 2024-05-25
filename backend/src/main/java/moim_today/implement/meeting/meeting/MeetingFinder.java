@@ -34,14 +34,14 @@ public class MeetingFinder {
     @Transactional(readOnly = true)
     public List<MeetingSimpleDao> findAllByMoimId(final long moimId, final long memberId,
                                                   final MeetingStatus meetingStatus,
-                                                  final LocalDateTime currentDateTime) {
+                                                  final LocalDateTime currentDateTime, final LocalDateTime lastStartDateTime) {
         if (meetingStatus.equals(MeetingStatus.ALL)) {
-            return meetingRepository.findAllByMoimId(moimId, memberId, currentDateTime);
+            return meetingRepository.findAllByMoimId(moimId, memberId, currentDateTime, lastStartDateTime);
         } else if (meetingStatus.equals(MeetingStatus.PAST)) {
-            return meetingRepository.findAllPastByMoimId(moimId, memberId, currentDateTime);
+            return meetingRepository.findAllPastByMoimId(moimId, memberId, currentDateTime, lastStartDateTime);
         }
 
-        return meetingRepository.findAllUpcomingByMoimId(moimId, memberId, currentDateTime);
+        return meetingRepository.findAllUpcomingByMoimId(moimId, memberId, currentDateTime, lastStartDateTime);
     }
 
     @Transactional(readOnly = true)
