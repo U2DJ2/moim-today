@@ -1,17 +1,21 @@
-import React from "react";
-import AuthRight from "../../components/AuthRight";
-import Account from "./Account";
+// React
 import { useState } from "react";
-import AuthCheck from "./AuthCheck";
-import { checkEmailValid } from "../../api/users.js";
 import { useNavigate } from "react-router";
+
+// API
+import axios from "axios";
+
+// Components
+import AuthRight from "../../components/AuthRight";
+import Modal from "../../components/Modal/ModalTest.jsx";
+
+// Pages
+import Account from "./Account";
+import AuthCheck from "./AuthCheck";
 import School from "./School";
 import Personal from "./Personal";
 import TimeTable from "./TimeTable";
 import Congrats from "./Congrats";
-import axios from "axios";
-import Modal from "../../components/Modal/ModalTest.jsx";
-import ConfirmModal from "./ConfirmModal/index.jsx";
 
 axios.defaults.withCredentials = true; // withCredentials 전역 설정
 
@@ -28,6 +32,7 @@ function RegisterPage() {
   const [schoolValidation, setSchoolValidation] = useState(false);
   const [emailAuth, setEmailAuth] = useState(false);
   const [department, setDepartment] = useState("");
+
   /* register form data */
   const [universityId, setUniversityId] = useState();
   const [departmentId, setDepartmentId] = useState();
@@ -42,13 +47,18 @@ function RegisterPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [everytimeUrl, setEverytimeUrl] = useState("");
 
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
   const client = axios.create({
     baseURL: "https://api.moim.today/",
     withCredentials: true,
   });
+
   const emailBody = {
     email: email,
   };
+
   const userData = {
     universityId: universityId,
     departmentId: departmentId,
@@ -59,11 +69,13 @@ function RegisterPage() {
     birthDate: birthDate,
     gender: gender,
   };
+
   const everytimeInfo = {
     everytimeUrl: everytimeUrl,
-    startDate: "2024-03-04",
-    endDate: "2024-06-30",
+    startDate: startDate,
+    endDate: endDate,
   };
+
   const nextClick = async () => {
     if (step === 0) {
       //check email validity
@@ -130,13 +142,14 @@ function RegisterPage() {
       setActiveNext(false);
     }
   };
+
   const previousClick = () => {
     if (step === 0) navigate(-1);
     else setStep(step - 1);
   };
 
   return (
-    <div className="flex min-h-screen w-full py-0 overflow-hidden relative gap-1 pl-52 bg-scarlet">
+    <div className="flex w-full h-screen overflow-hidden relative pl-40 bg-scarlet">
       <div className="flex flex-1 flex-col items-start justify-center w-96 gap-16">
         {step === 0 ? (
           <Account
@@ -181,6 +194,8 @@ function RegisterPage() {
           />
         ) : (
           <TimeTable
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
             setEverytimeUrl={setEverytimeUrl}
             everytimeUrl={everytimeUrl}
           />

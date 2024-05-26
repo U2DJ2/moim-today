@@ -1,43 +1,46 @@
 // React
 import { useState, useEffect } from "react";
 
+// API
+import axios from "axios";
+
 // Components
 import Dropdown from "../../components/Dropdown/Simple";
 import Filter from "../../components/Dropdown/Filter";
-
-// Icons
-import SearchIcon from "@mui/icons-material/Search";
 import CardContainer from "./CardContainer";
 
-//temporary image
-import cardImage from "../../assets/svg/card-image.svg";
-
-import { GET } from "../../utils/axios";
-
-import axios from "axios";
+// UI
+import SearchIcon from "@mui/icons-material/Search";
 
 /**
  * SearchBar Component
+ * @param {*} param0 
  * @returns {JSX.Element}
  */
-function SearchBar() {
+function SearchBar({ setSearchTerm }) {
+  const [input, setInput] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSearchTerm(input);
+  };
+
   return (
     <div className="flex flex-col justify-center mt-2 text-zinc-950 text-opacity-70 max-md:max-w-full">
-      <form className="flex gap-3 px-6 py-3 bg-zinc-50 bg-opacity-90 rounded-[40px] max-md:flex-wrap">
-        <label htmlFor="search" className="sr-only">
-          Search
-        </label>
+      <form className="flex gap-3 px-6 py-3 bg-zinc-50 bg-opacity-90 rounded-[40px] max-md:flex-wrap" onSubmit={handleSubmit}>
         <button
           type="submit"
-          className="justify-center px-1.5 py-1.5 text-lg font-medium text-center leading-[8px]"
+          className="justify-center px-1.5 py-1.5 text-lg text-center leading-[8px]"
         >
           <SearchIcon />
         </button>
         <input
           type="text"
           id="search"
-          placeholder="Search"
-          className="flex-1 bg-zinc-50 my-auto text-lg tracking-tight leading-6 max-md:max-w-full focus:outline-none border-none"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="검색"
+          className="flex-1 font-Pretendard_SemiBold bg-zinc-50 my-auto text-lg tracking-tight leading-6 max-md:max-w-full focus:outline-none border-none"
           aria-label="Search"
         />
       </form>
@@ -45,6 +48,11 @@ function SearchBar() {
   );
 }
 
+/**
+ * FilterBar Component
+ * @param {*} param0 
+ * @returns {JSX.Element}
+ */
 function FilterBar({
   setMoimCategory,
   setMoimSortedFilter,
@@ -74,7 +82,7 @@ function FilterBar({
 
   return (
     <div className="flex gap-2.5 justify-between px-12 py-4 mt-9 w-full text-base text-center whitespace-nowrap text-neutral-700 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-      <div className="flex gap-0 justify-center items-center">
+      <div className="flex justify-center items-center">
         <div>
           <Dropdown
             options={[
@@ -89,7 +97,7 @@ function FilterBar({
           />
         </div>
       </div>
-      <div className="flex justify-center items-center self-start px-16 font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
+      <div className="flex justify-center items-center self-start px-16 font-Pretendard_SemiBold text-neutral-900 max-md:px-5 max-md:max-w-full">
         <div className="flex gap-3">
           <div
             className={`justify-center px-9 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
@@ -117,77 +125,71 @@ function FilterBar({
     </div>
   );
 }
-const getAllMoims = async (moimCategory, moimSortedFilter) => {
-  await GET(`api/moims/simple/moimCategory=${moimCategory}/${moimSortedFilter}`)
-    .then((res) => {
-      console.log(res);
-    })
-    .then((error) => console.log(error));
-};
+
 export default function Home() {
   const [moimCategory, setMoimCategory] = useState("ALL");
   const [moimSortedFilter, setMoimSortedFilter] = useState("CREATED_AT");
   const [selected, setSelected] = useState("CREATED_AT");
   const [moimInfo, setMoimInfo] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const fetchMoims = async (params) => {
+    try {
+      const response = await axios.get(
+        "https://api.moim.today/api/moims/simple",
+        {
+          params: params,
+        }
+      );
+      console.log(response.data.data);
+      setMoimInfo(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    const fetchMoims = async () => {
-      try {
+    const fetchData = async () => {
+      if (searchTerm) {
+        try {
+          const response = await axios.get(
+            "https://api.moim.today/api/moims/search",
+            {
+              params: { searchParam: searchTerm },
+            }
+          );
+          console.log(response.data.data);
+          setMoimInfo(response.data.data);
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
         const params = {
           moimCategoryDto: moimCategory,
           moimSortedFilter: selected,
         };
-        const response = await axios.get(
-          "https://api.moim.today/api/moims/simple",
-          {
-            params: params,
-          }
-        );
-        console.log(response.data);
-        setMoimInfo(response.data.data);
-      } catch (error) {
-        console.log(error);
+        fetchMoims(params);
       }
     };
-  }, []);
-  useEffect(() => {
-    const fetchMoims = async () => {
-      try {
-        const params = {
-          moimCategoryDto: moimCategory,
-          moimSortedFilter: selected,
-        };
-        const response = await axios.get(
-          "https://api.moim.today/api/moims/simple",
-          {
-            params: params,
-          }
-        );
-        console.log(response.data);
-        setMoimInfo(response.data.data);
-        console.log(moimInfo);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchMoims();
-  }, [moimCategory, selected]);
-  useEffect(() => {}, [moimCategory, moimSortedFilter]);
+    fetchData();
+  }, [searchTerm, moimCategory, selected]);
+
   return (
     <div className="flex flex-col justify-between pb-20 bg-white">
       <main className="flex flex-col self-center px-5 mt-9 max-w-full whitespace-nowrap w-[700px]">
         <h1 className="self-center text-9xl text-center text-scarlet max-md:text-9xl font-Praise sm:text-9xl md:text-9xl lg:text-9xl xl:text-9xl">
           Moim
         </h1>
-        <SearchBar />
+        <SearchBar setSearchTerm={setSearchTerm} />
       </main>
       <FilterBar
         setMoimCategory={setMoimCategory}
         selected={selected}
         setSelected={setSelected}
+        setMoimSortedFilter={setMoimSortedFilter}
       />
-      <div className="grid grid-cols-1 gap-10 mt-20 mx-auto md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
-        {moimInfo.length != 0 ? (
+      <div className="grid md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-10 mt-10 px-12">
+        {moimInfo.length !== 0 ? (
           moimInfo.map((item) => (
             <CardContainer
               key={item.moimId}

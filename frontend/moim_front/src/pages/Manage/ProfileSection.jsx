@@ -131,7 +131,6 @@ function ImageInputer() {
 }
 
 export default function ProfileSection({ name, major }) {
-  console.log(name);
   return (
     <section className="flex flex-col w-full max-md:ml-0 max-md:w-full h-full">
       <div className="flex flex-col self-stretch p-12 text-sm font-semibold leading-5 whitespace-nowrap bg-slate-50 rounded-[64px_64px_0px_0px] text-stone-500 max-md:px-5 max-md:mt-6 max-md:max-w-full h-full flex-grow">

@@ -1,45 +1,61 @@
 import React, { useRef, useEffect } from "react";
 import { postMeeting } from "../../api/moim";
 import { parse } from "date-fns";
-
+import { POST } from "../../utils/axios";
 function CreationModal({
   showModal,
   setShowModal,
   children,
-  closeHandler,
   isMeeting,
   moimId,
   startDateTime,
   endDateTime,
   agenda,
   place,
+  setOpen,
+  scheduleTitle,
+  closeHandler,
   meetingCategory,
+  isRefresh,
+  setIsRefresh,
 }) {
   const modalRef = useRef();
 
-  if (isMeeting) {
-  }
+  useEffect(() => {
+    console.log(startDateTime);
+    console.log(endDateTime);
+  }, []);
 
-  const closeModal = () => {
-    closeHandler();
-    setShowModal(false);
-
-    if (isMeeting) {
-      const data = {
-        moimId: parseInt(moimId),
-        agenda: agenda,
-        startDateTime: startDateTime.replace("T", " ").split("+")[0],
-        endDateTime: endDateTime.replace("T", " ").split("+")[0],
-        place: place,
-        meetingCategory: "REGULAR",
-      };
-      postMeeting(data);
-    } else {
+  const createMeeting = async () => {
+    const data = {
+      moimId: parseInt(moimId),
+      agenda: agenda,
+      startDateTime: startDateTime.replace("T", " ").split("+")[0],
+      endDateTime: endDateTime.replace("T", " ").split("+")[0],
+      place: place,
+      meetingCategory: meetingCategory,
+    };
+    console.log("create Meeting");
+    try {
+      const response = await POST("api/meetings", data);
+      setIsRefresh(true);
+      console.log(response);
+      setOpen(true);
+    } catch (e) {
+      console.log(e);
     }
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+    if (isMeeting) {
+      createMeeting();
+    }
+    closeHandler();
+  };
+
   const modalOutSideClick = (e) => {
-    if (modalRef.current === e.target) closeModal();
+    if (modalRef.current === e.target) setShowModal(false);
   };
 
   return (

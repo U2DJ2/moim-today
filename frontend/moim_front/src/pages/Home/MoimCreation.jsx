@@ -13,10 +13,12 @@ import Dropdown from "../../components/Dropdown/LabelSimple";
 import { POST } from "../../utils/axios";
 
 // Define label style
-const labelStyle = "mt-2.5 mb-2.5 text-base font-Pretendard_SemiBold leading-5 text-stone-700 max-md:max-w-full";
+const labelStyle =
+  "mt-2.5 mb-2.5 text-base font-Pretendard_SemiBold leading-5 text-stone-700 max-md:max-w-full";
 
 // Define common input style
-const commonInputStyle = "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
+const commonInputStyle =
+  "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
 
 const textCapture = (label, setTitle, setContents) => {
   if (label === "모임명") {
@@ -135,11 +137,10 @@ export default function MoimCreation() {
   const navigate = useNavigate();
 
   const handleVisibility = (event) => {
-    console.log(!event.target.value);
-    setIsChecked(!event.target.value);
-    console.log("체크 여부:", !isChecked);
-    const status = isChecked ? setDisplay("PUBLIC") : setDisplay("PRIVATE");
-    console.log(displayStatus);
+    const isChecked = event.target.checked; // 체크박스의 체크 상태 얻기
+    setIsChecked(isChecked); // isChecked 상태 업데이트
+    // isChecked 값에 따라 displayStatus 상태를 "PUBLIC" 또는 "PRIVATE"로 설정
+    setDisplay(isChecked ? "PUBLIC" : "PRIVATE");
   };
 
   // STUDY, TEAM_PROJECT, HOBBY, EXERCISE, OTHERS
@@ -257,6 +258,7 @@ export default function MoimCreation() {
         <DateRangePicker
           onChange={handleDateRange}
           inputClassName={`w-full ${commonInputStyle}`}
+          useMinDate={true}
         />
         <InputField
           label="참여 인원"

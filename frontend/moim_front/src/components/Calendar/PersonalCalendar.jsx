@@ -10,48 +10,91 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
-// Modal for Meeting Creation
-import CreationModal from "../../components/CreationModal";
-
-// Temporary event ID generator
-// let eventGuid = 0;
-
 export default function Calendar({
   selectedDate,
   isPersonal,
   isMeeting,
+  isAvailable,
   moimId,
   title,
+  showModal,
   setShowModal,
   endDateTime,
   setEndDateTime,
   startDateTime,
   setStartDateTime,
+  setScheduleTitle,
+  scheduleTitle,
+  memberId,
+  isRefresh = false,
+  setIsRefresh = null,
 }) {
   const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
+  const today = new Date().toISOString().split("T")[0];
   const [events, setEvents] = useState([]);
+  const [calendarStart, setCalendarStart] = useState(new Date());
 
   useEffect(() => {
-    // Get current year
     const currentYear = new Date().getFullYear();
-
-    // Fetch all events on component mount
-    // fetchAllEvents(currentYear).catch(console.error);
-
     if (isPersonal) {
       fetchAllEvents(currentYear).catch(console.error);
     } else if (isMeeting) {
-      //isMeeting이 true일 경우
+      memberId != null ? fetchAvailables() : null;
+    } else if (isAvailable) {
       fetchAvailables();
-      fetchMeetings();
     }
   }, []);
 
   useEffect(() => {
     if (calendarRef.current && selectedDate) {
-      calendarRef.current.getApi().gotoDate(selectedDate);
+      Promise.resolve().then(() => {
+        calendarRef.current.getApi().gotoDate(selectedDate);
+      });
     }
   }, [selectedDate]);
+
+  useEffect(() => {
+    if (setIsRefresh) {
+      setIsRefresh(false);
+      fetchAvailables();
+    }
+  }, [isRefresh]);
+
+  const GetMemberWeekly = async (memberId) => {
+    //모임 내 멤버 별 가용시간
+    try {
+      let allEvents = [];
+      console.log(calendarStart);
+      const memberSchedule = await axios.get(
+        `https://api.moim.today/api/schedules/weekly/available-time/members/${memberId}`,
+        {
+          params: {
+            startDate: calendarStart,
+          },
+        }
+      );
+      allEvents = [
+        ...allEvents,
+        ...memberSchedule.data.data.map((event) =>
+          mapEventData(event, true, true)
+        ),
+      ];
+      console.log(memberSchedule);
+      console.log(allEvents);
+      setEvents(allEvents);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    console.log("member:", memberId);
+    console.log(calendarStart);
+    if (memberId != null) GetMemberWeekly(memberId);
+    else {
+      fetchAvailables();
+    }
+  }, [memberId, calendarStart]);
 
   async function fetchAllEvents(year) {
     try {
@@ -65,7 +108,6 @@ export default function Calendar({
             headers: {
               "Content-Type": "application/json",
             },
-            // Add any other necessary headers or configurations
           }
         );
         allEvents = [
@@ -74,43 +116,35 @@ export default function Calendar({
         ];
       }
       setEvents(allEvents);
-      console.log(events);
     } catch (error) {
       console.error("Error fetching events:", error);
     }
   }
 
-  async function fetchMeetings() {
-    try {
-      const response = await axios.get(
-        `https://api.moim.today/api/meetings/${moimId}`,
-        {
-          params: {
-            meetingStatus: "ALL",
-          },
-        }
-      );
-      console.log(response);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   async function fetchAvailables() {
+    //모임 가용시간
     try {
       let allEvents = [];
+      const isPast = new Date(calendarStart) < new Date();
+      const startDate = isPast
+        ? new Date().toISOString().split("T")[0]
+        : calendarStart instanceof Date
+        ? calendarStart.toISOString().split("T")[0]
+        : new Date(calendarStart).toISOString().split("T")[0];
       const response = await axios.get(
         `https://api.moim.today/api/schedules/weekly/available-time/moims/${moimId}`,
         {
           params: {
-            startDate: "2024-05-19",
+            startDate: startDate,
           },
         }
       );
       allEvents = [
         ...allEvents,
-        ...response.data.data.map((event) => mapEventData(event, true)),
+        ...response.data.data.map((event) => mapEventData(event, true, true)),
       ];
+      console.log(response);
+      console.log(allEvents);
       setEvents(allEvents);
     } catch (e) {
       console.log(e);
@@ -118,56 +152,37 @@ export default function Calendar({
   }
 
   // Function to map event data
-  function mapEventData(event, backgroundEvent) {
+  function mapEventData(event, backgroundEvent, calendar) {
     const formattedEvent = {
-      id: event.scheduleId || event.calendarId,
+      id: calendar ? event.calendarId : event.scheduleId,
       title: event.scheduleName || "",
       start: event.startDateTime.replace(" ", "T"),
       end: event.endDateTime.replace(" ", "T"),
       allDay: false, // Assuming all events fetched are not all-day events
       backgroundColor: event.colorHex,
     };
-    // display: "background" 속성을 추가
     if (backgroundEvent) {
       formattedEvent.display = "background";
     }
     return formattedEvent;
   }
 
-  // Function to handle date selection
   function handleDateSelect(selectInfo) {
-    setShowModal(true);
-
+    if (isAvailable) {
+      console.log("handleDateSelected", selectInfo);
+    }
     let calendarApi = selectInfo.view.calendar;
-    console.log(selectInfo.endStr.replace("T", " "));
-    console.log(selectInfo.startStr);
-    console.log(selectInfo.endStr);
+    if (isMeeting) {
+      setShowModal(true);
+    } else if (isPersonal) {
+      setShowModal(true);
+    }
+
     setStartDateTime(selectInfo.startStr);
     setEndDateTime(selectInfo.endStr);
 
     calendarApi.unselect(); // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
-      });
-    }
   }
-
-  // // Function to handle event click
-  // function handleEventClick(clickInfo) {
-  //   if (
-  //     confirm(
-  //       `Are you sure you want to delete the event '${clickInfo.event.title}'`
-  //     )
-  //   ) {
-  //     // clickInfo.event.remove();
-  //   }
-  // }
 
   // Function to handle event add
   async function handleEventAdd(info) {
@@ -203,15 +218,21 @@ export default function Calendar({
     console.log("Event removed:", info.event);
   }
 
-  // Function to create unique event ID
-  // function createEventId() {
-  //   return String(eventGuid++);
-  // }
-
+  function personalSubmit() {
+    calendarRef.current.getApi().unselect();
+  }
+  const handleDateSet = (dateInfo) => {
+    fetchAvailables();
+  };
+  const onChangeDate = (dateInfo) => {
+    console.log(dateInfo.startStr.split("T")[0]);
+    setCalendarStart(dateInfo.startStr.split("T")[0]);
+  };
   return (
     <div className="demo-app">
       <div className="demo-app-main">
         <FullCalendar
+          key={memberId}
           ref={calendarRef} // 2. FullCalendar 컴포넌트에 ref 추가
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
@@ -227,36 +248,15 @@ export default function Calendar({
           dayMaxEvents={true}
           events={events}
           select={handleDateSelect}
-          eventContent={renderEventContent} // custom render function
-          // eventClick={handleEventClick}
-          // you can update a remote database when these fire:
-          /*
-        eventAdd={function(){}}
-        eventChange={function(){}}
-        eventRemove={function(){}}
-        */
+          eventContent={renderEventContent}
           eventAdd={handleEventAdd}
           eventChange={handleEventChange}
           eventRemove={handleEventRemove}
+          datesSet={(dateInfo) => {
+            onChangeDate(dateInfo);
+          }}
         />
       </div>
-      {/* {isMeeting ? (
-        <CreationModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          closeHandler={() => calendarRef.current.getApi().unselect()}
-        >
-          <div>
-            <h2>새 이벤트 추가</h2>
-            <input
-              type="text"
-              value={agenda}
-              onChange={(e) => setAgenda(e.target.value)}
-              placeholder="Event Title"
-            />
-          </div>
-        </CreationModal>
-      ) : null} */}
     </div>
   );
 }

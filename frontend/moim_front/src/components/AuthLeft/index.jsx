@@ -1,13 +1,10 @@
-import AuthTitle from "../Authentification/AuthTitle";
 import { useState } from "react";
-import checked from "../../assets/svg/checked.svg";
-import unchecked from "../../assets/svg/unchecked.svg";
-import Button from "../Button";
-import RegisterLabel from "../../assets/svg/Register_Label.svg";
-import EmailBtn from "../../assets/svg/EmailBtn.svg";
 import { useNavigate } from "react-router";
 import { POST } from "../../utils/axios";
-import Modal from "../Modal/ModalTest";
+import AuthTitle from "../Authentification/AuthTitle";
+import checked from "../../assets/svg/checked.svg";
+import unchecked from "../../assets/svg/unchecked.svg";
+
 function AuthLeft({
   title,
   firstContent,
@@ -18,43 +15,43 @@ function AuthLeft({
   setEmail,
   password,
   setPassword,
-  setIsOpen,
+  setOpenAlertModal,
   setMessage,
+  className,
 }) {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
   const [memory, setMemory] = useState(true);
-
   const emailHandler = (e) => setEmail(e.target.value);
   const passwordHandler = (e) => setPassword(e.target.value);
-  const memoryHandler = (e) => !setMemory;
+  const memoryHandler = () => setMemory(!memory);
   const navigation = useNavigate();
 
-  const onClick = () => {
+  const onLoginClick = () => {
     const data = {
       email: email,
       password: password,
+      isKeepLogin: true,
     };
-    console.log("clicked");
     POST("api/login", data)
       .then((res) => {
         console.log(res);
         navigation("/");
       })
       .catch((error) => {
-        console.log(error.response.data.statusCode);
         const errorCode = error.response.data.statusCode;
+
         if (errorCode === "404") {
-          setIsOpen(true);
+          setOpenAlertModal(true);
           setMessage(error.response.data.message);
-          console.log(error.response.message);
+        } else {
+          setOpenAlertModal(true);
+          setMessage(error.message);
         }
       });
   };
 
   return (
-    <div className="flex-1 flex flex-col justify-center justify-items-center">
-      <div className="w-96 ">
+    <div className={`${className}`}>
+      <div className="w-full max-w-lg">
         <AuthTitle
           title={title}
           firstContent={firstContent}
@@ -62,30 +59,30 @@ function AuthLeft({
           titleColor={titleColor}
           contentColor={contentColor}
         />
-        <div className="pt-16 pb-12 w-full">
-          <p className=" font-Pretendard_Normal block text-xl text-[#575757]">
-            Email
+        <div className="pt-6 pb-6">
+          <p className="font-Pretendard_SemiBold block text-lg text-[#575757]">
+            이메일
           </p>
           <input
             type="email"
             name="email"
-            placeholder="enter your email"
+            placeholder="이메일을 입력해주세요."
             autoComplete="off"
-            className={`border-b border-[#575757] font-Pretendard_Light text-black text-xl pt-2 pb-2 focus:outline-none w-full block ${password}`}
+            className="border-b border-[#575757] font-Pretendard_Light text-black text-xl pt-2 pb-2 focus:outline-none w-full"
             value={email}
             onChange={emailHandler}
           />
         </div>
-        <div>
-          <p className=" font-Pretendard_Normal text-xl text-[#575757]">
-            Password
+        <div className="pb-6">
+          <p className="font-Pretendard_SemiBold text-lg text-[#575757]">
+            비밀번호
           </p>
           <input
             type="password"
             name="password"
-            placeholder="enter your password"
+            placeholder="비밀번호를 입력해주세요."
             autoComplete="off"
-            className={`border-b border-[#575757] font-Pretendard_Light text-black text-xl pt-2 pb-2 focus:outline-none w-full block mb-12 ${
+            className={`border-b border-[#575757] font-Pretendard_Light text-black text-xl pt-2 pb-2 focus:outline-none w-full ${
               password && "font-mono"
             }`}
             value={password}
@@ -93,31 +90,29 @@ function AuthLeft({
           />
         </div>
         <div
-          className="flex gap-1 items-center font-Pretendard_Normal font hover:cursor-pointer"
-          onClick={() => {
-            memoryHandler;
-          }}
+          className="flex items-center font-Pretendard_Normal hover:cursor-pointer"
+          onClick={memoryHandler}
         >
-          {memory === true ? <img src={checked} /> : <img src={unchecked} />}
-          <p>로그인 정보 기억하기</p>
+          <img src={memory ? checked : unchecked} alt="memory" />
+          <p className="ml-2">로그인 정보를 기억하기</p>
         </div>
-        <div className="pt-7">
-          <button
-            className={
-              "w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-white bg-scarlet whitespace-nowrap rounded-[50px] font-Pretendard_Black  hover:cursor-pointer  "
-            }
-            onClick={onClick}
-          >
-            로그인
-          </button>
-        </div>
-        <div className="self-center items-center flex gap-3 flex-col pt-12">
-          <img src={RegisterLabel} />
-          <img
-            src={EmailBtn}
-            className="hover:cursor-pointer focus:bg-gray/40"
-            onClick={() => navigation("/register")}
-          />
+        <div className="pt-6 grid grid-cols-2 gap-4">
+          <div className="w-auto">
+            <button
+              className="py-3 w-full text-xl font-semibold text-white bg-neutral-800 rounded-[50px] font-Pretendard_Black hover:cursor-pointer"
+              onClick={() => navigation("/register")}
+            >
+              회원가입
+            </button>
+          </div>
+          <div className="w-auto">
+            <button
+              className="py-3 w-full text-xl font-semibold text-white bg-scarlet rounded-[50px] font-Pretendard_Black hover:cursor-pointer"
+              onClick={onLoginClick}
+            >
+              로그인
+            </button>
+          </div>
         </div>
       </div>
     </div>
