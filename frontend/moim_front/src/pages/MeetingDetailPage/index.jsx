@@ -1,11 +1,6 @@
-import React from "react";
-
+import MoimContainer from "../../components/PageContainer/MoimContainer";
 function MettingDetailPage() {
-  return (
-    <div>
-      <div>g</div>
-    </div>
-  );
+  return <div>gg</div>;
 }
 
 export default MettingDetailPage;
