@@ -14,7 +14,7 @@ function CreationModal({
   place,
   setOpen,
   scheduleTitle,
-
+  closeHandler,
   meetingCategory,
   isRefresh,
   setIsRefresh,
@@ -51,6 +51,7 @@ function CreationModal({
     if (isMeeting) {
       createMeeting();
     }
+    closeHandler();
   };
 
   const modalOutSideClick = (e) => {

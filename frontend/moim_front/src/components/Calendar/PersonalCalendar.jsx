@@ -174,6 +174,8 @@ export default function Calendar({
     let calendarApi = selectInfo.view.calendar;
     if (isMeeting) {
       setShowModal(true);
+    } else if (isPersonal) {
+      setShowModal(true);
     }
 
     setStartDateTime(selectInfo.startStr);
