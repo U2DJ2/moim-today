@@ -4,6 +4,7 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.todo.TodoService;
 import moim_today.domain.todo.enums.TodoProgress;
 import moim_today.dto.todo.TodoCreateRequest;
+import moim_today.dto.todo.TodoProgressUpdateRequest;
 import moim_today.dto.todo.TodoRemoveRequest;
 import moim_today.dto.todo.TodoUpdateRequest;
 import moim_today.fake_class.todo.FakeTodoService;
@@ -117,7 +118,49 @@ public class TodoControllerTest extends ControllerTest {
                 );
     }
 
-    @DisplayName("모임 안에 있는 모든 Todo를 조회한다")
+    @DisplayName("모임 안에 있는 모든 멤버의 Todo를 조회한다")
+    @Test
+    void findMembersTodosInMoim() throws Exception {
+        final String TWO_MONTHS = "2";
+        final String MEMBER_ID = "100";
+
+        mockMvc.perform(
+                        get("/api/todos/moim/{moimId}", MOIM_ID.longValue())
+                                .contentType(APPLICATION_JSON)
+                                .queryParam("memberId", MEMBER_ID)
+                                .queryParam("requestDate", String.valueOf(
+                                        YearMonth.of(2024, 5)
+                                ))
+                                .queryParam("months", TWO_MONTHS)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("모임 안에 특정 멤버의 모든 투두 조회",
+                        pathParameters(
+                                parameterWithName("moimId").description("모임 ID")
+                        ),
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("투두")
+                                .summary("모임의 모든 투두 조회")
+                                .queryParameters(
+                                        parameterWithName("requestDate").description("조회를 시작할 월 - ex) 2024-05"),
+                                        parameterWithName("months").description("조회를 시작할 월로부터 n개월 - ex) n=2 -> 2024-05-01 ~ 2024-07-31"),
+                                        parameterWithName("memberId").description("조회할 멤버 id , 0을 입력할 경우 모든 멤버의 투두 조회")
+                                )
+                                .responseFields(
+                                        fieldWithPath("data[].memberId").type(NUMBER).description("투두 주인 id"),
+                                        fieldWithPath("data[].todoGroupByDates[].todoDate").type(NUMBER).description("투두 시작 시간"),
+                                        fieldWithPath("data[].todoGroupByDates[].todoContents[].todoId").type(STRING).description("투두 id"),
+                                        fieldWithPath("data[].todoGroupByDates[].todoContents[].todoProgress").type(VARIES).description(
+                                                String.format("투두 진행 상황 - %s", EnumDocsUtils.getEnumNames(TodoProgress.class))
+                                        ),
+                                        fieldWithPath("data[].todoGroupByDates[].todoContents[].contents").type(NUMBER).description("투두 내용")
+                                )
+                                .build()
+                        ))
+                );
+    }
+
+    @DisplayName("memberId가 0일 경우 모임 안의 모든 멤버의 할일을 가져온다")
     @Test
     void findAllMembersTodosInMoim() throws Exception {
         final String TWO_MONTHS = "2";
@@ -125,7 +168,8 @@ public class TodoControllerTest extends ControllerTest {
         mockMvc.perform(
                         get("/api/todos/moim/{moimId}", MOIM_ID.longValue())
                                 .contentType(APPLICATION_JSON)
-                                .queryParam("startDate", String.valueOf(
+                                .queryParam("memberId", "0")
+                                .queryParam("requestDate", String.valueOf(
                                         YearMonth.of(2024, 5)
                                 ))
                                 .queryParam("months", TWO_MONTHS)
@@ -139,17 +183,18 @@ public class TodoControllerTest extends ControllerTest {
                                 .tag("투두")
                                 .summary("모임의 모든 투두 조회")
                                 .queryParameters(
-                                        parameterWithName("startDate").description("조회를 시작할 월 - ex) 2024-05"),
-                                        parameterWithName("months").description("조회를 시작할 월로부터 n개월 - ex) n=2 -> 2024-05-01 ~ 2024-07-31")
+                                        parameterWithName("requestDate").description("조회를 시작할 월 - ex) 2024-05"),
+                                        parameterWithName("months").description("조회를 시작할 월로부터 n개월 - ex) n=2 -> 2024-05-01 ~ 2024-07-31"),
+                                        parameterWithName("memberId").description("조회할 멤버 id , 0을 입력할 경우 모든 멤버의 투두 조회")
                                 )
                                 .responseFields(
-                                        fieldWithPath("data[].memberId").type(NUMBER).description("요청한 멤버 id"),
-                                        fieldWithPath("data[].todoResponses[].todoId").type(NUMBER).description("투두 id"),
-                                        fieldWithPath("data[].todoResponses[].contents").type(STRING).description("투두 내용"),
-                                        fieldWithPath("data[].todoResponses[].todoProgress").type(VARIES).description(
+                                        fieldWithPath("data[].memberId").type(NUMBER).description("투두 주인 id"),
+                                        fieldWithPath("data[].todoGroupByDates[].todoDate").type(NUMBER).description("투두 시작 시간"),
+                                        fieldWithPath("data[].todoGroupByDates[].todoContents[].todoId").type(STRING).description("투두 id"),
+                                        fieldWithPath("data[].todoGroupByDates[].todoContents[].todoProgress").type(VARIES).description(
                                                 String.format("투두 진행 상황 - %s", EnumDocsUtils.getEnumNames(TodoProgress.class))
                                         ),
-                                        fieldWithPath("data[].todoResponses[].todoDate").type(NUMBER).description("투두 시작 시간")
+                                        fieldWithPath("data[].todoGroupByDates[].todoContents[].contents").type(NUMBER).description("투두 내용")
                                 )
                                 .build()
                         ))
@@ -164,7 +209,7 @@ public class TodoControllerTest extends ControllerTest {
         mockMvc.perform(
                         get("/api/todos")
                                 .contentType(APPLICATION_JSON)
-                                .queryParam("startDate", String.valueOf(
+                                .queryParam("requestDate", String.valueOf(
                                         YearMonth.of(2024, 5)
                                 ))
                                 .queryParam("months", TWO_MONTHS)
@@ -175,18 +220,18 @@ public class TodoControllerTest extends ControllerTest {
                                 .tag("투두")
                                 .summary("자신의 모든 투두 조회")
                                 .queryParameters(
-                                        parameterWithName("startDate").description("조회를 시작할 월 - ex) 2024-05"),
+                                        parameterWithName("requestDate").description("조회를 시작할 월 - ex) 2024-05"),
                                         parameterWithName("months").description("조회를 시작할 월로부터 n개월 - ex) n=2 -> 2024-05-01 ~ 2024-07-31")
                                 )
                                 .responseFields(
                                         fieldWithPath("data[].moimId").type(NUMBER).description("자신이 만든 투두를 가지고 있는 모임 id"),
                                         fieldWithPath("data[].moimTitle").type(STRING).description("자신이 만든 투두를 가지고 있는 모임 title"),
-                                        fieldWithPath("data[].todoResponses[].todoId").type(NUMBER).description("투두 id"),
-                                        fieldWithPath("data[].todoResponses[].contents").type(STRING).description("투두 내용"),
-                                        fieldWithPath("data[].todoResponses[].todoProgress").type(VARIES).description(
+                                        fieldWithPath("data[].todoGroupByDates[].todoDate").type(NUMBER).description("투두 시작 시간"),
+                                        fieldWithPath("data[].todoGroupByDates[].todoContents[].todoId").type(STRING).description("투두 id"),
+                                        fieldWithPath("data[].todoGroupByDates[].todoContents[].todoProgress").type(VARIES).description(
                                                 String.format("투두 진행 상황 - %s", EnumDocsUtils.getEnumNames(TodoProgress.class))
                                         ),
-                                        fieldWithPath("data[].todoResponses[].todoDate").type(NUMBER).description("투두 시작 시간")
+                                        fieldWithPath("data[].todoGroupByDates[].todoContents[].contents").type(NUMBER).description("투두 내용")
                                 )
                                 .build()
                         ))
@@ -201,7 +246,8 @@ public class TodoControllerTest extends ControllerTest {
         mockMvc.perform(
                         get("/api/todos/moim/{moimId}", MOIM_ID.longValue() + 1L)
                                 .contentType(APPLICATION_JSON)
-                                .queryParam("startDate", String.valueOf(
+                                .queryParam("memberId", "0")
+                                .queryParam("requestDate", String.valueOf(
                                         YearMonth.of(2024, 5)
                                 ))
                                 .queryParam("months", TWO_MONTHS)
@@ -215,8 +261,9 @@ public class TodoControllerTest extends ControllerTest {
                                 .tag("투두")
                                 .summary("모임의 모든 투두 조회")
                                 .queryParameters(
-                                        parameterWithName("startDate").description("조회를 시작할 월 - ex) 2024-05"),
-                                        parameterWithName("months").description("[조회를 시작할 월로부터 n개월] 을 지정하는 n")
+                                        parameterWithName("requestDate").description("조회를 시작할 월 - ex) 2024-05"),
+                                        parameterWithName("months").description("[조회를 시작할 월로부터 n개월] 을 지정하는 n"),
+                                        parameterWithName("memberId").description("조회할 멤버 id")
                                 )
                                 .responseFields(
                                         fieldWithPath("statusCode").type(STRING).description("상태 코드"),
@@ -277,7 +324,7 @@ public class TodoControllerTest extends ControllerTest {
     @Test
     void updateTodoNotJoinedMemberError() throws Exception {
 
-        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest(TODO_ID.longValue(), MOIM_ID.longValue()+1L,
+        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest(TODO_ID.longValue(), MOIM_ID.longValue() + 1L,
                 UPDATE_AFTER_CONTENT.value(), COMPLETED, TODO_DATE);
 
         String json = objectMapper.writeValueAsString(todoUpdateRequest);
@@ -318,7 +365,7 @@ public class TodoControllerTest extends ControllerTest {
     @Test
     void updateTodoNotOwner() throws Exception {
 
-        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest(TODO_ID.longValue(), MOIM_ID.longValue()+3L,
+        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest(TODO_ID.longValue(), MOIM_ID.longValue() + 3L,
                 UPDATE_AFTER_CONTENT.value(), COMPLETED, TODO_DATE);
 
         String json = objectMapper.writeValueAsString(todoUpdateRequest);
@@ -357,7 +404,7 @@ public class TodoControllerTest extends ControllerTest {
 
     @DisplayName("Todo를 삭제한다")
     @Test
-    void deleteTodo() throws Exception{
+    void deleteTodo() throws Exception {
         TodoRemoveRequest todoRemoveRequest = new TodoRemoveRequest(TODO_ID.longValue());
 
         String json = objectMapper.writeValueAsString(todoRemoveRequest);
@@ -384,8 +431,8 @@ public class TodoControllerTest extends ControllerTest {
 
     @DisplayName("없는 투두 id면 Todo 삭제에 실패한다")
     @Test
-    void deleteTodoNotFoundError() throws Exception{
-        TodoRemoveRequest todoRemoveRequest = new TodoRemoveRequest(TODO_ID.longValue()+1L);
+    void deleteTodoNotFoundError() throws Exception {
+        TodoRemoveRequest todoRemoveRequest = new TodoRemoveRequest(TODO_ID.longValue() + 1L);
 
         String json = objectMapper.writeValueAsString(todoRemoveRequest);
 
@@ -415,8 +462,8 @@ public class TodoControllerTest extends ControllerTest {
 
     @DisplayName("투두의 주인이 아니면 Todo 삭제에 실패한다")
     @Test
-    void deleteTodoNotOwnerError() throws Exception{
-        TodoRemoveRequest todoRemoveRequest = new TodoRemoveRequest(TODO_ID.longValue()+2L);
+    void deleteTodoNotOwnerError() throws Exception {
+        TodoRemoveRequest todoRemoveRequest = new TodoRemoveRequest(TODO_ID.longValue() + 2L);
 
         String json = objectMapper.writeValueAsString(todoRemoveRequest);
 
@@ -446,8 +493,7 @@ public class TodoControllerTest extends ControllerTest {
 
     @DisplayName("하나의 Todo를 조회한다")
     @Test
-    void getTodoById() throws Exception{
-
+    void getTodoById() throws Exception {
 
         mockMvc.perform(get("/api/todos/{todoId}", TODO_ID.longValue())
                         .contentType(APPLICATION_JSON)
@@ -471,6 +517,47 @@ public class TodoControllerTest extends ControllerTest {
                                                         EnumDocsUtils.getEnumNames(TodoProgress.class))
                                         ),
                                         fieldWithPath("todoDate").type(NUMBER).description("투두 시작 시간")
+                                )
+                                .build()
+                        ))
+                );
+    }
+
+    @DisplayName("Todo의 todo progress를 업데이트한다")
+    @Test
+    void updateTodoProgress() throws Exception {
+        TodoProgressUpdateRequest todoProgressUpdateRequest = new TodoProgressUpdateRequest(
+                TODO_ID.longValue(), COMPLETED
+        );
+
+        String json = objectMapper.writeValueAsString(todoProgressUpdateRequest);
+
+        mockMvc.perform(patch("/api/todos/todo-progress")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("투두 업데이트 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("투두")
+                                .summary("투두 업데이트")
+                                .requestHeaders(
+                                        headerWithName("Content-Type").description("application/json")
+                                )
+                                .requestFields(
+                                        fieldWithPath("todoId").type(NUMBER).description("투두 id"),
+                                        fieldWithPath("todoProgress").type(VARIES).description(
+                                                String.format("투두 진행 상황 - %s", EnumDocsUtils.getEnumNames(TodoProgress.class))
+                                        )
+                                )
+                                .responseFields(
+                                        fieldWithPath("contents").type(STRING).description("업데이트 할 투두 컨텐츠 값"),
+                                        fieldWithPath("todoProgress").type(VARIES).description(
+                                                String.format("투두 진행 상황 - %s", EnumDocsUtils.getEnumNames(TodoProgress.class))
+                                        ),
+                                        fieldWithPath("todoDate").type(NUMBER).description("투두 시작 시간")
+                                                .attributes(key("format").value("yyyy-MM-dd"),
+                                                        key("timezone").value("Asia/Seoul"))
                                 )
                                 .build()
                         ))

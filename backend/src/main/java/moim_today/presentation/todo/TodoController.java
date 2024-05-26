@@ -30,19 +30,19 @@ public class TodoController {
     @GetMapping
     public CollectionResponse<List<MemberMoimTodoResponse>> findAllTodoByMemberId(
             @Login final MemberSession memberSession,
-            @RequestParam final YearMonth startDate,
+            @RequestParam final YearMonth requestDate,
             @RequestParam final int months){
-        return CollectionResponse.from(todoService.findAllMembersTodos(memberSession.id(), startDate, months));
+        return CollectionResponse.from(todoService.findAllMemberTodos(memberSession.id(), requestDate, months));
     }
 
     @GetMapping("moim/{moimId}")
-    public CollectionResponse<List<MemberTodoResponse>> findAllMembersTodosInMoim(
+    public CollectionResponse<List<MemberTodoResponse>> findMembersTodosInMoim(
             @Login final MemberSession memberSession,
+            @RequestParam(required = false, defaultValue = "0") final long memberId,
             @PathVariable final long moimId,
-            @RequestParam final YearMonth startDate,
+            @RequestParam final YearMonth requestDate,
             @RequestParam final int months) {
-
-        return CollectionResponse.from(todoService.findAllMembersTodosInMoim(memberSession.id(), moimId, startDate, months));
+        return CollectionResponse.from(todoService.findMembersTodosInMoim(memberSession.id(), memberId, moimId, requestDate, months));
     }
 
     @GetMapping("/{todoId}")
@@ -54,6 +54,12 @@ public class TodoController {
     public TodoUpdateResponse updateTodo(@Login final MemberSession memberSession,
                                          @RequestBody final TodoUpdateRequest todoUpdateRequest) {
         return todoService.updateTodo(memberSession.id(), todoUpdateRequest);
+    }
+
+    @PatchMapping("/todo-progress")
+    public TodoUpdateResponse updateTodoProgress(@Login final MemberSession memberSession,
+                                                 @RequestBody final TodoProgressUpdateRequest todoProgressUpdateRequest){
+        return todoService.updateTodoProgress(memberSession.id(), todoProgressUpdateRequest);
     }
 
     @DeleteMapping

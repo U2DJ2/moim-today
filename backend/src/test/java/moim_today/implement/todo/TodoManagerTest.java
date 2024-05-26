@@ -1,5 +1,6 @@
 package moim_today.implement.todo;
 
+import moim_today.domain.todo.TodoGroupByDate;
 import moim_today.dto.todo.MemberTodoResponse;
 import moim_today.dto.todo.TodoRemoveRequest;
 import moim_today.dto.todo.TodoUpdateRequest;
@@ -92,7 +93,11 @@ class TodoManagerTest extends ImplementTest {
         // then
         assertThat(membersDataRangeTodosInMoim.size()).isEqualTo(MEMBER_SIZE);
         membersDataRangeTodosInMoim.forEach(m -> {
-            assertThat(m.todoResponses().size()).isEqualTo(EACH_MEMBER_TODO_SIZE_IN_MOIM);
+            int sum = 0;
+            for(TodoGroupByDate tg : m.todoGroupByDates()){
+                sum += tg.todoContents().size();
+            }
+            assertThat(sum).isEqualTo(EACH_MEMBER_TODO_SIZE_IN_MOIM);
         });
     }
 
@@ -255,5 +260,24 @@ class TodoManagerTest extends ImplementTest {
         assertThatThrownBy(() -> todoManager.getById(TODO_ID.longValue()))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(TODO_NOT_FOUND_ERROR.message());
+    }
+
+    @DisplayName("투두의 진행상황을 업데이트한다")
+    @Test
+    void updateTodoProgress() {
+        // given
+        TodoJpaEntity todoJpaEntity = TodoJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .todoProgress(PENDING)
+                .build();
+
+        todoRepository.save(todoJpaEntity);
+
+        // when
+        todoManager.updateTodoProgress(MEMBER_ID.longValue(), todoJpaEntity.getId(), COMPLETED);
+        TodoJpaEntity updatedTodo = todoRepository.getById(todoJpaEntity.getId());
+
+        // then
+        assertThat(updatedTodo.getTodoProgress()).isEqualTo(COMPLETED);
     }
 }
