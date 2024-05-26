@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { GET } from "../../utils/axios";
 import { useParams } from "react-router";
 import alarm from "../../assets/svg/Alarmclock_duotone-1.svg";
+import pin from "../../assets/svg/Pin_duotone.svg";
 import user from "../../assets/svg/User_duotone.svg";
+import content from "../../assets/svg/comment_duotone.svg";
 import ContentIndex from "./ContentIndex";
 function MettingDetailPage() {
   const [meetingInfo, setMeetingInfo] = useState([]);
+  const [comment, setComment] = useState("");
   const { meetingId } = useParams();
 
   const getMeetingInfo = async () => {
@@ -23,6 +26,12 @@ function MettingDetailPage() {
     console.log(meetingInfo.members);
   }, []);
 
+  const ContentSection = ({ image, indexName, children }) => (
+    <div className="grid grid-4 gap-2 font-Pretendard_Light text-2xl font-light">
+      <ContentIndex image={image} indexName={indexName} />
+      {children}
+    </div>
+  );
   return (
     <div>
       <div className="grid gap-5">
@@ -35,19 +44,19 @@ function MettingDetailPage() {
           </div>
         </div>
         <hr />
-        <div className="grid grid-4">
-          <ContentIndex image={alarm} indexName={"미팅 시간정보"} />
-          <div className=" font-Pretendard_Medium">
-            {meetingInfo.startDateTime} ~ {meetingInfo.endDateTime}
-          </div>
-        </div>
-        <div className="grid grid-4">
+        <ContentSection image={alarm} indexName="미팅 시간정보">
+          {meetingInfo.startDateTime} ~ {meetingInfo.endDateTime}
+        </ContentSection>
+        <ContentSection image={pin} indexName={"장소"}>
+          {meetingInfo.place}
+        </ContentSection>
+        <div className="grid grid-4 gap-2">
           <ContentIndex image={user} indexName={"참여 멤버"} />
           <div className="flex gap-3 font-Pretendard_Light">
             {meetingInfo.members &&
               meetingInfo.members.map((member, index) => {
                 return (
-                  <div key={index} className="flex flex-col justify-center">
+                  <div key={index} className="flex flex-col items-center gap-4">
                     <img
                       src={member.memberProfileImageUrl}
                       className=" w-11 h-11"
@@ -57,6 +66,16 @@ function MettingDetailPage() {
                 );
               })}
           </div>
+        </div>
+        <hr />
+        <ContentIndex image={content} indexName={"댓글"} />
+        <div className="border">
+          <textarea
+            className="w-1/2 flex items-center rounded-lg h-20 text-black text-sm placeholder:text-darkgray placeholder:justify-center focus:outline-none resize-none overflow-hidden"
+            placeholder="댓글 작성하기"
+            onChange={(e) => setComment(e.target.value)}
+            value={comment}
+          />{" "}
         </div>
       </div>
     </div>
