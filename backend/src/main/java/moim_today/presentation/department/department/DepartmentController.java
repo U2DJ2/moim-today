@@ -1,6 +1,6 @@
-package moim_today.presentation.department;
+package moim_today.presentation.department.department;
 
-import moim_today.application.department.DepartmentService;
+import moim_today.application.department.department.DepartmentService;
 import moim_today.dto.department.DepartmentResponse;
 import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;

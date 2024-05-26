@@ -1,4 +1,4 @@
-package moim_today.persistence.repository.department;
+package moim_today.persistence.repository.department.department;
 
 import moim_today.dto.department.DepartmentResponse;
 import moim_today.global.error.NotFoundException;

@@ -1,4 +1,4 @@
-package moim_today.implement.department;
+package moim_today.implement.department.department;
 
 import moim_today.dto.department.DepartmentResponse;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;

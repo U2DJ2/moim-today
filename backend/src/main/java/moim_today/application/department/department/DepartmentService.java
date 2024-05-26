@@ -1,4 +1,4 @@
-package moim_today.application.department;
+package moim_today.application.department.department;
 
 import moim_today.dto.department.DepartmentResponse;
 

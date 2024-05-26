@@ -1,10 +1,10 @@
-package moim_today.implement.department;
+package moim_today.implement.department.department;
 
 import moim_today.dto.department.DepartmentResponse;
 import moim_today.global.annotation.Implement;
 import moim_today.global.error.BadRequestException;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
-import moim_today.persistence.repository.department.DepartmentRepository;
+import moim_today.persistence.repository.department.department.DepartmentRepository;
 import moim_today.persistence.repository.university.UniversityRepository;
 
 import java.util.List;
