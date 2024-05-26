@@ -20,6 +20,7 @@ import { checkWriter } from "../../api/users";
 // UI
 import { Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import MoimLayout from "../../components/MoimLayout";
 
 const modalTheme = {
   root: {
@@ -86,7 +87,6 @@ function MoimJoinPage() {
   const [isAlertModalOpen, setAlertModalOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [selected, setSelected] = useState(homeKey);
-  const [meetingOption, setMeetingOption] = useState("ALL");
   const [notices, setNotices] = useState([]);
   const [moimInfo, setMoimInfo] = useState([]);
   const [meetings, setMeetings] = useState([]);
@@ -114,28 +114,6 @@ function MoimJoinPage() {
     }
   };
 
-  const getMeetings = async () => {
-    try {
-      const result = await fetchMeetings(MoimId, meetingOption);
-      console.log(result.data.data);
-
-      setMeetings(result.data.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  const fetchWriter = async () => {
-    try {
-      const response = await axios.get(
-        `https://api.moim.today/api/members/host-profile/${MoimId}`
-      );
-      console.log(response.data);
-      setWriterInfo(response.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   const getHost = async () => {
     try {
       const result = await checkWriter(MoimId);
@@ -148,87 +126,68 @@ function MoimJoinPage() {
   useEffect(() => {
     getHost();
     getNotices();
-    getMeetings();
-    getInfo();
-    fetchWriter();
-
-    // eslint-disable-next-line
   }, []);
 
   return (
-    <MoimContainer>
-      <DetailedLeft
-        userName={writerInfo.username}
-        title={moimInfo.title}
-        currentCount={moimInfo.currentCount}
-        capacity={moimInfo.capacity}
-        category={moimInfo.category}
-        contents={moimInfo.contents}
-        image={moimInfo.imageUrl}
-        joined={true}
-      />
-      <div className="flex flex-col basis-4/5 bg-white shadow-lg overflow-hidden rounded-t-3xl px-20 pt-16 pb-6 gap-8">
-        <div className="flex justify-center items-center self-start font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
-          <div className="flex gap-12 font-bold text-4xl">
-            <div
-              className={`justify-center max-md:px-5 cursor-pointer ${
-                selected === homeKey
-                  ? "text-scarlet border-b-2 border-scarlet"
-                  : ""
-              }`}
-              onClick={() => setSelected(homeKey)}
-            >
-              {homeKey}
-            </div>
-            <div
-              className={`justify-center  max-md:px-5 cursor-pointer ${
-                selected === availableTimeKey
-                  ? "text-scarlet border-b-2 border-scarlet"
-                  : ""
-              }`}
-              onClick={() => setSelected(availableTimeKey)}
-            >
-              {availableTimeKey}
-            </div>
-            <div
-              className={`justify-center max-md:px-5 cursor-pointer ${
-                selected === todoKey
-                  ? "text-scarlet border-b-2 border-scarlet"
-                  : ""
-              }`}
-              onClick={() => setSelected(todoKey)}
-            >
-              {todoKey}
-            </div>
-            <div
-              className={`justify-center max-md:px-5 cursor-pointer ${
-                selected === memberKey
-                  ? "text-scarlet border-b-2 border-scarlet"
-                  : ""
-              }`}
-              onClick={() => setSelected(memberKey)}
-            >
-              {memberKey}
-            </div>
+    <>
+      <div className="flex justify-center items-center self-start font-Pretendard_Black font-normal text-black max-md:px-5 max-md:max-w-full">
+        <div className="flex gap-12 font-bold lg:text-xl lg:gap-8 xl:text-3xl 2xl:text-4xl">
+          <div
+            className={`justify-center max-md:px-5 cursor-pointer ${
+              selected === homeKey
+                ? "text-scarlet border-b-4 pb-2 border-scarlet"
+                : ""
+            }`}
+            onClick={() => setSelected(homeKey)}
+          >
+            {homeKey}
+          </div>
+          <div
+            className={`justify-center  max-md:px-5 cursor-pointer ${
+              selected === availableTimeKey
+                ? "text-scarlet  border-b-4 pb-2 border-scarlet"
+                : ""
+            }`}
+            onClick={() => setSelected(availableTimeKey)}
+          >
+            {availableTimeKey}
+          </div>
+          <div
+            className={`justify-center max-md:px-5 cursor-pointer ${
+              selected === todoKey
+                ? "text-scarlet  border-b-4 pb-2 border-scarlet"
+                : ""
+            }`}
+            onClick={() => setSelected(todoKey)}
+          >
+            {todoKey}
+          </div>
+          <div
+            className={`justify-center max-md:px-5 cursor-pointer ${
+              selected === memberKey
+                ? "text-scarlet  border-b-4 pb-2 border-scarlet"
+                : ""
+            }`}
+            onClick={() => setSelected(memberKey)}
+          >
+            {memberKey}
           </div>
         </div>
-        {selected === homeKey ? (
-          <MoimHome
-            notices={notices}
-            meetings={meetings}
-            meetingOption={meetingOption}
-            setMeetingOption={setMeetingOption}
-            isHost={isHost}
-            moimId={MoimId}
-          />
-        ) : selected === availableTimeKey ? (
-          <AvailableTime moimId={MoimId} />
-        ) : selected === todoKey ? (
-          <ToDo />
-        ) : selected === memberKey ? (
-          <Member isHost={isHost} MoimId={MoimId} />
-        ) : null}
       </div>
+      {selected === homeKey ? (
+        <MoimHome
+          notices={notices}
+          meetings={meetings}
+          isHost={isHost}
+          moimId={MoimId}
+        />
+      ) : selected === availableTimeKey ? (
+        <AvailableTime moimId={MoimId} />
+      ) : selected === todoKey ? (
+        <ToDo />
+      ) : selected === memberKey ? (
+        <Member isHost={isHost} MoimId={MoimId} />
+      ) : null}
       <Modal
         show={isAlertModalOpen}
         size="sm"
@@ -256,7 +215,7 @@ function MoimJoinPage() {
           </div>
         </Modal.Body>
       </Modal>
-    </MoimContainer>
+    </>
   );
 }
 

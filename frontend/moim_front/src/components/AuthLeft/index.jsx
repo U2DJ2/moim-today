@@ -29,6 +29,7 @@ function AuthLeft({
     const data = {
       email: email,
       password: password,
+      isKeepLogin: true,
     };
     POST("api/login", data)
       .then((res) => {
@@ -41,9 +42,7 @@ function AuthLeft({
         if (errorCode === "404") {
           setOpenAlertModal(true);
           setMessage(error.response.data.message);
-        }
-        else
-        {
+        } else {
           setOpenAlertModal(true);
           setMessage(error.message);
         }
@@ -61,7 +60,9 @@ function AuthLeft({
           contentColor={contentColor}
         />
         <div className="pt-6 pb-6">
-          <p className="font-Pretendard_SemiBold block text-lg text-[#575757]">이메일</p>
+          <p className="font-Pretendard_SemiBold block text-lg text-[#575757]">
+            이메일
+          </p>
           <input
             type="email"
             name="email"
@@ -73,13 +74,17 @@ function AuthLeft({
           />
         </div>
         <div className="pb-6">
-          <p className="font-Pretendard_SemiBold text-lg text-[#575757]">비밀번호</p>
+          <p className="font-Pretendard_SemiBold text-lg text-[#575757]">
+            비밀번호
+          </p>
           <input
             type="password"
             name="password"
             placeholder="비밀번호를 입력해주세요."
             autoComplete="off"
-            className={`border-b border-[#575757] font-Pretendard_Light text-black text-xl pt-2 pb-2 focus:outline-none w-full ${password && "font-mono"}`}
+            className={`border-b border-[#575757] font-Pretendard_Light text-black text-xl pt-2 pb-2 focus:outline-none w-full ${
+              password && "font-mono"
+            }`}
             value={password}
             onChange={passwordHandler}
           />

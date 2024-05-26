@@ -20,6 +20,8 @@ function MeetingCreation() {
   const [agenda, setAgenda] = useState("");
   const [place, setPlace] = useState("");
   const [meetingCategory, setMeetingCategory] = useState("REGULAR");
+  const [isRefresh, setIsRefresh] = useState(false);
+
   const { MoimId } = useParams();
 
   const [open, setOpen] = useState(false);
@@ -34,24 +36,7 @@ function MeetingCreation() {
     console.log(meetingCategory);
   };
 
-  const createMeeting = async () => {
-    const data = {
-      moimId: MoimId,
-      agenda: agenda,
-      startDateTime: startDateTime.replace("T", " ").split("+")[0],
-      endDateTime: endDateTime.replace("T", " ").split("+")[0],
-      place: place,
-      meetingCategory: meetingCategory,
-    };
-    console.log("create Meeting");
-    try {
-      const response = await POST("api/meetings", data);
-      console.log(response);
-      setOpen(true);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  useEffect(() => {}, [meetingCategory]);
 
   return (
     <div className="flex flex-col gap-3 px-10">
@@ -66,13 +51,14 @@ function MeetingCreation() {
         setShowModal={setShowModal}
         setStartDateTime={setStartDateTime}
         setEndDateTime={setEndDateTime}
+        isRefresh={isRefresh}
+        setIsRefresh={setIsRefresh}
       />
       <CreationModal
         showModal={showModal}
         setShowModal={setShowModal}
         noticeHandler={null}
         isMeeting={true}
-        closeHandler={createMeeting}
         moimId={MoimId}
         agenda={agenda}
         setAgenda={setAgenda}
@@ -80,8 +66,11 @@ function MeetingCreation() {
         startDateTime={startDateTime}
         setEndDateTime={setEndDateTime}
         endDateTime={endDateTime}
+        meetingCategory={meetingCategory}
         place={place}
         setOpen={setOpen}
+        isRefresh={isRefresh}
+        setIsRefresh={setIsRefresh}
       >
         <div className="font-Pretendard_Black text-3xl pb-8">미팅 생성하기</div>
         <div className="flex flex-col gap-4">

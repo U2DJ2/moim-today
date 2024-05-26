@@ -25,34 +25,76 @@ export default function Calendar({
   setStartDateTime,
   setScheduleTitle,
   scheduleTitle,
+  memberId,
+  isRefresh = false,
+  setIsRefresh = null,
 }) {
   const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
+  const today = new Date().toISOString().split("T")[0];
   const [events, setEvents] = useState([]);
-  const [calendarStart, setCalendarStart] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [calendarStart, setCalendarStart] = useState(new Date());
+
   useEffect(() => {
     const currentYear = new Date().getFullYear();
-
     if (isPersonal) {
       fetchAllEvents(currentYear).catch(console.error);
     } else if (isMeeting) {
-      fetchAvailables();
-      fetchMeetings();
+      memberId != null ? fetchAvailables() : null;
     } else if (isAvailable) {
       fetchAvailables();
     }
   }, []);
 
   useEffect(() => {
-    fetchAvailables();
-  }, [calendarStart]);
-
-  useEffect(() => {
     if (calendarRef.current && selectedDate) {
-      calendarRef.current.getApi().gotoDate(selectedDate);
+      Promise.resolve().then(() => {
+        calendarRef.current.getApi().gotoDate(selectedDate);
+      });
     }
   }, [selectedDate]);
+
+  useEffect(() => {
+    if (setIsRefresh) {
+      setIsRefresh(false);
+      fetchAvailables();
+    }
+  }, [isRefresh]);
+
+  const GetMemberWeekly = async (memberId) => {
+    //모임 내 멤버 별 가용시간
+    try {
+      let allEvents = [];
+      console.log(calendarStart);
+      const memberSchedule = await axios.get(
+        `https://api.moim.today/api/schedules/weekly/available-time/members/${memberId}`,
+        {
+          params: {
+            startDate: calendarStart,
+          },
+        }
+      );
+      allEvents = [
+        ...allEvents,
+        ...memberSchedule.data.data.map((event) =>
+          mapEventData(event, true, true)
+        ),
+      ];
+      console.log(memberSchedule);
+      console.log(allEvents);
+      setEvents(allEvents);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    console.log("member:", memberId);
+    console.log(calendarStart);
+    if (memberId != null) GetMemberWeekly(memberId);
+    else {
+      fetchAvailables();
+    }
+  }, [memberId, calendarStart]);
 
   async function fetchAllEvents(year) {
     try {
@@ -79,30 +121,16 @@ export default function Calendar({
     }
   }
 
-  async function fetchMeetings() {
-    try {
-      const response = await axios.get(
-        `https://api.moim.today/api/meetings/${moimId}`,
-        {
-          params: {
-            meetingStatus: "ALL",
-          },
-        }
-      );
-      console.log(response);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   async function fetchAvailables() {
+    //모임 가용시간
     try {
       let allEvents = [];
       const isPast = new Date(calendarStart) < new Date();
       const startDate = isPast
         ? new Date().toISOString().split("T")[0]
-        : calendarStart;
-
+        : calendarStart instanceof Date
+        ? calendarStart.toISOString().split("T")[0]
+        : new Date(calendarStart).toISOString().split("T")[0];
       const response = await axios.get(
         `https://api.moim.today/api/schedules/weekly/available-time/moims/${moimId}`,
         {
@@ -113,8 +141,10 @@ export default function Calendar({
       );
       allEvents = [
         ...allEvents,
-        ...response.data.data.map((event) => mapEventData(event, true)),
+        ...response.data.data.map((event) => mapEventData(event, true, true)),
       ];
+      console.log(response);
+      console.log(allEvents);
       setEvents(allEvents);
     } catch (e) {
       console.log(e);
@@ -122,9 +152,9 @@ export default function Calendar({
   }
 
   // Function to map event data
-  function mapEventData(event, backgroundEvent) {
+  function mapEventData(event, backgroundEvent, calendar) {
     const formattedEvent = {
-      id: event.scheduleId || event.calendarId,
+      id: calendar ? event.calendarId : event.scheduleId,
       title: event.scheduleName || "",
       start: event.startDateTime.replace(" ", "T"),
       end: event.endDateTime.replace(" ", "T"),
@@ -139,7 +169,7 @@ export default function Calendar({
 
   function handleDateSelect(selectInfo) {
     if (isAvailable) {
-      console.log(selectInfo);
+      console.log("handleDateSelected", selectInfo);
     }
     let calendarApi = selectInfo.view.calendar;
     if (isMeeting) {
@@ -150,16 +180,6 @@ export default function Calendar({
     setEndDateTime(selectInfo.endStr);
 
     calendarApi.unselect(); // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
-      });
-    }
   }
 
   // Function to handle event add
@@ -196,11 +216,6 @@ export default function Calendar({
     console.log("Event removed:", info.event);
   }
 
-  // Function to create unique event ID
-  // function createEventId() {
-  //   return String(eventGuid++);
-  // }
-
   function personalSubmit() {
     calendarRef.current.getApi().unselect();
   }
@@ -215,6 +230,7 @@ export default function Calendar({
     <div className="demo-app">
       <div className="demo-app-main">
         <FullCalendar
+          key={memberId}
           ref={calendarRef} // 2. FullCalendar 컴포넌트에 ref 추가
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
@@ -230,14 +246,7 @@ export default function Calendar({
           dayMaxEvents={true}
           events={events}
           select={handleDateSelect}
-          eventContent={renderEventContent} // custom render function
-          // eventClick={handleEventClick}
-          // you can update a remote database when these fire:
-          /*
-        eventAdd={function(){}}
-        eventChange={function(){}}
-        eventRemove={function(){}}
-        */
+          eventContent={renderEventContent}
           eventAdd={handleEventAdd}
           eventChange={handleEventChange}
           eventRemove={handleEventRemove}

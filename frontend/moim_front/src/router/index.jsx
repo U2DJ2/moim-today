@@ -1,6 +1,6 @@
 // React
 import { useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useParams } from "react-router-dom";
 
 // Pages : Home
 import HomePage from "../pages/Home/Home";
@@ -17,6 +17,9 @@ import Schedule from "../pages/Schedule";
 // Page : Moim Detail Page
 import MoimDetailPage from "../pages/MoimDetailPage";
 
+// Page : Meeting Detail PAge
+import MeetingDetailPage from "../pages/MeetingDetailPage";
+
 // Components
 import MoimJoinPage from "../pages/MoimJoinPage";
 import MeetingCreation from "../pages/MoimJoinPage/MoimHome/MeetingCreation";
@@ -26,6 +29,10 @@ import axios from "axios";
 
 // Layout
 import MainLayout from "../components/MainLayout";
+import ManageLayout from "../assets/ManageLayout";
+import ManageMoimPage from "../pages/ManageMoimPage";
+import ManageProfilePage from "../pages/ManageProfilePage";
+import MoimLayout from "../components/MoimLayout";
 
 /**
  * Basic Router
@@ -55,20 +62,32 @@ function Router() {
       checkSession();
     }
   }, [navigate]);
+  const { MoimId } = useParams();
 
   return (
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/join/:MoimId" element={<MoimJoinPage />} />
-
         <Route path="/detailed/:MoimId" element={<MoimDetailPage />} />
         <Route path="/meeting/:MoimId" element={<MeetingCreation />} />
+
+        <Route element={<MoimLayout />}>
+          <Route path="/join/:MoimId" element={<MoimJoinPage />} />
+          <Route
+            path="/meeting/:moimId/:meetingId"
+            element={<MeetingDetailPage />}
+          />
+        </Route>
       </Route>
+
+      <Route element={<ManageLayout />}>
+        <Route path="/manage" element={<ManageProfilePage />} />
+        <Route path="/manage/moim" element={<ManageMoimPage />} />
+      </Route>
+
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/creation" element={<MoimCreationPage />} />
-      <Route path="/manage" element={<Manage />} />
       <Route path="/schedule" element={<Schedule />} />
     </Routes>
   );

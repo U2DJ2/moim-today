@@ -145,10 +145,7 @@ function DetailedLeft({
             <div>{capacity}</div>
           </div>
         </div>
-        <div className="flex font-Pretendard_SemiBold text-sm text-[#6F6F6F] hover:cursor-pointer hover:text-scarlet">
-          <img src={clock} />
-          <span className="ml-2">가용시간 보기</span>
-        </div>
+
         <button
           className={`${
             joined ? "hidden" : "flex"
