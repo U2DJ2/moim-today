@@ -1,5 +1,8 @@
+// React
 import React from "react";
 import ReactDOM from "react-dom/client";
+
+// App
 import App from "./App.jsx";
 import "./main.css";
 
