@@ -12,6 +12,7 @@ import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static moim_today.util.TestConstant.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -24,6 +25,26 @@ class RequestDepartmentControllerTest extends ControllerTest {
     @Override
     protected Object initController() {
         return new RequestDepartmentController(requestDepartmentService);
+    }
+
+    @DisplayName("학과 추가 요청 정보를 모두 조회한다.")
+    @Test
+    void findAll() throws Exception {
+        mockMvc.perform(
+                        get("/api/admin/request-departments")
+                )
+                .andExpect(status().isOk())
+                .andDo(document("학과 정보 추가를 요청을 조회한다.",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("학과")
+                                .summary("학과 정보 추가 요청 조회")
+                                .responseFields(
+                                        fieldWithPath("data[0].requestDepartmentId").type(NUMBER).description("학과 추가 요청 id"),
+                                        fieldWithPath("data[0].universityId").type(NUMBER).description("대학교 id"),
+                                        fieldWithPath("data[0].requestDepartmentName").type(STRING).description("추가 요청 학교명")
+                                )
+                                .build())
+                ));
     }
 
     @DisplayName("학과 추가 요청 정보를 저장한다.")

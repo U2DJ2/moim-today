@@ -18,8 +18,8 @@ public class RequestDepartmentController {
         this.requestDepartmentService = requestDepartmentService;
     }
 
-    @GetMapping("/request-departments")
-    public CollectionResponse<List<RequestDepartmentResponse>> getRequests() {
+    @GetMapping("/admin/request-departments")
+    public CollectionResponse<List<RequestDepartmentResponse>> findAll() {
         List<RequestDepartmentResponse> requestDepartmentResponses = requestDepartmentService.findAll();
         return CollectionResponse.from(requestDepartmentResponses);
     }
