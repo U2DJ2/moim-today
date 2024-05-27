@@ -35,9 +35,14 @@ class MeetingManagerTest extends ImplementTest {
         long memberId = memberJpaEntity.getId();
 
         // given 2
+        LocalDate startDate = LocalDate.of(2024, 3, 4);
+        LocalDate endDate = LocalDate.of(2024, 6, 30);
+
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
                 .title(MOIM_TITLE.value())
                 .memberId(memberId)
+                .startDate(startDate)
+                .endDate(endDate)
                 .build();
 
         moimRepository.save(moimJpaEntity);
