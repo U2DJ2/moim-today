@@ -3,11 +3,13 @@ package moim_today.implement.meeting.meeting;
 import moim_today.domain.meeting.enums.MeetingCategory;
 import moim_today.dto.meeting.meeting.MeetingCreateResponse;
 import moim_today.dto.meeting.meeting.MeetingCreateRequest;
+import moim_today.global.error.BadRequestException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import moim_today.util.ImplementTest;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_DATE_TIME_BAD_REQUEST_ERROR;
 import static moim_today.util.TestConstant.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 class MeetingManagerTest extends ImplementTest {
 
@@ -312,5 +315,80 @@ class MeetingManagerTest extends ImplementTest {
         assertThat(meetingRepository.count()).isEqualTo(1);
         assertThat(joinedMeetingRepository.count()).isEqualTo(1);
         assertThat(scheduleRepository.count()).isEqualTo(1);
+    }
+
+    @DisplayName("미팅 시간대가 모임에 포함되면 검증에 통과한다.")
+    @Test
+    void validateMoimDateTime() {
+        // given 1
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+
+        // given 2
+        LocalDate currentDate = LocalDate.of(2024, 3, 30);
+        LocalDate startDate = LocalDate.of(2024, 3, 4);
+        LocalDate endDate = LocalDate.of(2024, 6, 30);
+
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .startDate(startDate)
+                .endDate(endDate)
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+
+        // given 3
+        MeetingCreateRequest meetingCreateRequest = MeetingCreateRequest.builder()
+                .moimId(moimJpaEntity.getId())
+                .agenda(MEETING_AGENDA.value())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 0, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 2, 0, 0))
+                .place(MEETING_PLACE.value())
+                .meetingCategory(MeetingCategory.SINGLE)
+                .build();
+
+        // then
+        assertThatCode(() -> meetingManager.createMeeting(memberJpaEntity.getId(), meetingCreateRequest, currentDate))
+                .doesNotThrowAnyException();
+    }
+
+    @DisplayName("미팅 시간대가 모임에 포함되지 않으면 예외가 발생한다.")
+    @Test
+    void validateMoimDateTimeFail() {
+        // given 1
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+
+        // given 2
+        LocalDate currentDate = LocalDate.of(2024, 3, 30);
+        LocalDate startDate = LocalDate.of(2024, 3, 4);
+        LocalDate endDate = LocalDate.of(2024, 6, 30);
+
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .startDate(startDate)
+                .endDate(endDate)
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+
+        // given 3
+        MeetingCreateRequest meetingCreateRequest = MeetingCreateRequest.builder()
+                .moimId(moimJpaEntity.getId())
+                .agenda(MEETING_AGENDA.value())
+                .startDateTime(LocalDateTime.of(2024, 3, 3, 23, 59, 59))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 2, 0, 0))
+                .place(MEETING_PLACE.value())
+                .meetingCategory(MeetingCategory.SINGLE)
+                .build();
+
+        // then
+        assertThatThrownBy(() -> meetingManager.createMeeting(memberJpaEntity.getId(), meetingCreateRequest, currentDate))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(MEETING_DATE_TIME_BAD_REQUEST_ERROR.message());
     }
 }
