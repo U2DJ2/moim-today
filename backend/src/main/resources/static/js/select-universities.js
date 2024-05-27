@@ -3,7 +3,7 @@ $(document).ready(function () {
 });
 
 function loadUniversities() {
-    fetch('/api/universities', {
+    fetch('http://localhost:8080/api/universities', {
         credentials: 'include'
     })
         .then(response => response.json())

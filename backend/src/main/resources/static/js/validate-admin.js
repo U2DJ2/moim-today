@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $.ajax({
-        url: '/api/admin/validate',
+        url: 'http://localhost:8080/api/admin/validate',
         type: 'POST',
         xhrFields: {
             withCredentials: true
