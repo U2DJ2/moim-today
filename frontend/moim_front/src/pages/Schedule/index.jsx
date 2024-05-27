@@ -218,7 +218,7 @@ const textInputTheme = {
 const labelStyle = "mt-2.5 mb-2.5 font-Pretendard_SemiBold leading-5 text-sm text-black max-md:max-w-full";
 const commonInputStyle = "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
 
-async function fetchAllTodos(startDate, setMoimData) {
+async function fetchAllTodos(startDate, setTodoData) {
 
   // Parse start date
   startDate = new Date(startDate);
@@ -226,14 +226,14 @@ async function fetchAllTodos(startDate, setMoimData) {
 
   try {
     const response = await axios.get(
-      `https://api.moim.today/api/todos?startDate=${startDate}&months=12`,
+      `https://api.moim.today/api/todos?requestDate=${startDate}&months=12`,
       {
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
-    setMoimData(response.data.data);
+    setTodoData(response.data.data);
   } catch (error) {
     console.error("Error fetching events:", error);
   }
@@ -344,33 +344,39 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
           TODO 추가하기
         </button>
         <div className="mt-8"></div>
-        {todoData.map((moim) => (
-          <Accordion key={moim.moimId} className="w-72">
-            <Accordion.Panel>
-              <Accordion.Title className="font-Pretendard_SemiBold text-[16px]">
-                {moim.moimTitle}
-              </Accordion.Title>
-              <Accordion.Content>
-                {moim.todoResponses.map((todo, todoIndex) => {
-                  const isLastTodo =
-                    todoIndex === moim.todoResponses.length - 1;
-                  return (
-                    <div
-                      key={todo.todoId}
-                      className={`flex items-center gap-2 ${isLastTodo ? "" : " mb-4"
-                        }`}
-                    >
-                      <Checkbox
-                        onChange={() => handleTodoCheckboxClick(todo)}
-                      />
-                      <Label className="font-Pretendard_Medium">{todo.contents}</Label>
-                    </div>
-                  );
-                })}
-              </Accordion.Content>
-            </Accordion.Panel>
-          </Accordion>
-        ))}
+        
+        {
+          todoData && todoData.map((moim) => (
+            <Accordion key={moim.moimId} className="w-72">
+              <Accordion.Panel>
+                <Accordion.Title className="font-Pretendard_SemiBold text-[16px]">
+                  {moim.moimTitle}
+                </Accordion.Title>
+                <Accordion.Content>
+                  {moim.todoGroupByDates.map((todoGroup) => (
+                    todoGroup.todoContents.map((todo, todoIndex) => {
+                      const isLastTodo = todoIndex === todoGroup.todoContents.length - 1;
+                      return (
+                        <div
+                          key={todo.todoId}
+                          className={`flex items-center gap-2 ${isLastTodo ? "" : " mb-4"
+                            }`}
+                        >
+                          <Checkbox
+                            onChange={() => handleTodoCheckboxClick(todo)}
+                            checked={todo.todoProgress === "COMPLETED"}
+                          />
+                          <Label className="font-Pretendard_Medium">{todo.contents}</Label>
+                        </div>
+                      );
+                    })
+                  ))}
+                </Accordion.Content>
+              </Accordion.Panel>
+            </Accordion>
+          ))
+        }
+
       </div>
     </aside>
   );
