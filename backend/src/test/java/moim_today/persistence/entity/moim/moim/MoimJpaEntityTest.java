@@ -5,7 +5,6 @@ import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.MoimUpdateRequest;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,15 +13,10 @@ import java.time.LocalDateTime;
 
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
-import static moim_today.global.constant.exception.MoimExceptionConstant.*;
 import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_DATE_TIME_BAD_REQUEST_ERROR;
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_HOST_ERROR;
-import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
+import static moim_today.global.constant.exception.MoimExceptionConstant.*;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 
 class MoimJpaEntityTest {
 
@@ -370,11 +364,11 @@ class MoimJpaEntityTest {
     void validateMoimNotEnd() {
         // given
         MoimJpaEntity notEndMoim = MoimJpaEntity.builder()
-                .endDate(LocalDate.of(2024, 5, 25))
+                .endDate(LocalDate.of(2024, 5, 26))
                 .build();
 
         MoimJpaEntity endMoim = MoimJpaEntity.builder()
-                .endDate(LocalDate.of(2024, 5, 28))
+                .endDate(LocalDate.of(2024, 5, 25))
                 .build();
 
         LocalDate curDate = LocalDate.of(2024, 5, 26);

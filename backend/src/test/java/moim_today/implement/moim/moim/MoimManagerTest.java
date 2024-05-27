@@ -36,7 +36,7 @@ class MoimManagerTest extends ImplementTest {
 
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
                 .capacity(MOIM_MAXIMUM_PEOPLE)
-                .endDate(LocalDate.of(2024,5,27))
+                .endDate(LocalDate.of(2024,6,30))
                 .memberId(MEMBER_ID.longValue())
                 .build();
 
@@ -48,7 +48,7 @@ class MoimManagerTest extends ImplementTest {
             final long memberId = i + 1;
             executorService.submit(() -> {
                 try {
-                    moimManager.appendMemberToMoim(memberId, savedMoimId, LocalDate.of(2024,6,30));
+                    moimManager.appendMemberToMoim(memberId, savedMoimId, LocalDate.of(2024,5,27));
                 } finally {
                     latch.countDown();
                 }

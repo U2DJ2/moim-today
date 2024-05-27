@@ -97,8 +97,8 @@ public class MoimJpaEntity extends BaseTimeEntity {
         }
     }
 
-    public void validateMoimNotEnd(LocalDate curDate){
-        if(this.endDate.isAfter(curDate)){
+    public void validateMoimNotEnd(final LocalDate curDate){
+        if(endDate.isBefore(curDate)){
             throw new BadRequestException(MOIM_AFTER_END_ERROR.message());
         }
     }

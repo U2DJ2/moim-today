@@ -38,7 +38,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/departments",
                         "/api/request-departments",
                         "/api/moims/categories",
-                        "/api/admin/login"
+                        "/api/admin/login",
+                        "/api/initiation"
                 );
     }
 
