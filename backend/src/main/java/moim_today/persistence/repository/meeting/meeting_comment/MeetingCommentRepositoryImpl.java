@@ -5,6 +5,7 @@ import moim_today.dto.meeting.meeting_comment.MeetingCommentResponse;
 import moim_today.dto.meeting.meeting_comment.QMeetingCommentResponse;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.meeting.meeting_comment.MeetingCommentJpaEntity;
+import moim_today.persistence.entity.meeting.meeting_comment.QMeetingCommentJpaEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -53,13 +54,15 @@ public class MeetingCommentRepositoryImpl implements MeetingCommentRepository {
 
     @Override
     public List<MeetingCommentResponse> findAllByMeetingId(final long meetingId) {
-        return queryFactory.select(new QMeetingCommentResponse(
-                        meetingCommentJpaEntity.id,
-                        memberJpaEntity.username,
-                        memberJpaEntity.memberProfileImageUrl,
-                        meetingCommentJpaEntity.contents,
-                        meetingCommentJpaEntity.createdAt
-                ))
+        return queryFactory.select(
+                        new QMeetingCommentResponse(
+                                meetingCommentJpaEntity.memberId,
+                                meetingCommentJpaEntity.id,
+                                memberJpaEntity.username,
+                                memberJpaEntity.memberProfileImageUrl,
+                                meetingCommentJpaEntity.contents,
+                                meetingCommentJpaEntity.createdAt
+                        ))
                 .from(meetingCommentJpaEntity)
                 .join(memberJpaEntity).on(meetingCommentJpaEntity.memberId.eq(memberJpaEntity.id))
                 .where(meetingCommentJpaEntity.meetingId.eq(meetingId))
