@@ -14,6 +14,7 @@ export default {
         scarlet: "#FF2440",
         white: "#ffffff",
         black: "#000000",
+        crimson: "rgba(255, 36, 64, 0.5)",
       },
       fontFamily: {
         Praise: ["Praise"],

@@ -10,7 +10,7 @@ function CommentContainer() {
           onChange={(e) => setComment(e.target.value)}
           value={comment}
         />
-        <button></button>
+        <button className="text-white bg-crimson">REPLY</button>
       </div>
     </div>
   );

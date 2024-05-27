@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GET } from "../../utils/axios";
+import { GET, POST } from "../../utils/axios";
 import { useParams } from "react-router";
 import alarm from "../../assets/svg/Alarmclock_duotone-1.svg";
 import pin from "../../assets/svg/Pin_duotone.svg";
@@ -10,21 +10,43 @@ import CardBtn from "../MoimJoinPage/CardComponent/CardBtn";
 function MettingDetailPage() {
   const [meetingInfo, setMeetingInfo] = useState([]);
   const [comment, setComment] = useState("");
+  const [commentList, setCommentList] = useState([]);
+  const [commentNum, setCommentNum] = useState();
   const { meetingId } = useParams();
 
   const getMeetingInfo = async () => {
     try {
       const result = await GET(`api/meetings/detail/${meetingId}`);
-      console.log(result);
       setMeetingInfo(result);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getComments = async () => {
+    try {
+      const result = await GET(`api/meeting-comments/${meetingId}`);
+      setCommentNum(result.count);
+      setCommentList(result.meetingCommentResponses);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const CommentClicker = async () => {
+    const data = {
+      meetingId: meetingId,
+      contents: comment,
+    };
+    try {
+      const result = await POST("api/meeting-comments", data);
+      await getComments();
     } catch (e) {
       console.log(e);
     }
   };
   useEffect(() => {
     getMeetingInfo();
-    console.log("h");
-    console.log(meetingInfo.members);
+    getComments();
   }, []);
 
   const ContentSection = ({ image, indexName, children }) => (
@@ -70,15 +92,43 @@ function MettingDetailPage() {
           </div>
         </div>
         <hr />
-        <ContentIndex image={content} indexName={"댓글"} />
-        <div className="border">
+        <ContentIndex image={content} indexName={"댓글"} number={commentNum} />
+        <div className="flex gap-8 ">
           <textarea
-            className="w-1/2 flex items-center rounded-lg h-20 text-black text-sm placeholder:text-darkgray placeholder:justify-center focus:outline-none resize-none overflow-hidden"
+            className="w-1/2 flex items-center rounded-lg h-20 text-black text-sm border px-6 py-3 border-crimson font-Pretendard_Light placeholder:text-darkgray placeholder:justify-center focus:outline-none resize-none overflow-hidden"
             placeholder="댓글 작성하기"
             onChange={(e) => setComment(e.target.value)}
             value={comment}
           />
+          <button
+            className="text-white font-Pretendard_SemiBold bg-crimson rounded-lg w-24 h-12"
+            onClick={CommentClicker}
+          >
+            REPLY
+          </button>
         </div>
+        {Array.isArray(commentList) && commentList.length != 0 ? (
+          commentList.map((comment, index) => {
+            return (
+              <div key={index} className="flex gap-2">
+                <div className="grid justify-items-center">
+                  <img src={comment.imageUrl} className=" w-5 h-5" />
+                  <p className=" font-Pretendard_Light text-slate-500 text-sm">
+                    {comment.username}
+                  </p>
+                </div>
+
+                <div className=" font-Pretendard_Medium">
+                  {comment.contents}
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <p className=" font-Pretendard_Light text-slate-500">
+            작성된 댓글이 없습니다.
+          </p>
+        )}
       </div>
     </div>
   );
