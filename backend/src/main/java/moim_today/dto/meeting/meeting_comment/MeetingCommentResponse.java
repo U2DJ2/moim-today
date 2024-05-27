@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Builder
 public record MeetingCommentResponse(
+        long memberId,
         long meetingCommentId,
         String username,
         String imageUrl,

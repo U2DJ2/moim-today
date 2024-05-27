@@ -2,12 +2,8 @@ package moim_today.presentation.meeting.meeting_comment;
 
 import moim_today.application.meeting.meeting_comment.MeetingCommentService;
 import moim_today.domain.member.MemberSession;
-import moim_today.dto.meeting.meeting_comment.MeetingCommentCreateRequest;
-import moim_today.dto.meeting.meeting_comment.MeetingCommentDeleteRequest;
-import moim_today.dto.meeting.meeting_comment.MeetingCommentResponse;
-import moim_today.dto.meeting.meeting_comment.MeetingCommentUpdateRequest;
+import moim_today.dto.meeting.meeting_comment.*;
 import moim_today.global.annotation.Login;
-import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,9 +25,12 @@ public class MeetingCommentController {
     }
 
     @GetMapping("/{meetingId}")
-    public CollectionResponse<List<MeetingCommentResponse>> findAllByMeetingId(@Login final MemberSession memberSession,
-                                                                               @PathVariable final long meetingId) {
-        return CollectionResponse.from(meetingCommentService.findAllByMeetingId(memberSession.id(), meetingId));
+    public MeetingCommentCollectionResponse findAllByMeetingId(@Login final MemberSession memberSession,
+                                                               @PathVariable final long meetingId) {
+        List<MeetingCommentResponse> meetingCommentResponses =
+                meetingCommentService.findAllByMeetingId(memberSession.id(), meetingId);
+
+        return MeetingCommentCollectionResponse.from(meetingCommentResponses);
     }
 
     @PatchMapping

@@ -95,11 +95,13 @@ class MeetingCommentControllerTest extends ControllerTest {
                                 .tag("미팅 댓글")
                                 .summary("미팅 댓글 목록 조회")
                                 .responseFields(
-                                        fieldWithPath("data[0].meetingCommentId").type(NUMBER).description("댓글 Id"),
-                                        fieldWithPath("data[0].username").type(STRING).description("작성자"),
-                                        fieldWithPath("data[0].imageUrl").type(STRING).description("작성자 프로필 사진 Url"),
-                                        fieldWithPath("data[0].contents").type(STRING).description("댓글 내용"),
-                                        fieldWithPath("data[0].createdAt").type(STRING).description("생성 일자")
+                                        fieldWithPath("count").type(NUMBER).description("댓글 개수"),
+                                        fieldWithPath("meetingCommentResponses[0].memberId").type(NUMBER).description("회원 Id"),
+                                        fieldWithPath("meetingCommentResponses[0].meetingCommentId").type(NUMBER).description("댓글 Id"),
+                                        fieldWithPath("meetingCommentResponses[0].username").type(STRING).description("작성자"),
+                                        fieldWithPath("meetingCommentResponses[0].imageUrl").type(STRING).description("작성자 프로필 사진 Url"),
+                                        fieldWithPath("meetingCommentResponses[0].contents").type(STRING).description("댓글 내용"),
+                                        fieldWithPath("meetingCommentResponses[0].createdAt").type(STRING).description("생성 일자")
                                         )
                                 .build()
                         )));
