@@ -6,6 +6,7 @@ import pin from "../../assets/svg/Pin_duotone.svg";
 import user from "../../assets/svg/User_duotone.svg";
 import content from "../../assets/svg/comment_duotone.svg";
 import ContentIndex from "./ContentIndex";
+import CardBtn from "../MoimJoinPage/CardComponent/CardBtn";
 function MettingDetailPage() {
   const [meetingInfo, setMeetingInfo] = useState([]);
   const [comment, setComment] = useState("");
@@ -39,6 +40,7 @@ function MettingDetailPage() {
           <button className=" w-fit text-base font-light bg-scarlet text-white font-Roboto_Flex rounded-full px-3">
             참여중
           </button>
+
           <div className=" font-Pretendard_Black text-4xl">
             {meetingInfo.agenda}
           </div>
@@ -75,7 +77,7 @@ function MettingDetailPage() {
             placeholder="댓글 작성하기"
             onChange={(e) => setComment(e.target.value)}
             value={comment}
-          />{" "}
+          />
         </div>
       </div>
     </div>
