@@ -28,4 +28,11 @@ public class DepartmentJpaEntity extends BaseTimeEntity {
         this.universityId = universityId;
         this.departmentName = departmentName;
     }
+
+    public static DepartmentJpaEntity toEntity(final long universityId, final String departmentName) {
+        return DepartmentJpaEntity.builder()
+                .universityId(universityId)
+                .departmentName(departmentName)
+                .build();
+    }
 }

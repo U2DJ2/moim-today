@@ -42,6 +42,11 @@ public class RequestDepartmentRepositoryImpl implements RequestDepartmentReposit
     }
 
     @Override
+    public void deleteById(final long requestDepartmentId) {
+        requestDepartmentJpaRepository.deleteById(requestDepartmentId);
+    }
+
+    @Override
     public long count() {
         return requestDepartmentJpaRepository.count();
     }

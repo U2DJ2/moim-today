@@ -8,10 +8,7 @@ import moim_today.persistence.entity.university.UniversityJpaEntity;
 import moim_today.persistence.repository.department.department.DepartmentRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static moim_today.global.constant.DepartmentConstant.DEPARTMENT_UPDATE_BATCH_SIZE;
 
@@ -60,6 +57,17 @@ public class DepartmentAppender {
         List<UniversityJpaEntity> universityIdAndDepartments = universityFinder
                 .findUniversitiesByName(universityAndDepartments.keySet().stream().toList());
         return Department.toEntities(universityAndDepartments, universityIdAndDepartments);
+    }
+
+    @Transactional
+    public void addDepartment(final long universityId, final String requestDepartmentName) {
+        Optional<DepartmentJpaEntity> optionalDepartmentJpaEntity =
+                departmentRepository.findByUniversityIdAndDepartmentName(universityId, requestDepartmentName);
+
+        if (optionalDepartmentJpaEntity.isEmpty()) {
+            DepartmentJpaEntity departmentJpaEntity = DepartmentJpaEntity.toEntity(universityId, requestDepartmentName);
+            departmentRepository.save(departmentJpaEntity);
+        }
     }
 
     private int getTotalMapSize(final Map<String, Set<String>> mapWithSet){

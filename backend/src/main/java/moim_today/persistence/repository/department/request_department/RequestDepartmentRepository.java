@@ -12,5 +12,7 @@ public interface RequestDepartmentRepository {
 
     void save(final RequestDepartmentJpaEntity requestDepartmentJpaEntity);
 
+    void deleteById(final long requestDepartmentId);
+
     long count();
 }
