@@ -1,15 +1,14 @@
 package moim_today.persistence.repository.member;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import moim_today.dto.member.MemberProfileResponse;
-import moim_today.dto.member.MemberSimpleResponse;
-import moim_today.dto.member.QMemberProfileResponse;
-import moim_today.dto.member.QMemberSimpleResponse;
+import moim_today.dto.member.*;
 import moim_today.dto.moim.moim.MoimMemberResponse;
 import moim_today.dto.moim.moim.QMoimMemberResponse;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
+import moim_today.persistence.entity.university.UniversityJpaEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -116,5 +115,43 @@ public class MemberRepositoryImpl implements MemberRepository {
                 .join(moimJpaEntity).on(moimJpaEntity.id.eq(moimId).and(moimJpaEntity.memberId.eq(memberJpaEntity.id)))
                 .stream().findAny()
                 .orElseThrow(() -> new NotFoundException(HOST_NOT_FOUND_ERROR.message()));
+    }
+
+    @Override
+    public List<MemberResponse> findByUniversityIdAndDepartmentId(final long universityId, final long departmentId) {
+        return queryFactory.select(
+                        new QMemberResponse(
+                                memberJpaEntity.id,
+                                universityJpaEntity.universityName,
+                                departmentJpaEntity.departmentName,
+                                memberJpaEntity.email,
+                                memberJpaEntity.username,
+                                memberJpaEntity.studentId,
+                                memberJpaEntity.birthDate,
+                                memberJpaEntity.gender,
+                                memberJpaEntity.memberProfileImageUrl
+                        ))
+                .from(memberJpaEntity)
+                .join(universityJpaEntity).on(memberJpaEntity.universityId.eq(universityJpaEntity.id))
+                .join(departmentJpaEntity).on(memberJpaEntity.departmentId.eq(departmentJpaEntity.id))
+                .where(
+                        universityFilter(universityId),
+                        departmentFilter(departmentId)
+                )
+                .fetch();
+    }
+
+    private BooleanExpression universityFilter(final long universityId) {
+        if(universityId == 0) {
+            return null;
+        }
+        return memberJpaEntity.universityId.eq(universityId);
+    }
+
+    private BooleanExpression departmentFilter(final long departmentId) {
+        if(departmentId == 0) {
+            return null;
+        }
+        return memberJpaEntity.departmentId.eq(departmentId);
     }
 }

@@ -37,7 +37,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/departments/university-id",
                         "/api/departments",
                         "/api/request-departments",
-                        "/api/moims/categories"
+                        "/api/moims/categories",
+                        "/api/admin/login"
                 );
     }
 
