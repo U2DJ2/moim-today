@@ -38,6 +38,7 @@ public enum TestConstant {
 
     // 학과
     DEPARTMENT_ID("9369"),
+    REQUEST_DEPARTMENT_ID("1"),
     DEPARTMENT_NAME("departmentName"),
 
     // 회원

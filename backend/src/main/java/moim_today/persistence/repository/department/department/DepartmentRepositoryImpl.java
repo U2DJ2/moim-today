@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import static moim_today.global.constant.exception.DepartmentExceptionConstant.DEPARTMENT_NOT_FOUND_ERROR;
 
@@ -59,8 +60,19 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
+    public long count() {
+        return departmentJpaRepository.count();
+    }
+
+    @Override
     public DepartmentJpaEntity getById(final long departmentId) {
         return departmentJpaRepository.findById(departmentId)
                 .orElseThrow(() -> new NotFoundException(DEPARTMENT_NOT_FOUND_ERROR.message()));
+    }
+
+    @Override
+    public Optional<DepartmentJpaEntity> findByUniversityIdAndDepartmentName(final long universityId,
+                                                                             final String departmentName) {
+        return departmentJpaRepository.findByUniversityIdAndDepartmentName(universityId, departmentName);
     }
 }
