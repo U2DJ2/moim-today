@@ -14,10 +14,12 @@ import java.time.LocalDateTime;
 
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
+import static moim_today.global.constant.exception.MoimExceptionConstant.*;
 import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_DATE_TIME_BAD_REQUEST_ERROR;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_HOST_ERROR;
 import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -26,7 +28,7 @@ class MoimJpaEntityTest {
 
     @DisplayName("회원 id가 호스트 id와 일치하면 검증에 성공한다.")
     @Test
-    void validateMemberTest(){
+    void validateMemberTest() {
         //given
         long memberId = Long.parseLong(MEMBER_ID.value());
 
@@ -41,7 +43,7 @@ class MoimJpaEntityTest {
 
     @DisplayName("회원 id가 호스트 id와 일치하지 않으면 검증에 에러가 발생한다")
     @Test
-    void validateMemberThrowsExceptionTest(){
+    void validateMemberThrowsExceptionTest() {
         //given
         long memberId = Long.parseLong(MEMBER_ID.value());
         long forbiddenMemberId = Long.parseLong(MEMBER_ID.value()) + 1L;
@@ -177,7 +179,7 @@ class MoimJpaEntityTest {
 
     @DisplayName("수정시 공개 여부가 PUBLIC이라면 default password가 설정된다.")
     @Test
-    void updateMoimDisplayStatusPublicTest(){
+    void updateMoimDisplayStatusPublicTest() {
 
         //given
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
@@ -215,7 +217,7 @@ class MoimJpaEntityTest {
 
     @DisplayName("수정시 공개 여부가 PRIVATE이라면 입력한 password가 설정된다.")
     @Test
-    void updateMoimDisplayStatusPrivateTest(){
+    void updateMoimDisplayStatusPrivateTest() {
 
         //given
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
@@ -254,7 +256,7 @@ class MoimJpaEntityTest {
 
     @DisplayName("수정시 imageUrl값이 없다면 default imageURL 값이 들어간다.")
     @Test
-    void updateMoimImageUrlIsNullTest(){
+    void updateMoimImageUrlIsNullTest() {
 
         //given
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
@@ -292,7 +294,7 @@ class MoimJpaEntityTest {
 
     @DisplayName("수정시 imageUrl값이 있다면 값이 그대로 들어간다.")
     @Test
-    void updateMoimImageUrlIsNotNullTest(){
+    void updateMoimImageUrlIsNotNullTest() {
 
         //given
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
@@ -331,7 +333,7 @@ class MoimJpaEntityTest {
 
     @DisplayName("조회수를 1 올린다.")
     @Test
-    void updateViewsTest(){
+    void updateViewsTest() {
         //given
         MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
                 .views(0)
@@ -361,5 +363,26 @@ class MoimJpaEntityTest {
         // expected
         assertThat(vacancyMoim.checkVacancy()).isTrue();
         assertThat(noVacancyMoim.checkVacancy()).isFalse();
+    }
+
+    @DisplayName("끝난 모임이면 에러를 발생시킨다")
+    @Test
+    void validateMoimNotEnd() {
+        // given
+        MoimJpaEntity notEndMoim = MoimJpaEntity.builder()
+                .endDate(LocalDate.of(2024, 5, 25))
+                .build();
+
+        MoimJpaEntity endMoim = MoimJpaEntity.builder()
+                .endDate(LocalDate.of(2024, 5, 28))
+                .build();
+
+        LocalDate curDate = LocalDate.of(2024, 5, 26);
+
+        // expected
+        assertThatCode(() -> notEndMoim.validateMoimNotEnd(curDate)).doesNotThrowAnyException();
+        assertThatThrownBy(() -> endMoim.validateMoimNotEnd(curDate))
+                .hasMessage(MOIM_AFTER_END_ERROR.message())
+                .isInstanceOf(BadRequestException.class);
     }
 }

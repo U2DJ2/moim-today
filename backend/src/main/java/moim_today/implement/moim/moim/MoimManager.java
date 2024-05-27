@@ -76,13 +76,15 @@ public class MoimManager {
     }
 
     @Transactional
-    public void appendMemberToMoim(final long requestMemberId, final long moimId) {
+    public void appendMemberToMoim(final long requestMemberId, final long moimId, final LocalDate curDate) {
         MoimJpaEntity enterMoimEntity = moimFinder.getByIdWithPessimisticLock(moimId);
+        enterMoimEntity.validateMoimNotEnd(curDate);
         moimFinder.validateCapacity(enterMoimEntity);
         joinedMoimFinder.validateMemberNotInMoim(moimId, requestMemberId);
-        moimUpdater.updateMoimCurrentCount(moimId, PLUS_ONE.value());
 
+        moimUpdater.updateMoimCurrentCount(moimId, PLUS_ONE.value());
         joinedMoimAppender.createJoinedMoim(requestMemberId, moimId);
+
         List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId);
         meetingIds.forEach(meetingId -> joinedMeetingAppender.saveJoinedMeeting(moimId, meetingId));
     }

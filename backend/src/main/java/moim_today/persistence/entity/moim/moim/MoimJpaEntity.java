@@ -19,7 +19,7 @@ import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
 import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_DATE_TIME_BAD_REQUEST_ERROR;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_HOST_ERROR;
 import static moim_today.global.constant.NumberConstant.VIEW_COUNT_OF_ONE;
-import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
+import static moim_today.global.constant.exception.MoimExceptionConstant.*;
 
 @Getter
 @Table(name = "moim")
@@ -94,6 +94,12 @@ public class MoimJpaEntity extends BaseTimeEntity {
     public void validateNotHostMember(final long requestMemberId) {
         if (this.memberId == requestMemberId) {
             throw new ForbiddenException(MOIM_HOST_ERROR.message());
+        }
+    }
+
+    public void validateMoimNotEnd(LocalDate curDate){
+        if(this.endDate.isAfter(curDate)){
+            throw new BadRequestException(MOIM_AFTER_END_ERROR.message());
         }
     }
 
