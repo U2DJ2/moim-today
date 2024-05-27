@@ -516,6 +516,32 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
+    @DisplayName("끝난 모임이어서 참여에 실패")
+    @Test
+    void appendMoimMemberEndedMoimFailTest() throws Exception {
+        MoimJoinRequest moimJoinRequest = MoimJoinRequest.builder()
+                .moimId(MOIM_ID.longValue() + 4L)
+                .build();
+
+        mockMvc.perform(post("/api/moims/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimJoinRequest)))
+                .andExpect(status().isBadRequest())
+                .andDo(document("끝난 모임이어서 참여에 실패",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("멤버가 모임에 참여")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("참여할 모임 ID")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
+                                        fieldWithPath("message").type(STRING).description("오류 메세지")
+                                )
+                                .build()
+                        )));
+    }
+
     @DisplayName("모임 공지를 생성한다.")
     @Test
     void createMoimNoticeTest() throws Exception {

@@ -134,6 +134,7 @@ public class FakeMoimService implements MoimService {
         // MOIM_ID + 1 , 모임에 이미 참여한 멤버, 실패
         // MOIM_ID + 2 , 없는 모임, 실패
         // MOIM_ID + 3 , 모임 정원이 가득 참, 실패
+        // MOIM_ID + 4 , 끝난 모임이어서, 실패
         if(moimJoinRequest.moimId() == MOIM_ID.longValue() + 1L){
             throw new BadRequestException(MEMBER_ALREADY_JOINED.message());
         }
@@ -142,6 +143,9 @@ public class FakeMoimService implements MoimService {
         }
         else if(moimJoinRequest.moimId() == MOIM_ID.longValue() + 3L){
             throw new BadRequestException(MOIM_CAPACITY_ERROR.message());
+        }
+        else if(moimJoinRequest.moimId() == MOIM_ID.longValue() + 4L){
+            throw new BadRequestException(MOIM_AFTER_END_ERROR.message());
         }
     }
 
