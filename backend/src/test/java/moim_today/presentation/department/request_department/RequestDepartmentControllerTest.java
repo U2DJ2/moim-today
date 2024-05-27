@@ -3,8 +3,10 @@ package moim_today.presentation.department.request_department;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.department.request_department.RequestDepartmentService;
 import moim_today.dto.department.AddDepartmentRequest;
+import moim_today.dto.department.ApproveRequestDepartmentRequest;
 import moim_today.fake_class.department.request_department.FakeRequestDepartmentService;
 import moim_today.util.ControllerTest;
+import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +43,37 @@ class RequestDepartmentControllerTest extends ControllerTest {
                                 .responseFields(
                                         fieldWithPath("data[0].requestDepartmentId").type(NUMBER).description("학과 추가 요청 id"),
                                         fieldWithPath("data[0].universityId").type(NUMBER).description("대학교 id"),
-                                        fieldWithPath("data[0].requestDepartmentName").type(STRING).description("추가 요청 학교명")
+                                        fieldWithPath("data[0].requestDepartmentName").type(STRING).description("추가 요청 학과명")
+                                )
+                                .build())
+                ));
+    }
+
+    @DisplayName("학과 추가 요청을 승인한다")
+    @Test
+    void approveRequest() throws Exception {
+        ApproveRequestDepartmentRequest approveRequestDepartmentRequest = ApproveRequestDepartmentRequest.builder()
+                .requestDepartmentId(REQUEST_DEPARTMENT_ID.longValue())
+                .universityId(UNIV_ID.longValue())
+                .requestDepartmentName(DEPARTMENT_NAME.value())
+                .build();
+
+        String json = objectMapper.writeValueAsString(approveRequestDepartmentRequest);
+
+        mockMvc.perform(
+                        post("/api/admin/request-departments")
+                                .contentType(APPLICATION_JSON)
+                                .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("학과 정보 추가를 요청한다.",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("학과")
+                                .summary("학과 정보 추가 요청")
+                                .requestFields(
+                                        fieldWithPath("requestDepartmentId").type(NUMBER).description("학과 추가 요청 id"),
+                                        fieldWithPath("universityId").type(NUMBER).description("대학교 id"),
+                                        fieldWithPath("requestDepartmentName").type(STRING).description("추가 요청 학과명")
                                 )
                                 .build())
                 ));

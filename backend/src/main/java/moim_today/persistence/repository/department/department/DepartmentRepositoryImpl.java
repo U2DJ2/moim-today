@@ -60,6 +60,11 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
+    public long count() {
+        return departmentJpaRepository.count();
+    }
+
+    @Override
     public DepartmentJpaEntity getById(final long departmentId) {
         return departmentJpaRepository.findById(departmentId)
                 .orElseThrow(() -> new NotFoundException(DEPARTMENT_NOT_FOUND_ERROR.message()));

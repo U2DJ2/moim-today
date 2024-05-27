@@ -17,4 +17,6 @@ public interface DepartmentRepository {
     List<DepartmentResponse> findAllDepartmentOfUniversity(final long universityId);
 
     void batchUpdate(List<DepartmentJpaEntity> departmentJpaEntities);
+
+    long count();
 }
