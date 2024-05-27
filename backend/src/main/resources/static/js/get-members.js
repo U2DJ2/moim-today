@@ -17,7 +17,9 @@ function handleFormSubmit(e) {
         return;
     }
 
-    fetch(`/api/admin/members?universityId=${universityId}&departmentId=${departmentId}`)
+    fetch(`/api/admin/members?universityId=${universityId}&departmentId=${departmentId}`, {
+        credentials: 'include'
+    })
         .then(response => response.json())
         .then(data => {
             const members = data.data;

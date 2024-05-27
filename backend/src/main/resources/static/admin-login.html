@@ -62,6 +62,9 @@
                     password: $('#password').val(),
                     isKeepLogin: $('#isKeepLogin').is(':checked')
                 }),
+                xhrFields: {
+                    withCredentials: true
+                },
                 success: function(response, status, xhr) {
                     if (xhr.status === 200) {
                         window.location.href = 'member-management.html';

@@ -2,6 +2,9 @@ $(document).ready(function() {
     $.ajax({
         url: '/api/admin/validate',
         type: 'POST',
+        xhrFields: {
+            withCredentials: true
+        },
         success: function(response) {
             if (response === true) {
                 // 관리자 권한이 있는 경우, 페이지를 그대로 표시
