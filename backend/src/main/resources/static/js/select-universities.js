@@ -3,7 +3,9 @@ $(document).ready(function () {
 });
 
 function loadUniversities() {
-    fetch('/api/universities')
+    fetch('/api/universities', {
+        credentials: 'include'
+    })
         .then(response => response.json())
         .then(data => {
             const universities = data.data;

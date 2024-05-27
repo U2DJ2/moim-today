@@ -9,7 +9,9 @@ function handleUniversityChange() {
     departmentSelect.append('<option value="">학과를 선택하세요</option>');
 
     if (universityId) {
-        fetch(`/api/departments/university-id?universityId=${universityId}`)
+        fetch(`/api/departments/university-id?universityId=${universityId}`, {
+            credentials: 'include'
+        })
             .then(response => response.json())
             .then(data => {
                 const departments = data.data;
