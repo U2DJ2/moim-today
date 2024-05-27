@@ -3,17 +3,22 @@ package moim_today.persistence.entity.moim.moim;
 import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.MoimUpdateRequest;
+import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
+import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_DATE_TIME_BAD_REQUEST_ERROR;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_HOST_ERROR;
 import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
@@ -82,6 +87,92 @@ class MoimJpaEntityTest {
         assertThatCode(() -> moimJpaEntity.validateNotHostMember(hostId))
                 .isInstanceOf(ForbiddenException.class)
                 .hasMessage(MOIM_HOST_ERROR.message());
+    }
+
+    @DisplayName("모임의 기간에 속하는 미팅 시간대이면 검증에 성공한다 - 시작 시간")
+    @Test
+    void validateStartDateTime() {
+        // given 1
+        LocalDate startDate = LocalDate.of(2024, 3, 4);
+        LocalDate endDate = LocalDate.of(2024, 6, 30);
+
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .startDate(startDate)
+                .endDate(endDate)
+                .build();
+
+        // given 2
+        LocalDateTime meetingStartDateTime = LocalDateTime.of(2024, 3, 4, 0, 0, 0, 0);
+        LocalDateTime meetingEndDateTime = LocalDateTime.of(2024, 3, 4, 2, 0, 0, 0);
+
+        // expected
+        assertThatCode(() -> moimJpaEntity.validateDateTime(meetingStartDateTime, meetingEndDateTime))
+                .doesNotThrowAnyException();
+    }
+
+    @DisplayName("모임의 기간에 속하는 미팅 시간대이면 검증에 성공한다 - 종료 시간")
+    @Test
+    void validateEndDateTime() {
+        // given 1
+        LocalDate startDate = LocalDate.of(2024, 3, 4);
+        LocalDate endDate = LocalDate.of(2024, 6, 30);
+
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .startDate(startDate)
+                .endDate(endDate)
+                .build();
+
+        // given 2
+        LocalDateTime meetingStartDateTime = LocalDateTime.of(2024, 6, 30, 22, 0, 0, 0);
+        LocalDateTime meetingEndDateTime = LocalDateTime.of(2024, 6, 30, 23, 59, 59, 59);
+
+        // expected
+        assertThatCode(() -> moimJpaEntity.validateDateTime(meetingStartDateTime, meetingEndDateTime))
+                .doesNotThrowAnyException();
+    }
+
+    @DisplayName("모임의 기간에 속하는 미팅 시간대가 아니면 예외가 발생한다 - 시작 시간")
+    @Test
+    void validateStartDateTimeFail() {
+        // given 1
+        LocalDate startDate = LocalDate.of(2024, 3, 4);
+        LocalDate endDate = LocalDate.of(2024, 6, 30);
+
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .startDate(startDate)
+                .endDate(endDate)
+                .build();
+
+        // given 2
+        LocalDateTime meetingStartDateTime = LocalDateTime.of(2024, 3, 3, 23, 59, 59, 59);
+        LocalDateTime meetingEndDateTime = LocalDateTime.of(2024, 3, 4, 0, 0, 0, 0);
+
+        // expected
+        assertThatThrownBy(() -> moimJpaEntity.validateDateTime(meetingStartDateTime, meetingEndDateTime))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(MEETING_DATE_TIME_BAD_REQUEST_ERROR.message());
+    }
+
+    @DisplayName("모임의 기간에 속하는 미팅 시간대가 아니면 예외가 발생한다 - 시작 시간")
+    @Test
+    void validateEndDateTimeFail() {
+        // given 1
+        LocalDate startDate = LocalDate.of(2024, 3, 4);
+        LocalDate endDate = LocalDate.of(2024, 6, 30);
+
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .startDate(startDate)
+                .endDate(endDate)
+                .build();
+
+        // given 2
+        LocalDateTime meetingStartDateTime = LocalDateTime.of(2024, 6, 30, 22, 0, 0, 0);
+        LocalDateTime meetingEndDateTime = LocalDateTime.of(2024, 7, 1, 0, 0, 0, 0);
+
+        // expected
+        assertThatThrownBy(() -> moimJpaEntity.validateDateTime(meetingStartDateTime, meetingEndDateTime))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(MEETING_DATE_TIME_BAD_REQUEST_ERROR.message());
     }
 
     @DisplayName("수정시 공개 여부가 PUBLIC이라면 default password가 설정된다.")
