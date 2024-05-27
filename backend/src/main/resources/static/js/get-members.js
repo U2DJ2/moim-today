@@ -17,7 +17,7 @@ function handleFormSubmit(e) {
         return;
     }
 
-    fetch(`/api/admin/members?universityId=${universityId}&departmentId=${departmentId}`, {
+    fetch(`http://localhost:8080/api/admin/members?universityId=${universityId}&departmentId=${departmentId}`, {
         credentials: 'include'
     })
         .then(response => response.json())

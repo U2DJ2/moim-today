@@ -54,7 +54,7 @@
         $('#loginForm').on('submit', function(event) {
             event.preventDefault();
             $.ajax({
-                url: '/api/admin/login',
+                url: 'http://localhost:8080/api/admin/login',
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
