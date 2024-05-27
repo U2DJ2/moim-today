@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import MoimContainer from "../PageContainer/MoimContainer";
 import DetailedLeft from "../DetailedLeft";
 import { fetchMoimInfo } from "../../api/moim";
 import { Outlet, useParams } from "react-router";
 import axios from "axios";
 
-function MoimLayout({ children }) {
+function MoimLayout() {
   const [writerInfo, setWriterInfo] = useState([]);
   const [moimInfo, setMoimInfo] = useState([]);
   const { MoimId } = useParams();
+  const memoMoimId = () => useMemo(() => [MoimId]);
   const fetchWriter = async () => {
     try {
       const response = await axios.get(
@@ -45,7 +46,7 @@ function MoimLayout({ children }) {
         joined={true}
       />
       <div className="flex flex-col basis-4/5 bg-white shadow-lg overflow-hidden rounded-t-3xl px-20 pb-6 gap-8 h-full">
-        <Outlet />{" "}
+        <Outlet />
       </div>
     </MoimContainer>
   );
