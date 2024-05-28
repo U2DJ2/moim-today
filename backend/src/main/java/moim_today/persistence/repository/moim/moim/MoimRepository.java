@@ -32,5 +32,7 @@ public interface MoimRepository {
 
     List<MoimSimpleResponse> searchMoimBySearchParam(final long universityId, final String searchParam);
 
-    List<MoimSimpleResponse> findAllMyMoimSimpleResponses(final long hostMemberId, final LocalDate now, final boolean ended);
+    List<MoimSimpleResponse> findEndedMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now);
+
+    List<MoimSimpleResponse> findInProgressMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now);
 }

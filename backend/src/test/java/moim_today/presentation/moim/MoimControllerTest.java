@@ -809,11 +809,11 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("회원이 참여한 모임들을 완료 여부에 따라 카드 정보로 반환한다")
+    @DisplayName("로그인한 회원이 참여한 모임들을 완료 여부에 따라 카드 정보로 반환한다")
     @Test
-    void findMyJoinedMoimSimpleResponses() throws Exception {
+    void findAllMyJoinedMoimSimpleResponse() throws Exception {
 
-        mockMvc.perform(get("/api/moims/joined")
+        mockMvc.perform(get("/api/moims/joined/simple")
                         .queryParam("ended", "false"))
                 .andExpect(status().isOk())
                 .andDo(document("자신이 참여한 모임 리스트를 완료 여부로 조회 성공",
@@ -838,19 +838,21 @@ class MoimControllerTest extends ControllerTest {
                         ));
     }
 
-    @DisplayName("회원이 호스트인 모임들을 완료 여부에 따라 카드 정보로 반환한다")
+    @DisplayName("로그인한 회원이 호스트인 모임들을 완료 여부에 따라 카드 정보로 반환한다")
     @Test
     void findAllHostMoimSimpleResponse() throws Exception {
 
-        mockMvc.perform(get("/api/moims/joined/host")
-                        .queryParam("ended", "false"))
+        mockMvc.perform(get("/api/moims/joined/simple")
+                        .queryParam("ended", "false")
+                        .queryParam("onlyHost","true"))
                 .andExpect(status().isOk())
                 .andDo(document("자신이 호스트인 모임 리스트를 완료 여부로 조회 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
                                 .summary("로그인한 회원이 호스트인 모임 리스트 자세한 정보 조회")
                                 .queryParameters(
-                                        parameterWithName("ended").description("완료된 모임을 찾을 지 여부 - [true, false]")
+                                        parameterWithName("ended").description("완료된 모임을 찾을 지 여부 - [true, false]"),
+                                        parameterWithName("onlyHost").optional().description("자신이 호스트인 모임만 찾을 지 여부 - [true, false] , default : false")
                                 )
                                 .responseFields(
                                         fieldWithPath("data[0].moimId").type(NUMBER).description("모임 Id"),

@@ -99,9 +99,11 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<MoimSimpleResponse> findAllMyMoimSimpleResponses(final long hostMemberId,
-                                                                 final LocalDate now,
-                                                                 final boolean ended) {
-        return moimRepository.findAllMyMoimSimpleResponses(hostMemberId, now, ended);
+    public List<MoimSimpleResponse> findEndedMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now) {
+        return moimRepository.findEndedMoimSimpleResponsesByMoimIds(moimIds, now);
+    }
+
+    public List<MoimSimpleResponse> findInProgressMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now) {
+        return moimRepository.findInProgressMoimSimpleResponsesByMoimIds(moimIds, now);
     }
 }
