@@ -32,7 +32,7 @@ function MoimHome({ isHost, moimId }) {
     }
   };
 
-  const cardClickHandler = () => {
+  const cardClickHandler = (noticeId) => {
     navigate(`notice/${noticeId}`);
   };
 
@@ -115,7 +115,7 @@ function MoimHome({ isHost, moimId }) {
                 title={notice.title}
                 btn={false}
                 isMeeting={false}
-                clickHandler={cardClickHandler}
+                clickHandler={() => cardClickHandler(notice.noticeId)}
               />
             ))
           ) : (

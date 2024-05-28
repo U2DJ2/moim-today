@@ -22,7 +22,9 @@ function ToDo() {
     startDate = startDate.toISOString().slice(0, 7);
 
     try {
-      const response = await axios.get(`https://api.moim.today/api/todos/moim/${MoimId}?startDate=${startDate}&months=12`);
+      const response = await axios.get(
+        `https://api.moim.today/api/todos/moim/${MoimId}?startDate=${startDate}&months=12`
+      );
       setTodoData(response.data.data);
     } catch (error) {
       console.log(error);
@@ -36,7 +38,7 @@ function ToDo() {
   const handleTodoCheckboxClick = (todo) => {
     // 체크박스 클릭 시 처리할 로직
     console.log(todo);
-  }
+  };
 
   // todo 데이터를 날짜별로 그룹화하는 함수
   const groupTodosByDate = () => {
@@ -78,13 +80,16 @@ function ToDo() {
                     {todoGroup.map((todo, todoIndex) => (
                       <div
                         key={todo.todoId}
-                        className={`flex items-center gap-2 ${todoIndex === todoGroup.length - 1 ? "" : " mb-4"
-                          }`}
+                        className={`flex items-center gap-2 ${
+                          todoIndex === todoGroup.length - 1 ? "" : " mb-4"
+                        }`}
                       >
                         <Checkbox
                           onChange={() => handleTodoCheckboxClick(todo)}
                         />
-                        <Label className="font-Pretendard_Medium">{todo.contents}</Label>
+                        <Label className="font-Pretendard_Medium">
+                          {todo.contents}
+                        </Label>
                       </div>
                     ))}
                   </div>

@@ -87,23 +87,12 @@ function MoimJoinPage() {
   const [isAlertModalOpen, setAlertModalOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [selected, setSelected] = useState(homeKey);
-  const [notices, setNotices] = useState([]);
   const [moimInfo, setMoimInfo] = useState([]);
   const [meetings, setMeetings] = useState([]);
   const [writerInfo, setWriterInfo] = useState([]);
   const [isHost, setIsHost] = useState(false);
 
   const { MoimId } = useParams();
-
-  const getNotices = async () => {
-    try {
-      const result = await fetchNotices(MoimId);
-      console.log(result);
-      setNotices(result.data.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const getInfo = async () => {
     try {
@@ -125,7 +114,6 @@ function MoimJoinPage() {
 
   useEffect(() => {
     getHost();
-    getNotices();
   }, []);
 
   return (
@@ -175,12 +163,7 @@ function MoimJoinPage() {
         </div>
       </div>
       {selected === homeKey ? (
-        <MoimHome
-          notices={notices}
-          meetings={meetings}
-          isHost={isHost}
-          moimId={MoimId}
-        />
+        <MoimHome meetings={meetings} isHost={isHost} moimId={MoimId} />
       ) : selected === availableTimeKey ? (
         <AvailableTime moimId={MoimId} />
       ) : selected === todoKey ? (
