@@ -9,7 +9,6 @@ import moim_today.dto.member.PasswordUpdateRequest;
 import moim_today.dto.member.ProfileUpdateRequest;
 import moim_today.fake_class.member.FakeMemberService;
 import moim_today.util.ControllerTest;
-import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
@@ -156,10 +155,7 @@ class MemberControllerTest extends ControllerTest {
     @Test
     void updateProfile() throws Exception {
 
-        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(
-                Long.parseLong(DEPARTMENT_ID.value()),
-                PROFILE_IMAGE_URL.value()
-        );
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(PROFILE_IMAGE_URL.value());
 
         String json = objectMapper.writeValueAsString(profileUpdateRequest);
 
@@ -173,7 +169,6 @@ class MemberControllerTest extends ControllerTest {
                                 .tag("회원")
                                 .summary("프로필 정보 수정")
                                 .requestFields(
-                                        fieldWithPath("departmentId").type(NUMBER).description("주 전공 아이디"),
                                         fieldWithPath("imageUrl").type(STRING).description("프로필 이미지 URL")
                                 )
                                 .build()

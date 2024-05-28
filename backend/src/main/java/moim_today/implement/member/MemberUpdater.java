@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-import static moim_today.global.constant.MailConstant.*;
+import static moim_today.global.constant.MailConstant.PASSWORD_CERTIFICATION_FAIL;
 
 @Implement
 public class MemberUpdater {
@@ -58,10 +58,8 @@ public class MemberUpdater {
 
     @Transactional
     public void updateProfile(final long memberId,
-                              final long universityId,
                               final ProfileUpdateRequest profileUpdateRequest) {
         MemberJpaEntity memberJpaEntity = memberRepository.getById(memberId);
-        departmentFinder.validateBelongToUniversity(universityId, profileUpdateRequest.departmentId());
         memberJpaEntity.updateProfile(profileUpdateRequest);
     }
 }

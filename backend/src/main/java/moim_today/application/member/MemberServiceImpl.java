@@ -52,9 +52,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void updateProfile(final long memberId,
-                              final long universityId,
                               final ProfileUpdateRequest profileUpdateRequest) {
-        memberUpdater.updateProfile(memberId, universityId, profileUpdateRequest);
+        memberUpdater.updateProfile(memberId, profileUpdateRequest);
     }
 
     @Override
