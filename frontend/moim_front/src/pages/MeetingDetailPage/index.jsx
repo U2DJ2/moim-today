@@ -6,6 +6,7 @@ import pin from "../../assets/svg/Pin_duotone.svg";
 import user from "../../assets/svg/User_duotone.svg";
 import content from "../../assets/svg/comment_duotone.svg";
 import ContentIndex from "./ContentIndex";
+import infoIcon from "../../assets/svg/Info_duotone_line.svg";
 import CardBtn from "../MoimJoinPage/CardComponent/CardBtn";
 function MettingDetailPage() {
   const [meetingInfo, setMeetingInfo] = useState([]);
@@ -17,6 +18,7 @@ function MettingDetailPage() {
   const getMeetingInfo = async () => {
     try {
       const result = await GET(`api/meetings/detail/${meetingId}`);
+      console.log(result);
       setMeetingInfo(result);
     } catch (e) {
       console.log(e);
@@ -44,6 +46,7 @@ function MettingDetailPage() {
       console.log(e);
     }
   };
+  const onClickHandler = () => {};
   useEffect(() => {
     getMeetingInfo();
     getComments();
@@ -59,9 +62,18 @@ function MettingDetailPage() {
     <div>
       <div className="grid gap-5">
         <div className="grid gap-2">
-          <button className=" w-fit text-base font-light bg-scarlet text-white font-Roboto_Flex rounded-full px-3">
+          <button
+            className=" w-fit text-sm font-light bg-scarlet text-white font-Pretendard_Light rounded-full px-2 py-1"
+            onClick={onClickHandler}
+          >
             참여중
           </button>
+          <div className="flex items-center">
+            <img src={infoIcon} className=" w-4 h-4" />
+            <div className=" font-Pretendard_Light text-slate-400 text-xs">
+              참여 여부를 변경하고 싶으면, 위 아이콘을 눌러주세요.
+            </div>
+          </div>
 
           <div className=" font-Pretendard_Black text-4xl">
             {meetingInfo.agenda}
