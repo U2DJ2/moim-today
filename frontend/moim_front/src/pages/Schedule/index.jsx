@@ -20,7 +20,6 @@ import DatePicker from "../../components/DatePicker/Single";
 // CSS
 import "./style.css";
 
-
 const calendarTheme = {
   root: {
     base: "relative",
@@ -215,11 +214,12 @@ const textInputTheme = {
   },
 };
 
-const labelStyle = "mt-2.5 mb-2.5 font-Pretendard_SemiBold leading-5 text-sm text-black max-md:max-w-full";
-const commonInputStyle = "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
+const labelStyle =
+  "mt-2.5 mb-2.5 font-Pretendard_SemiBold leading-5 text-sm text-black max-md:max-w-full";
+const commonInputStyle =
+  "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
 
 async function fetchAllTodos(startDate, setMoimData) {
-
   // Parse start date
   startDate = new Date(startDate);
   startDate = startDate.toISOString().slice(0, 7);
@@ -357,13 +357,16 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
                   return (
                     <div
                       key={todo.todoId}
-                      className={`flex items-center gap-2 ${isLastTodo ? "" : " mb-4"
-                        }`}
+                      className={`flex items-center gap-2 ${
+                        isLastTodo ? "" : " mb-4"
+                      }`}
                     >
                       <Checkbox
                         onChange={() => handleTodoCheckboxClick(todo)}
                       />
-                      <Label className="font-Pretendard_Medium">{todo.contents}</Label>
+                      <Label className="font-Pretendard_Medium">
+                        {todo.contents}
+                      </Label>
                     </div>
                   );
                 })}
@@ -391,14 +394,14 @@ export default function Schedule() {
   const fetchMoimList = async () => {
     try {
       const response = await axios.get(`https://api.moim.today/api/moims`);
-      setMoimList(response.data.data); // 모임 리스트를 상태에 저장
+      setMoimList(response.data.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleMoimSelect = (index) => {
-    setSelectedMoimId(moimList[index].moimId); // store the selected moim ID
+    setSelectedMoimId(moimList[index].moimId);
   };
 
   const handleMiniCalendarDateSelect = (date) => {
@@ -407,12 +410,17 @@ export default function Schedule() {
 
   const handleAddTodo = () => {
     addTodo(selectedMoimId, todoContent, todoDate);
-    setOpenAddTodoModal(false); // close the modal after adding TODO
+    setOpenAddTodoModal(false);
   };
 
   return (
     <>
-      <Modal show={openTodoAddModal} size="xl" onClose={() => setOpenAddTodoModal(false)} theme={modalTheme}>
+      <Modal
+        show={openTodoAddModal}
+        size="xl"
+        onClose={() => setOpenAddTodoModal(false)}
+        theme={modalTheme}
+      >
         <Modal.Header>TODO 추가</Modal.Header>
         <Modal.Body>
           <div className="flex w-full flex-col gap-4">
@@ -449,7 +457,9 @@ export default function Schedule() {
           <div className="pt-6 grid grid-flow-col gap-4">
             <button
               className="w-auto justify-center px-6 py-3 text-[16px] text-center text-white bg-black whitespace-nowrap rounded-full font-semibold  hover:cursor-pointer"
-              onClick={() => { setOpenAddTodoModal(false); }}
+              onClick={() => {
+                setOpenAddTodoModal(false);
+              }}
             >
               취소
             </button>

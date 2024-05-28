@@ -29,13 +29,13 @@ export default function Calendar({
   isRefresh = false,
   setIsRefresh = null,
 }) {
-  const calendarRef = useRef(null); // 1. useRef를 사용하여 ref 생성
+  const calendarRef = useRef(null);
   const today = new Date().toISOString().split("T")[0];
   const [events, setEvents] = useState([]);
   const [calendarStart, setCalendarStart] = useState(new Date());
+  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
-    const currentYear = new Date().getFullYear();
     if (isPersonal) {
       fetchAllEvents(currentYear).catch(console.error);
     } else if (isMeeting) {
@@ -57,6 +57,10 @@ export default function Calendar({
     if (setIsRefresh) {
       setIsRefresh(false);
       fetchAvailables();
+      if (isPersonal) {
+        setIsRefresh(false);
+        fetchAllEvents(currentYear);
+      }
     }
   }, [isRefresh]);
 
@@ -181,6 +185,10 @@ export default function Calendar({
     setStartDateTime(selectInfo.startStr);
     setEndDateTime(selectInfo.endStr);
 
+    const dateObject = new Date(selectInfo.startStr.match(/\d{4}/)[0], 0, 1);
+
+    setYear(dateObject);
+
     calendarApi.unselect(); // clear date selection
   }
 
@@ -193,10 +201,10 @@ export default function Calendar({
         endDateTime: info.event.end,
       };
 
-      const result = await axios.post(
-        "https://api.moim.today/api/schedules",
-        eventData
-      );
+      // const result = await axios.post(
+      //   "https://api.moim.today/api/schedules",
+      //   eventData
+      // );
 
       console.log(
         "Event added and sent to the backend:",
@@ -249,7 +257,6 @@ export default function Calendar({
           events={events}
           select={handleDateSelect}
           eventContent={renderEventContent}
-          eventAdd={handleEventAdd}
           eventChange={handleEventChange}
           eventRemove={handleEventRemove}
           datesSet={(dateInfo) => {
