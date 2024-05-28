@@ -43,7 +43,6 @@ public class MoimNoticeRepositoryImpl implements MoimNoticeRepository {
                 ))
                 .from(moimNoticeJpaEntity)
                 .where(moimNoticeJpaEntity.moimId.eq(moimId))
-                .orderBy(moimNoticeJpaEntity.createdAt.desc())
                 .fetch();
     }
 

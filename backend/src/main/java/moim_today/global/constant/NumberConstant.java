@@ -11,7 +11,6 @@ public enum NumberConstant {
     DEFAULT_MOIM_CURRENT_COUNT(0),
     DEFAULT_MOIM_VIEWS(0),
     VIEW_COUNT_OF_ONE(1),
-    DEFAULT_JOINED_MOIM_PAGE_SIZE(4),
 
     PLUS_ONE(1),
     MINUS_ONE(-1),

@@ -66,7 +66,6 @@ public class MeetingCommentRepositoryImpl implements MeetingCommentRepository {
                 .from(meetingCommentJpaEntity)
                 .join(memberJpaEntity).on(meetingCommentJpaEntity.memberId.eq(memberJpaEntity.id))
                 .where(meetingCommentJpaEntity.meetingId.eq(meetingId))
-                .orderBy(meetingCommentJpaEntity.createdAt.asc())
                 .fetch();
     }
 
