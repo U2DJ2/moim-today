@@ -12,9 +12,6 @@ public enum NumberConstant {
     DEFAULT_MOIM_VIEWS(0),
     VIEW_COUNT_OF_ONE(1),
 
-    PLUS_ONE(1),
-    MINUS_ONE(-1),
-
     SCHEDULE_MEETING_ID(0),
     SCHEDULE_MOIM_ID(0),
     SCHEDULE_COLOR_START_COUNT(0),

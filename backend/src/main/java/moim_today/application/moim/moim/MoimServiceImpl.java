@@ -23,7 +23,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static moim_today.global.constant.FileTypeConstant.MOIM_IMAGE;
-import static moim_today.global.constant.NumberConstant.PLUS_ONE;
 
 @Service
 public class MoimServiceImpl implements MoimService{
@@ -75,13 +74,11 @@ public class MoimServiceImpl implements MoimService{
         return moimFinder.findAllMyMoimResponse(memberId);
     }
 
-    @Transactional
     @Override
     public MoimIdResponse createMoim(final long memberId, final long universityId,
                            final MoimCreateRequest moimCreateRequest) {
         MoimJpaEntity moim = moimAppender.createMoim(memberId, universityId, moimCreateRequest);
         joinedMoimAppender.createJoinedMoim(memberId, moim.getId());
-        moimUpdater.updateMoimCurrentCount(moim.getId(), PLUS_ONE.value());
         return MoimIdResponse.from(moim.getId());
     }
 
@@ -134,6 +131,7 @@ public class MoimServiceImpl implements MoimService{
         return MoimMemberTabResponse.of(isHostRequest, moimMemberResponses);
     }
 
+    @Transactional
     @Override
     public void kickMember(final long requestMemberId, final MoimMemberKickRequest moimMemberKickRequest) {
         long moimId = moimMemberKickRequest.moimId();
@@ -146,6 +144,7 @@ public class MoimServiceImpl implements MoimService{
         moimManager.deleteMemberFromMoim(deleteMemberId, moimId);
     }
 
+    @Transactional
     @Override
     public void deleteMember(final long deleteMemberId, final MoimMemberDeleteRequest moimMemberDeleteRequest) {
         long moimId = moimMemberDeleteRequest.moimId();
@@ -158,7 +157,7 @@ public class MoimServiceImpl implements MoimService{
     @Override
     public void appendMemberToMoim(final long requestMemberId, final MoimJoinRequest moimJoinRequest) {
         long enterMoimId = moimJoinRequest.moimId();
-        moimManager.appendMemberToMoim(requestMemberId, enterMoimId, LocalDate.now());
+        moimManager.appendMemberToMoim(requestMemberId, enterMoimId);
     }
 
     @Override
@@ -176,12 +175,12 @@ public class MoimServiceImpl implements MoimService{
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponse(final long memberId,
-                                                                      final boolean ended,
-                                                                      final boolean onlyHost) {
-        if(onlyHost){
-            return moimManager.findAllHostMoimSimpleResponsesByEndStatus(memberId, LocalDate.now(), ended);
-        }
-        return moimManager.findAllJoinedMoimSimpleResponseByEndStatus(memberId, LocalDate.now(), ended);
+    public List<MoimSimpleResponse> findAllMyMoimSimpleResponses(final long hostMemberId, final Boolean ended) {
+        return moimManager.findAllMyMoimSimpleResponses(hostMemberId, LocalDate.now(), ended);
+    }
+
+    @Override
+    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId, final boolean ended) {
+        return moimManager.findAllMyJoinedMoimSimpleResponses(memberId, LocalDate.now(), ended);
     }
 }

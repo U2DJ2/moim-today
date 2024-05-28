@@ -382,7 +382,7 @@ class MoimControllerTest extends ControllerTest {
                 .andDo(document("모임 멤버 삭제 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
-                                .summary("모임에서 멤버가 탈퇴한다")
+                                .summary("모임에서 멤버 삭제")
                                 .requestFields(
                                         fieldWithPath("moimId").type(NUMBER).description("탈퇴할 모임 ID")
                                 )
@@ -516,32 +516,6 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("끝난 모임이어서 참여에 실패")
-    @Test
-    void appendMoimMemberEndedMoimFailTest() throws Exception {
-        MoimJoinRequest moimJoinRequest = MoimJoinRequest.builder()
-                .moimId(MOIM_ID.longValue() + 4L)
-                .build();
-
-        mockMvc.perform(post("/api/moims/members")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(moimJoinRequest)))
-                .andExpect(status().isBadRequest())
-                .andDo(document("끝난 모임이어서 참여에 실패",
-                        resource(ResourceSnippetParameters.builder()
-                                .tag("모임")
-                                .summary("멤버가 모임에 참여")
-                                .requestFields(
-                                        fieldWithPath("moimId").type(NUMBER).description("참여할 모임 ID")
-                                )
-                                .responseFields(
-                                        fieldWithPath("statusCode").type(STRING).description("상태 코드"),
-                                        fieldWithPath("message").type(STRING).description("오류 메세지")
-                                )
-                                .build()
-                        )));
-    }
-
     @DisplayName("모임 공지를 생성한다.")
     @Test
     void createMoimNoticeTest() throws Exception {
@@ -613,10 +587,7 @@ class MoimControllerTest extends ControllerTest {
                                 .responseFields(
                                         fieldWithPath("data[0].moimNoticeId").type(NUMBER).description("공지 Id"),
                                         fieldWithPath("data[0].title").type(STRING).description("공지 제목"),
-                                        fieldWithPath("data[0].year").type(NUMBER).description("년"),
-                                        fieldWithPath("data[0].month").type(NUMBER).description("월"),
-                                        fieldWithPath("data[0].day").type(NUMBER).description("일"),
-                                        fieldWithPath("data[0].dayOfWeek").type(STRING).description("요일")
+                                        fieldWithPath("data[0].createdAt").type(STRING).description("생성 일자")
                                 )
                                 .build()
                         )));
@@ -838,11 +809,11 @@ class MoimControllerTest extends ControllerTest {
                         )));
     }
 
-    @DisplayName("로그인한 회원이 참여한 모임들을 완료 여부에 따라 카드 정보로 반환한다")
+    @DisplayName("회원이 참여한 모임들을 완료 여부에 따라 카드 정보로 반환한다")
     @Test
-    void findAllMyJoinedMoimSimpleResponse() throws Exception {
+    void findMyJoinedMoimSimpleResponses() throws Exception {
 
-        mockMvc.perform(get("/api/moims/joined/simple")
+        mockMvc.perform(get("/api/moims/joined")
                         .queryParam("ended", "false"))
                 .andExpect(status().isOk())
                 .andDo(document("자신이 참여한 모임 리스트를 완료 여부로 조회 성공",
@@ -867,21 +838,19 @@ class MoimControllerTest extends ControllerTest {
                         ));
     }
 
-    @DisplayName("로그인한 회원이 호스트인 모임들을 완료 여부에 따라 카드 정보로 반환한다")
+    @DisplayName("회원이 호스트인 모임들을 완료 여부에 따라 카드 정보로 반환한다")
     @Test
     void findAllHostMoimSimpleResponse() throws Exception {
 
-        mockMvc.perform(get("/api/moims/joined/simple")
-                        .queryParam("ended", "false")
-                        .queryParam("onlyHost","true"))
+        mockMvc.perform(get("/api/moims/joined/host")
+                        .queryParam("ended", "false"))
                 .andExpect(status().isOk())
                 .andDo(document("자신이 호스트인 모임 리스트를 완료 여부로 조회 성공",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("모임")
                                 .summary("로그인한 회원이 호스트인 모임 리스트 자세한 정보 조회")
                                 .queryParameters(
-                                        parameterWithName("ended").description("완료된 모임을 찾을 지 여부 - [true, false]"),
-                                        parameterWithName("onlyHost").optional().description("자신이 호스트인 모임만 찾을 지 여부 - [true, false] , default : false")
+                                        parameterWithName("ended").description("완료된 모임을 찾을 지 여부 - [true, false]")
                                 )
                                 .responseFields(
                                         fieldWithPath("data[0].moimId").type(NUMBER).description("모임 Id"),

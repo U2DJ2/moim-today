@@ -1,5 +1,6 @@
 package moim_today.implement.moim.joined_moim;
 
+import moim_today.dto.moim.moim.MoimSimpleResponse;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static moim_today.global.constant.exception.JoinedMoimExceptionConstant.JOINED_MOIM_MEMBER_IS_EMPTY;
@@ -230,5 +232,71 @@ class JoinedMoimFinderTest extends ImplementTest {
 
         // then
         assertThat(isJoined).isFalse();
+    }
+
+    @DisplayName("내가 참여한 모임을 지난모임/진행중인 모임 별로 조회한다.")
+    @Test
+    void findAllMyJoinedMoimSimpleResponses() {
+        // given1
+        long memberId = MEMBER_ID.longValue();
+        long otherMemberId = MEMBER_ID.longValue() + 1;
+
+        MoimJpaEntity moimA = MoimJpaEntity.builder()
+                .memberId(memberId)
+                .endDate(LocalDate.of(2024,5,23))
+                .build();
+
+        // given2
+        MoimJpaEntity moimB = MoimJpaEntity.builder()
+                .memberId(memberId)
+                .endDate(LocalDate.of(2024,5,23))
+                .build();
+
+        // given3
+        MoimJpaEntity moimC = MoimJpaEntity.builder()
+                .memberId(otherMemberId)
+                .endDate(LocalDate.of(2024,5,23))
+                .build();
+
+        moimRepository.save(moimA);
+        moimRepository.save(moimB);
+        moimRepository.save(moimC);
+
+        // given4
+        JoinedMoimJpaEntity jm1 = JoinedMoimJpaEntity.builder()
+                .moimId(moimA.getId())
+                .memberId(memberId)
+                .build();
+
+        // given5
+        JoinedMoimJpaEntity jm2 = JoinedMoimJpaEntity.builder()
+                .moimId(moimB.getId())
+                .memberId(memberId)
+                .build();
+
+        // given6
+        JoinedMoimJpaEntity jm3 = JoinedMoimJpaEntity.builder()
+                .moimId(moimC.getId())
+                .memberId(memberId)
+                .build();
+
+        // given7
+        JoinedMoimJpaEntity jm4 = JoinedMoimJpaEntity.builder()
+                .moimId(moimA.getId())
+                .memberId(otherMemberId)
+                .build();
+
+        joinedMoimRepository.save(jm1);
+        joinedMoimRepository.save(jm2);
+        joinedMoimRepository.save(jm3);
+        joinedMoimRepository.save(jm4);
+
+        //when
+        List<MoimSimpleResponse> inProgressAllMyJoinedMoimSimpleResponses = joinedMoimFinder.findAllMyJoinedMoimSimpleResponses(memberId, LocalDate.of(2024, 5, 24), false);
+        List<MoimSimpleResponse> endedAllMyJoinedMoimSimpleResponses = joinedMoimFinder.findAllMyJoinedMoimSimpleResponses(memberId, LocalDate.of(2024, 5, 24), true);
+
+        //then
+        assertThat(inProgressAllMyJoinedMoimSimpleResponses.size()).isEqualTo(0);
+        assertThat(endedAllMyJoinedMoimSimpleResponses.size()).isEqualTo(3);
     }
 }
