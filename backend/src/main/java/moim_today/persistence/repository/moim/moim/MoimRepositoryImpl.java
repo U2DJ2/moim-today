@@ -100,7 +100,6 @@ public class MoimRepositoryImpl implements MoimRepository {
                 .where(moimJpaEntity.universityId.eq(universityId)
                         .and(moimJpaEntity.title.likeIgnoreCase(PERCENT.value() + searchParam.trim() + PERCENT.value()))
                 )
-                .orderBy(moimJpaEntity.views.desc())
                 .fetch();
     }
 
@@ -121,7 +120,6 @@ public class MoimRepositoryImpl implements MoimRepository {
                 .where(moimJpaEntity.memberId.eq(hostMemberId).and(
                         applyEndedFilter(now, ended)
                 ))
-                .orderBy(moimJpaEntity.createdAt.desc())
                 .fetch();
     }
 
