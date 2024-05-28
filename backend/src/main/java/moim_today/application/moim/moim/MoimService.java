@@ -35,7 +35,5 @@ public interface MoimService {
 
     List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam);
 
-    List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId, final long lastMoimId, final boolean ended);
-
-    List<MoimSimpleResponse> findAllMyMoimSimpleResponses(final long hostMemberId, final long lastMoimId, final Boolean ended);
+    List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponse(final long memberId, final boolean ended, final boolean onlyHost);
 }

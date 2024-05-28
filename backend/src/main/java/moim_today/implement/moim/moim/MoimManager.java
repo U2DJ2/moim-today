@@ -17,9 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-import static moim_today.global.constant.NumberConstant.MINUS_ONE;
-import static moim_today.global.constant.NumberConstant.PLUS_ONE;
-
 @Implement
 public class MoimManager {
 
@@ -33,7 +30,6 @@ public class MoimManager {
     private final ScheduleRemover scheduleRemover;
     private final JoinedMoimAppender joinedMoimAppender;
     private final MoimFinder moimFinder;
-    private final MoimUpdater moimUpdater;
 
     public MoimManager(final JoinedMoimFinder joinedMoimFinder,
                        final JoinedMoimRemover joinedMoimRemover,
@@ -44,8 +40,7 @@ public class MoimManager {
                        final MeetingCommentUpdater meetingCommentUpdater,
                        final ScheduleRemover scheduleRemover,
                        final JoinedMoimAppender joinedMoimAppender,
-                       final MoimFinder moimFinder,
-                       final MoimUpdater moimUpdater) {
+                       final MoimFinder moimFinder) {
         this.joinedMoimFinder = joinedMoimFinder;
         this.joinedMoimRemover = joinedMoimRemover;
         this.todoRemover = todoRemover;
@@ -56,7 +51,6 @@ public class MoimManager {
         this.scheduleRemover = scheduleRemover;
         this.joinedMoimAppender = joinedMoimAppender;
         this.moimFinder = moimFinder;
-        this.moimUpdater = moimUpdater;
     }
 
     @Transactional
@@ -65,7 +59,6 @@ public class MoimManager {
         joinedMoimFinder.validateMemberInMoim(memberId, moimId);
 
         joinedMoimRemover.deleteMoimMember(moimId, memberId);
-        moimUpdater.updateMoimCurrentCount(moimId, MINUS_ONE.value());
         todoRemover.deleteAllTodosCreatedByMemberInMoim(moimId, memberId);
 
         List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId);
@@ -76,15 +69,12 @@ public class MoimManager {
     }
 
     @Transactional
-    public void appendMemberToMoim(final long requestMemberId, final long moimId, final LocalDate curDate) {
+    public void appendMemberToMoim(final long requestMemberId, final long moimId) {
         MoimJpaEntity enterMoimEntity = moimFinder.getByIdWithPessimisticLock(moimId);
-        enterMoimEntity.validateMoimNotEnd(curDate);
         moimFinder.validateCapacity(enterMoimEntity);
         joinedMoimFinder.validateMemberNotInMoim(moimId, requestMemberId);
 
-        moimUpdater.updateMoimCurrentCount(moimId, PLUS_ONE.value());
         joinedMoimAppender.createJoinedMoim(requestMemberId, moimId);
-
         List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId);
         meetingIds.forEach(meetingId -> joinedMeetingAppender.saveJoinedMeeting(moimId, meetingId));
     }
@@ -105,18 +95,25 @@ public class MoimManager {
     }
 
     @Transactional(readOnly = true)
-    public List<MoimSimpleResponse> findAllMyMoimSimpleResponses(final long hostMemberId,
-                                                                 final long lastMoimId,
-                                                                 final LocalDate now,
-                                                                 final boolean ended) {
-        return moimFinder.findAllMyMoimSimpleResponses(hostMemberId, lastMoimId, now, ended);
+    public List<MoimSimpleResponse> findAllJoinedMoimSimpleResponseByEndStatus(final long memberId, final LocalDate now, final boolean ended) {
+        List<Long> joinedMoims = joinedMoimFinder.findMoimIdsByMemberId(memberId);
+        return getMoimSimpleResponses(joinedMoims, now, ended);
     }
 
     @Transactional(readOnly = true)
-    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId,
-                                                                       final long lastMoimId,
-                                                                       final LocalDate now,
-                                                                       final boolean ended) {
-        return joinedMoimFinder.findAllMyJoinedMoimSimpleResponses(memberId, lastMoimId, now, ended);
+    public List<MoimSimpleResponse> findAllHostMoimSimpleResponsesByEndStatus(final long hostMemberId, final LocalDate now, final boolean ended) {
+        List<Long> joinedMoims = joinedMoimFinder.findMoimIdsByMemberId(hostMemberId);
+        List<Long> hostMoims = joinedMoims.stream()
+                .filter(moimId -> moimFinder.isHost(hostMemberId, moimId))
+                .toList();
+        return getMoimSimpleResponses(hostMoims, now, ended);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MoimSimpleResponse> getMoimSimpleResponses(final List<Long> joinedMoims, final LocalDate now, final boolean ended) {
+        if (ended) {
+            return moimFinder.findEndedMoimSimpleResponsesByMoimIds(joinedMoims, now);
+        }
+        return moimFinder.findInProgressMoimSimpleResponsesByMoimIds(joinedMoims, now);
     }
 }

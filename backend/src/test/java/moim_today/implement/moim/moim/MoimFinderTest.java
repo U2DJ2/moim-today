@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static moim_today.global.constant.NumberConstant.DEFAULT_JOINED_MOIM_PAGE_SIZE;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_CAPACITY_ERROR;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_NOT_FOUND_ERROR;
 import static moim_today.util.TestConstant.*;
@@ -607,101 +606,78 @@ class MoimFinderTest extends ImplementTest {
         assertThat(applemangoResponses.size()).isEqualTo(1);
     }
 
-    @DisplayName("내가 생성한 모임 지난모임/진행중인모임 별로 전부 조회한다.")
+    @DisplayName("모임들 중 완료된 모임을 반환한다.")
     @Test
-    void findAllMyMoimSimpleResponses() {
-        // given1
-        long lastMoimId = 0;
-        long memberId = MEMBER_ID.longValue();
-        long otherMemberId = MEMBER_ID.longValue() + 1;
+    void findEndedMoimSimpleResponsesByMoimIds() {
+        MemberJpaEntity saveMember = saveRandomMember();
 
-        MoimJpaEntity moimA = MoimJpaEntity.builder()
-                .memberId(memberId)
-                .endDate(LocalDate.of(2024,5,23))
+        LocalDate localDate1 = LocalDate.of(2023, 5, 12);
+        LocalDate localDate2 = LocalDate.of(2024, 5, 16);
+        LocalDate localDate3 = LocalDate.of(2025, 6, 5);
+
+        MoimJpaEntity moimJpaEntity1 = MoimJpaEntity.builder()
+                .memberId(saveMember.getId())
+                .endDate(localDate1)
+                .build();
+        MoimJpaEntity moimJpaEntity2 = MoimJpaEntity.builder()
+                .memberId(saveMember.getId())
+                .endDate(localDate2)
+                .build();
+        MoimJpaEntity moimJpaEntity3 = MoimJpaEntity.builder()
+                .memberId(saveMember.getId())
+                .endDate(localDate3)
                 .build();
 
-        // given2
-        MoimJpaEntity moimB = MoimJpaEntity.builder()
-                .memberId(memberId)
-                .endDate(LocalDate.of(2024,5,23))
-                .build();
+        moimRepository.save(moimJpaEntity1);
+        moimRepository.save(moimJpaEntity2);
+        moimRepository.save(moimJpaEntity3);
 
-        // given3
-        MoimJpaEntity moimC = MoimJpaEntity.builder()
-                .memberId(otherMemberId)
-                .endDate(LocalDate.of(2024,5,23))
-                .build();
+        List<Long> moimIds = List.of(moimJpaEntity1.getId(), moimJpaEntity2.getId(), moimJpaEntity3.getId());
 
-        moimRepository.save(moimA);
-        moimRepository.save(moimB);
-        moimRepository.save(moimC);
+        List<MoimSimpleResponse> endedMoims1 = moimFinder.findEndedMoimSimpleResponsesByMoimIds(
+                moimIds, LocalDate.of(2024, 5, 16));
+        List<MoimSimpleResponse> endedMoims2 = moimFinder.findEndedMoimSimpleResponsesByMoimIds(
+                moimIds, LocalDate.of(2025, 6, 4));
 
-        //when
-        List<MoimSimpleResponse> inProgressAllMyMoimSimpleResponses = moimFinder.findAllMyMoimSimpleResponses(memberId, lastMoimId, LocalDate.of(2024, 5, 24), false);
-        List<MoimSimpleResponse> endedAllMyMoimSimpleResponses = moimFinder.findAllMyMoimSimpleResponses(memberId, lastMoimId, LocalDate.of(2024, 5, 24), true);
-
-        //then
-        assertThat(inProgressAllMyMoimSimpleResponses.size()).isEqualTo(0);
-        assertThat(endedAllMyMoimSimpleResponses.size()).isEqualTo(2);
+        assertThat(endedMoims1.size()).isEqualTo(1);
+        assertThat(endedMoims2.size()).isEqualTo(2);
     }
 
-    @DisplayName("내가 생성한 모임 지난모임/진행중인모임 별로 전부 조회할때, No Offset 페이징 처리를 한다.")
+    @DisplayName("모임들 중 진행중인 모임을 반환한다.")
     @Test
-    void findAllMyMoimSimpleResponsesPaging() {
-        // given1
-        long lastMoimId = 0;
-        long memberId = MEMBER_ID.longValue();
-        long otherMemberId = MEMBER_ID.longValue() + 1;
+    void findInProgressMoimSimpleResponsesByMoimIds() {
+        MemberJpaEntity saveMember = saveRandomMember();
 
-        MoimJpaEntity moimA = MoimJpaEntity.builder()
-                .memberId(memberId)
-                .endDate(LocalDate.of(2024,5,23))
+        LocalDate localDate1 = LocalDate.of(2023, 5, 12);
+        LocalDate localDate2 = LocalDate.of(2024, 5, 16);
+        LocalDate localDate3 = LocalDate.of(2025, 6, 5);
+
+        MoimJpaEntity moimJpaEntity1 = MoimJpaEntity.builder()
+                .memberId(saveMember.getId())
+                .endDate(localDate1)
+                .build();
+        MoimJpaEntity moimJpaEntity2 = MoimJpaEntity.builder()
+                .memberId(saveMember.getId())
+                .endDate(localDate2)
+                .build();
+        MoimJpaEntity moimJpaEntity3 = MoimJpaEntity.builder()
+                .memberId(saveMember.getId())
+                .endDate(localDate3)
                 .build();
 
-        // given2
-        MoimJpaEntity moimB = MoimJpaEntity.builder()
-                .memberId(memberId)
-                .endDate(LocalDate.of(2024,5,23))
-                .build();
+        moimRepository.save(moimJpaEntity1);
+        moimRepository.save(moimJpaEntity2);
+        moimRepository.save(moimJpaEntity3);
 
-        // given3
-        MoimJpaEntity moimC = MoimJpaEntity.builder()
-                .memberId(memberId)
-                .endDate(LocalDate.of(2024,5,23))
-                .build();
+        List<Long> moimIds = List.of(moimJpaEntity1.getId(), moimJpaEntity2.getId(), moimJpaEntity3.getId());
 
-        MoimJpaEntity moimD = MoimJpaEntity.builder()
-                .memberId(memberId)
-                .endDate(LocalDate.of(2024,5,23))
-                .build();
+        List<MoimSimpleResponse> inProgressMoims1 = moimFinder.findInProgressMoimSimpleResponsesByMoimIds(
+                moimIds, LocalDate.of(2024, 5, 16));
+        List<MoimSimpleResponse> inProgressMoims2 = moimFinder.findInProgressMoimSimpleResponsesByMoimIds(
+                moimIds, LocalDate.of(2025, 6, 4));
 
-        MoimJpaEntity moimE = MoimJpaEntity.builder()
-                .memberId(memberId)
-                .endDate(LocalDate.of(2024,5,23))
-                .build();
-
-        MoimJpaEntity moimF = MoimJpaEntity.builder()
-                .memberId(otherMemberId)
-                .endDate(LocalDate.of(2024,5,23))
-                .build();
-
-        moimRepository.save(moimA);
-        moimRepository.save(moimB);
-        moimRepository.save(moimC);
-        moimRepository.save(moimD);
-        moimRepository.save(moimE);
-        moimRepository.save(moimF);
-
-        //when
-        List<MoimSimpleResponse> endedAllMyMoimSimpleResponses1 = moimFinder.findAllMyMoimSimpleResponses(memberId, lastMoimId, LocalDate.of(2024, 5, 24), true);
-        MoimSimpleResponse lastMoim = endedAllMyMoimSimpleResponses1.get(DEFAULT_JOINED_MOIM_PAGE_SIZE.value() - 1);
-        lastMoimId = lastMoim.moimId();
-        List<MoimSimpleResponse> endedAllMyMoimSimpleResponses2 = moimFinder.findAllMyMoimSimpleResponses(memberId, lastMoimId, LocalDate.of(2024, 5, 24), true);
-
-
-        //then
-        assertThat(endedAllMyMoimSimpleResponses1.size()).isEqualTo(4);
-        assertThat(endedAllMyMoimSimpleResponses2.size()).isEqualTo(1);
+        assertThat(inProgressMoims1.size()).isEqualTo(2);
+        assertThat(inProgressMoims2.size()).isEqualTo(1);
     }
 
     private MemberJpaEntity saveRandomMember() {

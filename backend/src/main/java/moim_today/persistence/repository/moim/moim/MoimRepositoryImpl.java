@@ -17,7 +17,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static moim_today.global.constant.NumberConstant.DEFAULT_JOINED_MOIM_PAGE_SIZE;
 import static moim_today.global.constant.SymbolConstant.PERCENT;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_NOT_FOUND_ERROR;
 import static moim_today.persistence.entity.moim.moim.QMoimJpaEntity.moimJpaEntity;
@@ -101,15 +100,11 @@ public class MoimRepositoryImpl implements MoimRepository {
                 .where(moimJpaEntity.universityId.eq(universityId)
                         .and(moimJpaEntity.title.likeIgnoreCase(PERCENT.value() + searchParam.trim() + PERCENT.value()))
                 )
-                .orderBy(moimJpaEntity.views.desc())
                 .fetch();
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMyMoimSimpleResponses(final long hostMemberId,
-                                                                 final long lastMoimId,
-                                                                 final LocalDate now,
-                                                                 final boolean ended) {
+    public List<MoimSimpleResponse> findEndedMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now) {
         return queryFactory.select(new QMoimSimpleResponse(
                         moimJpaEntity.id,
                         moimJpaEntity.title,
@@ -120,13 +115,23 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.displayStatus
                 ))
                 .from(moimJpaEntity)
-                .where(
-                        moimJpaEntity.memberId.eq(hostMemberId),
-                        applyEndedFilter(now, ended),
-                        ltLastMoimId(lastMoimId)
-                )
-                .orderBy(moimJpaEntity.id.desc())
-                .limit(DEFAULT_JOINED_MOIM_PAGE_SIZE.value())
+                .where(moimJpaEntity.id.in(moimIds).and(moimJpaEntity.endDate.before(now)))
+                .fetch();
+    }
+
+    @Override
+    public List<MoimSimpleResponse> findInProgressMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now) {
+        return queryFactory.select(new QMoimSimpleResponse(
+                        moimJpaEntity.id,
+                        moimJpaEntity.title,
+                        moimJpaEntity.capacity,
+                        moimJpaEntity.currentCount,
+                        moimJpaEntity.imageUrl,
+                        moimJpaEntity.moimCategory,
+                        moimJpaEntity.displayStatus
+                ))
+                .from(moimJpaEntity)
+                .where(moimJpaEntity.id.in(moimIds).and(moimJpaEntity.endDate.goe(now)))
                 .fetch();
     }
 
@@ -145,9 +150,8 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.displayStatus
                 ))
                 .from(moimJpaEntity)
-                .where(
-                        moimJpaEntity.universityId.eq(universityId),
-                        applyMoimCategoryFilter(moimCategoryDto)
+                .where(moimJpaEntity.universityId.eq(universityId)
+                        .and(applyMoimCategoryFilter(moimCategoryDto))
                 )
                 .orderBy(createOrderBySpecifier(moimSortedFilter))
                 .fetch();
@@ -178,19 +182,5 @@ public class MoimRepositoryImpl implements MoimRepository {
             return moimJpaEntity.views.desc();
         }
         return moimJpaEntity.createdAt.desc();
-    }
-
-    private BooleanExpression applyEndedFilter(final LocalDate now, final boolean ended) {
-        if (ended) {
-            return moimJpaEntity.endDate.before(now);
-        }
-        return moimJpaEntity.endDate.goe(now);
-    }
-
-    private BooleanExpression ltLastMoimId(final long lastMoimId) {
-        if (lastMoimId == 0) {
-            return null;
-        }
-        return moimJpaEntity.id.lt(lastMoimId);
     }
 }

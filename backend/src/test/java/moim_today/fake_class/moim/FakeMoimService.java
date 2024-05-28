@@ -134,7 +134,6 @@ public class FakeMoimService implements MoimService {
         // MOIM_ID + 1 , 모임에 이미 참여한 멤버, 실패
         // MOIM_ID + 2 , 없는 모임, 실패
         // MOIM_ID + 3 , 모임 정원이 가득 참, 실패
-        // MOIM_ID + 4 , 끝난 모임이어서, 실패
         if(moimJoinRequest.moimId() == MOIM_ID.longValue() + 1L){
             throw new BadRequestException(MEMBER_ALREADY_JOINED.message());
         }
@@ -143,9 +142,6 @@ public class FakeMoimService implements MoimService {
         }
         else if(moimJoinRequest.moimId() == MOIM_ID.longValue() + 3L){
             throw new BadRequestException(MOIM_CAPACITY_ERROR.message());
-        }
-        else if(moimJoinRequest.moimId() == MOIM_ID.longValue() + 4L){
-            throw new BadRequestException(MOIM_AFTER_END_ERROR.message());
         }
     }
 
@@ -202,37 +198,9 @@ public class FakeMoimService implements MoimService {
     }
 
     @Override
-    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponses(final long memberId,
-                                                                       final long lastMoimId,
-                                                                       final boolean ended) {
-        MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
-                .moimId(1L)
-                .title(MOIM_TITLE.value())
-                .capacity(CAPACITY.intValue())
-                .currentCount(CURRENT_COUNT.intValue())
-                .imageUrl(MOIM_IMAGE_URL.value())
-                .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PUBLIC)
-                .build();
-
-        MoimSimpleResponse moimSimpleResponse2 = MoimSimpleResponse.builder()
-                .moimId(2L)
-                .title(MOIM_TITLE.value())
-                .capacity(CAPACITY.intValue())
-                .currentCount(CURRENT_COUNT.intValue())
-                .imageUrl(MOIM_IMAGE_URL.value())
-                .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PUBLIC)
-                .build();
-
-        return List.of(moimSimpleResponse1, moimSimpleResponse2);
-    }
-
-    @Override
-    public List<MoimSimpleResponse> findAllMyMoimSimpleResponses(final long memberId,
-                                                                 final long lastMoimId,
-                                                                 final Boolean ended) {
-
+    public List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponse(final long memberId,
+                                                                      final boolean ended,
+                                                                      final boolean onlyHost) {
         MoimSimpleResponse moimSimpleResponse1 = MoimSimpleResponse.builder()
                 .moimId(1L)
                 .title(MOIM_TITLE.value())
