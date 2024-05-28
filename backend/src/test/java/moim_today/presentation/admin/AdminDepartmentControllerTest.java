@@ -18,6 +18,8 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -30,15 +32,17 @@ class AdminDepartmentControllerTest extends ControllerTest {
         return new AdminDepartmentController(adminDepartmentService);
     }
 
-
     @DisplayName("학과 추가 요청 정보를 모두 조회한다.")
     @Test
     void findAll() throws Exception {
         mockMvc.perform(
-                        get("/api/admin/request-departments")
+                        get("/api/admin/request-departments/{universityId}", 1)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("학과 정보 추가를 요청을 조회한다.",
+                        pathParameters(
+                                parameterWithName("universityId").description("대학교 id")
+                        ),
                         resource(ResourceSnippetParameters.builder()
                                 .tag("학과")
                                 .summary("학과 정보 추가 요청 조회")

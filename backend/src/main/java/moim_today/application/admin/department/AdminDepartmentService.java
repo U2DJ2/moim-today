@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AdminDepartmentService {
 
-    List<RequestDepartmentResponse> findAll();
+    List<RequestDepartmentResponse> findAllByUniversityId(final long universityId);
 
     void approveRequest(final ApproveRequestDepartmentRequest approveRequestDepartmentRequest);
 }

@@ -10,7 +10,7 @@ import java.util.List;
 public class FakeAdminDepartmentService implements AdminDepartmentService {
 
     @Override
-    public List<RequestDepartmentResponse> findAll() {
+    public List<RequestDepartmentResponse> findAllByUniversityId(final long universityId) {
         RequestDepartmentResponse requestDepartmentResponse1 = RequestDepartmentResponse.builder()
                 .requestDepartmentId(1)
                 .universityId(TestConstant.UNIV_ID.longValue())

@@ -26,8 +26,8 @@ public class AdminDepartmentServiceImpl implements AdminDepartmentService {
     }
 
     @Override
-    public List<RequestDepartmentResponse> findAll() {
-        return requestDepartmentFinder.findAll();
+    public List<RequestDepartmentResponse> findAllByUniversityId(final long universityId) {
+        return requestDepartmentFinder.findAllByUniversityId(universityId);
     }
 
     @Transactional

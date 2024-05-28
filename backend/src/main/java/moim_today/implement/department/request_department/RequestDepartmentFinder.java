@@ -17,7 +17,7 @@ public class RequestDepartmentFinder {
     }
 
     @Transactional(readOnly = true)
-    public List<RequestDepartmentResponse> findAll() {
-        return requestDepartmentRepository.findAll();
+    public List<RequestDepartmentResponse> findAllByUniversityId(final long universityId) {
+        return requestDepartmentRepository.findAllByUniversityId(universityId);
     }
 }

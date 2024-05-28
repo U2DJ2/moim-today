@@ -18,9 +18,11 @@ public class AdminDepartmentController {
         this.adminDepartmentService = adminDepartmentService;
     }
 
-    @GetMapping("/request-departments")
-    public CollectionResponse<List<RequestDepartmentResponse>> findAll() {
-        List<RequestDepartmentResponse> requestDepartmentResponses = adminDepartmentService.findAll();
+    @GetMapping("/request-departments/{universityId}")
+    public CollectionResponse<List<RequestDepartmentResponse>> findAllByUniversityId(
+            @PathVariable final long universityId) {
+        List<RequestDepartmentResponse> requestDepartmentResponses =
+                adminDepartmentService.findAllByUniversityId(universityId);
         return CollectionResponse.from(requestDepartmentResponses);
     }
 
