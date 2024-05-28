@@ -36,7 +36,7 @@ public class MemberController {
     @PatchMapping("/profile")
     public void updateProfile(@Login final MemberSession memberSession,
                               @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
-        memberService.updateProfile(memberSession.id(), memberSession.universityId(), profileUpdateRequest);
+        memberService.updateProfile(memberSession.id(), profileUpdateRequest);
     }
 
     @PostMapping("/profile-image")

@@ -48,7 +48,7 @@ public class FakeMemberService implements MemberService {
     }
 
     @Override
-    public void updateProfile(final long memberId, final long universityId, final ProfileUpdateRequest profileUpdateRequest) {
+    public void updateProfile(final long memberId, final ProfileUpdateRequest profileUpdateRequest) {
 
     }
 

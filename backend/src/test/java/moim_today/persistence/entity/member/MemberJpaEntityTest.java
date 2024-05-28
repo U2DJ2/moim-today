@@ -37,14 +37,12 @@ class MemberJpaEntityTest {
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
                 .build();
 
-        long updateDepartmentId = Long.parseLong(DEPARTMENT_ID.value());
-        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(updateDepartmentId, PROFILE_IMAGE_URL.value());
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(PROFILE_IMAGE_URL.value());
 
         // when
         memberJpaEntity.updateProfile(profileUpdateRequest);
 
         // then
-        assertThat(memberJpaEntity.getDepartmentId()).isEqualTo(updateDepartmentId);
         assertThat(memberJpaEntity.getMemberProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL.value());
     }
 }
