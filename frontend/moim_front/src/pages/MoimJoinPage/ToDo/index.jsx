@@ -46,9 +46,17 @@ function ToDo() {
     setSelectedMember(selectedMemberId);
   };
 
-  const handleTodoCheckboxClick = (todo) => {
-    // 체크박스 클릭 시 처리할 로직
-    console.log(todo);
+  const handleTodoCheckboxClick = async (todo) => {
+    await axios.patch(
+      `https://api.moim.today/api/todos/todo-progress`,
+      {
+        todoId: todo.todoId,
+        todoProgress: todo.todoProgress === "COMPLETED" ? "PENDING" : "COMPLETED",
+      }
+    );
+
+    // Refresh component
+    fetchData();
   };
 
   return (
@@ -78,11 +86,13 @@ function ToDo() {
                 {item.todoContents.map((todo, todoIndex) => (
                   <div
                     key={todo.todoId}
-                    className={`flex items-center gap-2 ${
-                      todoIndex === item.todoContents.length - 1 ? "" : "mb-4"
-                    }`}
+                    className={`flex items-center gap-2 ${todoIndex === item.todoContents.length - 1 ? "" : "mb-4"
+                      }`}
                   >
-                    <Checkbox onChange={() => handleTodoCheckboxClick(todo)} />
+                    <Checkbox
+                      onChange={() => handleTodoCheckboxClick(todo)}
+                      checked={todo.todoProgress === "COMPLETED"}
+                    />
                     <Label className="font-Pretendard_Medium">
                       {todo.contents}
                     </Label>

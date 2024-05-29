@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import MoimContainer from "../PageContainer/MoimContainer";
 import DetailedLeft from "../DetailedLeft";
 import { fetchMoimInfo } from "../../api/moim";
@@ -10,6 +10,7 @@ function MoimLayout() {
   const [moimInfo, setMoimInfo] = useState([]);
   const { MoimId } = useParams();
   const memoMoimId = () => useMemo(() => [MoimId]);
+
   const fetchWriter = async () => {
     try {
       const response = await axios.get(
@@ -21,6 +22,7 @@ function MoimLayout() {
       console.log(e);
     }
   };
+
   const getInfo = async () => {
     try {
       const result = await fetchMoimInfo(MoimId);
@@ -30,10 +32,14 @@ function MoimLayout() {
       console.log(e);
     }
   };
+
   useEffect(() => {
     fetchWriter();
     getInfo();
+
+    // eslint-disable-next-line
   }, []);
+
   return (
     <MoimContainer>
       <DetailedLeft
@@ -47,7 +53,7 @@ function MoimLayout() {
         profileImg={writerInfo.memberProfileImageUrl}
         joined={true}
       />
-      <div className="flex flex-col h-full w-full bg-white shadow-lg overflow-hidden rounded-b-3xl px-20 pt-8 pb-6 gap-8">
+      <div className="flex flex-col min-h-screen max-h-full w-full bg-white shadow-lg overflow-hidden rounded-t-3xl px-20 pt-8 pb-6 gap-8">
         <Outlet />{" "}
       </div>
     </MoimContainer>
