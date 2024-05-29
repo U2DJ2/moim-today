@@ -119,7 +119,7 @@ function MoimJoinPage() {
   return (
     <>
       <div className="flex justify-center items-center self-start font-Pretendard_Black font-normal text-black max-md:px-5 max-md:max-w-full">
-        <div className="flex gap-12 font-bold lg:text-xl lg:gap-8 xl:text-3xl 2xl:text-4xl">
+        <div className="flex gap-12 font-bold text-3xl">
           <div
             className={`justify-center max-md:px-5 cursor-pointer ${
               selected === homeKey
@@ -131,7 +131,7 @@ function MoimJoinPage() {
             {homeKey}
           </div>
           <div
-            className={`justify-center  max-md:px-5 cursor-pointer ${
+            className={`justify-center max-md:px-5 cursor-pointer ${
               selected === availableTimeKey
                 ? "text-scarlet  border-b-4 pb-2 border-scarlet"
                 : ""

@@ -68,8 +68,6 @@ function MoimHome({ isHost, moimId }) {
   const getMeetings = async () => {
     try {
       const result = await fetchMeetings(moimId, meetingOption);
-      console.log(result.data.data);
-
       setMeetings(result.data.data);
     } catch (e) {
       console.log(e);

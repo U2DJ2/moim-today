@@ -219,21 +219,26 @@ const labelStyle =
 const commonInputStyle =
   "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
 
+<<<<<<< HEAD
 async function fetchAllTodos(startDate, setMoimData) {
+=======
+async function fetchAllTodos(setTodoData) {
+
+>>>>>>> frontend-main
   // Parse start date
-  startDate = new Date(startDate);
-  startDate = startDate.toISOString().slice(0, 7);
+  let requestDate = new Date(new Date().getFullYear(), 0, 1);
+  requestDate = requestDate.toISOString().slice(0, 7);
 
   try {
     const response = await axios.get(
-      `https://api.moim.today/api/todos?startDate=${startDate}&months=12`,
+      `https://api.moim.today/api/todos?requestDate=${requestDate}&months=12`,
       {
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
-    setMoimData(response.data.data);
+    setTodoData(response.data.data);
   } catch (error) {
     console.error("Error fetching events:", error);
   }
@@ -298,8 +303,7 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
   const [todoData, setTodoData] = useState([]);
 
   useEffect(() => {
-    const firstDate = new Date(new Date().getFullYear(), 0, 1);
-    fetchAllTodos(firstDate, setTodoData);
+    fetchAllTodos(setTodoData);
   }, []);
 
   const handleTodoCheckboxClick = (todo) => {
@@ -344,6 +348,7 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
           TODO 추가하기
         </button>
         <div className="mt-8"></div>
+<<<<<<< HEAD
         {todoData.map((moim) => (
           <Accordion key={moim.moimId} className="w-72">
             <Accordion.Panel>
@@ -374,6 +379,39 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
             </Accordion.Panel>
           </Accordion>
         ))}
+=======
+
+        {
+          todoData && todoData.map((moim) => (
+            <Accordion key={moim.moimId} className="w-72">
+              <Accordion.Panel>
+                <Accordion.Title className="font-Pretendard_SemiBold text-[16px]">
+                  {moim.moimTitle}
+                </Accordion.Title>
+                <Accordion.Content>
+                  {moim.todoGroupByDates.map((todoGroup) => (
+                    todoGroup.todoContents.map((todo) => {
+                      return (
+                        <div
+                          key={todo.todoId}
+                          className={`flex items-center gap-2`}
+                        >
+                          <Checkbox
+                            onChange={() => handleTodoCheckboxClick(todo)}
+                            checked={todo.todoProgress === "COMPLETED"}
+                          />
+                          <Label className="font-Pretendard_Medium">{todo.contents}</Label>
+                        </div>
+                      );
+                    })
+                  ))}
+                </Accordion.Content>
+              </Accordion.Panel>
+            </Accordion>
+          ))
+        }
+
+>>>>>>> frontend-main
       </div>
     </aside>
   );
