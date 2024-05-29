@@ -162,7 +162,7 @@ function AvailableTime({ moimId }) {
                       onClick={() => onClickMember(member)}
                     >
                       <img
-                        className="focus:cursor-pointer w-6 h-6 "
+                        className="focus:cursor-pointer w-6 h-6 rounded-full "
                         src={member.profileImageUrl}
                       />
                       <div

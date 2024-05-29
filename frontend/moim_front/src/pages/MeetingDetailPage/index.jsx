@@ -8,11 +8,13 @@ import content from "../../assets/svg/comment_duotone.svg";
 import ContentIndex from "./ContentIndex";
 import infoIcon from "../../assets/svg/Info_duotone_line.svg";
 import CardBtn from "../MoimJoinPage/CardComponent/CardBtn";
+import axios from "axios";
 function MettingDetailPage() {
   const [meetingInfo, setMeetingInfo] = useState([]);
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState([]);
   const [commentNum, setCommentNum] = useState();
+  const [attendance, setAttendance] = useState(false);
   const { meetingId } = useParams();
 
   const getMeetingInfo = async () => {
@@ -34,6 +36,18 @@ function MettingDetailPage() {
       console.log(e);
     }
   };
+
+  const checkIsMember = async () => {
+    try {
+      const result = await axios.get(
+        `https://api.moim.today/api/members/meetings/${meetingId}`
+      );
+      console.log(result.data);
+      setAttendance(result.data.attendanceStatus);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const CommentClicker = async () => {
     const data = {
       meetingId: meetingId,
@@ -46,10 +60,39 @@ function MettingDetailPage() {
       console.log(e);
     }
   };
-  const onClickHandler = () => {};
+
+  const acceptMeeting = async () => {
+    try {
+      const response = await POST(
+        `api/members/meetings/${meetingId}/acceptance`
+      );
+      checkIsMember();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const cancelMeeting = async () => {
+    try {
+      const response = await POST(`api/members/meetings/${meetingId}/refusal`);
+      checkIsMember();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onClickHandler = async () => {
+    console.log("first");
+    try {
+      attendance ? await cancelMeeting() : await acceptMeeting();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     getMeetingInfo();
     getComments();
+    checkIsMember();
   }, []);
 
   const ContentSection = ({ image, indexName, children }) => (
@@ -66,7 +109,7 @@ function MettingDetailPage() {
             className=" w-fit text-sm font-light bg-scarlet text-white font-Pretendard_Light rounded-full px-2 py-1"
             onClick={onClickHandler}
           >
-            참여중
+            {attendance ? "참석중" : "미참석"}
           </button>
           <div className="flex items-center">
             <img src={infoIcon} className=" w-4 h-4" />

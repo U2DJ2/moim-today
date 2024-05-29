@@ -23,7 +23,7 @@ function DetailedRight({ category, title, currentCount, capacity, contents }) {
           <div className="flex font-Pretendard_SemiBold text-sm text-[#6F6F6F] gap-2 w-full items-center">
             <img src={clock} className=" w-4" />
             <div className="inline-block w-full text-left text-xl text-[#6F6F6F] hover:cursor-pointer">
-              가용시간 보기
+              모임 시간
             </div>
           </div>
         </div>

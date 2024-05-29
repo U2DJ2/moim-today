@@ -11,6 +11,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import { POST } from "../../utils/axios";
 import axios from "axios";
 
+import infoIcon from "../../assets/svg/Info_duotone_line.svg";
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -137,8 +139,17 @@ export default function ProfileSection({
   profileImg,
   userInfo,
 }) {
-  console.log("Profile Image URL:", profileImg); // 추가된 코드
-  console.log(userInfo);
+  const onClickHandler = async () => {
+    // const body={
+    //   universityId:
+
+    // }
+    try {
+      const response = await POST("api/request-departments", body);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <section className="flex flex-col w-full max-md:ml-0 max-md:w-full h-full">
@@ -152,6 +163,7 @@ export default function ProfileSection({
         <ImageInputer setProfileImg={setProfileImg} profileImg={profileImg} />
         <InputField label="이름" value={name} editable={false} />
         <InputField label="학과" value={major} editable={false} />
+        <src img={infoIcon} className="w-4 h-4" />
       </div>
     </section>
   );
