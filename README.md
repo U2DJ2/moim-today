@@ -2,8 +2,8 @@
 <div align="center">
   <a href="https://github.com/osamhack2021/app_web_dronai_62bn">
     <img
-      src="https://github.com/osamhack2021/app_web_dronai_62bn/blob/master/resources/logo-images/logo_only_impact.png"
-      alt="Logo" width="256px" height="256px">
+      src="https://github.com/U2DJ2/moim-today/assets/36218321/b48b271e-2c51-4c0e-913c-92fb5788c267.png"
+      alt="Logo" width="256px" height="200px">
   </a>
 
   <h3 align="center">Moim Today</h3>
