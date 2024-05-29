@@ -93,6 +93,8 @@ export default function Manage() {
   const [activeSection, setActiveSection] = useState("overview");
   const [name, setName] = useState("");
   const [major, setMajor] = useState("");
+  const [profileImg, setProfileImg] = useState("");
+  const [userInfo, setUserInfo] = useState([]);
 
   useEffect(() => {
     GET("/api/members/profile")
@@ -100,12 +102,15 @@ export default function Manage() {
         console.log(res);
         setName(res.username);
         setMajor(res.departmentName);
-        console.log(major);
+        setProfileImg(res.memberProfileImageUrl);
+        console.log(profileImg);
+        setUserInfo(res);
+        console.log(userInfo);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [userInfo]);
 
   useEffect(() => {
     // 위치 정보에서 컴포넌트 이름을 가져와서 활성 섹션을 설정합니다.
@@ -127,7 +132,13 @@ export default function Manage() {
           {activeSection === "overview" ? (
             <OverviewSection />
           ) : (
-            <ProfileSection name={name} major={major} />
+            <ProfileSection
+              userInfo={userInfo}
+              name={name}
+              major={major}
+              setProfileImg={setProfileImg}
+              profileImg={profileImg}
+            />
           )}
         </div>
       </div>

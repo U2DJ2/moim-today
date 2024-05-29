@@ -4,13 +4,14 @@ import { GET } from "../../utils/axios";
 function ManageProfilePage() {
   const [name, setName] = useState("");
   const [major, setMajor] = useState("");
+  const [profileImg, setProfileImg] = useState("");
+
   useEffect(() => {
     GET("/api/members/profile")
       .then((res) => {
-        console.log(res);
         setName(res.username);
         setMajor(res.departmentName);
-        console.log(major);
+        setProfileImg(res.memberProfileImageUrl);
       })
       .catch((error) => {
         console.log(error);
@@ -19,7 +20,7 @@ function ManageProfilePage() {
 
   return (
     <>
-      <ProfileSection name={name} major={major} />
+      <ProfileSection profileImg={profileImg} name={name} major={major} />
     </>
   );
 }
