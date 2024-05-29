@@ -167,8 +167,10 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.displayStatus
                 ))
                 .from(moimJpaEntity)
-                .where(moimJpaEntity.universityId.eq(universityId)
-                        .and(applyMoimCategoryFilter(moimCategoryDto))
+                .where(
+                        moimJpaEntity.universityId.eq(universityId),
+                        applyMoimCategoryFilter(moimCategoryDto),
+                        moimJpaEntity.endDate.goe(LocalDate.now())
                 )
                 .orderBy(createOrderBySpecifier(moimSortedFilter))
                 .fetch();

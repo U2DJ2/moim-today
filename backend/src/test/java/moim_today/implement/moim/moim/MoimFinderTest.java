@@ -254,6 +254,7 @@ class MoimFinderTest extends ImplementTest {
                 .universityId(universityId)
                 .title(FIRST_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.TEAM_PROJECT)
+                .endDate(LocalDate.now().plusDays(1))
                 .build();
 
         moimRepository.save(firstCreatedMoimJpaEntity);
@@ -266,6 +267,7 @@ class MoimFinderTest extends ImplementTest {
                 .universityId(universityId)
                 .title(SECOND_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.STUDY)
+                .endDate(LocalDate.now().plusDays(1))
                 .build();
 
         moimRepository.save(secondCreatedMoimJpaEntity);
@@ -292,6 +294,7 @@ class MoimFinderTest extends ImplementTest {
                 .universityId(universityId)
                 .title(FIRST_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.TEAM_PROJECT)
+                .endDate(LocalDate.now().plusDays(1))
                 .build();
 
         moimRepository.save(firstCreatedMoimJpaEntity);
@@ -304,6 +307,7 @@ class MoimFinderTest extends ImplementTest {
                 .universityId(universityId)
                 .title(SECOND_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.STUDY)
+                .endDate(LocalDate.now().plusDays(1))
                 .build();
 
         moimRepository.save(secondCreatedMoimJpaEntity);
@@ -329,6 +333,7 @@ class MoimFinderTest extends ImplementTest {
         MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
                 .universityId(universityId)
                 .title(FIRST_CREATED_MOIM_TITLE.value())
+                .endDate(LocalDate.now().plusDays(1))
                 .views(10)
                 .build();
 
@@ -337,6 +342,7 @@ class MoimFinderTest extends ImplementTest {
         MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
                 .universityId(universityId)
                 .title(SECOND_CREATED_MOIM_TITLE.value())
+                .endDate(LocalDate.now().plusDays(1))
                 .views(20)
                 .build();
 
@@ -364,6 +370,7 @@ class MoimFinderTest extends ImplementTest {
                 .universityId(universityId)
                 .title(FIRST_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.TEAM_PROJECT)
+                .endDate(LocalDate.now().plusDays(1))
                 .build();
 
         moimRepository.save(firstCreatedMoimJpaEntity);
@@ -372,6 +379,7 @@ class MoimFinderTest extends ImplementTest {
                 .universityId(universityId)
                 .title(SECOND_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.STUDY)
+                .endDate(LocalDate.now().plusDays(1))
                 .build();
 
         moimRepository.save(secondCreatedMoimJpaEntity);
@@ -398,6 +406,7 @@ class MoimFinderTest extends ImplementTest {
                 .universityId(universityId)
                 .title(FIRST_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.TEAM_PROJECT)
+                .endDate(LocalDate.now().plusDays(1))
                 .build();
 
         moimRepository.save(firstCreatedMoimJpaEntity);
@@ -406,6 +415,42 @@ class MoimFinderTest extends ImplementTest {
                 .universityId(otherUniversityId)
                 .title(SECOND_CREATED_MOIM_TITLE.value())
                 .moimCategory(MoimCategory.STUDY)
+                .endDate(LocalDate.now().plusDays(1))
+                .build();
+
+        moimRepository.save(secondCreatedMoimJpaEntity);
+
+        MoimCategoryDto moimCategoryDto = MoimCategoryDto.ALL;
+        MoimSortedFilter moimSortedFilter = null;
+
+        // when
+        List<MoimSimpleResponse> moimSimpleResponses = moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
+
+        // then
+        assertThat(moimSimpleResponses.size()).isEqualTo(1);
+        assertThat(moimSimpleResponses.get(0).title()).isEqualTo(FIRST_CREATED_MOIM_TITLE.value());
+    }
+
+    @DisplayName("모임 기간이 끝나지 않은 모임 리스트만 반환한다..")
+    @Test
+    void findAllActiveMoimByCategoryByUniversityId() {
+        // given
+        long universityId = UNIV_ID.longValue();
+
+        MoimJpaEntity firstCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .universityId(universityId)
+                .title(FIRST_CREATED_MOIM_TITLE.value())
+                .moimCategory(MoimCategory.TEAM_PROJECT)
+                .endDate(LocalDate.now().plusDays(1))
+                .build();
+
+        moimRepository.save(firstCreatedMoimJpaEntity);
+
+        MoimJpaEntity secondCreatedMoimJpaEntity = MoimJpaEntity.builder()
+                .universityId(universityId)
+                .title(SECOND_CREATED_MOIM_TITLE.value())
+                .moimCategory(MoimCategory.STUDY)
+                .endDate(LocalDate.now().minusDays(1))
                 .build();
 
         moimRepository.save(secondCreatedMoimJpaEntity);
