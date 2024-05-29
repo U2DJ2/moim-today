@@ -10,8 +10,8 @@ function Overview() {
         "https://api.moim.today/api/moims/joined/simple",
         {
           params: {
-            onlyHost: selected === "전체" ? true : false,
-            ended: "false",
+            onlyHost: selected === "전체" ? "false" : "true",
+            ended: "true",
           },
         }
       );
