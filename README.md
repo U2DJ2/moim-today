@@ -34,9 +34,46 @@
     </a>
   </p>
 </div>
+<h1 id="service_introduction"> 1. 팀플, 동아리 일정 및 개인 일정 관리 서비스, Moim-Today </h1>
+<h2>1-1. 문제 정의</h2>
+대학생들은 교내 수업 뿐만이 아니라, 다양한 동아리나 스터디, 대외 활동을 통해 새로운 가치를 창출하고 자신의 가치를 쌓아나갑니다. 
+<br/><br/>
 
+그러나 이 과정에서 대학생들은 아래와 같은 문제 상황을 겪게 됩니다.
 
-<h2 id="team"> :people_holding_hands: 팀 정보 (Team Information)</h2>
+1) 모임 활동 중 각 팀원들의 가용 시간을 찾아 활동 시간을 정하는 과정이 힘듭니다.
+2) 다양한 활동 중에 생겨나는 무수한 할 일들을 관리하는 과정이 복잡하고, 비효율적입니다.
+3) 모임별 ToDo나 나의 일정을 관리하는 서비스가 부재합니다.
+
+따라서 저희는 교내 모임별 가용시간을 파악하고, 일정 관리를 하는 모임 투데이로 해당 문제점들을 해결하고자합니다.
+
+<h2>1-2. 문제 해결을 위한 주요 기능</h2>
+<h3> 1. 에브리타임 시간표 기반 가용 시간 제공</h3>
+대부분의 대학생들은 시간표 관리를 위해 에브리타임을 이용합니다. 저희 모임투데이는 대학생들의 사용 편의를 위해 기존에 사용하고 있던 에브리타임의 시간표 url 값을 입력받아 가용 시간을 제공합니다.
+<h3> 2. 개인 일정 추가 기능 및 모임별 ToDo 제공</h3>
+대학생들은 교내 수업 외 다양한 모임(스터디, 동아리, 대외활동 등)에 참여하고, 해당 모임에서 다양한 일정들과 할 일들이 생겨납니다. 저희 모임 투데이에서는 기존 대학생들의 일정 관리에 대한 본질을 생각해 문제를 해결하고자 개인 일정을 추가하거나 모임별 ToDo를 추가하는 기능을 제공합니다.
+<h3> 3. 모임 내 참여자 가용 시간 제공</h3>
+다양한 형태의 모임에서, 언제나 힘이 드는 것은 바로 모임 내 참여자들의 가용 시간을 파악해 팀 활동 시간을 정하는 일입니다. 저희 모임 투데이 에서는 참여자 개인의 일정, 시간표 정보, 모임 일정들을 종합하여 가용 시간을 제공합니다.
+
+<h1>2. 모임 투데이를 만든 기술</h1>
+<h3>FE</h3>
+<div>
+  <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> 
+ <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> 
+  <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> 
+  <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> 
+<img src="https://img.shields.io/badge/tailwindcss-a5f3fc?style=for-the-badge&logo=tailwindcss&logoColor=black"/> 
+
+</div>
+<h3>BE</h3>
+<div>
+  <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+</div>
+  <h3>CI/CD</h3>
+  * Github-action
+  <h3>협업</h3>
+      <a href="http://3.38.11.199:8080/docs/index.html">Swagger</a> , Github
+<h1 id="team">  3. 팀 정보 (Team Information)</h2>
 
 <table width="1200">
   <thead>
@@ -126,3 +163,24 @@
     </tr>
   </tbody>
 </table>
+
+<h1>4. 구현 개발기</h1>
+<ul>
+  <a href="https://velog.io/@anak_2/%EA%B9%83-%ED%98%91%EC%97%85%EC%97%90%EC%84%9C-%EC%9D%B4%EC%8A%88Issue%EC%99%80-%ED%92%80%EB%A6%AC%ED%80%98%EC%8A%A4%ED%8A%B8PR%EC%9D%84-%ED%85%9C%ED%94%8C%EB%A6%BF-template%EC%9C%BC%EB%A1%9C-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0">깃 협업에서 이슈(Issue)와 풀리퀘스트(PR)을 템플릿 (template)으로 관리하기</a>
+  
+<a href="https://320hwany.tistory.com/112">팀 프로젝트를 위한 github actions CI/CD 세팅</a>
+  
+<a href="https://south-leopard-b1c.notion.site/58936ac8371a4e49a333a698d99bb0ce">백엔드 모니터링 환경을 구축해보자!</a>
+
+<a href="https://320hwany.tistory.com/113">RDB는 정말 유연한 설계에 대응하는 것이 어려울까?</a>
+
+<a href="https://320hwany.tistory.com/114">대량의 insert 쿼리 jdbc batch update를 사용하여 개선하기</a>
+
+<a href="https://320hwany.tistory.com/116">복잡한 비즈니스 로직을 풀어내는 방법</a>
+
+<a href="https://south-leopard-b1c.notion.site/881b7ad598f04843a8970201ea9cad53">쿠키-세션을 이용한 로그인 방식 선택과 이유</a>
+
+<a href="https://320hwany.tistory.com/115">저희 팀에서는 이렇게 테스트 코드를 작성해요</a>
+
+<a href="https://south-leopard-b1c.notion.site/8422e7fa404543f48dd0331cc0578297">독립 테스트는 성공하는데 동시 테스트는 실패하는 이유 찾기</a>
+</ul>
