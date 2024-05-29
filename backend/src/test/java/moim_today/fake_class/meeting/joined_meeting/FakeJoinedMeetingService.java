@@ -5,6 +5,11 @@ import moim_today.application.meeting.joined_meeting.JoinedMeetingService;
 public class FakeJoinedMeetingService implements JoinedMeetingService {
 
     @Override
+    public boolean findAttendanceStatus(final long memberId, final long meetingId) {
+        return false;
+    }
+
+    @Override
     public void acceptanceJoinMeeting(final long memberId, final long meetingId) {
 
     }

@@ -5,6 +5,7 @@ import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.dto.member.QMemberSimpleResponse;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
+import moim_today.persistence.entity.meeting.joined_meeting.QJoinedMeetingJpaEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

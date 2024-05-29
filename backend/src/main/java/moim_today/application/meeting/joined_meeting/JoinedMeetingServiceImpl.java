@@ -1,5 +1,6 @@
 package moim_today.application.meeting.joined_meeting;
 
+import moim_today.implement.meeting.joined_meeting.JoinedMeetingFinder;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingUpdater;
 import org.springframework.stereotype.Service;
@@ -9,13 +10,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class JoinedMeetingServiceImpl implements JoinedMeetingService {
 
+    private final JoinedMeetingFinder joinedMeetingFinder;
     private final JoinedMeetingUpdater joinedMeetingUpdater;
     private final JoinedMeetingRemover joinedMeetingRemover;
 
-    public JoinedMeetingServiceImpl(final JoinedMeetingUpdater joinedMeetingUpdater,
+    public JoinedMeetingServiceImpl(final JoinedMeetingFinder joinedMeetingFinder,
+                                    final JoinedMeetingUpdater joinedMeetingUpdater,
                                     final JoinedMeetingRemover joinedMeetingRemover) {
+        this.joinedMeetingFinder = joinedMeetingFinder;
         this.joinedMeetingUpdater = joinedMeetingUpdater;
         this.joinedMeetingRemover = joinedMeetingRemover;
+    }
+
+    @Override
+    public boolean findAttendanceStatus(final long memberId, final long meetingId) {
+        return joinedMeetingFinder.findAttendanceStatus(memberId, meetingId);
     }
 
     @Transactional
