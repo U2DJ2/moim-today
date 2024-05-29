@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import static moim_today.global.constant.MailConstant.EMAIL_CERTIFICATION_MAIL;
 import static moim_today.global.constant.MailConstant.PASSWORD_FIND_MAIL;
 
-@Service
 public class NaverMailService implements MailService{
 
     private final SMTPMailSender mailSender;
