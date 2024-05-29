@@ -23,7 +23,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static moim_today.global.constant.FileTypeConstant.MOIM_IMAGE;
-import static moim_today.global.constant.NumberConstant.PLUS_ONE;
 
 @Service
 public class MoimServiceImpl implements MoimService{
@@ -81,7 +80,6 @@ public class MoimServiceImpl implements MoimService{
                            final MoimCreateRequest moimCreateRequest) {
         MoimJpaEntity moim = moimAppender.createMoim(memberId, universityId, moimCreateRequest);
         joinedMoimAppender.createJoinedMoim(memberId, moim.getId());
-        moimUpdater.updateMoimCurrentCount(moim.getId(), PLUS_ONE.value());
         return MoimIdResponse.from(moim.getId());
     }
 
