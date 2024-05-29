@@ -24,6 +24,7 @@ function MoimLayout() {
   const getInfo = async () => {
     try {
       const result = await fetchMoimInfo(MoimId);
+      console.log(result);
       setMoimInfo(result.data);
     } catch (e) {
       console.log(e);
@@ -43,6 +44,7 @@ function MoimLayout() {
         category={moimInfo.category}
         contents={moimInfo.contents}
         image={moimInfo.imageUrl}
+        profileImg={writerInfo.memberProfileImageUrl}
         joined={true}
       />
       <div className="flex flex-col basis-4/5 bg-white shadow-lg overflow-hidden rounded-t-3xl px-20 pb-6 gap-8 h-full">
