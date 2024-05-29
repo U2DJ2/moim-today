@@ -8,12 +8,12 @@ import { POST } from "../../utils/axios";
 import Calendar from "../../components/Calendar/PersonalCalendar";
 import CreationModal from "../../components/CreationModal";
 
-
 export default function ProfileSection({ selectedDate }) {
   const [startDateTime, setStartDateTime] = useState("");
   const [endDateTime, setEndDateTime] = useState("");
   const [scheduleTitle, setScheduleTitle] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [isRefresh, setIsRefresh] = useState(false);
 
   const postSchedule = () => {
     const data = {
@@ -23,7 +23,7 @@ export default function ProfileSection({ selectedDate }) {
     };
     try {
       const response = POST("api/schedules", data);
-      console.log(response);
+      setIsRefresh(true);
     } catch (e) {
       console.log(e);
     }
@@ -44,6 +44,8 @@ export default function ProfileSection({ selectedDate }) {
           setScheduleTitle={setScheduleTitle}
           setStartDateTime={setStartDateTime}
           setEndDateTime={setEndDateTime}
+          isRefresh={isRefresh}
+          setIsRefresh={setIsRefresh}
         />
       </div>
       {showModal ? (

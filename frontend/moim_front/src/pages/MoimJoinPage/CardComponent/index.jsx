@@ -14,8 +14,9 @@ function CardComponent({
   meetingId,
   initialAttendance,
   startDate,
+  attendance,
 }) {
-  const [attendance, setAttendance] = useState(initialAttendance);
+  // const [attendance, setAttendance] = useState(initialAttendance);
   const meetingCancel = async () => {
     try {
       const response = await axios.post(

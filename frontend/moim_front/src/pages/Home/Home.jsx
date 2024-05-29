@@ -14,7 +14,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 /**
  * SearchBar Component
- * @param {*} param0 
+ * @param {*} param0
  * @returns {JSX.Element}
  */
 function SearchBar({ setSearchTerm }) {
@@ -27,7 +27,10 @@ function SearchBar({ setSearchTerm }) {
 
   return (
     <div className="flex flex-col justify-center mt-2 text-zinc-950 text-opacity-70 max-md:max-w-full">
-      <form className="flex gap-3 px-6 py-3 bg-zinc-50 bg-opacity-90 rounded-[40px] max-md:flex-wrap" onSubmit={handleSubmit}>
+      <form
+        className="flex gap-3 px-6 py-3 bg-zinc-50 bg-opacity-90 rounded-[40px] max-md:flex-wrap"
+        onSubmit={handleSubmit}
+      >
         <button
           type="submit"
           className="justify-center px-1.5 py-1.5 text-lg text-center leading-[8px]"
@@ -50,7 +53,7 @@ function SearchBar({ setSearchTerm }) {
 
 /**
  * FilterBar Component
- * @param {*} param0 
+ * @param {*} param0
  * @returns {JSX.Element}
  */
 function FilterBar({
@@ -59,44 +62,13 @@ function FilterBar({
   selected,
   setSelected,
 }) {
-  const handleDropdown = (option) => {
-    console.log(option);
-    if (option === "스터디") {
-      setMoimCategory("STUDY");
-    } else if (option === "팀 프로젝트") {
-      setMoimCategory("TEAM_PROJECT");
-    } else if (option === "취미활동") {
-      setMoimCategory("HOBBY");
-    } else if (option === "운동") {
-      setMoimCategory("EXERCISE");
-    } else if (option === "전체") {
-      setMoimCategory("ALL");
-    } else {
-      setMoimCategory("OTHERS");
-    }
-  };
-
   const handleFilter = (option) => {
     setMoimSortedFilter(option);
   };
 
   return (
-    <div className="flex gap-2.5 justify-between px-12 py-4 mt-9 w-full text-base text-center whitespace-nowrap text-neutral-700 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-      <div className="flex justify-center items-center">
-        <div>
-          <Dropdown
-            options={[
-              "전체",
-              "스터디",
-              "팀 프로젝트",
-              "취미활동",
-              "운동",
-              "기타",
-            ]}
-            onSelect={handleDropdown}
-          />
-        </div>
-      </div>
+    <div className="flex gap-2.5 justify-center px-12 py-4 mt-9 w-full text-base text-center whitespace-nowrap text-neutral-700 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
+      <div className="flex justify-center items-center"></div>
       <div className="flex justify-center items-center self-start px-16 font-Pretendard_SemiBold text-neutral-900 max-md:px-5 max-md:max-w-full">
         <div className="flex gap-3">
           <div
@@ -115,11 +87,6 @@ function FilterBar({
           >
             조회수 순
           </div>
-        </div>
-      </div>
-      <div>
-        <div className="flex gap-0 justify-center items-center">
-          <Filter options={["Time", "Distance"]} onSelect={handleFilter} />
         </div>
       </div>
     </div>
@@ -173,6 +140,22 @@ export default function Home() {
     };
     fetchData();
   }, [searchTerm, moimCategory, selected]);
+  const handleDropdown = (option) => {
+    console.log(option);
+    if (option === "스터디") {
+      setMoimCategory("STUDY");
+    } else if (option === "팀 프로젝트") {
+      setMoimCategory("TEAM_PROJECT");
+    } else if (option === "취미활동") {
+      setMoimCategory("HOBBY");
+    } else if (option === "운동") {
+      setMoimCategory("EXERCISE");
+    } else if (option === "전체") {
+      setMoimCategory("ALL");
+    } else {
+      setMoimCategory("OTHERS");
+    }
+  };
 
   return (
     <div className="flex flex-col justify-between pb-20 bg-white">
@@ -188,6 +171,19 @@ export default function Home() {
         setSelected={setSelected}
         setMoimSortedFilter={setMoimSortedFilter}
       />
+      <div className="px-12">
+        <Dropdown
+          options={[
+            "전체",
+            "스터디",
+            "팀 프로젝트",
+            "취미활동",
+            "운동",
+            "기타",
+          ]}
+          onSelect={handleDropdown}
+        />
+      </div>
       <div className="grid md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-10 mt-10 px-12">
         {moimInfo.length !== 0 ? (
           moimInfo.map((item) => (

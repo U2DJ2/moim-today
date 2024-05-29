@@ -1,10 +1,9 @@
-import React from "react";
 import icon from "../../assets/svg/personIcon.svg";
 import clock from "../../assets/svg/clockIcon.svg";
 
 function DetailedRight({ category, title, currentCount, capacity, contents }) {
   return (
-    <div className="flex flex-1 flex-col bg-white shadow-[0px_4px_12px_rgba(0,_0,_0,_0.06)] overflow-hidden rounded-3xl px-24 gap-8 min-h-[600px] h-fit">
+    <div className="flex flex-1 flex-col bg-white shadow-[0px_4px_12px_rgba(0,_0,_0,_0.06)] overflow-hidden rounded-3xl px-12 pt-6 gap-8 min-h-[600px] h-fit">
       <div>
         <div className="bg-black font-Pretendard_Light text-lg rounded-full px-5 text-white justify-center items-center text-center w-fit mb-3">
           {category}
@@ -24,7 +23,7 @@ function DetailedRight({ category, title, currentCount, capacity, contents }) {
           <div className="flex font-Pretendard_SemiBold text-sm text-[#6F6F6F] gap-2 w-full items-center">
             <img src={clock} className=" w-4" />
             <div className="inline-block w-full text-left text-xl text-[#6F6F6F] hover:cursor-pointer">
-              가용시간 보기
+              모임 시간
             </div>
           </div>
         </div>

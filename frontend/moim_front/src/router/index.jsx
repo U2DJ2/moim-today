@@ -62,7 +62,6 @@ function Router() {
       checkSession();
     }
   }, [navigate]);
-  const { MoimId } = useParams();
 
   return (
     <Routes>
@@ -74,7 +73,7 @@ function Router() {
         <Route element={<MoimLayout />}>
           <Route path="/join/:MoimId" element={<MoimJoinPage />} />
           <Route
-            path="/meeting/:moimId/:meetingId"
+            path="/meeting/:MoimId/:meetingId"
             element={<MeetingDetailPage />}
           />
         </Route>

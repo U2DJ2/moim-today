@@ -78,6 +78,7 @@ function DetailedLeft({
   image,
   setMessage,
   setIsOpen,
+  profileImg,
 }) {
   let { MoimId } = useParams();
   console.log(MoimId);
@@ -131,9 +132,13 @@ function DetailedLeft({
           </div>
         </Modal.Body>
       </Modal>
-      <div className="flex flex-col basis-1/5 gap-4 items-center h-full min-h-screen md:basis-1/6">
-        <img className=" w-72 h-60 rounded-t-2xl" src={image} />
-        <div className=" font-Pretendard_Normal ">{userName}</div>
+      <div className="flex flex-col gap-4 items-center h-full md:w-96 sm:w-full">
+        <img className="rounded-t-2xl w-full h-72" src={image} />
+        <div className="flex flex-col gap-2 items-center">
+          <img className="w-8 h-8 rounded-full" src={profileImg} />
+          <div className="font-Pretendard_Normal ">{userName}</div>
+        </div>
+
         <div className="text-center font-Pretendard_Black text-3xl text-[#3F3F3F]">
           {title}
         </div>

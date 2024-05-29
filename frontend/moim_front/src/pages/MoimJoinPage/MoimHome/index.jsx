@@ -6,7 +6,8 @@ import { GET, POST } from "../../../utils/axios";
 import CreationModal from "../../../components/CreationModal";
 import { IndeterminateCheckBox, SettingsOutlined } from "@mui/icons-material";
 import { fetchMeetings } from "../../../api/moim";
-function MoimHome({ notices, isHost, moimId }) {
+import { fetchNotices } from "../../../api/moim";
+function MoimHome({ isHost, moimId }) {
   const [showModal, setShowModal] = useState(false);
   const [meetingOption, setMeetingOption] = useState("UPCOMING");
 
@@ -16,6 +17,7 @@ function MoimHome({ notices, isHost, moimId }) {
   const [noticeContent, setNoticeContent] = useState("");
   const [noticeDate, setNoticeDate] = useState("");
   const [open, setOpen] = useState(false);
+  const [notices, setNotices] = useState([]);
 
   const navigate = useNavigate();
 
@@ -30,7 +32,7 @@ function MoimHome({ notices, isHost, moimId }) {
     }
   };
 
-  const cardClickHandler = () => {
+  const cardClickHandler = (noticeId) => {
     navigate(`notice/${noticeId}`);
   };
 
@@ -49,8 +51,16 @@ function MoimHome({ notices, isHost, moimId }) {
         contents: noticeContent,
       };
       const response = await POST("api/moims/notices", data);
-
-      console.log(response.data);
+      getNotices();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const getNotices = async () => {
+    try {
+      const result = await fetchNotices(moimId);
+      console.log(result);
+      setNotices(result.data.data);
     } catch (e) {
       console.log(e);
     }
@@ -58,8 +68,6 @@ function MoimHome({ notices, isHost, moimId }) {
   const getMeetings = async () => {
     try {
       const result = await fetchMeetings(moimId, meetingOption);
-      console.log(result.data.data);
-
       setMeetings(result.data.data);
     } catch (e) {
       console.log(e);
@@ -74,6 +82,7 @@ function MoimHome({ notices, isHost, moimId }) {
   };
   useEffect(() => {
     getMeetings();
+    getNotices();
   }, []);
   useEffect(() => {
     getMeetings();
@@ -104,7 +113,7 @@ function MoimHome({ notices, isHost, moimId }) {
                 title={notice.title}
                 btn={false}
                 isMeeting={false}
-                clickHandler={cardClickHandler}
+                clickHandler={() => cardClickHandler(notice.noticeId)}
               />
             ))
           ) : (

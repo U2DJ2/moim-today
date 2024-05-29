@@ -20,7 +20,6 @@ import DatePicker from "../../components/DatePicker/Single";
 // CSS
 import "./style.css";
 
-
 const calendarTheme = {
   root: {
     base: "relative",
@@ -215,25 +214,26 @@ const textInputTheme = {
   },
 };
 
-const labelStyle = "mt-2.5 mb-2.5 font-Pretendard_SemiBold leading-5 text-sm text-black max-md:max-w-full";
-const commonInputStyle = "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
+const labelStyle =
+  "mt-2.5 mb-2.5 font-Pretendard_SemiBold leading-5 text-sm text-black max-md:max-w-full";
+const commonInputStyle =
+  "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
 
-async function fetchAllTodos(startDate, setMoimData) {
-
+async function fetchAllTodos(setTodoData) {
   // Parse start date
-  startDate = new Date(startDate);
-  startDate = startDate.toISOString().slice(0, 7);
+  let requestDate = new Date(new Date().getFullYear(), 0, 1);
+  requestDate = requestDate.toISOString().slice(0, 7);
 
   try {
     const response = await axios.get(
-      `https://api.moim.today/api/todos?startDate=${startDate}&months=12`,
+      `https://api.moim.today/api/todos?requestDate=${requestDate}&months=12`,
       {
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
-    setMoimData(response.data.data);
+    setTodoData(response.data.data);
   } catch (error) {
     console.error("Error fetching events:", error);
   }
@@ -298,12 +298,20 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
   const [todoData, setTodoData] = useState([]);
 
   useEffect(() => {
-    const firstDate = new Date(new Date().getFullYear(), 0, 1);
-    fetchAllTodos(firstDate, setTodoData);
+    fetchAllTodos(setTodoData);
   }, []);
 
-  const handleTodoCheckboxClick = (todo) => {
-    alert(`Clicked on todo: ${todo.contents}`);
+  const handleTodoCheckboxClick = async (todo) => {
+    await axios.patch(
+      `https://api.moim.today/api/todos/todo-progress`,
+      {
+        todoId: todo.todoId,
+        todoProgress: todo.todoProgress === "COMPLETED" ? "PENDING" : "COMPLETED",
+      }
+    );
+
+    // Refresh component
+    fetchAllTodos(setTodoData);
   };
 
   const handleHome = () => {
@@ -344,33 +352,37 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
           TODO 추가하기
         </button>
         <div className="mt-8"></div>
-        {todoData.map((moim) => (
-          <Accordion key={moim.moimId} className="w-72">
-            <Accordion.Panel>
-              <Accordion.Title className="font-Pretendard_SemiBold text-[16px]">
-                {moim.moimTitle}
-              </Accordion.Title>
-              <Accordion.Content>
-                {moim.todoResponses.map((todo, todoIndex) => {
-                  const isLastTodo =
-                    todoIndex === moim.todoResponses.length - 1;
-                  return (
-                    <div
-                      key={todo.todoId}
-                      className={`flex items-center gap-2 ${isLastTodo ? "" : " mb-4"
-                        }`}
-                    >
-                      <Checkbox
-                        onChange={() => handleTodoCheckboxClick(todo)}
-                      />
-                      <Label className="font-Pretendard_Medium">{todo.contents}</Label>
-                    </div>
-                  );
-                })}
-              </Accordion.Content>
-            </Accordion.Panel>
-          </Accordion>
-        ))}
+
+        {todoData &&
+          todoData.map((moim) => (
+            <Accordion key={moim.moimId} className="w-72">
+              <Accordion.Panel>
+                <Accordion.Title className="font-Pretendard_SemiBold text-[16px]">
+                  {moim.moimTitle}
+                </Accordion.Title>
+                <Accordion.Content>
+                  {moim.todoGroupByDates.map((todoGroup) =>
+                    todoGroup.todoContents.map((todo) => {
+                      return (
+                        <div
+                          key={todo.todoId}
+                          className={`flex items-center gap-2`}
+                        >
+                          <Checkbox
+                            onChange={() => handleTodoCheckboxClick(todo)}
+                            checked={todo.todoProgress === "COMPLETED"}
+                          />
+                          <Label className="font-Pretendard_Medium">
+                            {todo.contents}
+                          </Label>
+                        </div>
+                      );
+                    })
+                  )}
+                </Accordion.Content>
+              </Accordion.Panel>
+            </Accordion>
+          ))}
       </div>
     </aside>
   );
@@ -391,14 +403,14 @@ export default function Schedule() {
   const fetchMoimList = async () => {
     try {
       const response = await axios.get(`https://api.moim.today/api/moims`);
-      setMoimList(response.data.data); // 모임 리스트를 상태에 저장
+      setMoimList(response.data.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleMoimSelect = (index) => {
-    setSelectedMoimId(moimList[index].moimId); // store the selected moim ID
+    setSelectedMoimId(moimList[index].moimId);
   };
 
   const handleMiniCalendarDateSelect = (date) => {
@@ -407,12 +419,17 @@ export default function Schedule() {
 
   const handleAddTodo = () => {
     addTodo(selectedMoimId, todoContent, todoDate);
-    setOpenAddTodoModal(false); // close the modal after adding TODO
+    setOpenAddTodoModal(false);
   };
 
   return (
     <>
-      <Modal show={openTodoAddModal} size="xl" onClose={() => setOpenAddTodoModal(false)} theme={modalTheme}>
+      <Modal
+        show={openTodoAddModal}
+        size="xl"
+        onClose={() => setOpenAddTodoModal(false)}
+        theme={modalTheme}
+      >
         <Modal.Header>TODO 추가</Modal.Header>
         <Modal.Body>
           <div className="flex w-full flex-col gap-4">
@@ -449,7 +466,9 @@ export default function Schedule() {
           <div className="pt-6 grid grid-flow-col gap-4">
             <button
               className="w-auto justify-center px-6 py-3 text-[16px] text-center text-white bg-black whitespace-nowrap rounded-full font-semibold  hover:cursor-pointer"
-              onClick={() => { setOpenAddTodoModal(false); }}
+              onClick={() => {
+                setOpenAddTodoModal(false);
+              }}
             >
               취소
             </button>
