@@ -12,50 +12,36 @@
     대학별 시간표 기반 온라인 캘린더 및 일정 관리 서비스
     <br />
     <br />
-    <a href="https://moim.today">Web Demo</a>
-    ·
-    <a href="https://docs.google.com/presentation/d/1gOtEuXTCLChtCmJZqL4Rpi08TlMlSRpf/edit?usp=sharing&ouid=118304770497693886763&rtpof=true&sd=true">Presentation</a>
-    <br />
-    <br />
-    <a href="https://github.com/U2DJ2/moim-today/graphs/contributors">
-      <img src="https://img.shields.io/github/contributors/U2DJ2/moim-today.svg?style=for-the-badge" />
-    </a>
-    <a href="https://github.com/U2DJ2/moim-today/network/members">
-      <img src="https://img.shields.io/github/forks/U2DJ2/moim-today.svg?style=for-the-badge" />
-    </a>
-    <a href="https://github.com/U2DJ2/moim-today/stargazers">
-      <img src="https://img.shields.io/github/stars/U2DJ2/moim-today.svg?style=for-the-badge" />
-    </a>
-    <a href="https://github.com/U2DJ2/moim-today/issues">
-      <img src="https://img.shields.io/github/issues/U2DJ2/moim-today.svg?style=for-the-badge" />
-    </a>
-    <a href="https://github.com/U2DJ2/moim-today/blob/master/license.md">
-      <img src="https://img.shields.io/github/license/U2DJ2/moim-today.svg?style=for-the-badge" />
-    </a>
+    <a href="https://moim.today">Moim Today 바로가기</a>
   </p>
 </div>
-<h1 id="service_introduction"> 1. 팀플, 동아리 일정 및 개인 일정 관리 서비스, Moim-Today </h1>
+<h1 id="service_introduction"> 프로젝트 소개 </h1>
 <h2>1-1. 문제 정의</h2>
-대학생들은 교내 수업 뿐만이 아니라, 다양한 동아리나 스터디, 대외 활동을 통해 새로운 가치를 창출하고 자신의 가치를 쌓아나갑니다. 
-<br/><br/>
+대학생들은 교내 수업뿐만이 아니라, 다양한 동아리나 스터디, 대외 활동을 통해 새로운 가치를 창출하고 자신의 가치를 쌓아나갑니다.
+<br/>
 
-그러나 이 과정에서 대학생들은 아래와 같은 문제 상황을 겪게 됩니다.
+그러나 이 과정에서 대학생들은 다음과 같은 문제 상황을 겪게 됩니다.               
 
-1) 모임 활동 중 각 팀원들의 가용 시간을 찾아 활동 시간을 정하는 과정이 힘듭니다.
-2) 다양한 활동 중에 생겨나는 무수한 할 일들을 관리하는 과정이 복잡하고, 비효율적입니다.
-3) 모임별 ToDo나 나의 일정을 관리하는 서비스가 부재합니다.
+<h3> 1. 시간표와 캘린더의 연동 서비스 부재 </h3> 
+대학생을 위한 시간표, 캘린더를 모두 통합적으로 제공하는 서비스가 부재함.<br>       
+일정 관리에 적합하지 않다는 문제가 있음.          
 
-따라서 저희는 교내 모임별 가용시간을 파악하고, 일정 관리를 하는 모임 투데이로 해당 문제점들을 해결하고자합니다.
+<h3> 2. 모임 일정 조율의 어려움</h3>       
+모임 내에서 회원들의 스케줄이 제각각이기 때문에 모임 일정 조율이 번거로움.
+
+<h3> 3. 교내 모임을 찾기 어려움</h3>       
+대학 내에서 진행되는 다양한 모임을 한눈에 쉽게 파악하기 어려움.
 
 <h2>1-2. 문제 해결을 위한 주요 기능</h2>
-<h3> 1. 에브리타임 시간표 기반 가용 시간 제공</h3>
-대부분의 대학생들은 시간표 관리를 위해 에브리타임을 이용합니다. 저희 모임투데이는 대학생들의 사용 편의를 위해 기존에 사용하고 있던 에브리타임의 시간표 url 값을 입력받아 가용 시간을 제공합니다.
-<h3> 2. 개인 일정 추가 기능 및 모임별 ToDo 제공</h3>
-대학생들은 교내 수업 외 다양한 모임(스터디, 동아리, 대외활동 등)에 참여하고, 해당 모임에서 다양한 일정들과 할 일들이 생겨납니다. 저희 모임 투데이에서는 기존 대학생들의 일정 관리에 대한 본질을 생각해 문제를 해결하고자 개인 일정을 추가하거나 모임별 ToDo를 추가하는 기능을 제공합니다.
-<h3> 3. 모임 내 참여자 가용 시간 제공</h3>
-다양한 형태의 모임에서, 언제나 힘이 드는 것은 바로 모임 내 참여자들의 가용 시간을 파악해 팀 활동 시간을 정하는 일입니다. 저희 모임 투데이 에서는 참여자 개인의 일정, 시간표 정보, 모임 일정들을 종합하여 가용 시간을 제공합니다.
+<h3> 1. 시간표, 캘린더 연동 기능 제공</h3>
+대부분의 대학생들은 시간표 관리를 위해 에브리타임을 이용합니다.<br>      
+대학생들의 사용 편의를 위해 기존에 사용하고 있던 에브리타임의 시간표 url 값을 입력받아 가용 시간을 제공합니다.         
+<h3> 2. 개인 일정 추가 기능 및 모임별 할 일 관리 기능 제공</h3>
+개인 일정을 추가하거나 모임별 할 일을 추가하고 관리하는 기능을 제공합니다.        
+<h3> 3. 모임 가용 시간 제공</h3>     
+모임 참여자 각각의 개인의 일정, 시간표 정보, 모임 일정들을 종합하여 가용 시간을 제공합니다.
 
-<h1>2. 모임 투데이를 만든 기술</h1>
+<h1>2. Moim Today에서 사용하는 기술</h1>
 <h3>FE</h3>
 <div>
   <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> 
@@ -89,7 +75,35 @@
   <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
   <img src="https://img.shields.io/badge/Slack-FFD700?style=for-the-badge&logo=slack&logoColor=white">
 </div>
-<h1 id="team">  3. 팀 정보 (Team Information)</h2>
+
+<h1>3. 개발하다 마주친 문제 정리</h1>
+<ul>
+  
+<a href="https://velog.io/@anak_2/%EA%B9%83-%ED%98%91%EC%97%85%EC%97%90%EC%84%9C-%EC%9D%B4%EC%8A%88Issue%EC%99%80-%ED%92%80%EB%A6%AC%ED%80%98%EC%8A%A4%ED%8A%B8PR%EC%9D%84-%ED%85%9C%ED%94%8C%EB%A6%BF-template%EC%9C%BC%EB%A1%9C-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0">깃 협업에서 이슈(Issue)와 풀리퀘스트(PR)을 템플릿 (template)으로 관리하기</a> 
+  
+<a href="https://320hwany.tistory.com/112">팀 프로젝트를 위한 github actions CI/CD 세팅</a>
+  
+<a href="https://south-leopard-b1c.notion.site/58936ac8371a4e49a333a698d99bb0ce">백엔드 모니터링 환경을 구축해보자!</a>
+
+<a href="https://320hwany.tistory.com/113">RDB는 정말 유연한 설계에 대응하는 것이 어려울까?</a>
+
+<a href="https://320hwany.tistory.com/114">대량의 insert 쿼리 jdbc batch update를 사용하여 개선하기</a>
+
+<a href="https://320hwany.tistory.com/116">복잡한 비즈니스 로직을 풀어내는 방법</a>
+
+<a href="https://south-leopard-b1c.notion.site/881b7ad598f04843a8970201ea9cad53">쿠키-세션을 이용한 로그인 방식 선택과 이유</a>
+
+<a href="https://320hwany.tistory.com/115">저희 팀에서는 이렇게 테스트 코드를 작성해요</a>
+
+<a href="https://south-leopard-b1c.notion.site/8422e7fa404543f48dd0331cc0578297">독립 테스트는 성공하는데 동시 테스트는 실패하는 이유 찾기</a>
+</ul>
+
+<h1>4. 인프라 구조 </h1>
+
+<img width="671" alt="스크린샷 2024-05-29 오후 9 53 30" src="https://github.com/U2DJ2/moim-today/assets/84896838/b76ca0a7-e1bd-4793-a0fd-bd5f8bceefb6">
+
+
+<h1 id="team">  5. 팀원 소개</h2>
 
 <table width="1200">
   <thead>
@@ -179,25 +193,3 @@
     </tr>
   </tbody>
 </table>
-
-<h1>4. 문제 상황과 해결</h1>
-<ul>
-  
-<a href="https://velog.io/@anak_2/%EA%B9%83-%ED%98%91%EC%97%85%EC%97%90%EC%84%9C-%EC%9D%B4%EC%8A%88Issue%EC%99%80-%ED%92%80%EB%A6%AC%ED%80%98%EC%8A%A4%ED%8A%B8PR%EC%9D%84-%ED%85%9C%ED%94%8C%EB%A6%BF-template%EC%9C%BC%EB%A1%9C-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0">깃 협업에서 이슈(Issue)와 풀리퀘스트(PR)을 템플릿 (template)으로 관리하기</a> 
-  
-<a href="https://320hwany.tistory.com/112">팀 프로젝트를 위한 github actions CI/CD 세팅</a>
-  
-<a href="https://south-leopard-b1c.notion.site/58936ac8371a4e49a333a698d99bb0ce">백엔드 모니터링 환경을 구축</a>
-
-<a href="https://320hwany.tistory.com/113">RDB는 정말 유연한 설계에 대응하는 것이 어려울까?</a>
-
-<a href="https://320hwany.tistory.com/114">대량의 insert 쿼리 jdbc batch update를 사용하여 개선하기</a>
-
-<a href="https://320hwany.tistory.com/116">복잡한 비즈니스 로직을 풀어내는 방법</a>
-
-<a href="https://south-leopard-b1c.notion.site/881b7ad598f04843a8970201ea9cad53">쿠키-세션을 이용한 로그인 방식 선택과 이유</a>
-
-<a href="https://320hwany.tistory.com/115">저희 팀에서는 이렇게 테스트 코드를 작성해요</a>
-
-<a href="https://south-leopard-b1c.notion.site/8422e7fa404543f48dd0331cc0578297">독립 테스트는 성공하는데 동시 테스트는 실패하는 이유 찾기</a>
-</ul>
