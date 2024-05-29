@@ -24,7 +24,7 @@ public class RequestDepartmentRepositoryImpl implements RequestDepartmentReposit
     }
 
     @Override
-    public List<RequestDepartmentResponse> findAll() {
+    public List<RequestDepartmentResponse> findAllByUniversityId(final long universityId) {
         return queryFactory.select(
                         new QRequestDepartmentResponse(
                                 requestDepartmentJpaEntity.id,
@@ -33,6 +33,7 @@ public class RequestDepartmentRepositoryImpl implements RequestDepartmentReposit
                         )
                 )
                 .from(requestDepartmentJpaEntity)
+                .where(requestDepartmentJpaEntity.universityId.eq(universityId))
                 .fetch();
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RequestDepartmentRepository {
 
-    List<RequestDepartmentResponse> findAll();
+    List<RequestDepartmentResponse> findAllByUniversityId(final long universityId);
 
     void save(final RequestDepartmentJpaEntity requestDepartmentJpaEntity);
 

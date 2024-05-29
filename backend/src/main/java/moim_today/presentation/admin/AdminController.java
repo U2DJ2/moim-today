@@ -47,8 +47,6 @@ public class AdminController {
 
     //미팅관리(조회, 삭제)
 
-    //학과관리
-
     //서비스 문의(조회)
 
     //학과 추가 문의(조회)
