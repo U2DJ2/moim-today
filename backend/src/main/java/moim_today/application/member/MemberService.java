@@ -12,7 +12,7 @@ public interface MemberService {
 
     MemberProfileResponse getMemberProfile(final MemberSession memberSession);
 
-    void updateProfile(final long memberId, final long universityId, final ProfileUpdateRequest profileUpdateRequest);
+    void updateProfile(final long memberId, final ProfileUpdateRequest profileUpdateRequest);
 
     ProfileImageResponse uploadProfileImage(final long memberId, final MultipartFile file);
 

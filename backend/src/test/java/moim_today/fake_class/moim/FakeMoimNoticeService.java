@@ -5,7 +5,9 @@ import moim_today.dto.moim.moim_notice.*;
 import moim_today.global.error.ForbiddenException;
 
 import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
 import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
@@ -25,22 +27,36 @@ public class FakeMoimNoticeService implements MoimNoticeService {
             throw new ForbiddenException(MOIM_FORBIDDEN_ERROR.message());
         }
 
+        int year = LocalDateTime.now().getYear();
+        int month = LocalDateTime.now().getMonthValue();
+        int day = LocalDateTime.now().getDayOfMonth();
+        String dayOfWeek = LocalDateTime.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN);
+
         MoimNoticeSimpleResponse moimNoticeSimpleResponse1 = MoimNoticeSimpleResponse.builder()
                 .moimNoticeId(1L)
                 .title(NOTICE_TITLE.value())
-                .createdAt(LocalDateTime.now())
+                .year(year)
+                .month(month)
+                .day(day)
+                .dayOfWeek(dayOfWeek)
                 .build();
 
         MoimNoticeSimpleResponse moimNoticeSimpleResponse2 = MoimNoticeSimpleResponse.builder()
                 .moimNoticeId(2L)
                 .title(NOTICE_TITLE.value())
-                .createdAt(LocalDateTime.now())
+                .year(year)
+                .month(month)
+                .day(day)
+                .dayOfWeek(dayOfWeek)
                 .build();
 
         MoimNoticeSimpleResponse moimNoticeSimpleResponse3 = MoimNoticeSimpleResponse.builder()
                 .moimNoticeId(3L)
                 .title(NOTICE_TITLE.value())
-                .createdAt(LocalDateTime.now())
+                .year(year)
+                .month(month)
+                .day(day)
+                .dayOfWeek(dayOfWeek)
                 .build();
 
         return List.of(moimNoticeSimpleResponse1, moimNoticeSimpleResponse2, moimNoticeSimpleResponse3);

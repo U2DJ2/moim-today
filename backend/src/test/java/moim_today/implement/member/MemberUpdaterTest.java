@@ -144,60 +144,19 @@ class MemberUpdaterTest extends ImplementTest {
     @Test
     void updateProfile() {
         // given
-        long universityId = Long.parseLong(UNIV_ID.value());
-
-        DepartmentJpaEntity departmentJpaEntity = DepartmentJpaEntity.builder()
-                .universityId(universityId)
-                .build();
-
-        departmentRepository.save(departmentJpaEntity);
-        long updateDepartmentId = departmentJpaEntity.getId();
-
         MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
                 .build();
 
         memberRepository.save(memberJpaEntity);
         long memberId = memberJpaEntity.getId();
 
-        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(
-                updateDepartmentId, PROFILE_IMAGE_URL.value());
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(PROFILE_IMAGE_URL.value());
 
         // when
-        memberUpdater.updateProfile(memberId, universityId, profileUpdateRequest);
+        memberUpdater.updateProfile(memberId, profileUpdateRequest);
 
         // then
         MemberJpaEntity findEntity = memberRepository.getById(memberId);
-        assertThat(findEntity.getDepartmentId()).isEqualTo(updateDepartmentId);
         assertThat(findEntity.getMemberProfileImageUrl()).isEqualTo(PROFILE_IMAGE_URL.value());
-    }
-
-    @DisplayName("수정을 요청한 전공이 해당 대학교에 있는 전공이 아닌 경우 예외가 발생한다.")
-    @Test
-    void updateProfileNotMatchUniversity() {
-        // given
-        long right_universityId = Long.parseLong(UNIV_ID.value());
-        long wrong_universityId = right_universityId + 1L;
-
-        DepartmentJpaEntity departmentJpaEntity = DepartmentJpaEntity.builder()
-                .universityId(wrong_universityId)
-                .build();
-
-        departmentRepository.save(departmentJpaEntity);
-        long wrong_departmentId = departmentJpaEntity.getId();
-
-        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
-                .universityId(right_universityId)
-                .build();
-
-        memberRepository.save(memberJpaEntity);
-        long memberId = memberJpaEntity.getId();
-
-        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(
-                wrong_departmentId, PROFILE_IMAGE_URL.value());
-
-        // when & then
-        assertThatThrownBy(() -> memberUpdater.updateProfile(memberId, right_universityId, profileUpdateRequest))
-                .isInstanceOf(BadRequestException.class)
-                .hasMessage(DEPARTMENT_NOT_MATCH_UNIVERSITY.message());
     }
 }

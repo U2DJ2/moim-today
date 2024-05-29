@@ -5,7 +5,7 @@ import moim_today.domain.member.MemberSession;
 import moim_today.dto.auth.MemberLoginRequest;
 import moim_today.dto.auth.MemberSignUpRequest;
 import moim_today.dto.auth.MemberSessionValidateResponse;
-import moim_today.implement.department.DepartmentFinder;
+import moim_today.implement.department.department.DepartmentFinder;
 import moim_today.implement.member.AuthManager;
 import moim_today.implement.member.MemberFinder;
 import moim_today.implement.university.UniversityFinder;

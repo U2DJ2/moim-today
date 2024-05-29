@@ -52,19 +52,20 @@ public class TodoRepositoryImpl implements TodoRepository {
     @Override
     public List<TodoResponse> findAllByDateRange(final long memberId, final long moimId,
                                                  final LocalDate startDate, final LocalDate endDate) {
-                return queryFactory.select(
-                new QTodoResponse(
-                        todoJpaEntity.id,
-                        todoJpaEntity.contents,
-                        todoJpaEntity.todoProgress,
-                        todoJpaEntity.todoDate
-                ))
+        return queryFactory.select(
+                        new QTodoResponse(
+                                todoJpaEntity.id,
+                                todoJpaEntity.contents,
+                                todoJpaEntity.todoProgress,
+                                todoJpaEntity.todoDate
+                        ))
                 .from(todoJpaEntity)
                 .where(
                         todoJpaEntity.memberId.eq(memberId)
                                 .and(todoJpaEntity.moimId.eq(moimId))
                                 .and(todoJpaEntity.todoDate.between(startDate, endDate))
                 )
+                .orderBy(todoJpaEntity.moimId.asc())
                 .fetch();
     }
 

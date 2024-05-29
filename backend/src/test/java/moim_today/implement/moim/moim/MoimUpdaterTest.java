@@ -17,9 +17,11 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import static java.util.Objects.*;
+import static java.util.Objects.requireNonNull;
 import static moim_today.global.constant.MoimConstant.VIEWED_MOIM_COOKIE_NAME;
 import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
 import static moim_today.util.TestConstant.*;
@@ -200,5 +202,58 @@ class MoimUpdaterTest extends ImplementTest {
         // then
         MoimJpaEntity updatedMoim = moimRepository.getById(moimId);
         assertThat(updatedMoim.getViews()).isEqualTo(1);
+    }
+
+    @DisplayName("모임의 현재 인원을 업데이트한다")
+    @Test
+    void updateMoimCurrentCount() {
+        // given
+        MoimJpaEntity moim = MoimJpaEntity.builder()
+                .currentCount(0)
+                .build();
+
+        moimRepository.save(moim);
+
+        // when
+        moimUpdater.updateMoimCurrentCount(moim.getId(), 1);
+        MoimJpaEntity m = moimRepository.getById(moim.getId());
+
+        // then
+        assertThat(m.getCurrentCount()).isEqualTo(1);
+    }
+
+    @DisplayName("모임의 현재 인원을 5명이 동시에 1씩 증가시켜도 5로 업데이트 되어야한다.")
+    @Test
+    void updateConcurrentMoimCurrentCount() throws Exception{
+        // given
+        final int FIVE_PEOPLE = 5;
+        final int MOIM_MAXIMUM_PEOPLE = 10;
+
+        ExecutorService executorService = Executors.newFixedThreadPool(FIVE_PEOPLE);
+        CountDownLatch latch = new CountDownLatch(FIVE_PEOPLE);
+
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .capacity(MOIM_MAXIMUM_PEOPLE)
+                .memberId(MEMBER_ID.longValue())
+                .build();
+
+        MoimJpaEntity savedMoim = moimRepository.save(moimJpaEntity);
+
+        // when
+        for (int i = 0; i < FIVE_PEOPLE; i++) {
+            executorService.submit(() -> {
+                try {
+                    moimUpdater.updateMoimCurrentCount(savedMoim.getId(), 1);
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+
+        latch.await();
+        MoimJpaEntity resultMoim = moimRepository.getById(savedMoim.getId());
+
+        // then
+        assertThat(resultMoim.getCurrentCount()).isEqualTo(FIVE_PEOPLE);
     }
 }

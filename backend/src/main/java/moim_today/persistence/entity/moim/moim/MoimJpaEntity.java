@@ -8,6 +8,7 @@ import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.MoimUpdateRequest;
 import moim_today.global.annotation.Association;
 import moim_today.global.base_entity.BaseTimeEntity;
+import moim_today.global.error.BadRequestException;
 import moim_today.global.error.ForbiddenException;
 
 import java.time.LocalDate;
@@ -15,9 +16,10 @@ import java.time.LocalDateTime;
 
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
+import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_DATE_TIME_BAD_REQUEST_ERROR;
 import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_HOST_ERROR;
 import static moim_today.global.constant.NumberConstant.VIEW_COUNT_OF_ONE;
-import static moim_today.global.constant.exception.MoimExceptionConstant.ORGANIZER_FORBIDDEN_ERROR;
+import static moim_today.global.constant.exception.MoimExceptionConstant.*;
 
 @Getter
 @Table(name = "moim")
@@ -95,6 +97,21 @@ public class MoimJpaEntity extends BaseTimeEntity {
         }
     }
 
+    public void validateMoimNotEnd(final LocalDate curDate){
+        if(endDate.isBefore(curDate)){
+            throw new BadRequestException(MOIM_AFTER_END_ERROR.message());
+        }
+    }
+
+    public void validateDateTime(final LocalDateTime meetingStartDateTime, final LocalDateTime meetingEndDateTime) {
+        LocalDate meetingStartDate = meetingStartDateTime.toLocalDate();
+        LocalDate meetingEndDate = meetingEndDateTime.toLocalDate();
+
+        if (this.startDate.isAfter(meetingStartDate) || this.endDate.isBefore(meetingEndDate)) {
+            throw new BadRequestException(MEETING_DATE_TIME_BAD_REQUEST_ERROR.message());
+        }
+    }
+
     public void updateMoim(final MoimUpdateRequest moimUpdateRequest) {
         this.title = moimUpdateRequest.title();
         this.contents = moimUpdateRequest.contents();
@@ -108,7 +125,7 @@ public class MoimJpaEntity extends BaseTimeEntity {
         updateImageUrl(moimUpdateRequest.imageUrl());
     }
 
-    public void updateCurrentCount(final int plusCount){
+    public void addToCurrentCount(final int plusCount){
         this.currentCount += plusCount;
     }
 

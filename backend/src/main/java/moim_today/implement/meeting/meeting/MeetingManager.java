@@ -11,6 +11,7 @@ import moim_today.implement.meeting.joined_meeting.JoinedMeetingFinder;
 import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.implement.schedule.schedule.ScheduleAppender;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
+import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +35,8 @@ public class MeetingManager {
     private final JoinedMeetingFinder joinedMeetingFinder;
 
     public MeetingManager(final MeetingAppender meetingAppender, final MoimFinder moimFinder,
-                          final ScheduleAppender scheduleAppender, final JoinedMeetingAppender joinedMeetingAppender,
-                          final JoinedMeetingFinder joinedMeetingFinder) {
+              final ScheduleAppender scheduleAppender, final JoinedMeetingAppender joinedMeetingAppender,
+              final JoinedMeetingFinder joinedMeetingFinder) {
         this.meetingAppender = meetingAppender;
         this.moimFinder = moimFinder;
         this.scheduleAppender = scheduleAppender;
@@ -47,6 +48,7 @@ public class MeetingManager {
     public MeetingCreateResponse createMeeting(final long memberId,
                                                final MeetingCreateRequest meetingCreateRequest,
                                                final LocalDate currentDate) {
+        validateMoimDateTime(meetingCreateRequest);
         validateMemberIsHost(memberId, meetingCreateRequest);
         MeetingCategory meetingCategory = meetingCreateRequest.meetingCategory();
         String moimTitle = moimFinder.getTitleById(meetingCreateRequest.moimId());
@@ -56,6 +58,15 @@ public class MeetingManager {
         } else {
             return createRegularMeeting(meetingCreateRequest, moimTitle, currentDate);
         }
+    }
+
+    private void validateMoimDateTime(final MeetingCreateRequest meetingCreateRequest) {
+        long moimId = meetingCreateRequest.moimId();
+        LocalDateTime meetingStartDateTime = meetingCreateRequest.startDateTime();
+        LocalDateTime meetingEndDateTime = meetingCreateRequest.endDateTime();
+
+        MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
+        moimJpaEntity.validateDateTime(meetingStartDateTime, meetingEndDateTime);
     }
 
     private void validateMemberIsHost(final long memberId, final MeetingCreateRequest meetingCreateRequest) {

@@ -19,11 +19,11 @@ public class MailScheduler {
 
     private static final String HOURLY_CRON_EXPRESSION = "0 0 * * * *";
 
-    private final MailSender mailSender;
+    private final SMTPMailSender mailSender;
     private final MeetingFinder meetingFinder;
     private final JoinedMeetingUpdater joinedMeetingUpdater;
 
-    public MailScheduler(final MailSender mailSender, final MeetingFinder meetingFinder,
+    public MailScheduler(final SMTPMailSender mailSender, final MeetingFinder meetingFinder,
                          final JoinedMeetingUpdater joinedMeetingUpdater) {
         this.mailSender = mailSender;
         this.meetingFinder = meetingFinder;

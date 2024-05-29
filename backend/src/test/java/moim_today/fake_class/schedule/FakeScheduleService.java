@@ -107,21 +107,21 @@ public class FakeScheduleService implements ScheduleService {
             final long memberId, final LocalDate startDate) {
 
         AvailableTimeForMemberResponse availableTimeForMemberResponse1 = AvailableTimeForMemberResponse.builder()
-                .calenderId(1)
+                .calendarId(1)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
                 .colorHex(AvailableColorHex.getHexByCount(0))
                 .build();
 
         AvailableTimeForMemberResponse availableTimeForMemberResponse2 = AvailableTimeForMemberResponse.builder()
-                .calenderId(1)
+                .calendarId(1)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 14, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 16, 0, 0))
                 .colorHex(AvailableColorHex.getHexByCount(0))
                 .build();
 
         AvailableTimeForMemberResponse availableTimeForMemberResponse3 = AvailableTimeForMemberResponse.builder()
-                .calenderId(1)
+                .calendarId(1)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 18, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 20, 0, 0))
                 .colorHex(AvailableColorHex.getHexByCount(1))

@@ -51,4 +51,10 @@ public class MoimUpdater {
             viewedMoimsCookie.addViewedMoimsCookieInCookie(response, objectMapper);
         }
     }
+
+    @Transactional
+    public void updateMoimCurrentCount(final long moimId, final int value) {
+        MoimJpaEntity findMoim = moimFinder.getByIdWithPessimisticLock(moimId);
+        findMoim.addToCurrentCount(value);
+    }
 }

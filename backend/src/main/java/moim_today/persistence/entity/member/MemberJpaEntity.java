@@ -64,7 +64,6 @@ public class MemberJpaEntity extends BaseTimeEntity {
     }
 
     public void updateProfile(final ProfileUpdateRequest profileUpdateRequest) {
-        this.departmentId = profileUpdateRequest.departmentId();
         this.memberProfileImageUrl = profileUpdateRequest.imageUrl();
     }
 }
