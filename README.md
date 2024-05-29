@@ -187,7 +187,7 @@
   
 <a href="https://320hwany.tistory.com/112">팀 프로젝트를 위한 github actions CI/CD 세팅</a>
   
-<a href="https://south-leopard-b1c.notion.site/58936ac8371a4e49a333a698d99bb0ce">백엔드 모니터링 환경을 구축해보자!</a>
+<a href="https://south-leopard-b1c.notion.site/58936ac8371a4e49a333a698d99bb0ce">백엔드 모니터링 환경을 구축</a>
 
 <a href="https://320hwany.tistory.com/113">RDB는 정말 유연한 설계에 대응하는 것이 어려울까?</a>
 
