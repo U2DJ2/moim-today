@@ -22,7 +22,6 @@ import static moim_today.global.constant.MailConstant.DATA;
 import static moim_today.global.constant.exception.MailExceptionConstant.MAIL_SEND_ERROR;
 
 @Slf4j
-@Implement
 public class NaverSMTPMailSender implements SMTPMailSender {
 
     private final TemplateEngine htmlTemplateEngine;
