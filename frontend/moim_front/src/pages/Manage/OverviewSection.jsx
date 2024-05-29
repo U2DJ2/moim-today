@@ -22,24 +22,6 @@ function Overview() {
     }
   };
 
-  // const getHostMoim = async () => {
-  //   try {
-  //     const result = await axios.get(
-  //       "https://api.moim.today/api/moims/joined/host",
-  //       {
-  //         params: {
-  //           lastMoimId: "0",
-  //           ended: "false",
-  //         },
-  //       }
-  //     );
-  //     console.log(result);
-  //     setMoims(result.data.data);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
   useEffect(() => {
     getCardInfo();
   }, []);
