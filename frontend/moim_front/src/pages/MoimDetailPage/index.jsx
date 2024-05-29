@@ -106,9 +106,8 @@ function MoimDetailPage() {
   }, []);
 
   return (
-    <div className="bg-gradient-to-b  justify-center from-white to-[#F6F8FE] h-screen w-full min-h-[800px] px-9">
-      <div className=" flex w-full ">
-        <div className="flex gap-9 pt-2 flex-1 overflow-auto">
+    <div className="bg-gradient-to-b justify-center from-white to-[#F6F8FE] pl-10">
+        <div className="flex gap-8 pt-2 flex-1 overflow-auto">
           <DetailedLeft
             userName={writerInfo.username}
             title={moimInfo.title}
@@ -128,7 +127,6 @@ function MoimDetailPage() {
             className={"pl-3"}
           />
         </div>
-      </div>
       <Modal show={isAlertOpen} size="sm" onClose={() => setAlertOpen(false)} theme={modalTheme} popup>
         <Modal.Header />
         <Modal.Body>

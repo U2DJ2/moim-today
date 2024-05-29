@@ -132,8 +132,8 @@ function DetailedLeft({
           </div>
         </Modal.Body>
       </Modal>
-      <div className="flex flex-col gap-4 items-center h-full min-h-screen">
-        <img className="w-96 rounded-t-2xl" src={image} />
+      <div className="flex flex-col gap-4 items-center h-full md:w-96 sm:w-full">
+        <img className="rounded-t-2xl" src={image} />
         <div className="flex flex-col gap-2 items-center">
           <img className="w-8 h-8 rounded-full" src={profileImg} />
           <div className="font-Pretendard_Normal ">{userName}</div>
