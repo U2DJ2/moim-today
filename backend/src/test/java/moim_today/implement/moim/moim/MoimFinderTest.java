@@ -572,21 +572,25 @@ class MoimFinderTest extends ImplementTest {
         // given1
         long universityId = UNIV_ID.longValue();
 
+        LocalDate endDate = LocalDate.now().plusDays(1);
         MoimJpaEntity moimA = MoimJpaEntity.builder()
                 .universityId(universityId)
                 .title("appleMango")
+                .endDate(endDate)
                 .build();
 
         // given2
         MoimJpaEntity moimB = MoimJpaEntity.builder()
                 .universityId(universityId)
                 .title(" " + "apple" + " " + "mango" + " ")
+                .endDate(endDate)
                 .build();
 
         // given3
         MoimJpaEntity moimC = MoimJpaEntity.builder()
                 .universityId(universityId)
                 .title("apple" + " " + "mango")
+                .endDate(endDate)
                 .build();
 
         moimRepository.save(moimA);
@@ -615,21 +619,25 @@ class MoimFinderTest extends ImplementTest {
         long universityId = UNIV_ID.longValue();
         long otherUniversityId = UNIV_ID.longValue() + 1;
 
+        LocalDate endDate = LocalDate.now().plusDays(1);
         MoimJpaEntity moimA = MoimJpaEntity.builder()
                 .universityId(universityId)
                 .title("appleMango")
+                .endDate(endDate)
                 .build();
 
         // given2
         MoimJpaEntity moimB = MoimJpaEntity.builder()
                 .universityId(universityId)
                 .title(" " + "apple" + " " + "mango" + " ")
+                .endDate(endDate)
                 .build();
 
         // given3
         MoimJpaEntity moimC = MoimJpaEntity.builder()
                 .universityId(otherUniversityId)
                 .title("apple" + " " + "mango")
+                .endDate(endDate)
                 .build();
 
         moimRepository.save(moimA);
@@ -649,6 +657,45 @@ class MoimFinderTest extends ImplementTest {
         assertThat(blankResponses.size()).isEqualTo(2);
         assertThat(noneResponses.size()).isEqualTo(0);
         assertThat(applemangoResponses.size()).isEqualTo(1);
+    }
+
+    @DisplayName("모임 검색시 기간이 종료된 모임은 검색되지 않는다.")
+    @Test
+    void searchActiveMoimBySearchParamAndUniversityId() {
+        // given1
+        long universityId = UNIV_ID.longValue();
+
+        LocalDate inProgressDate = LocalDate.now().plusDays(1);
+        LocalDate endedDate = LocalDate.now().minusDays(1);
+        MoimJpaEntity moimA = MoimJpaEntity.builder()
+                .universityId(universityId)
+                .title("appleMango")
+                .endDate(inProgressDate)
+                .build();
+
+        // given2
+        MoimJpaEntity moimB = MoimJpaEntity.builder()
+                .universityId(universityId)
+                .title(" " + "apple" + " " + "mango" + " ")
+                .endDate(inProgressDate)
+                .build();
+
+        // given3
+        MoimJpaEntity moimC = MoimJpaEntity.builder()
+                .universityId(universityId)
+                .title("apple" + " " + "mango")
+                .endDate(endedDate)
+                .build();
+
+        moimRepository.save(moimA);
+        moimRepository.save(moimB);
+        moimRepository.save(moimC);
+
+        //when
+        List<MoimSimpleResponse> appleResponses = moimFinder.searchMoim(universityId, "apple");
+
+        //then
+        assertThat(appleResponses.size()).isEqualTo(2);
     }
 
     @DisplayName("모임들 중 완료된 모임을 반환한다.")

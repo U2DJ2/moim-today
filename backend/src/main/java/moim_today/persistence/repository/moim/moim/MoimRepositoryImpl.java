@@ -114,8 +114,10 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.displayStatus
                 ))
                 .from(moimJpaEntity)
-                .where(moimJpaEntity.universityId.eq(universityId)
-                        .and(moimJpaEntity.title.likeIgnoreCase(PERCENT.value() + searchParam.trim() + PERCENT.value()))
+                .where(
+                        moimJpaEntity.universityId.eq(universityId),
+                        moimJpaEntity.title.likeIgnoreCase(PERCENT.value() + searchParam.trim() + PERCENT.value()),
+                        moimJpaEntity.endDate.goe(LocalDate.now())
                 )
                 .fetch();
     }
