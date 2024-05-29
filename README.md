@@ -1,3 +1,41 @@
+<!-- PROJECT LOGO -->
+<div align="center">
+  <a href="https://github.com/osamhack2021/app_web_dronai_62bn">
+    <img
+      src="https://github.com/U2DJ2/moim-today/assets/36218321/b48b271e-2c51-4c0e-913c-92fb5788c267.png"
+      alt="Logo" width="256px" height="200px">
+  </a>
+
+  <h3 align="center">Moim Today</h3>
+
+  <p align="center">
+    대학별 시간표 기반 온라인 캘린더 및 일정 관리 서비스
+    <br />
+    <br />
+    <a href="https://moim.today">Web Demo</a>
+    ·
+    <a href="https://docs.google.com/presentation/d/1gOtEuXTCLChtCmJZqL4Rpi08TlMlSRpf/edit?usp=sharing&ouid=118304770497693886763&rtpof=true&sd=true">Presentation</a>
+    <br />
+    <br />
+    <a href="https://github.com/U2DJ2/moim-today/graphs/contributors">
+      <img src="https://img.shields.io/github/contributors/U2DJ2/moim-today.svg?style=for-the-badge" />
+    </a>
+    <a href="https://github.com/U2DJ2/moim-today/network/members">
+      <img src="https://img.shields.io/github/forks/U2DJ2/moim-today.svg?style=for-the-badge" />
+    </a>
+    <a href="https://github.com/U2DJ2/moim-today/stargazers">
+      <img src="https://img.shields.io/github/stars/U2DJ2/moim-today.svg?style=for-the-badge" />
+    </a>
+    <a href="https://github.com/U2DJ2/moim-today/issues">
+      <img src="https://img.shields.io/github/issues/U2DJ2/moim-today.svg?style=for-the-badge" />
+    </a>
+    <a href="https://github.com/U2DJ2/moim-today/blob/master/license.md">
+      <img src="https://img.shields.io/github/license/U2DJ2/moim-today.svg?style=for-the-badge" />
+    </a>
+  </p>
+</div>
+
+
 <h2 id="team"> :people_holding_hands: 팀 정보 (Team Information)</h2>
 
 <table width="1200">
