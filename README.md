@@ -67,12 +67,28 @@
 </div>
 <h3>BE</h3>
 <div>
-  <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+  <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> 
+  <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> 
+  <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+  <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> 
+  <img src="https://img.shields.io/badge/h2-003545?style=for-the-badge&logo=h2&logoColor=white">
+  <img src="https://img.shields.io/badge/spring%20data%20jpa-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
+  <img src="https://img.shields.io/badge/querydsl-00B1B3?style=for-the-badge&logo=querydsl&logoColor=white">
 </div>
-  <h3>CI/CD</h3>
-  * Github-action
+<div>
+  <h3>DevOps</h3>
+    <img src="https://img.shields.io/badge/AWS%20EC2-FF9900?style=for-the-badge&logo=amazon-ec2&logoColor=white">
+    <img src="https://img.shields.io/badge/AWS%20RDS-527FFF?style=for-the-badge&logo=amazon-rds&logoColor=white">
+    <img src="https://img.shields.io/badge/AWS%20S3-569A31?style=for-the-badge&logo=amazon-s3&logoColor=white">
+    <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white">
+</div>
+
+<div>
   <h3>협업</h3>
-      <a href="http://3.38.11.199:8080/docs/index.html">Swagger</a> , Github
+  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+  <img src="https://img.shields.io/badge/Slack-FFD700?style=for-the-badge&logo=slack&logoColor=white">
+</div>
 <h1 id="team">  3. 팀 정보 (Team Information)</h2>
 
 <table width="1200">
@@ -164,9 +180,10 @@
   </tbody>
 </table>
 
-<h1>4. 구현 개발기</h1>
+<h1>4. 문제 상황과 해결</h1>
 <ul>
-  <a href="https://velog.io/@anak_2/%EA%B9%83-%ED%98%91%EC%97%85%EC%97%90%EC%84%9C-%EC%9D%B4%EC%8A%88Issue%EC%99%80-%ED%92%80%EB%A6%AC%ED%80%98%EC%8A%A4%ED%8A%B8PR%EC%9D%84-%ED%85%9C%ED%94%8C%EB%A6%BF-template%EC%9C%BC%EB%A1%9C-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0">깃 협업에서 이슈(Issue)와 풀리퀘스트(PR)을 템플릿 (template)으로 관리하기</a>
+  
+<a href="https://velog.io/@anak_2/%EA%B9%83-%ED%98%91%EC%97%85%EC%97%90%EC%84%9C-%EC%9D%B4%EC%8A%88Issue%EC%99%80-%ED%92%80%EB%A6%AC%ED%80%98%EC%8A%A4%ED%8A%B8PR%EC%9D%84-%ED%85%9C%ED%94%8C%EB%A6%BF-template%EC%9C%BC%EB%A1%9C-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0">깃 협업에서 이슈(Issue)와 풀리퀘스트(PR)을 템플릿 (template)으로 관리하기</a> 
   
 <a href="https://320hwany.tistory.com/112">팀 프로젝트를 위한 github actions CI/CD 세팅</a>
   
