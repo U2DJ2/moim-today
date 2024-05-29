@@ -100,7 +100,7 @@
 
 <h1>4. 인프라 구조 </h1>
 
-<img width="671" alt="스크린샷 2024-05-29 오후 9 53 30" src="https://github.com/U2DJ2/moim-today/assets/84896838/b76ca0a7-e1bd-4793-a0fd-bd5f8bceefb6">
+<img width="883" alt="스크린샷 2024-05-29 오후 11 21 58" src="https://github.com/U2DJ2/moim-today/assets/84896838/7dfb1476-07d7-48c6-a566-e7319a1be382">
 
 
 <h1 id="team">  5. 팀원 소개</h2>
