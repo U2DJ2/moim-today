@@ -301,8 +301,17 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
     fetchAllTodos(setTodoData);
   }, []);
 
-  const handleTodoCheckboxClick = (todo) => {
-    alert(`Clicked on todo: ${todo.contents}`);
+  const handleTodoCheckboxClick = async (todo) => {
+    await axios.patch(
+      `https://api.moim.today/api/todos/todo-progress`,
+      {
+        todoId: todo.todoId,
+        todoProgress: todo.todoProgress === "COMPLETED" ? "PENDING" : "COMPLETED",
+      }
+    );
+
+    // Refresh component
+    fetchAllTodos(setTodoData);
   };
 
   const handleHome = () => {
