@@ -218,15 +218,15 @@ const textInputTheme = {
 const labelStyle = "mt-2.5 mb-2.5 font-Pretendard_SemiBold leading-5 text-sm text-black max-md:max-w-full";
 const commonInputStyle = "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
 
-async function fetchAllTodos(startDate, setTodoData) {
+async function fetchAllTodos(setTodoData) {
 
   // Parse start date
-  startDate = new Date(startDate);
-  startDate = startDate.toISOString().slice(0, 7);
+  let requestDate = new Date(new Date().getFullYear(), 0, 1);
+  requestDate = requestDate.toISOString().slice(0, 7);
 
   try {
     const response = await axios.get(
-      `https://api.moim.today/api/todos?requestDate=${startDate}&months=12`,
+      `https://api.moim.today/api/todos?requestDate=${requestDate}&months=12`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -298,8 +298,7 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
   const [todoData, setTodoData] = useState([]);
 
   useEffect(() => {
-    const firstDate = new Date(new Date().getFullYear(), 0, 1);
-    fetchAllTodos(firstDate, setTodoData);
+    fetchAllTodos(setTodoData);
   }, []);
 
   const handleTodoCheckboxClick = (todo) => {
@@ -344,7 +343,7 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
           TODO 추가하기
         </button>
         <div className="mt-8"></div>
-        
+
         {
           todoData && todoData.map((moim) => (
             <Accordion key={moim.moimId} className="w-72">
@@ -354,13 +353,11 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
                 </Accordion.Title>
                 <Accordion.Content>
                   {moim.todoGroupByDates.map((todoGroup) => (
-                    todoGroup.todoContents.map((todo, todoIndex) => {
-                      const isLastTodo = todoIndex === todoGroup.todoContents.length - 1;
+                    todoGroup.todoContents.map((todo) => {
                       return (
                         <div
                           key={todo.todoId}
-                          className={`flex items-center gap-2 ${isLastTodo ? "" : " mb-4"
-                            }`}
+                          className={`flex items-center gap-2`}
                         >
                           <Checkbox
                             onChange={() => handleTodoCheckboxClick(todo)}
