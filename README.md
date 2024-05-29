@@ -18,19 +18,19 @@
     <br />
     <br />
     <a href="https://github.com/U2DJ2/moim-today/graphs/contributors">
-      <img src="https://img.shields.io/github/contributors/osamhack2021/app_web_dronai_62bn.svg?style=for-the-badge" />
+      <img src="https://img.shields.io/github/contributors/U2DJ2/moim-today.svg?style=for-the-badge" />
     </a>
     <a href="https://github.com/U2DJ2/moim-today/network/members">
-      <img src="https://img.shields.io/github/forks/osamhack2021/app_web_dronai_62bn.svg?style=for-the-badge" />
+      <img src="https://img.shields.io/github/forks/U2DJ2/moim-today.svg?style=for-the-badge" />
     </a>
     <a href="https://github.com/U2DJ2/moim-today/stargazers">
-      <img src="https://img.shields.io/github/stars/osamhack2021/app_web_dronai_62bn.svg?style=for-the-badge" />
+      <img src="https://img.shields.io/github/stars/U2DJ2/moim-today.svg?style=for-the-badge" />
     </a>
     <a href="https://github.com/U2DJ2/moim-today/issues">
-      <img src="https://img.shields.io/github/issues/osamhack2021/app_web_dronai_62bn.svg?style=for-the-badge" />
+      <img src="https://img.shields.io/github/issues/U2DJ2/moim-today.svg?style=for-the-badge" />
     </a>
     <a href="https://github.com/U2DJ2/moim-today/blob/master/license.md">
-      <img src="https://img.shields.io/github/license/osamhack2021/app_web_dronai_62bn.svg?style=for-the-badge" />
+      <img src="https://img.shields.io/github/license/U2DJ2/moim-today.svg?style=for-the-badge" />
     </a>
   </p>
 </div>
