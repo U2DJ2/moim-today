@@ -50,6 +50,23 @@ public class MoimRepositoryImpl implements MoimRepository {
     }
 
     @Override
+    public List<MoimSimpleResponse> findAllByUniversityId(final long universityId) {
+        return queryFactory.select(
+                        new QMoimSimpleResponse(
+                                moimJpaEntity.id,
+                                moimJpaEntity.title,
+                                moimJpaEntity.capacity,
+                                moimJpaEntity.currentCount,
+                                moimJpaEntity.imageUrl,
+                                moimJpaEntity.moimCategory,
+                                moimJpaEntity.displayStatus
+                        ))
+                .from(moimJpaEntity)
+                .where(moimJpaEntity.universityId.eq(universityId))
+                .fetch();
+    }
+
+    @Override
     public String getTitleById(final long moimId) {
         return queryFactory.select(moimJpaEntity.title)
                 .from(moimJpaEntity)
