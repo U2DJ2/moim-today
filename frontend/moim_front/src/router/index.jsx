@@ -33,6 +33,7 @@ import ManageLayout from "../assets/ManageLayout";
 import ManageMoimPage from "../pages/ManageMoimPage";
 import ManageProfilePage from "../pages/ManageProfilePage";
 import MoimLayout from "../components/MoimLayout";
+import NoticeDetailPage from "../pages/NoticeDetailPage";
 
 /**
  * Basic Router
@@ -75,6 +76,10 @@ function Router() {
           <Route
             path="/meeting/:MoimId/:meetingId"
             element={<MeetingDetailPage />}
+          />
+          <Route
+            path="/join/:moimId/notice/:moimNoticeId"
+            element={<NoticeDetailPage />}
           />
         </Route>
       </Route>

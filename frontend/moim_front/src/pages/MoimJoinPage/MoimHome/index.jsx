@@ -113,7 +113,7 @@ function MoimHome({ isHost, moimId }) {
                 title={notice.title}
                 btn={false}
                 isMeeting={false}
-                clickHandler={() => cardClickHandler(notice.noticeId)}
+                clickHandler={() => cardClickHandler(notice.moimNoticeId)}
               />
             ))
           ) : (
