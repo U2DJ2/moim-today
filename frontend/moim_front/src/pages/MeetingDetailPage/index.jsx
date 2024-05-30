@@ -56,6 +56,7 @@ function MettingDetailPage() {
     try {
       const result = await POST("api/meeting-comments", data);
       await getComments();
+      setComment("");
     } catch (e) {
       console.log(e);
     }
@@ -165,7 +166,7 @@ function MettingDetailPage() {
         {Array.isArray(commentList) && commentList.length != 0 ? (
           commentList.map((comment, index) => {
             return (
-              <div key={index} className="flex gap-2">
+              <div key={index} className="flex gap-8">
                 <div className="grid justify-items-center">
                   <img src={comment.imageUrl} className=" w-5 h-5" />
                   <p className=" font-Pretendard_Light text-slate-500 text-sm">
