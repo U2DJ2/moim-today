@@ -1,6 +1,7 @@
 package moim_today.global.config;
 
 import moim_today.global.argumentresolver.MemberLoginArgumentResolver;
+import moim_today.global.interceptor.AdminLoginInterceptor;
 import moim_today.global.interceptor.MemberLoginInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +43,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/admin/**"
                 );
 
-        registry.addInterceptor(new MemberLoginInterceptor())
+        registry.addInterceptor(new AdminLoginInterceptor())
                 .order(2)
                 .addPathPatterns("/api/admin/**")
                 .excludePathPatterns(

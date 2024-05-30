@@ -7,8 +7,8 @@ import moim_today.global.error.UnauthorizedException;
 import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
-import static moim_today.global.constant.exception.SessionExceptionConstant.MEMBER_SESSION_UNAUTHORIZED;
+import static moim_today.global.constant.MemberSessionConstant.ADMIN_SESSION;
+import static moim_today.global.constant.exception.SessionExceptionConstant.ADMIN_SESSION_UNAUTHORIZED;
 
 public class AdminLoginInterceptor implements HandlerInterceptor {
 
@@ -20,12 +20,12 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
 
         HttpSession session = request.getSession(false);
 
-        if (session == null || session.getAttribute(MEMBER_SESSION.value()) == null) {
-            throw new UnauthorizedException(MEMBER_SESSION_UNAUTHORIZED.message());
+        if (session == null || session.getAttribute(ADMIN_SESSION.value()) == null) {
+            throw new UnauthorizedException(ADMIN_SESSION_UNAUTHORIZED.message());
         }
 
-        String memberSessionJson = (String)session.getAttribute(MEMBER_SESSION.value());
-        request.setAttribute(MEMBER_SESSION.value(), memberSessionJson);
+        String memberSessionJson = (String)session.getAttribute(ADMIN_SESSION.value());
+        request.setAttribute(ADMIN_SESSION.value(), memberSessionJson);
 
         return true;
     }

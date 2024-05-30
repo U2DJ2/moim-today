@@ -29,7 +29,8 @@ public class AdminMemberController {
             @RequestParam final long universityId,
             @RequestParam final long departmentId) {
 
-        List<MemberResponse> memberResponses = adminMemberService.findAllMembers(memberSession.id(), universityId, departmentId);
+        List<MemberResponse> memberResponses =
+                adminMemberService.findAllMembers(memberSession.id(), universityId, departmentId);
         return CollectionResponse.from(memberResponses);
     }
 }
