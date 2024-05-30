@@ -3,11 +3,14 @@ $(document).ready(function () {
 });
 
 function loadUniversities() {
-    fetch('http://localhost:8080/api/universities', {
-        credentials: 'include'
-    })
-        .then(response => response.json())
-        .then(data => {
+    $.ajax({
+        url: '/api/universities',
+        type: 'GET',
+        xhrFields: {
+            withCredentials: true
+        },
+        dataType: 'json',
+        success: function(data) {
             const universities = data.data;
             const select = $('#university-select');
 
@@ -18,6 +21,9 @@ function loadUniversities() {
                 });
                 select.append(option);
             });
-        })
-        .catch(error => console.error('Error fetching universities:', error));
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching universities:', error);
+        }
+    });
 }

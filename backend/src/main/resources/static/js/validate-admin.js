@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $.ajax({
-        url: 'http://localhost:8080/api/admin/validate',
+        url: '/api/admin/validate',
         type: 'POST',
         xhrFields: {
             withCredentials: true
@@ -51,6 +51,6 @@ $(document).ready(function() {
     }
 
     window.redirectToLogin = function() {
-        window.location.href = "http://localhost:8080/admin-login.html"; // 로그인 페이지의 URL로 변경
+        window.location.href = "../admin-login.html"; // 로그인 페이지의 URL로 변경
     }
 });
