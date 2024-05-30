@@ -8,10 +8,12 @@ import moim_today.dto.meeting.meeting.QMeetingSimpleDao;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.email_subscribe.QEmailSubscribeJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
+import moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity;
 import moim_today.persistence.entity.member.QMemberJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -41,6 +43,16 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                 .select(meetingJpaEntity.id)
                 .from(meetingJpaEntity)
                 .where(meetingJpaEntity.moimId.eq(moimId))
+                .fetch();
+    }
+
+    @Override
+    public List<Long> findUpcomingMeetingIdsByMoimId(final long moimId, final LocalDate currentDate) {
+        return queryFactory
+                .select(meetingJpaEntity.id)
+                .from(meetingJpaEntity)
+                .where(meetingJpaEntity.moimId.eq(moimId)
+                        .and(meetingJpaEntity.startDateTime.goe(currentDate.atStartOfDay())))
                 .fetch();
     }
 

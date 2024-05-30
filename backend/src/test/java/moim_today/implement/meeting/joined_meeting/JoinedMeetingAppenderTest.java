@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static moim_today.util.TestConstant.*;
@@ -43,12 +44,16 @@ class JoinedMeetingAppenderTest extends ImplementTest {
         // given 3
         MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
                 .moimId(moimJpaEntity.getId())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
                 .build();
 
         meetingRepository.save(meetingJpaEntity);
 
         // when
-        joinedMeetingAppender.saveJoinedMeeting(moimJpaEntity.getId(), meetingJpaEntity.getId());
+        joinedMeetingAppender.saveJoinedMeeting(
+                moimJpaEntity.getId(), meetingJpaEntity.getId(), moimJpaEntity.getTitle(), meetingJpaEntity
+        );
 
         // then
         assertThat(joinedMeetingRepository.count()).isEqualTo(10);
@@ -75,12 +80,16 @@ class JoinedMeetingAppenderTest extends ImplementTest {
         // given 3
         MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
                 .moimId(moimJpaEntity.getId())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
                 .build();
 
         meetingRepository.save(meetingJpaEntity);
 
         // when
-        joinedMeetingAppender.saveJoinedMeeting(moimJpaEntity.getId(), meetingJpaEntity.getId());
+        joinedMeetingAppender.saveJoinedMeeting(
+                moimJpaEntity.getId(), meetingJpaEntity.getId(), moimJpaEntity.getTitle(), meetingJpaEntity
+        );
 
         // then
         List<JoinedMeetingJpaEntity> findEntities = joinedMeetingRepository.findAll();

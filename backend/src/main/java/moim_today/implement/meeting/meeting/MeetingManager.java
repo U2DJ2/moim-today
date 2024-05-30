@@ -82,7 +82,8 @@ public class MeetingManager {
                 );
 
         MeetingJpaEntity saveEntity = meetingAppender.saveMeeting(meetingJpaEntity);
-        joinedMeetingAppender.saveJoinedMeeting(meetingCreateRequest.moimId(), meetingJpaEntity.getId());
+        moimFinder.getTitleById(meetingCreateRequest.moimId());
+        joinedMeetingAppender.saveJoinedMeeting(meetingCreateRequest.moimId(), meetingJpaEntity.getId(), moimTitle, saveEntity);
         createSchedules(moimTitle, meetingJpaEntity);
 
         return MeetingCreateResponse.of(saveEntity.getId(), meetingCreateRequest);
@@ -109,7 +110,8 @@ public class MeetingManager {
                 firstMeetingId = saveEntity.getId();
             }
 
-            joinedMeetingAppender.saveJoinedMeeting(meetingCreateRequest.moimId(), meetingJpaEntity.getId());
+            joinedMeetingAppender.saveJoinedMeeting(
+                    meetingCreateRequest.moimId(), meetingJpaEntity.getId(), moimTitle, meetingJpaEntity);
             createSchedules(moimTitle, meetingJpaEntity);
         }
 
