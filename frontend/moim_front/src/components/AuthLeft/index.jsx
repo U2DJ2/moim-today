@@ -29,7 +29,7 @@ function AuthLeft({
     const data = {
       email: email,
       password: password,
-      isKeepLogin: true,
+      isKeepLogin: memory ? true : false,
     };
     POST("api/login", data)
       .then((res) => {
