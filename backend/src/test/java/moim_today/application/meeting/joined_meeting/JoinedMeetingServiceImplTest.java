@@ -134,4 +134,107 @@ class JoinedMeetingServiceImplTest {
         assertThat(scheduleJpaEntity.getEndDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 30, 12, 0, 0));
         assertThat(scheduleJpaEntity.getScheduleName()).isEqualTo(moimJpaEntity.getTitle());
     }
+
+    @DisplayName("미팅 참석을 거절하면 미팅 참석 여부가 불참으로 변경된다.")
+    @Test
+    void refuseJoinMeeting() {
+        // given 1
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .title(TestConstant.MOIM_TITLE.value())
+                .startDate(LocalDate.of(2024, 3, 4))
+                .endDate(LocalDate.of(2024, 6, 30))
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+
+        // given 2
+        MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
+                .startDateTime(LocalDateTime.of(2024, 3, 30, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 30, 12, 0, 0))
+                .build();
+
+        meetingRepository.save(meetingJpaEntity);
+
+        // given 3
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+
+        // given 4
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity = JoinedMeetingJpaEntity.builder()
+                .meetingId(meetingJpaEntity.getId())
+                .memberId(memberJpaEntity.getId())
+                .attendance(true)
+                .build();
+
+        joinedMeetingRepository.save(joinedMeetingJpaEntity);
+
+        // given 5
+        ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .meetingId(meetingJpaEntity.getId())
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity);
+
+        // when
+        joinedMeetingService.refuseJoinMeeting(memberJpaEntity.getId(), meetingJpaEntity.getId());
+
+        // then
+        JoinedMeetingJpaEntity findEntity = joinedMeetingRepository.getById(joinedMeetingJpaEntity.getId());
+        assertThat(findEntity.isAttendance()).isFalse();
+    }
+
+    @DisplayName("미팅 참석을 거절하면 해당 회원의 스케줄에서 삭제된다.")
+    @Test
+    void refuseJoinMeetingDeleteSchedule() {
+        // given 1
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .title(TestConstant.MOIM_TITLE.value())
+                .startDate(LocalDate.of(2024, 3, 4))
+                .endDate(LocalDate.of(2024, 6, 30))
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+
+        // given 2
+        MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
+                .startDateTime(LocalDateTime.of(2024, 3, 30, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 30, 12, 0, 0))
+                .build();
+
+        meetingRepository.save(meetingJpaEntity);
+
+        // given 3
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+
+        // given 4
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity = JoinedMeetingJpaEntity.builder()
+                .meetingId(meetingJpaEntity.getId())
+                .memberId(memberJpaEntity.getId())
+                .attendance(true)
+                .build();
+
+        joinedMeetingRepository.save(joinedMeetingJpaEntity);
+
+        // given 5
+        ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .meetingId(meetingJpaEntity.getId())
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity);
+
+        // when
+        joinedMeetingService.refuseJoinMeeting(memberJpaEntity.getId(), meetingJpaEntity.getId());
+
+        // then
+        assertThat(scheduleRepository.count()).isEqualTo(1);
+    }
 }
