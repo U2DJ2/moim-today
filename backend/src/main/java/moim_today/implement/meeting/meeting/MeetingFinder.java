@@ -60,4 +60,9 @@ public class MeetingFinder {
     public long getMoimIdByMeetingId(final long meetingId) {
         return meetingRepository.findMoimIdByMeetingId(meetingId);
     }
+
+    @Transactional(readOnly = true)
+    public MeetingJpaEntity getById(final long meetingId) {
+        return meetingRepository.getById(meetingId);
+    }
 }
