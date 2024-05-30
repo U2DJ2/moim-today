@@ -6,6 +6,7 @@ import moim_today.implement.meeting.joined_meeting.JoinedMeetingUpdater;
 import moim_today.implement.meeting.meeting.MeetingFinder;
 import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.implement.schedule.schedule.ScheduleAppender;
+import moim_today.implement.schedule.schedule.ScheduleRemover;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.stereotype.Service;
@@ -21,19 +22,22 @@ public class JoinedMeetingServiceImpl implements JoinedMeetingService {
     private final MoimFinder moimFinder;
     private final MeetingFinder meetingFinder;
     private final ScheduleAppender scheduleAppender;
+    private final ScheduleRemover scheduleRemover;
 
     public JoinedMeetingServiceImpl(final JoinedMeetingFinder joinedMeetingFinder,
                                     final JoinedMeetingUpdater joinedMeetingUpdater,
                                     final JoinedMeetingRemover joinedMeetingRemover,
                                     final MoimFinder moimFinder,
                                     final MeetingFinder meetingFinder,
-                                    final ScheduleAppender scheduleAppender) {
+                                    final ScheduleAppender scheduleAppender,
+                                    final ScheduleRemover scheduleRemover) {
         this.joinedMeetingFinder = joinedMeetingFinder;
         this.joinedMeetingUpdater = joinedMeetingUpdater;
         this.joinedMeetingRemover = joinedMeetingRemover;
         this.moimFinder = moimFinder;
         this.meetingFinder = meetingFinder;
         this.scheduleAppender = scheduleAppender;
+        this.scheduleRemover = scheduleRemover;
     }
 
     @Override
@@ -57,6 +61,7 @@ public class JoinedMeetingServiceImpl implements JoinedMeetingService {
     public void refuseJoinMeeting(final long memberId, final long meetingId) {
         boolean attendance = false;
         joinedMeetingUpdater.updateAttendance(memberId, meetingId, attendance);
+        scheduleRemover.deleteByMemberIdAndMeetingId(memberId, meetingId);
     }
 
     @Transactional
