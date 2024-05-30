@@ -138,7 +138,7 @@ function MettingDetailPage() {
                   <div key={index} className="flex flex-col items-center gap-4">
                     <img
                       src={member.memberProfileImageUrl}
-                      className=" w-11 h-11"
+                      className=" w-11 h-11 rounded-full"
                     />
                     <div className=" text-xs">{member.username}</div>
                   </div>
