@@ -38,8 +38,15 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/departments",
                         "/api/request-departments",
                         "/api/moims/categories",
-                        "/api/admin/login",
-                        "/api/initiation"
+                        "/api/initiation",
+                        "/api/admin/**"
+                );
+
+        registry.addInterceptor(new MemberLoginInterceptor())
+                .order(2)
+                .addPathPatterns("/api/admin/**")
+                .excludePathPatterns(
+                        "/api/admin/login"
                 );
     }
 
