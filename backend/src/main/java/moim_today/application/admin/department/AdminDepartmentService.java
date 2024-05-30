@@ -2,12 +2,40 @@ package moim_today.application.admin.department;
 
 import moim_today.dto.department.ApproveRequestDepartmentRequest;
 import moim_today.dto.department.RequestDepartmentResponse;
+import moim_today.implement.department.department.DepartmentAppender;
+import moim_today.implement.department.request_department.RequestDepartmentFinder;
+import moim_today.implement.department.request_department.RequestDepartmentRemover;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface AdminDepartmentService {
+@Service
+public class AdminDepartmentService {
 
-    List<RequestDepartmentResponse> findAllByUniversityId(final long universityId);
+    private final RequestDepartmentFinder requestDepartmentFinder;
+    private final RequestDepartmentRemover requestDepartmentRemover;
+    private final DepartmentAppender departmentAppender;
 
-    void approveRequest(final ApproveRequestDepartmentRequest approveRequestDepartmentRequest);
+    public AdminDepartmentService(final RequestDepartmentFinder requestDepartmentFinder,
+                                  final RequestDepartmentRemover requestDepartmentRemover,
+                                  final DepartmentAppender departmentAppender) {
+        this.requestDepartmentFinder = requestDepartmentFinder;
+        this.requestDepartmentRemover = requestDepartmentRemover;
+        this.departmentAppender = departmentAppender;
+    }
+
+    public List<RequestDepartmentResponse> findAllByUniversityId(final long universityId) {
+        return requestDepartmentFinder.findAllByUniversityId(universityId);
+    }
+
+    @Transactional
+    public void approveRequest(final ApproveRequestDepartmentRequest approveRequestDepartmentRequest) {
+        departmentAppender.addDepartment(
+                approveRequestDepartmentRequest.universityId(),
+                approveRequestDepartmentRequest.requestDepartmentName()
+        );
+
+        requestDepartmentRemover.deleteById(approveRequestDepartmentRequest.requestDepartmentId());
+    }
 }

@@ -2,7 +2,8 @@ package moim_today.global.constant;
 
 public enum MemberSessionConstant {
 
-    MEMBER_SESSION("MemberSession");
+    MEMBER_SESSION("MemberSession"),
+    ADMIN_SESSION("AdminSession");
 
     private final String value;
 
