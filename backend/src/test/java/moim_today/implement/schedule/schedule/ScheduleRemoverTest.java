@@ -5,7 +5,6 @@ import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import moim_today.util.ImplementTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -222,5 +221,23 @@ class ScheduleRemoverTest extends ImplementTest {
                 .doesNotThrowAnyException();
         assertThatCode(() -> scheduleRepository.getById(savedSchedule2.getId()))
                 .doesNotThrowAnyException();
+    }
+
+    @DisplayName("회원 id와 미팅 id로 해당 스케줄을 삭제한다.")
+    @Test
+    void deleteByMemberIdAndMeetingId() {
+        // given
+        ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .meetingId(MEETING_ID.longValue())
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity);
+
+        // when
+        scheduleRemover.deleteByMemberIdAndMeetingId(MEMBER_ID.longValue(), MEETING_ID.longValue());
+
+        // then
+        assertThat(scheduleRepository.count()).isEqualTo(0);
     }
 }
