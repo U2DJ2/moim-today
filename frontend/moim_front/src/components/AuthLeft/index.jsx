@@ -33,7 +33,6 @@ function AuthLeft({
     };
     POST("api/login", data)
       .then((res) => {
-        console.log(res);
         navigation("/");
       })
       .catch((error) => {
