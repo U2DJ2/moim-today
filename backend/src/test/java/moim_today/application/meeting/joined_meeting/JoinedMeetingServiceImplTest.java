@@ -10,7 +10,9 @@ import moim_today.persistence.repository.meeting.meeting.MeetingRepository;
 import moim_today.persistence.repository.member.MemberRepository;
 import moim_today.persistence.repository.moim.moim.MoimRepository;
 import moim_today.persistence.repository.schedule.schedule.ScheduleRepository;
+import moim_today.util.DatabaseCleaner;
 import moim_today.util.TestConstant;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,14 @@ class JoinedMeetingServiceImplTest {
 
     @Autowired
     private ScheduleRepository scheduleRepository;
+
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
+
+    @BeforeEach
+    void setUpDatabase() {
+        databaseCleaner.cleanUp();
+    }
 
     @DisplayName("미팅에 참여하면 미팅 참여 여부가 참석으로 변경된다.")
     @Test
@@ -235,6 +245,6 @@ class JoinedMeetingServiceImplTest {
         joinedMeetingService.refuseJoinMeeting(memberJpaEntity.getId(), meetingJpaEntity.getId());
 
         // then
-        assertThat(scheduleRepository.count()).isEqualTo(1);
+        assertThat(scheduleRepository.count()).isEqualTo(0);
     }
 }

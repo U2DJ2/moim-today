@@ -191,4 +191,110 @@ class JoinedMeetingAppenderTest extends ImplementTest {
         // then
         assertThat(scheduleRepository.count()).isEqualTo(0);
     }
+
+    @DisplayName("모임 참여 정보를 바탕으로 미팅 참여 정보를 생성할 때 이미 해당 스케줄에 일정이 있으면 미팅에 참여하지 않는다.")
+    @Test
+    void saveJoinedMeetingAlreadyExistOtherSchedule() {
+        // given 1
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+
+        // given 2
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .title(MOIM_TITLE.value())
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+
+        // given 3
+        JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
+                .memberId(memberJpaEntity.getId())
+                .build();
+
+        joinedMoimRepository.save(joinedMoimJpaEntity);
+
+        // given 4
+        MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
+                .build();
+
+        meetingRepository.save(meetingJpaEntity);
+
+        // given 5
+        ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .meetingId(meetingJpaEntity.getId())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 9, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 11, 0, 0))
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity);
+
+        // when
+        joinedMeetingAppender.saveJoinedMeeting(
+                moimJpaEntity.getId(), meetingJpaEntity.getId(), moimJpaEntity.getTitle(), meetingJpaEntity
+        );
+
+        // then
+        assertThat(scheduleRepository.count()).isEqualTo(1);
+        assertThat(joinedMeetingRepository.count()).isEqualTo(0);
+    }
+
+    @DisplayName("모임 참여 정보를 바탕으로 미팅 참여 정보를 생성할 때 다른 스케줄과 겹치지 않으면 미팅에 참여한다.")
+    @Test
+    void saveJoinedMeetingNotDuplicateOtherSchedule() {
+        // given 1
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+
+        // given 2
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .title(MOIM_TITLE.value())
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+
+        // given 3
+        JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
+                .memberId(memberJpaEntity.getId())
+                .build();
+
+        joinedMoimRepository.save(joinedMoimJpaEntity);
+
+        // given 4
+        MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
+                .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
+                .build();
+
+        meetingRepository.save(meetingJpaEntity);
+
+        // given 5
+        ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .meetingId(meetingJpaEntity.getId())
+                .startDateTime(LocalDateTime.of(2024, 3, 5, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 5, 12, 0, 0))
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity);
+
+        // when
+        joinedMeetingAppender.saveJoinedMeeting(
+                moimJpaEntity.getId(), meetingJpaEntity.getId(), moimJpaEntity.getTitle(), meetingJpaEntity
+        );
+
+        // then
+        assertThat(scheduleRepository.count()).isEqualTo(2);
+        assertThat(joinedMeetingRepository.count()).isEqualTo(1);
+    }
 }

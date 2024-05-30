@@ -23,7 +23,6 @@ public class JoinedMeetingUpdater {
         JoinedMeetingJpaEntity joinedMeetingJpaEntity =
                 joinedMeetingRepository.getByMemberIdAndMeetingId(memberId, meetingId);
         joinedMeetingJpaEntity.updateAttendance(attendance);
-
     }
 
     @Transactional
