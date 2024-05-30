@@ -11,6 +11,7 @@ import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.repository.meeting.meeting.MeetingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,6 +30,11 @@ public class MeetingFinder {
     @Transactional(readOnly = true)
     public List<Long> findMeetingIdsByMoimId(final long moimId) {
         return meetingRepository.findMeetingIdsByMoimId(moimId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Long> findUpcomingMeetingIdsByMoimId(final long moimId, final LocalDate currentDate) {
+        return meetingRepository.findUpcomingMeetingIdsByMoimId(moimId, currentDate);
     }
 
     @Transactional(readOnly = true)
@@ -59,5 +65,10 @@ public class MeetingFinder {
     @Transactional(readOnly = true)
     public long getMoimIdByMeetingId(final long meetingId) {
         return meetingRepository.findMoimIdByMeetingId(meetingId);
+    }
+
+    @Transactional(readOnly = true)
+    public MeetingJpaEntity getById(final long meetingId) {
+        return meetingRepository.getById(meetingId);
     }
 }

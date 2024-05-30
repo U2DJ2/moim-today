@@ -4,12 +4,15 @@ import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
 import moim_today.dto.meeting.meeting.MeetingSimpleDao;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface MeetingRepository {
 
     List<Long> findMeetingIdsByMoimId(final long moimId);
+
+    List<Long> findUpcomingMeetingIdsByMoimId(final long moimId, final LocalDate currentDate);
 
     List<MeetingSimpleDao> findAllByMoimId(final long moimId, final long memberId, final LocalDateTime currentDateTime);
 
