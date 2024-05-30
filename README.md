@@ -96,6 +96,8 @@
 <a href="https://320hwany.tistory.com/115">저희 팀에서는 이렇게 테스트 코드를 작성해요</a>
 
 <a href="https://south-leopard-b1c.notion.site/8422e7fa404543f48dd0331cc0578297">독립 테스트는 성공하는데 동시 테스트는 실패하는 이유 찾기</a>
+
+<a href="https://salty-bottom-0de.notion.site/Git-c428d50c6ebc426185b85ad1908cfa79?pvs=4">git rebase란 무엇이고 사용했을 때 어떤 장점이 있는가</a>
 </ul>
 
 <h1>4. 인프라 구조 </h1>
