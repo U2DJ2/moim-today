@@ -4,8 +4,7 @@ import moim_today.dto.mail.MailSendRequest;
 import moim_today.implement.mail.SMTPMailSender;
 import org.springframework.stereotype.Service;
 
-import static moim_today.global.constant.MailConstant.EMAIL_CERTIFICATION_MAIL;
-import static moim_today.global.constant.MailConstant.PASSWORD_FIND_MAIL;
+import static moim_today.global.constant.MailConstant.*;
 
 @Service
 public class AmazonSesService implements MailService {
@@ -24,5 +23,10 @@ public class AmazonSesService implements MailService {
     @Override
     public void sendEmailCertificationMail(final MailSendRequest mailSendRequest, final String certificationToken) {
         mailSender.send(mailSendRequest, EMAIL_CERTIFICATION_MAIL.value(), certificationToken);
+    }
+
+    @Override
+    public void sendUserInquiryResponseMail(final MailSendRequest mailSendRequest, final String responseContent) {
+        mailSender.send(mailSendRequest, USER_INQUIRY_RESPONSE_MAIL.value(), responseContent);
     }
 }

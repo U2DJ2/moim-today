@@ -40,6 +40,6 @@ public class UserInquiryController {
 
     @PostMapping("/response")
     public void respondUserInquiry(@RequestBody UserInquiryRespondRequest userInquiryRespondRequest){
-
+        userInquiryService.respondUserInquiry(userInquiryRespondRequest);
     }
 }

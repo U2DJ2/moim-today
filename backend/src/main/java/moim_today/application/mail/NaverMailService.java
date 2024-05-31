@@ -24,4 +24,9 @@ public class NaverMailService implements MailService{
     public void sendEmailCertificationMail(final MailSendRequest mailSendRequest, final String certificationToken) {
         mailSender.send(mailSendRequest, EMAIL_CERTIFICATION_MAIL.value(), certificationToken);
     }
+
+    @Override
+    public void sendUserInquiryResponseMail(final MailSendRequest mailSendRequest, final String responseContent) {
+
+    }
 }
