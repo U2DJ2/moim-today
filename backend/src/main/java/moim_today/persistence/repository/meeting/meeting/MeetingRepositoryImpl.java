@@ -1,6 +1,8 @@
 package moim_today.persistence.repository.meeting.meeting;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import moim_today.dto.admin.meeting.AdminMeetingResponse;
+import moim_today.dto.admin.meeting.QAdminMeetingResponse;
 import moim_today.dto.mail.QUpcomingMeetingNoticeResponse;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
 import moim_today.dto.meeting.meeting.MeetingSimpleDao;
@@ -10,6 +12,7 @@ import moim_today.persistence.entity.email_subscribe.QEmailSubscribeJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity;
 import moim_today.persistence.entity.member.QMemberJpaEntity;
+import moim_today.persistence.entity.moim.moim.QMoimJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -115,6 +118,21 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                         .and(joinedMeetingJpaEntity.memberId.eq(memberId))
                 )
                 .orderBy(meetingJpaEntity.startDateTime.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<AdminMeetingResponse> findAllByAdminMoimId(final long moimId) {
+        return queryFactory.select(
+                        new QAdminMeetingResponse(
+                                meetingJpaEntity.id,
+                                meetingJpaEntity.agenda,
+                                meetingJpaEntity.startDateTime,
+                                meetingJpaEntity.endDateTime,
+                                meetingJpaEntity.place
+                        ))
+                .from(meetingJpaEntity)
+                .where(meetingJpaEntity.moimId.eq(moimId))
                 .fetch();
     }
 
