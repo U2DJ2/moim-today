@@ -50,9 +50,6 @@ public class UserInquiryService {
 
     private String makeResponseSubject(final long userInquiryId) {
         UserInquiryJpaEntity findUserInquiry = userInquiryRepository.findById(userInquiryId);
-        String subject = USER_INQUIRY_RESPONSE_SUBJECT_PREFIX.value() +
-                findUserInquiry.getInquiryTitle();
-
-        return subject;
+        return USER_INQUIRY_RESPONSE_SUBJECT_PREFIX.value() + findUserInquiry.getInquiryTitle();
     }
 }
