@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static moim_today.global.constant.exception.MeetingExceptionConstant.*;
+import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_FORBIDDEN_ERROR;
 
 @Service
 public class AdminMeetingService {
@@ -26,7 +27,11 @@ public class AdminMeetingService {
     }
 
     @Transactional(readOnly = true)
-    public List<AdminMeetingResponse> findAllByMoimId(final long moimId) {
+    public List<AdminMeetingResponse> findAllByMoimId(final long universityId, final long moimId) {
+        MoimJpaEntity moimJpaEntity = moimRepository.getById(moimId);
+        if (moimJpaEntity.getUniversityId() != universityId) {
+            throw new ForbiddenException(MOIM_FORBIDDEN_ERROR.message());
+        }
         return meetingRepository.findAllByAdminMoimId(moimId);
     }
 

@@ -16,9 +16,10 @@ public class AdminMeetingController {
         this.adminMeetingService = adminMeetingService;
     }
 
+    // todo AdminSession 적용
     @GetMapping("/meetings/{moimId}")
-    public List<AdminMeetingResponse> findAllByMoimId(@PathVariable final long moimId) {
-        return adminMeetingService.findAllByMoimId(moimId);
+    public List<AdminMeetingResponse> findAllByMoimId(final long universityId, @PathVariable final long moimId) {
+        return adminMeetingService.findAllByMoimId(universityId, moimId);
     }
 
     // todo AdminSession 적용
