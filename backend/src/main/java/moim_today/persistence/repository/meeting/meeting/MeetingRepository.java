@@ -1,5 +1,6 @@
 package moim_today.persistence.repository.meeting.meeting;
 
+import moim_today.dto.admin.meeting.AdminMeetingResponse;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
 import moim_today.dto.meeting.meeting.MeetingSimpleDao;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
@@ -19,6 +20,8 @@ public interface MeetingRepository {
     List<MeetingSimpleDao> findAllUpcomingByMoimId(final long moimId, final long memberId, final LocalDateTime currentDateTime);
 
     List<MeetingSimpleDao> findAllPastByMoimId(final long moimId, final long memberId, final LocalDateTime currentDateTime);
+
+    List<AdminMeetingResponse> findAllByAdminMoimId(final long moimId);
 
     long getHostIdByMeetingId(final long meetingId);
 

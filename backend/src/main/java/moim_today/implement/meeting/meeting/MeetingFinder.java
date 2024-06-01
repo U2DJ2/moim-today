@@ -6,6 +6,7 @@ import moim_today.dto.meeting.meeting.MeetingDetailResponse;
 import moim_today.dto.meeting.meeting.MeetingSimpleDao;
 import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.global.annotation.Implement;
+import moim_today.global.error.BadRequestException;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingFinder;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.repository.meeting.meeting.MeetingRepository;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static moim_today.global.constant.exception.MeetingExceptionConstant.*;
 
 @Implement
 public class MeetingFinder {
