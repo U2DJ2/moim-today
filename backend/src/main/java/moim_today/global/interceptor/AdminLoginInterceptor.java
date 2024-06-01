@@ -24,8 +24,8 @@ public class AdminLoginInterceptor implements HandlerInterceptor {
             throw new UnauthorizedException(ADMIN_SESSION_UNAUTHORIZED.message());
         }
 
-        String memberSessionJson = (String)session.getAttribute(ADMIN_SESSION.value());
-        request.setAttribute(ADMIN_SESSION.value(), memberSessionJson);
+        String adminSessionJson = (String)session.getAttribute(ADMIN_SESSION.value());
+        request.setAttribute(ADMIN_SESSION.value(), adminSessionJson);
 
         return true;
     }

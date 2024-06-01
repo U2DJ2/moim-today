@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>관리자 로그인</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -30,19 +30,17 @@
 <body>
 <div class="container">
     <div class="login-container">
-        <h2 class="text-center">Login</h2>
+        <h2 class="text-center">관리자 로그인</h2>
         <form id="loginForm">
             <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+                <label for="university-select">University</label>
+                <select class="form-control" id="university-select" name="universityId" required>
+                    <!-- Universities will be loaded here -->
+                </select>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="isKeepLogin" name="keepLogin">
-                <label class="form-check-label" for="isKeepLogin">Keep me logged in</label>
+                <label for="adminPassword">Admin Password</label>
+                <input type="password" class="form-control" id="adminPassword" name="adminPassword" required>
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
@@ -51,6 +49,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
     $(document).ready(function() {
+        loadUniversities();
+
         $('#loginForm').on('submit', function(event) {
             event.preventDefault();
             $.ajax({
@@ -58,9 +58,8 @@
                 method: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    email: $('#email').val(),
-                    password: $('#password').val(),
-                    isKeepLogin: $('#isKeepLogin').is(':checked')
+                    universityId: $('#university-select').val(),
+                    adminPassword: $('#adminPassword').val(),
                 }),
                 xhrFields: {
                     withCredentials: true
@@ -78,6 +77,32 @@
             });
         });
     });
+
+    function loadUniversities() {
+        $.ajax({
+            url: '/api/universities',
+            type: 'GET',
+            xhrFields: {
+                withCredentials: true
+            },
+            dataType: 'json',
+            success: function(data) {
+                const universities = data.data;
+                const select = $('#university-select');
+
+                universities.forEach(university => {
+                    const option = $('<option>', {
+                        value: university.universityId,
+                        text: university.universityName
+                    });
+                    select.append(option);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching universities:', error);
+            }
+        });
+    }
 </script>
 </body>
 </html>

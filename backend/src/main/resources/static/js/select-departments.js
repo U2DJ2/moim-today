@@ -1,14 +1,14 @@
 $(document).ready(function () {
-    $('#university-select').on('change', handleUniversityChange);
+    loadDepartments();
 });
 
-function handleUniversityChange() {
-    const universityId = $(this).val();
-    const departmentSelect = $('#department-select');
-    departmentSelect.empty();
-    departmentSelect.append('<option value="">학과를 선택하세요</option>');
+function loadDepartments() {
+    // fetchAdminSessionInfo 함수 호출
+    fetchAdminSessionInfo(function(universityId) {
+        const departmentSelect = $('#department-select');
+        departmentSelect.empty();
+        departmentSelect.append('<option value="">학과를 선택하세요</option>');
 
-    if (universityId) {
         $.ajax({
             url: `/api/departments/university-id?universityId=${universityId}`,
             type: 'GET',
@@ -31,5 +31,5 @@ function handleUniversityChange() {
                 console.error('Error fetching departments:', error);
             }
         });
-    }
+    });
 }

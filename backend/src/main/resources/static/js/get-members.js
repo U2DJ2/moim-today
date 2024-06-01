@@ -4,13 +4,7 @@ $(document).ready(function () {
 
 function handleFormSubmit(e) {
     e.preventDefault();
-    const universityId = $('#university-select').val();
     const departmentId = $('#department-select').val();
-
-    if (!universityId) {
-        alert("대학을 선택하세요.");
-        return;
-    }
 
     if (!departmentId) {
         alert("학과를 선택하세요.");
@@ -18,7 +12,7 @@ function handleFormSubmit(e) {
     }
 
     $.ajax({
-        url: `/api/admin/members?universityId=${universityId}&departmentId=${departmentId}`,
+        url: `/api/admin/members?departmentId=${departmentId}`,
         type: 'GET', // 요청 방식
         credentials: 'include', // 쿠키를 포함시키기 위해 사용되었던 옵션, $.ajax에서는 이 옵션 대신 xhrFields를 사용
         xhrFields: {
