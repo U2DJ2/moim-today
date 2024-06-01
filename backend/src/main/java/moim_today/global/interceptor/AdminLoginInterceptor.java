@@ -7,7 +7,7 @@ import moim_today.global.error.UnauthorizedException;
 import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import static moim_today.global.constant.MemberSessionConstant.ADMIN_SESSION;
+import static moim_today.global.constant.SessionConstant.ADMIN_SESSION;
 import static moim_today.global.constant.exception.SessionExceptionConstant.ADMIN_SESSION_UNAUTHORIZED;
 
 public class AdminLoginInterceptor implements HandlerInterceptor {

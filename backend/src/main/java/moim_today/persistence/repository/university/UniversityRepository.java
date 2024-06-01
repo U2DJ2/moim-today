@@ -22,4 +22,6 @@ public interface UniversityRepository {
     List<UniversityJpaEntity> findAll();
 
     List<UniversityJpaEntity> findExistingUniversities(List<String> universityNames);
+
+    String getAdminPasswordById(final long universityId);
 }

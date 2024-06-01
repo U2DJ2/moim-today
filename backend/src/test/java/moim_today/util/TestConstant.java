@@ -96,7 +96,12 @@ public enum TestConstant {
     //투두
     TODO_ID("1"),
     UPDATE_BEFORE_CONTENT("업데이트하기 전 Todo Content"),
-    UPDATE_AFTER_CONTENT("업데이트한 이후 Todo Content");
+    UPDATE_AFTER_CONTENT("업데이트한 이후 Todo Content"),
+
+    //어드민
+    ADMIN_PASSWORD("admim123"),
+    WRONG_ADMIN_PASSWORD("wrong admin password"),
+    ADMIN_SESSION_VALUE("admin session json");
 
     private final String value;
 

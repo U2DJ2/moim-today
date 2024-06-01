@@ -2,9 +2,7 @@ package moim_today.presentation.admin.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import moim_today.application.admin.auth.AdminAuthService;
-import moim_today.domain.member.MemberSession;
-import moim_today.dto.auth.MemberLoginRequest;
-import moim_today.global.annotation.Login;
+import moim_today.dto.admin.auth.AdminLoginRequest;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -19,16 +17,20 @@ public class AdminAuthController {
     }
 
     @PostMapping("/login")
-    public void adminLogin(@RequestBody final MemberLoginRequest loginRequest,
+    public void adminLogin(@RequestBody final AdminLoginRequest adminLoginRequest,
                            final HttpServletRequest request) {
-        adminAuthService.login(loginRequest, request);
+        adminAuthService.login(adminLoginRequest, request);
     }
 
     @PostMapping("/validate")
-    public boolean adminValidate(@Login final MemberSession memberSession) {
-        return adminAuthService.validateAdmin(memberSession.id());
+    public boolean adminValidate() {
+        return true;
     }
 
+    @PostMapping("/logout")
+    public void logout(final HttpServletRequest request) {
+        adminAuthService.logout(request);
+    }
     //모임관리(조회, 삭제)
 
     //미팅관리(조회, 삭제)
