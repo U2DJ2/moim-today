@@ -49,7 +49,7 @@
 <img width="565" src="https://github.com/U2DJ2/moim-today/assets/84896838/7d861d14-c956-4007-a2e2-a6674edcf65a">
 
 <h3> 4. 알림 기능 제공</h3>
-다가오는 미팅에 대한 정보를 잊어버리지 않도록 하루 전에 가입한 학교 이메일로 알림을 제공합니다.
+다가오는 미팅에 대한 정보를 잊어버리지 않도록 가입한 학교 이메일로 하루 전에 알림을 제공합니다.
 <img width="500" src="https://github.com/U2DJ2/moim-today/assets/84896838/fc827d3c-d1b8-4a19-b488-01d552188072">
 
 <h3> 5. 학교별 어드민 페이지 제공</h3>
