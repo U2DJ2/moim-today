@@ -6,12 +6,11 @@ import java.util.List;
 
 public record UserInquiryRespondRequest(
         long userInquiryId,
-        String userEmail,
-        String responseTitle,
+        long memberId,
         String responseContent
 ) {
 
-    public MailSendRequest toMailSendRequest(final String subject){
+    public MailSendRequest toMailSendRequest(final String subject, final String userEmail){
         return MailSendRequest.builder()
                 .to(List.of(userEmail))
                 .subject(subject)
