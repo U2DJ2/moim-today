@@ -94,7 +94,9 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
                 )
                 .from(joinedMeetingJpaEntity)
                 .join(memberJpaEntity).on(memberJpaEntity.id.eq(joinedMeetingJpaEntity.memberId))
-                .where(joinedMeetingJpaEntity.meetingId.eq(meetingId))
+                .where(joinedMeetingJpaEntity.meetingId.eq(meetingId)
+                        .and(joinedMeetingJpaEntity.attendance.isTrue())
+                )
                 .fetch();
     }
 
