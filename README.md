@@ -32,14 +32,29 @@
 <h3> 3. 교내 모임을 찾기 어려움</h3>       
 대학 내에서 진행되는 다양한 모임을 한눈에 쉽게 파악하기 어려움.
 
-<h2>1-2. 문제 해결을 위한 주요 기능</h2>
-<h3> 1. 시간표, 캘린더 연동 기능 제공</h3>
-대부분의 대학생들은 시간표 관리를 위해 에브리타임을 이용합니다.<br>      
-대학생들의 사용 편의를 위해 기존에 사용하고 있던 에브리타임의 시간표 url 값을 입력받아 가용 시간을 제공합니다.         
-<h3> 2. 개인 일정 추가 기능 및 모임별 할 일 관리 기능 제공</h3>
-개인 일정을 추가하거나 모임별 할 일을 추가하고 관리하는 기능을 제공합니다.        
-<h3> 3. 모임 가용 시간 제공</h3>     
-모임 참여자 각각의 개인의 일정, 시간표 정보, 모임 일정들을 종합하여 가용 시간을 제공합니다.
+<h2>1-2. 문제 해결을 위한 주요 기능</h2>     
+
+<h3> 1. 일정 관리 기능 제공</h3>
+에브리타임 시간표와 연동되는 개인 캘린더를 제공합니다.  <br>
+여기에 더해 각 모임 별로 할 일을 추가하여 한 번에 확인이 가능하도록 도와줍니다. 
+<img width="565" alt="Moim-Today 캘린더 " src="https://github.com/U2DJ2/moim-today/assets/84896838/c657eacd-21cd-423d-91f3-d036ca42e787">
+
+<h3> 2. 모임 관리 기능 제공</h3>
+멤버 별 가용시간, 할 일 리스트, 공지사항 및 미팅 생성 기능을 제공합니다.        
+<img width="565" alt="Moim-Today 가용시간" src="https://github.com/U2DJ2/moim-today/assets/84896838/a7688ddb-b1aa-4871-ba0a-eaca72dcac4b">
+
+<h3> 3. 미팅 관리 기능 제공</h3>
+미팅 시간, 장소, 참여 멤버 확인 등 미팅 정보 확인에 대한 기능을 제공합니다.<br>
+각각의 미팅에 대한 댓글을 작성하여 소통을 할 수 있습니다.<br>
+<img width="565" alt="KakaoTalk_Photo_2024-06-01-13-53-09-1" src="https://github.com/U2DJ2/moim-today/assets/84896838/7d861d14-c956-4007-a2e2-a6674edcf65a">
+
+<h3> 4. 알림 기능 제공</h3>
+다가오는 미팅에 대한 정보를 잊어버리지 않도록 하루 전에 가입한 학교 이메일로 알림을 제공합니다.
+<img width="500" alt="KakaoTalk_Photo_2024-06-01-13-55-42-2" src="https://github.com/U2DJ2/moim-today/assets/84896838/fc827d3c-d1b8-4a19-b488-01d552188072">
+
+<h3> 5. 학교별 어드민 페이지 제공</h3>
+Moim-Today가 제공하는 어드민 페이지를 사용하여 해당 학교 정보 및 사용자를 관리할 수 있는 SaaS를 제공합니다.    
+<img width="565" alt="KakaoTalk_Photo_2024-06-01-14-02-53-1" src="https://github.com/U2DJ2/moim-today/assets/84896838/d0ccc13b-f0da-40b4-9724-12dfc60a8298">
 
 <h1>2. Moim Today에서 사용하는 기술</h1>
 <h3>FE</h3>
@@ -77,27 +92,41 @@
 </div>
 
 <h1>3. 개발하다 마주친 문제 정리</h1>
+<p><em>Last Updated At : 2024-06-01</em></p>
 <ul>
+<h2>프로젝트 세팅</h2>
   
-<a href="https://velog.io/@anak_2/%EA%B9%83-%ED%98%91%EC%97%85%EC%97%90%EC%84%9C-%EC%9D%B4%EC%8A%88Issue%EC%99%80-%ED%92%80%EB%A6%AC%ED%80%98%EC%8A%A4%ED%8A%B8PR%EC%9D%84-%ED%85%9C%ED%94%8C%EB%A6%BF-template%EC%9C%BC%EB%A1%9C-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0">깃 협업에서 이슈(Issue)와 풀리퀘스트(PR)을 템플릿 (template)으로 관리하기</a> 
-  
+<a href="https://velog.io/@anak_2/%EA%B9%83-%ED%98%91%EC%97%85%EC%97%90%EC%84%9C-%EC%9D%B4%EC%8A%88Issue%EC%99%80-%ED%92%80%EB%A6%AC%ED%80%98%EC%8A%A4%ED%8A%B8PR%EC%9D%84-%ED%85%9C%ED%94%8C%EB%A6%BF-template%EC%9C%BC%EB%A1%9C-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0">깃 협업에서 이슈(Issue)와 풀리퀘스트(PR)을 템플릿 (template)으로 관리하기</a>
+
 <a href="https://320hwany.tistory.com/112">팀 프로젝트를 위한 github actions CI/CD 세팅</a>
   
 <a href="https://south-leopard-b1c.notion.site/58936ac8371a4e49a333a698d99bb0ce">백엔드 모니터링 환경을 구축해보자!</a>
 
-<a href="https://320hwany.tistory.com/113">RDB는 정말 유연한 설계에 대응하는 것이 어려울까?</a>
+<a href="https://salty-bottom-0de.notion.site/Git-c428d50c6ebc426185b85ad1908cfa79?pvs=4">개발자 필수 스킬! 왜 당신은 아직도 git rebase를 모르는가?</a>
 
-<a href="https://320hwany.tistory.com/114">대량의 insert 쿼리 jdbc batch update를 사용하여 개선하기</a>
+<h2>설계</h2>
 
 <a href="https://320hwany.tistory.com/116">복잡한 비즈니스 로직을 풀어내는 방법</a>
 
 <a href="https://south-leopard-b1c.notion.site/881b7ad598f04843a8970201ea9cad53">쿠키-세션을 이용한 로그인 방식 선택과 이유</a>
 
+<a href="https://320hwany.tistory.com/113">RDB는 정말 유연한 설계에 대응하는 것이 어려울까?</a>
+
+<h2>테스트</h2>
+
 <a href="https://320hwany.tistory.com/115">저희 팀에서는 이렇게 테스트 코드를 작성해요</a>
 
 <a href="https://south-leopard-b1c.notion.site/8422e7fa404543f48dd0331cc0578297">독립 테스트는 성공하는데 동시 테스트는 실패하는 이유 찾기</a>
 
-<a href="https://salty-bottom-0de.notion.site/Git-c428d50c6ebc426185b85ad1908cfa79?pvs=4">개발자 필수 스킬! 왜 당신은 아직도 git rebase를 모르는가?</a>
+2024년 6월 1일 기준으로 <strong>428개</strong>의 테스트 코드를 작성했고 <strong>79%</strong>의 테스트 커버리지(Instructions Coverage)를 달성했어요!
+
+
+<h2>성능 개선기</h2>
+
+<a href="https://320hwany.tistory.com/114">대량의 insert 쿼리 jdbc batch update를 사용하여 개선하기</a>
+
+20만건의 쿼리 기준 <strong>약 2.8초</strong>에서 <strong>약 0.13초</strong>로 <strong>95%</strong> 정도의 성능을 향상했어요!
+
 </ul>
 
 <h1>4. 인프라 구조 </h1>
@@ -105,7 +134,7 @@
 <img width="883" alt="스크린샷 2024-05-29 오후 11 21 58" src="https://github.com/U2DJ2/moim-today/assets/84896838/7dfb1476-07d7-48c6-a566-e7319a1be382">
 
 
-<h1 id="team">  5. 팀원 소개</h2>
+<h1 id="team"> 5. 팀원 소개</h2>
 
 <table width="1200">
   <thead>
