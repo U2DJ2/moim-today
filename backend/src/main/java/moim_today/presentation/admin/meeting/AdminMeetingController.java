@@ -20,7 +20,7 @@ public class AdminMeetingController {
     }
 
     @GetMapping("/meetings/{moimId}")
-    public List<AdminMeetingResponse> findAllByUniversityId(@PathVariable final long moimId) {
-        return adminMeetingService.findAll(moimId);
+    public List<AdminMeetingResponse> findAllByMoimId(@PathVariable final long moimId) {
+        return adminMeetingService.findAllByMoimId(moimId);
     }
 }

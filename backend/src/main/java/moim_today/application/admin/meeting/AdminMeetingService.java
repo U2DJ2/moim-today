@@ -17,7 +17,7 @@ public class AdminMeetingService {
     }
 
     @Transactional(readOnly = true)
-    public List<AdminMeetingResponse> findAll(final long moimId) {
+    public List<AdminMeetingResponse> findAllByMoimId(final long moimId) {
         return meetingRepository.findAllByAdminMoimId(moimId);
     }
 }
