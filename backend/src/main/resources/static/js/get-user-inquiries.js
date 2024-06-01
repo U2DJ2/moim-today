@@ -51,7 +51,7 @@ $(document).ready(function () {
 
                 $(document).on('keyup', '.answer-content', function () {
                     var userInquiryId = $(this).data('id');
-                    var charCount = $(this).val().length;
+                    var charCount = $(this).text().length;
                     $('#contentCount' + userInquiryId).text(charCount + ' / 500');
                 });
 
