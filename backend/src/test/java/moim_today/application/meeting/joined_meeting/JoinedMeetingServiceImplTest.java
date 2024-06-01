@@ -93,8 +93,11 @@ class JoinedMeetingServiceImplTest {
 
         joinedMeetingRepository.save(joinedMeetingJpaEntity);
 
+        // given 5
+        LocalDateTime currentDateTime = LocalDateTime.of(2024, 3, 1, 10, 0, 0);
+
         // when
-        joinedMeetingService.acceptanceJoinMeeting(memberJpaEntity.getId(), meetingJpaEntity.getId());
+        joinedMeetingService.acceptanceJoinMeeting(memberJpaEntity.getId(), meetingJpaEntity.getId(), currentDateTime);
 
         // then
         JoinedMeetingJpaEntity findEntity = joinedMeetingRepository.getById(joinedMeetingJpaEntity.getId());
@@ -137,8 +140,11 @@ class JoinedMeetingServiceImplTest {
 
         joinedMeetingRepository.save(joinedMeetingJpaEntity);
 
+        // given 5
+        LocalDateTime currentDateTime = LocalDateTime.of(2024, 3, 1, 10, 0, 0);
+
         // when
-        joinedMeetingService.acceptanceJoinMeeting(memberJpaEntity.getId(), meetingJpaEntity.getId());
+        joinedMeetingService.acceptanceJoinMeeting(memberJpaEntity.getId(), meetingJpaEntity.getId(), currentDateTime);
 
         // then
         List<ScheduleJpaEntity> scheduleJpaEntities = scheduleRepository.findAllByMemberId(memberJpaEntity.getId());
@@ -195,8 +201,11 @@ class JoinedMeetingServiceImplTest {
 
         joinedMeetingRepository.save(joinedMeetingJpaEntity);
 
+        // given 6
+        LocalDateTime currentDateTime = LocalDateTime.of(2024, 3, 1, 10, 0, 0);
+
         // expected
-        assertThatThrownBy(() -> joinedMeetingService.acceptanceJoinMeeting(memberJpaEntity.getId(), meetingJpaEntity.getId()))
+        assertThatThrownBy(() -> joinedMeetingService.acceptanceJoinMeeting(memberJpaEntity.getId(), meetingJpaEntity.getId(), currentDateTime))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage(SCHEDULE_ALREADY_EXIST.message());
 
@@ -249,8 +258,11 @@ class JoinedMeetingServiceImplTest {
 
         scheduleRepository.save(scheduleJpaEntity);
 
+        // given 6
+        LocalDateTime currentDateTime = LocalDateTime.of(2024, 3, 1, 10, 0, 0);
+
         // when
-        joinedMeetingService.refuseJoinMeeting(memberJpaEntity.getId(), meetingJpaEntity.getId());
+        joinedMeetingService.refuseJoinMeeting(memberJpaEntity.getId(), meetingJpaEntity.getId(), currentDateTime);
 
         // then
         JoinedMeetingJpaEntity findEntity = joinedMeetingRepository.getById(joinedMeetingJpaEntity.getId());
@@ -301,8 +313,11 @@ class JoinedMeetingServiceImplTest {
 
         scheduleRepository.save(scheduleJpaEntity);
 
+        // given 6
+        LocalDateTime currentDateTime = LocalDateTime.of(2024, 3, 1, 10, 0, 0);
+
         // when
-        joinedMeetingService.refuseJoinMeeting(memberJpaEntity.getId(), meetingJpaEntity.getId());
+        joinedMeetingService.refuseJoinMeeting(memberJpaEntity.getId(), meetingJpaEntity.getId(), currentDateTime);
 
         // then
         assertThat(scheduleRepository.count()).isEqualTo(0);

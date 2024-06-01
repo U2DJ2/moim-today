@@ -13,6 +13,8 @@ import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 import static moim_today.global.constant.exception.ScheduleExceptionConstant.*;
 
 
@@ -50,8 +52,9 @@ public class JoinedMeetingServiceImpl implements JoinedMeetingService {
 
     @Transactional
     @Override
-    public void acceptanceJoinMeeting(final long memberId, final long meetingId) {
+    public void acceptanceJoinMeeting(final long memberId, final long meetingId, final LocalDateTime currentDateTime) {
         MeetingJpaEntity meetingJpaEntity = meetingFinder.getById(meetingId);
+        meetingJpaEntity.validateCurrentTime(currentDateTime);
         String moimTitle = moimFinder.getTitleById(meetingJpaEntity.getMoimId());
         ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.toEntity(memberId, moimTitle, meetingJpaEntity);
         boolean isNew = scheduleAppender.createScheduleIfNotExist(scheduleJpaEntity);
@@ -66,7 +69,9 @@ public class JoinedMeetingServiceImpl implements JoinedMeetingService {
 
     @Transactional
     @Override
-    public void refuseJoinMeeting(final long memberId, final long meetingId) {
+    public void refuseJoinMeeting(final long memberId, final long meetingId, final LocalDateTime currentDateTime) {
+        MeetingJpaEntity meetingJpaEntity = meetingFinder.getById(meetingId);
+        meetingJpaEntity.validateCurrentTime(currentDateTime);
         boolean attendance = false;
         joinedMeetingUpdater.updateAttendance(memberId, meetingId, attendance);
         scheduleRemover.deleteByMemberIdAndMeetingId(memberId, meetingId);

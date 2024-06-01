@@ -5,8 +5,11 @@ import moim_today.global.base_entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import moim_today.global.error.BadRequestException;
 
 import java.time.LocalDateTime;
+
+import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_PAST_TIME_BAD_REQUEST_ERROR;
 
 @Getter
 @Table(name = "meeting")
@@ -44,5 +47,11 @@ public class MeetingJpaEntity extends BaseTimeEntity {
     public void updateMeeting(final String agenda, final String place) {
         this.agenda = agenda;
         this.place = place;
+    }
+
+    public void validateCurrentTime(final LocalDateTime currentDateTime) {
+        if (startDateTime.isBefore(currentDateTime)) {
+            throw new BadRequestException(MEETING_PAST_TIME_BAD_REQUEST_ERROR.message());
+        }
     }
 }
