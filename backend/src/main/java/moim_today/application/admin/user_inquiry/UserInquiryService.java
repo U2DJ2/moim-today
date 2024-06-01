@@ -7,6 +7,7 @@ import moim_today.dto.admin.user_inquiry.UserInquiryResponse;
 import moim_today.dto.mail.MailSendRequest;
 import moim_today.persistence.entity.admin.UserInquiryJpaEntity;
 import moim_today.persistence.repository.admin.user_inquiry.UserInquiryRepository;
+import moim_today.persistence.repository.department.department.DepartmentRepository;
 import moim_today.persistence.repository.member.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,20 +21,36 @@ public class UserInquiryService {
 
     private final MailService mailService;
     private final MemberRepository memberRepository;
+    private final DepartmentRepository departmentRepository;
     private final UserInquiryRepository userInquiryRepository;
 
     public UserInquiryService(final MailService mailService,
                               final MemberRepository memberRepository,
+                              final DepartmentRepository departmentRepository,
                               final UserInquiryRepository userInquiryRepository) {
         this.mailService = mailService;
         this.memberRepository = memberRepository;
+        this.departmentRepository = departmentRepository;
         this.userInquiryRepository = userInquiryRepository;
     }
 
     @Transactional(readOnly = true)
-    public List<UserInquiryResponse> getAllUserInquiryByUniversityId(final long universityId) {
+    public List<UserInquiryResponse> getAllUserInquiry(final long universityId) {
         return userInquiryRepository.getAllUserInquiryByUniversityId(universityId).stream()
-                .map(UserInquiryResponse::from)
+                .map(userInquiryJpaEntity -> {
+                    String departmentName = departmentRepository.getById(userInquiryJpaEntity.getDepartmentId()).getDepartmentName();
+                    return UserInquiryResponse.of(userInquiryJpaEntity, departmentName);
+                })
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserInquiryResponse> getAllNotAnsweredUserInquiry(final long universityId) {
+        return userInquiryRepository.getAllNotAnsweredUserInquiry(universityId).stream()
+                .map(userInquiryJpaEntity -> {
+                    String departmentName = departmentRepository.getById(userInquiryJpaEntity.getDepartmentId()).getDepartmentName();
+                    return UserInquiryResponse.of(userInquiryJpaEntity, departmentName);
+                })
                 .toList();
     }
 

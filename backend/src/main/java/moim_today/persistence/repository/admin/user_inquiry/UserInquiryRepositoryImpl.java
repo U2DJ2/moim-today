@@ -32,4 +32,10 @@ public class UserInquiryRepositoryImpl implements UserInquiryRepository{
     public List<UserInquiryJpaEntity> getAllUserInquiryByUniversityId(final long universityId){
         return userInquiryJpaRepository.findAllByUniversityIdOrderByCreatedAtDesc(universityId);
     }
+
+    @Override
+    public List<UserInquiryJpaEntity> getAllNotAnsweredUserInquiry(final long universityId) {
+        return userInquiryJpaRepository.findAllByUniversityIdOrderByCreatedAtDesc(universityId)
+                .stream().filter((userInquiry) -> !userInquiry.isAnswerComplete()).toList();
+    }
 }

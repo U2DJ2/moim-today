@@ -1,14 +1,10 @@
 package moim_today.application.admin.user_inquiry;
 
-import moim_today.application.admin.moim.AdminMoimService;
 import moim_today.dto.admin.user_inquiry.UserInquiryAnswerRequest;
-import moim_today.dto.admin.user_inquiry.UserInquiryRequest;
 import moim_today.dto.admin.user_inquiry.UserInquiryResponse;
 import moim_today.persistence.entity.admin.UserInquiryJpaEntity;
 import moim_today.persistence.repository.admin.user_inquiry.UserInquiryRepository;
-import moim_today.persistence.repository.moim.moim.MoimRepository;
 import moim_today.util.DatabaseCleaner;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class UserInquiryServiceTest {
@@ -56,7 +51,7 @@ class UserInquiryServiceTest {
         userInquiryRepository.save(ui3);
 
         // when
-        List<UserInquiryResponse> allUserInquiryByUniversityId = userInquiryService.getAllUserInquiryByUniversityId(1L);
+        List<UserInquiryResponse> allUserInquiryByUniversityId = userInquiryService.getAllUserInquiry(1L);
 
         // then
         assertThat(allUserInquiryByUniversityId.size()).isEqualTo(2);

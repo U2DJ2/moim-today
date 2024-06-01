@@ -8,6 +8,8 @@ public interface UserInquiryRepository {
 
     List<UserInquiryJpaEntity> getAllUserInquiryByUniversityId(final long universityId);
 
+    List<UserInquiryJpaEntity> getAllNotAnsweredUserInquiry(final long universityId);
+
     UserInquiryJpaEntity save(final UserInquiryJpaEntity userInquiryJpaEntity);
 
     UserInquiryJpaEntity findById(final long userInquiryId);

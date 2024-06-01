@@ -4,15 +4,15 @@ function submitQuery() {
     var userQuery = { title: inquiryTitle, content: inquiryContent };
 
     $.ajax({
-        url: "http://localhost:8080/api/admin/user-inquiry",
+        url: "http://localhost:8080/api/admin/",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(userQuery),
         success: function(response) {
-            alert("문의사항이 성공적으로 전송되었습니다.");
+            alert("문의사항 답변이 성공적으로 전송되었습니다.");
         },
         error: function(xhr, status, error) {
-            alert("문의사항 전송에 실패했습니다. 다시 시도해주세요.");
+            alert("문의사항 답변 전송에 실패했습니다. 다시 시도해주세요.");
         }
     });
 }

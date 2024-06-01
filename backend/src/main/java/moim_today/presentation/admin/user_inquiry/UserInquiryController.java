@@ -1,10 +1,8 @@
 package moim_today.presentation.admin.user_inquiry;
 
 import moim_today.application.admin.user_inquiry.UserInquiryService;
-import moim_today.domain.member.MemberSession;
 import moim_today.domain.university.AdminSession;
 import moim_today.dto.admin.user_inquiry.UserInquiryAnswerRequest;
-import moim_today.dto.admin.user_inquiry.UserInquiryRequest;
 import moim_today.dto.admin.user_inquiry.UserInquiryRespondRequest;
 import moim_today.dto.admin.user_inquiry.UserInquiryResponse;
 import moim_today.global.annotation.Login;
@@ -25,7 +23,12 @@ public class UserInquiryController {
 
     @GetMapping
     public CollectionResponse<List<UserInquiryResponse>> getUserInquiries(@Login final AdminSession adminSession){
-        return CollectionResponse.from(userInquiryService.getAllUserInquiryByUniversityId(adminSession.universityId()));
+        return CollectionResponse.from(userInquiryService.getAllUserInquiry(adminSession.universityId()));
+    }
+
+    @GetMapping("/not-answered")
+    public CollectionResponse<List<UserInquiryResponse>> getNotAnsweredUserInquiries(@Login final AdminSession adminSession){
+        return CollectionResponse.from(userInquiryService.getAllNotAnsweredUserInquiry(adminSession.universityId()));
     }
 
     @PatchMapping("/answer-complete")
