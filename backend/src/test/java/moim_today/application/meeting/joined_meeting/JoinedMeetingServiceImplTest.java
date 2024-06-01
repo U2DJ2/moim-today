@@ -1,5 +1,6 @@
 package moim_today.application.meeting.joined_meeting;
 
+import moim_today.global.error.BadRequestException;
 import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
@@ -12,6 +13,7 @@ import moim_today.persistence.repository.moim.moim.MoimRepository;
 import moim_today.persistence.repository.schedule.schedule.ScheduleRepository;
 import moim_today.util.DatabaseCleaner;
 import moim_today.util.TestConstant;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static moim_today.global.constant.exception.ScheduleExceptionConstant.SCHEDULE_ALREADY_EXIST;
 import static org.assertj.core.api.Assertions.*;
 
 
@@ -143,6 +146,63 @@ class JoinedMeetingServiceImplTest {
         assertThat(scheduleJpaEntity.getStartDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 30, 10, 0, 0));
         assertThat(scheduleJpaEntity.getEndDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 30, 12, 0, 0));
         assertThat(scheduleJpaEntity.getScheduleName()).isEqualTo(moimJpaEntity.getTitle());
+    }
+
+    @DisplayName("미팅에 참여시간대에 이미 다른 스케줄이 존재하면 미팅 참석시에 예외가 발생한다.")
+    @Test
+    void acceptanceJoinMeetingScheduleAlreadyExist() {
+        // given 1
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .title(TestConstant.MOIM_TITLE.value())
+                .startDate(LocalDate.of(2024, 3, 4))
+                .endDate(LocalDate.of(2024, 6, 30))
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+
+        // given 2
+        MeetingJpaEntity meetingJpaEntity = MeetingJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
+                .startDateTime(LocalDateTime.of(2024, 3, 30, 10, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 30, 12, 0, 0))
+                .build();
+
+        meetingRepository.save(meetingJpaEntity);
+
+        // given 3
+        MemberJpaEntity memberJpaEntity = MemberJpaEntity.builder()
+                .build();
+
+        memberRepository.save(memberJpaEntity);
+
+        // given 4
+        ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(memberJpaEntity.getId())
+                .moimId(moimJpaEntity.getId())
+                .meetingId(meetingJpaEntity.getId())
+                .startDateTime(LocalDateTime.of(2024, 3, 30, 9, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 30, 11, 0, 0))
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity);
+
+        // given 5
+        JoinedMeetingJpaEntity joinedMeetingJpaEntity = JoinedMeetingJpaEntity.builder()
+                .meetingId(meetingJpaEntity.getId())
+                .memberId(memberJpaEntity.getId())
+                .attendance(false)
+                .build();
+
+        joinedMeetingRepository.save(joinedMeetingJpaEntity);
+
+        // expected
+        assertThatThrownBy(() -> joinedMeetingService.acceptanceJoinMeeting(memberJpaEntity.getId(), meetingJpaEntity.getId()))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(SCHEDULE_ALREADY_EXIST.message());
+
+        JoinedMeetingJpaEntity findJoinedMeetingEntity = joinedMeetingRepository.getById(joinedMeetingJpaEntity.getId());
+        assertThat(findJoinedMeetingEntity.isAttendance()).isFalse();
+        assertThat(scheduleRepository.count()).isEqualTo(1);
     }
 
     @DisplayName("미팅 참석을 거절하면 미팅 참석 여부가 불참으로 변경된다.")
