@@ -102,7 +102,7 @@ Moim-Today가 제공하는 어드민 페이지를 사용하여 해당 학교 정
   
 <a href="https://south-leopard-b1c.notion.site/58936ac8371a4e49a333a698d99bb0ce">백엔드 모니터링 환경을 구축해보자!</a>
 
-<a href="https://salty-bottom-0de.notion.site/Git-c428d50c6ebc426185b85ad1908cfa79?pvs=4">개발자 필수 스킬! 왜 당신은 아직도 git rebase를 모르는가?</a>
+<a href="https://salty-bottom-0de.notion.site/Git-c428d50c6ebc426185b85ad1908cfa79?pvs=4">보기 좋은 깃 히스토리 관리를 위한 git rebase를 사용해보자</a>
 
 <h2>설계</h2>
 
