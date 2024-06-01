@@ -118,7 +118,7 @@ Moim-Today가 제공하는 어드민 페이지를 사용하여 해당 학교 정
 
 <a href="https://south-leopard-b1c.notion.site/8422e7fa404543f48dd0331cc0578297">독립 테스트는 성공하는데 동시 테스트는 실패하는 이유 찾기</a>
 
-2024년 6월 1일 기준으로 <strong>428개</strong>의 테스트 코드를 작성했고 <strong>79%</strong>의 테스트 커버리지(Instructions Coverage)를 달성했어요!
+<strong>428개</strong>의 테스트 코드를 작성했고 <strong>79%</strong>의 테스트 커버리지(Instructions Coverage)를 달성했어요!
 
 
 <h2>성능 개선기</h2>
