@@ -5,8 +5,9 @@ import lombok.Getter;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
 
 import java.util.List;
+import java.util.UUID;
 
-import static moim_today.global.constant.NumberConstant.MAX_SLASH_CNT;
+import static moim_today.global.constant.NumberConstant.*;
 import static moim_today.global.constant.SymbolConstant.*;
 import static moim_today.global.constant.UniversityConstant.ASSOCIATE_DEGREE;
 import static moim_today.global.constant.UniversityConstant.GRADUATE_DEGREE;
@@ -67,14 +68,21 @@ public class ExtractUniversity {
         return universityType.contains(this.schoolType);
     }
 
-    public UniversityJpaEntity toEntity() {
+    public UniversityJpaEntity toEntity(final String adminPassword) {
         return UniversityJpaEntity.builder()
                 .universityEmail(this.link)
                 .universityName(this.schoolName)
+                .adminPassword(adminPassword)
                 .build();
     }
 
     public boolean isEmailEmpty(){
         return link.isEmpty();
+    }
+
+    public String createAdminPassword() {
+        UUID uuid = UUID.randomUUID();
+        String adminPassword = uuid.toString().replace(HYPHEN.value(), BLANK.value());
+        return adminPassword.substring(ADMIN_PASSWORD_START_POINT.value(), ADMIN_PASSWORD_LENGTH.value());
     }
 }
