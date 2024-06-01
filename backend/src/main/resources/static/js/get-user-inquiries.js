@@ -35,7 +35,7 @@ $(document).ready(function () {
                             <div class="form-control answer-content editable-div" contenteditable="true" id="answerContent${inquiry.userInquiryId}" data-id="${inquiry.userInquiryId}" rows="4" maxlength="500"></div>
                         </div>
                         <div id="contentCount${inquiry.userInquiryId}" class="char-count">0 / 500</div>
-                        <button type="button" class="btn btn-primary" onclick="submitAnswer(${inquiry.userInquiryId})">답변 전송</button>
+                        <button type="button" class="btn btn-primary" onclick="submitAnswer(${inquiry.userInquiryId}, ${inquiry.memberId})">답변 전송</button>
                     </div>
                 </div>
             </div>
@@ -71,14 +71,17 @@ $(document).ready(function () {
     });
 });
 
-function submitAnswer(userInquiryId) {
-    var answerContent = document.getElementById('answerContent' + userInquiryId).value;
-    var answerData = {inquiryId: userInquiryId, content: answerContent};
+function submitAnswer(userInquiryId, memberId) {
+    var answerContent = document.getElementById('answerContent' + userInquiryId).textContent;
+    var answerData = {userInquiryId: userInquiryId, responseContent: answerContent, memberId: memberId};
 
     $.ajax({
-        url: "http://localhost:8080/api/admin/user-inquiry/answer",
+        url: "http://localhost:8080/api/admin/user-inquiry/response",
         type: "POST",
         contentType: "application/json",
+        xhrFields: {
+            withCredentials: true
+        },
         data: JSON.stringify(answerData),
         success: function (response) {
             alert("답변이 성공적으로 전송되었습니다.");

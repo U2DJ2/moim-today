@@ -1,5 +1,6 @@
 package moim_today.dto.admin.user_inquiry;
 
+import lombok.ToString;
 import moim_today.dto.mail.MailSendRequest;
 
 import java.util.List;
