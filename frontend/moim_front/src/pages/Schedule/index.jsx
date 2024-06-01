@@ -349,7 +349,7 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
           className="w-52 justify-center px-6 py-3 text-[16px] text-center text-white bg-black whitespace-nowrap rounded-full font-semibold  hover:cursor-pointer"
           onClick={handleAddTodo}
         >
-          TODO 추가하기
+          할일 추가하기
         </button>
         <div className="mt-8"></div>
 

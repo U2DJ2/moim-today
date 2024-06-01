@@ -25,12 +25,12 @@ export default function Calendar({
   setStartDateTime,
   setScheduleTitle,
   scheduleTitle,
+  handleDelete,
   memberId,
   isRefresh = false,
   setIsRefresh = null,
 }) {
   const calendarRef = useRef(null);
-  const today = new Date().toISOString().split("T")[0];
   const [events, setEvents] = useState([]);
   const [calendarStart, setCalendarStart] = useState(new Date());
   const currentYear = new Date().getFullYear();
@@ -68,7 +68,7 @@ export default function Calendar({
     //모임 내 멤버 별 가용시간
     try {
       let allEvents = [];
-      console.log(calendarStart);
+
       const memberSchedule = await axios.get(
         `https://api.moim.today/api/schedules/weekly/available-time/members/${memberId}`,
         {
@@ -83,8 +83,6 @@ export default function Calendar({
           mapEventData(event, true, true)
         ),
       ];
-      console.log(memberSchedule);
-      console.log(allEvents);
       setEvents(allEvents);
     } catch (e) {
       console.log(e);
@@ -105,8 +103,7 @@ export default function Calendar({
       let allEvents = [];
       for (let month = 1; month <= 8; month++) {
         const response = await axios.get(
-          `https://api.moim.today/api/schedules/monthly?yearMonth=${year}-${
-            month < 10 ? "0" + month : month
+          `https://api.moim.today/api/schedules/monthly?yearMonth=${year}-${month < 10 ? "0" + month : month
           }`,
           {
             headers: {
@@ -133,8 +130,11 @@ export default function Calendar({
       const startDate = isPast
         ? new Date().toISOString().split("T")[0]
         : calendarStart instanceof Date
-        ? calendarStart.toISOString().split("T")[0]
-        : new Date(calendarStart).toISOString().split("T")[0];
+          ? calendarStart.toISOString().split("T")[0]
+          : new Date(calendarStart).toISOString().split("T")[0];
+        
+      if(moimId == null) return;
+
       const response = await axios.get(
         `https://api.moim.today/api/schedules/weekly/available-time/moims/${moimId}`,
         {
@@ -147,8 +147,6 @@ export default function Calendar({
         ...allEvents,
         ...response.data.data.map((event) => mapEventData(event, true, true)),
       ];
-      console.log(response);
-      console.log(allEvents);
       setEvents(allEvents);
     } catch (e) {
       console.log(e);
@@ -185,34 +183,23 @@ export default function Calendar({
     setStartDateTime(selectInfo.startStr);
     setEndDateTime(selectInfo.endStr);
 
-    const dateObject = new Date(selectInfo.startStr.match(/\d{4}/)[0], 0, 1);
-
-    setYear(dateObject);
-
     calendarApi.unselect(); // clear date selection
   }
 
-  // Function to handle event add
-  async function handleEventAdd(info) {
-    try {
-      const eventData = {
-        scheduleName: info.event.title,
-        startDateTime: info.event.start,
-        endDateTime: info.event.end,
-      };
-
-      // const result = await axios.post(
-      //   "https://api.moim.today/api/schedules",
-      //   eventData
-      // );
-
-      console.log(
-        "Event added and sent to the backend:",
-        info.event.start,
-        info.event.end
+  // Function to handle event click
+  async function handleEventClick(info) {
+    if (isPersonal) {
+      // Fetch schedule delete API
+      await axios.delete(
+        `https://api.moim.today/api/schedules`, {
+        data: {
+          scheduleId: info.event.id,
+        }
+      }
       );
-    } catch (error) {
-      console.error("Error adding event:", error);
+
+      // Refresh calendar
+      fetchAllEvents(currentYear).catch(console.error);
     }
   }
 
@@ -229,9 +216,11 @@ export default function Calendar({
   function personalSubmit() {
     calendarRef.current.getApi().unselect();
   }
+
   const handleDateSet = (dateInfo) => {
     fetchAvailables();
   };
+
   const onChangeDate = (dateInfo) => {
     console.log(dateInfo.startStr.split("T")[0]);
     setCalendarStart(dateInfo.startStr.split("T")[0]);
@@ -256,6 +245,7 @@ export default function Calendar({
           dayMaxEvents={true}
           events={events}
           select={handleDateSelect}
+          eventClick={handleEventClick}
           eventContent={renderEventContent}
           eventChange={handleEventChange}
           eventRemove={handleEventRemove}

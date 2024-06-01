@@ -110,6 +110,7 @@ export default function Manage() {
       .catch((error) => {
         console.log(error);
       });
+      
   }, [userInfo]);
 
   useEffect(() => {

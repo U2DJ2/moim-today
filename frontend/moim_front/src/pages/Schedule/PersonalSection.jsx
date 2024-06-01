@@ -37,6 +37,7 @@ export default function ProfileSection({ selectedDate }) {
         </h1>
         <div className="py-3"></div>
         <Calendar
+          selectedDate={selectedDate}
           isPersonal={true}
           showModal={showModal}
           setShowModal={setShowModal}

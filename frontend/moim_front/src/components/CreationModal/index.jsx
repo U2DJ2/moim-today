@@ -1,7 +1,6 @@
-import React, { useRef, useEffect } from "react";
-import { postMeeting } from "../../api/moim";
-import { parse } from "date-fns";
+import { useRef, useEffect } from "react";
 import { POST } from "../../utils/axios";
+
 function CreationModal({
   showModal,
   setShowModal,
