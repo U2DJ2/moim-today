@@ -30,6 +30,6 @@ public class UserInquiryRepositoryImpl implements UserInquiryRepository{
 
     @Override
     public List<UserInquiryJpaEntity> getAllUserInquiryByUniversityId(final long universityId){
-        return userInquiryJpaRepository.findAllByUniversityId(universityId);
+        return userInquiryJpaRepository.findAllByUniversityIdOrderByCreatedAtDesc(universityId);
     }
 }

@@ -28,6 +28,7 @@ public record UserInquiryResponse(
                         .inquiryTitle(userInquiryJpaEntity.getInquiryTitle())
                         .inquiryContent(userInquiryJpaEntity.getInquiryContent())
                         .answerComplete(userInquiryJpaEntity.isAnswerComplete())
+                        .createdAt(userInquiryJpaEntity.getCreatedAt())
                         .build();
         }
 }

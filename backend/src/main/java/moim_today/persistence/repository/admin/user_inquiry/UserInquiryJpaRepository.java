@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface UserInquiryJpaRepository extends JpaRepository<UserInquiryJpaEntity, Long> {
 
-    List<UserInquiryJpaEntity> findAllByUniversityId(final long universityId);
+    List<UserInquiryJpaEntity> findAllByUniversityIdOrderByCreatedAtDesc(final long universityId);
 }

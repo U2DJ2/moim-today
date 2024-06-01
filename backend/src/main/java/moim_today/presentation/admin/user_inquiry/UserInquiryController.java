@@ -2,6 +2,7 @@ package moim_today.presentation.admin.user_inquiry;
 
 import moim_today.application.admin.user_inquiry.UserInquiryService;
 import moim_today.domain.member.MemberSession;
+import moim_today.domain.university.AdminSession;
 import moim_today.dto.admin.user_inquiry.UserInquiryAnswerRequest;
 import moim_today.dto.admin.user_inquiry.UserInquiryRequest;
 import moim_today.dto.admin.user_inquiry.UserInquiryRespondRequest;
@@ -23,17 +24,17 @@ public class UserInquiryController {
     }
 
     @GetMapping
-    public CollectionResponse<List<UserInquiryResponse>> getUserInquiries(@RequestParam final long universityId){
-        return CollectionResponse.from(userInquiryService.getAllUserInquiryByUniversityId(universityId));
+    public CollectionResponse<List<UserInquiryResponse>> getUserInquiries(@Login final AdminSession adminSession){
+        return CollectionResponse.from(userInquiryService.getAllUserInquiryByUniversityId(adminSession.universityId()));
     }
 
     @PatchMapping("/answer-complete")
-    public void updateUserInquiryAnswer(@RequestBody UserInquiryAnswerRequest userInquiryAnswerRequest){
+    public void updateUserInquiryAnswer(@RequestBody final UserInquiryAnswerRequest userInquiryAnswerRequest){
         userInquiryService.updateUserInquiryAnswer(userInquiryAnswerRequest);
     }
 
     @PostMapping("/response")
-    public void respondUserInquiry(@RequestBody UserInquiryRespondRequest userInquiryRespondRequest){
+    public void respondUserInquiry(@RequestBody final UserInquiryRespondRequest userInquiryRespondRequest){
         userInquiryService.respondUserInquiry(userInquiryRespondRequest);
     }
 }
