@@ -37,24 +37,24 @@
 <h3> 1. 일정 관리 기능 제공</h3>
 에브리타임 시간표와 연동되는 개인 캘린더를 제공합니다.  <br>
 여기에 더해 각 모임 별로 할 일을 추가하여 한 번에 확인이 가능하도록 도와줍니다. 
-<img width="565" alt="Moim-Today 캘린더 " src="https://github.com/U2DJ2/moim-today/assets/84896838/c657eacd-21cd-423d-91f3-d036ca42e787">
+<img width="565" src="https://github.com/U2DJ2/moim-today/assets/84896838/c657eacd-21cd-423d-91f3-d036ca42e787">
 
 <h3> 2. 모임 관리 기능 제공</h3>
 멤버 별 가용시간, 할 일 리스트, 공지사항 및 미팅 생성 기능을 제공합니다.        
-<img width="565" alt="Moim-Today 가용시간" src="https://github.com/U2DJ2/moim-today/assets/84896838/a7688ddb-b1aa-4871-ba0a-eaca72dcac4b">
+<img width="565" src="https://github.com/U2DJ2/moim-today/assets/84896838/a7688ddb-b1aa-4871-ba0a-eaca72dcac4b">
 
 <h3> 3. 미팅 관리 기능 제공</h3>
 미팅 시간, 장소, 참여 멤버 확인 등 미팅 정보 확인에 대한 기능을 제공합니다.<br>
 각각의 미팅에 대한 댓글을 작성하여 소통을 할 수 있습니다.<br>
-<img width="565" alt="KakaoTalk_Photo_2024-06-01-13-53-09-1" src="https://github.com/U2DJ2/moim-today/assets/84896838/7d861d14-c956-4007-a2e2-a6674edcf65a">
+<img width="565" src="https://github.com/U2DJ2/moim-today/assets/84896838/7d861d14-c956-4007-a2e2-a6674edcf65a">
 
 <h3> 4. 알림 기능 제공</h3>
 다가오는 미팅에 대한 정보를 잊어버리지 않도록 하루 전에 가입한 학교 이메일로 알림을 제공합니다.
-<img width="500" alt="KakaoTalk_Photo_2024-06-01-13-55-42-2" src="https://github.com/U2DJ2/moim-today/assets/84896838/fc827d3c-d1b8-4a19-b488-01d552188072">
+<img width="500" src="https://github.com/U2DJ2/moim-today/assets/84896838/fc827d3c-d1b8-4a19-b488-01d552188072">
 
 <h3> 5. 학교별 어드민 페이지 제공</h3>
 Moim-Today가 제공하는 어드민 페이지를 사용하여 해당 학교 정보 및 사용자를 관리할 수 있는 SaaS를 제공합니다.    
-<img width="565" alt="KakaoTalk_Photo_2024-06-01-14-02-53-1" src="https://github.com/U2DJ2/moim-today/assets/84896838/d0ccc13b-f0da-40b4-9724-12dfc60a8298">
+<img width="565" src="https://github.com/U2DJ2/moim-today/assets/84896838/d0ccc13b-f0da-40b4-9724-12dfc60a8298">
 
 <h1>2. Moim Today에서 사용하는 기술</h1>
 <h3>FE</h3>
@@ -131,7 +131,7 @@ Moim-Today가 제공하는 어드민 페이지를 사용하여 해당 학교 정
 
 <h1>4. 인프라 구조 </h1>
 
-<img width="883" alt="스크린샷 2024-05-29 오후 11 21 58" src="https://github.com/U2DJ2/moim-today/assets/84896838/7dfb1476-07d7-48c6-a566-e7319a1be382">
+<img width="883" src="https://github.com/U2DJ2/moim-today/assets/84896838/7dfb1476-07d7-48c6-a566-e7319a1be382">
 
 
 <h1 id="team"> 5. 팀원 소개</h2>
