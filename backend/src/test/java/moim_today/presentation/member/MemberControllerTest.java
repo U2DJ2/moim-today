@@ -249,4 +249,10 @@ class MemberControllerTest extends ControllerTest {
                                 .build()
                         )));
     }
+
+    @DisplayName("회원이 서비스 문의한다.")
+    @Test
+    void createUserInquiry() {
+
+    }
 }

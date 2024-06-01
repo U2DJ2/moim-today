@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/api/admin/user-inquiry")
+@RequestMapping("/api/admin/user-inquiry")
+@RestController
 public class UserInquiryController {
 
     private final UserInquiryService userInquiryService;
@@ -24,13 +25,6 @@ public class UserInquiryController {
     @GetMapping
     public CollectionResponse<List<UserInquiryResponse>> getUserInquiries(@RequestParam final long universityId){
         return CollectionResponse.from(userInquiryService.getAllUserInquiryByUniversityId(universityId));
-    }
-
-    @PostMapping
-    public void createUserInquiry(@Login final MemberSession memberSession,
-                                  @RequestBody final UserInquiryRequest userInquiryRequest){
-        userInquiryService.createUserInquiry(memberSession.id(), memberSession.universityId(),
-                memberSession.departmentId(), userInquiryRequest);
     }
 
     @PatchMapping("/answer-complete")

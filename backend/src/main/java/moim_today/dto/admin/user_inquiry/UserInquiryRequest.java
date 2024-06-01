@@ -14,6 +14,7 @@ public record UserInquiryRequest (
                 .departmentId(departmentId)
                 .inquiryTitle(inquiryTitle)
                 .inquiryContent(inquiryContent)
+                .answerComplete(false)
                 .build();
     }
 }

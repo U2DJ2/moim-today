@@ -9,6 +9,7 @@ import moim_today.dto.mail.MailSendRequest;
 import moim_today.persistence.entity.admin.UserInquiryJpaEntity;
 import moim_today.persistence.repository.admin.user_inquiry.UserInquiryRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,17 +27,14 @@ public class UserInquiryService {
         this.userInquiryRepository = userInquiryRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<UserInquiryResponse> getAllUserInquiryByUniversityId(final long universityId) {
         return userInquiryRepository.getAllUserInquiryByUniversityId(universityId).stream()
                 .map(UserInquiryResponse::from)
                 .toList();
     }
 
-    public void createUserInquiry(final long memberId, final long universityId, final long departmentId, final UserInquiryRequest userInquiryRequest) {
-        UserInquiryJpaEntity userInquiryJpaEntity = userInquiryRequest.toEntity(memberId, universityId, departmentId);
-        userInquiryRepository.save(userInquiryJpaEntity);
-    }
-
+    @Transactional
     public void updateUserInquiryAnswer(final UserInquiryAnswerRequest userInquiryAnswerRequest) {
         UserInquiryJpaEntity findUserInquiry = userInquiryRepository.findById(userInquiryAnswerRequest.userInquiryId());
         findUserInquiry.updateAnswerComplete(userInquiryAnswerRequest.answerComplete());
