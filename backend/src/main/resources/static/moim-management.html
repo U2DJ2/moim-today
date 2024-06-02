@@ -17,7 +17,25 @@
     <!-- 사이드바가 이 위치에 불러와집니다 -->
 
     <div id="content" class="flex-grow-1">
-
+        <h4 id="moim-management">모임 관리</h4>
+        <button id="load-moims" class="btn btn-primary">모임 불러오기</button>
+        <table class="table mt-4">
+            <thead>
+            <tr>
+                <th>모임 ID</th>
+                <th>제목</th>
+                <th>정원</th>
+                <th>현재 인원</th>
+                <th>이미지 URL</th>
+                <th>카테고리</th>
+                <th>표시 상태</th>
+                <th>삭제</th>
+            </tr>
+            </thead>
+            <tbody id="moim-table-body">
+            <!-- 모임 정보가 여기에 동적으로 추가됩니다 -->
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -25,6 +43,7 @@
 <script src="js/get-admin-session.js"></script>
 <script src="js/validate-admin.js"></script>
 <script src="js/sidebar.js"></script>
+<script src="js/get-moims.js"></script>
 </body>
 
 </html>
