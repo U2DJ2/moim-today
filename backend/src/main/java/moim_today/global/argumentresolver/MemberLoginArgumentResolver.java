@@ -12,7 +12,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
+import static moim_today.global.constant.SessionConstant.MEMBER_SESSION;
 import static moim_today.global.constant.exception.SessionExceptionConstant.MEMBER_SESSION_GET_ATTRIBUTE_ERROR;
 import static moim_today.global.constant.exception.SessionExceptionConstant.MEMBER_SESSION_JSON_PROCESSING_ERROR;
 

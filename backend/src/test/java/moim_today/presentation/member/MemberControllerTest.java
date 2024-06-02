@@ -4,6 +4,7 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import moim_today.application.member.MemberService;
+import moim_today.dto.admin.user_inquiry.UserInquiryRequest;
 import moim_today.dto.member.PasswordRecoverRequest;
 import moim_today.dto.member.PasswordUpdateRequest;
 import moim_today.dto.member.ProfileUpdateRequest;
@@ -21,6 +22,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -245,6 +247,31 @@ class MemberControllerTest extends ControllerTest {
                                 .summary("회원이 참여한 모임인지 검사")
                                 .responseFields(
                                         fieldWithPath("isJoined").type(BOOLEAN).description("모임 참여 여부")
+                                )
+                                .build()
+                        )));
+    }
+
+    @DisplayName("회원이 서비스 문의한다.")
+    @Test
+    void createUserInquiry() throws Exception{
+        UserInquiryRequest userInquiryRequest =
+                new UserInquiryRequest(INQUIRY_TITLE.value(), INQUIRY_CONTENT.value());
+        String json = objectMapper.writeValueAsString(userInquiryRequest);
+
+        mockMvc.perform(
+                        post("/api/members/user-inquiry")
+                                .contentType(APPLICATION_JSON)
+                                .content(json)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("회원이 서비스 문의",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("회원")
+                                .summary("회원이 서비스 문의")
+                                .requestFields(
+                                        fieldWithPath("inquiryTitle").type(STRING).description("문의 제목"),
+                                        fieldWithPath("inquiryContent").type(STRING).description("문의 내용")
                                 )
                                 .build()
                         )));

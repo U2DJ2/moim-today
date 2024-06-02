@@ -50,6 +50,23 @@ public class MoimRepositoryImpl implements MoimRepository {
     }
 
     @Override
+    public List<MoimSimpleResponse> findAllByUniversityId(final long universityId) {
+        return queryFactory.select(
+                        new QMoimSimpleResponse(
+                                moimJpaEntity.id,
+                                moimJpaEntity.title,
+                                moimJpaEntity.capacity,
+                                moimJpaEntity.currentCount,
+                                moimJpaEntity.imageUrl,
+                                moimJpaEntity.moimCategory,
+                                moimJpaEntity.displayStatus
+                        ))
+                .from(moimJpaEntity)
+                .where(moimJpaEntity.universityId.eq(universityId))
+                .fetch();
+    }
+
+    @Override
     public String getTitleById(final long moimId) {
         return queryFactory.select(moimJpaEntity.title)
                 .from(moimJpaEntity)
@@ -97,8 +114,10 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.displayStatus
                 ))
                 .from(moimJpaEntity)
-                .where(moimJpaEntity.universityId.eq(universityId)
-                        .and(moimJpaEntity.title.likeIgnoreCase(PERCENT.value() + searchParam.trim() + PERCENT.value()))
+                .where(
+                        moimJpaEntity.universityId.eq(universityId),
+                        moimJpaEntity.title.likeIgnoreCase(PERCENT.value() + searchParam.trim() + PERCENT.value()),
+                        moimJpaEntity.endDate.goe(LocalDate.now())
                 )
                 .fetch();
     }
@@ -150,8 +169,10 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.displayStatus
                 ))
                 .from(moimJpaEntity)
-                .where(moimJpaEntity.universityId.eq(universityId)
-                        .and(applyMoimCategoryFilter(moimCategoryDto))
+                .where(
+                        moimJpaEntity.universityId.eq(universityId),
+                        applyMoimCategoryFilter(moimCategoryDto),
+                        moimJpaEntity.endDate.goe(LocalDate.now())
                 )
                 .orderBy(createOrderBySpecifier(moimSortedFilter))
                 .fetch();

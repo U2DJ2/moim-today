@@ -9,7 +9,6 @@ import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import moim_today.util.ImplementTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -289,7 +288,6 @@ class MeetingManagerTest extends ImplementTest {
 
         joinedMoimRepository.save(joinedMoimJpaEntity);
 
-
         ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
                 .memberId(memberId)
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
@@ -313,7 +311,7 @@ class MeetingManagerTest extends ImplementTest {
 
         // then
         assertThat(meetingRepository.count()).isEqualTo(1);
-        assertThat(joinedMeetingRepository.count()).isEqualTo(1);
+        assertThat(joinedMeetingRepository.count()).isEqualTo(0);
         assertThat(scheduleRepository.count()).isEqualTo(1);
     }
 

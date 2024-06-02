@@ -186,4 +186,9 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     public void deleteAllByMeetingId(final long meetingId) {
         scheduleJpaRepository.deleteAllByMeetingId(meetingId);
     }
+
+    @Override
+    public void deleteByMemberIdAndMeetingId(final long memberId, final long meetingId) {
+        scheduleJpaRepository.deleteByMemberIdAndMeetingId(memberId, meetingId);
+    }
 }

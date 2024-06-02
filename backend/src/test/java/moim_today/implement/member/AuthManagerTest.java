@@ -17,7 +17,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import java.time.LocalDate;
 
-import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
+import static moim_today.global.constant.SessionConstant.MEMBER_SESSION;
 import static moim_today.global.constant.NumberConstant.ONE_DAYS_IN_SECONDS;
 import static moim_today.global.constant.NumberConstant.THIRTY_DAYS_IN_SECONDS;
 import static moim_today.util.TestConstant.*;
