@@ -1,6 +1,6 @@
 // React
 import { useEffect } from "react";
-import { Routes, Route, useNavigate, useParams } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 // Pages : Home
 import HomePage from "../pages/Home/Home";
@@ -9,8 +9,10 @@ import MoimCreationPage from "../pages/Home/MoimCreation";
 // Pages : Authentication
 import LoginPage from "../pages/Login";
 
+// Page : Inquiry
+import InquiryPage from "../pages/InquiryPage";
+
 // Page : Manage
-import Manage from "../pages/Manage/Manage";
 import RegisterPage from "../pages/RegisterPage";
 import Schedule from "../pages/Schedule";
 
@@ -87,6 +89,7 @@ function Router() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/creation" element={<MoimCreationPage />} />
+      <Route path="/inquiry" element={<InquiryPage />} />
       <Route path="/schedule" element={<Schedule />} />
     </Routes>
   );

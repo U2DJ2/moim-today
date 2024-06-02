@@ -23,6 +23,10 @@ const Profile = ({ image }) => {
     });
   };
 
+  const handleInquiry = () => {
+    navigate("/inquiry");
+  };
+
   const handleLogout = async () => {
     try {
       await axios.post("https://api.moim.today/api/logout");
@@ -64,7 +68,20 @@ const Profile = ({ image }) => {
                     "block px-4 py-2 text-sm"
                   )}
                 >
-                  Account settings
+                  계정 설정
+                </a>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  onClick={handleInquiry}
+                  className={classNames(
+                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                    "block px-4 py-2 text-sm"
+                  )}
+                >
+                  문의하기
                 </a>
               )}
             </Menu.Item>
@@ -79,7 +96,7 @@ const Profile = ({ image }) => {
                       "block w-full px-4 py-2 text-left text-sm"
                     )}
                   >
-                    Sign out
+                    로그아웃
                   </button>
                 )}
               </Menu.Item>
