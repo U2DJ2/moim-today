@@ -136,7 +136,8 @@ public class MemberRepositoryImpl implements MemberRepository {
                 .join(departmentJpaEntity).on(memberJpaEntity.departmentId.eq(departmentJpaEntity.id))
                 .where(
                         universityFilter(universityId),
-                        departmentFilter(departmentId)
+                        departmentFilter(departmentId),
+                        memberJpaEntity.studentId.ne(DELETED_MEMBER_STUDENT_ID.value())
                 )
                 .fetch();
     }
