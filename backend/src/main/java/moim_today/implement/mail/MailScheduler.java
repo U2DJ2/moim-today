@@ -45,6 +45,7 @@ public class MailScheduler {
 
             log.info("[Moim-Today] 다가오는 미팅 정보 전송 이메일 = {}", mailSendRequest.to());
             mailSender.send(mailSendRequest, UPCOMING_MEETING_NOTICE_MAIL.value(), data);
+            log.info("update joinedMeetingId = {}", upcomingNotice.joinedMeetingId());
             joinedMeetingUpdater.updateUpcomingNoticeSent(upcomingNotice.joinedMeetingId(), true);
         }
     }
