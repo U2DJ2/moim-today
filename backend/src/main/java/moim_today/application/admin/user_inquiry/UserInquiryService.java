@@ -72,6 +72,7 @@ public class UserInquiryService {
         return memberFinder.getMemberProfile(memberId).email();
     }
 
+    @Transactional(readOnly = true)
     public String makeResponseSubject(final long userInquiryId) {
         UserInquiryJpaEntity findUserInquiry = userInquiryRepository.getById(userInquiryId);
         return USER_INQUIRY_RESPONSE_SUBJECT_PREFIX.value() + findUserInquiry.getInquiryTitle();
