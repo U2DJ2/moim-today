@@ -1,7 +1,9 @@
 package moim_today.presentation.admin.meeting;
 
 import moim_today.application.admin.meeting.AdminMeetingService;
+import moim_today.domain.university.AdminSession;
 import moim_today.dto.admin.meeting.AdminMeetingResponse;
+import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,15 +18,15 @@ public class AdminMeetingController {
         this.adminMeetingService = adminMeetingService;
     }
 
-    // todo AdminSession 적용
     @GetMapping("/meetings/{moimId}")
-    public List<AdminMeetingResponse> findAllByMoimId(final long universityId, @PathVariable final long moimId) {
-        return adminMeetingService.findAllByMoimId(universityId, moimId);
+    public List<AdminMeetingResponse> findAllByMoimId(@Login final AdminSession adminSession,
+                                                      @PathVariable final long moimId) {
+        return adminMeetingService.findAllByMoimId(adminSession.universityId(), moimId);
     }
 
-    // todo AdminSession 적용
     @DeleteMapping("/meetings/{meetingId}")
-    public void deleteMeeting(final long universityId, @PathVariable final long meetingId) {
-        adminMeetingService.deleteMeeting(universityId, meetingId);
+    public void deleteMeeting(@Login final AdminSession adminSession,
+                              @PathVariable final long meetingId) {
+        adminMeetingService.deleteMeeting(adminSession.universityId(), meetingId);
     }
 }
