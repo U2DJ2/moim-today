@@ -2,6 +2,7 @@ package moim_today.presentation.member;
 
 import moim_today.application.member.MemberService;
 import moim_today.domain.member.MemberSession;
+import moim_today.dto.admin.user_inquiry.UserInquiryRequest;
 import moim_today.dto.member.*;
 import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.*;
@@ -60,5 +61,11 @@ public class MemberController {
     @GetMapping("/host-profile/{moimId}")
     public MemberSimpleResponse getHostProfileByMoimId(@PathVariable final long moimId) {
         return memberService.getHostProfileByMoimId(moimId);
+    }
+
+    @PostMapping("/user-inquiry")
+    public void createUserInquiry(@Login final MemberSession memberSession,
+                                  @RequestBody final UserInquiryRequest userInquiryRequest){
+        memberService.createUserInquiry(memberSession, userInquiryRequest);
     }
 }

@@ -1,12 +1,16 @@
 package moim_today.application.member;
 
 import moim_today.domain.member.MemberSession;
+import moim_today.dto.admin.user_inquiry.UserInquiryRequest;
 import moim_today.dto.member.*;
+import moim_today.implement.admin.user_inquiry.UserInquiryAppender;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.member.MemberFinder;
 import moim_today.implement.member.MemberUpdater;
 import moim_today.implement.moim.moim.MoimManager;
+import moim_today.persistence.entity.admin.UserInquiryJpaEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -20,15 +24,18 @@ public class MemberServiceImpl implements MemberService {
     private final MemberFinder memberFinder;
     private final FileUploader fileUploader;
     private final MoimManager moimManager;
+    private final UserInquiryAppender userInquiryAppender;
 
     public MemberServiceImpl(final MemberUpdater memberUpdater,
                              final MemberFinder memberFinder,
                              final FileUploader fileUploader,
-                             final MoimManager moimManager) {
+                             final MoimManager moimManager,
+                             final UserInquiryAppender userInquiryAppender) {
         this.memberUpdater = memberUpdater;
         this.memberFinder = memberFinder;
         this.fileUploader = fileUploader;
         this.moimManager = moimManager;
+        this.userInquiryAppender = userInquiryAppender;
     }
 
     @Override
@@ -77,5 +84,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberSimpleResponse getHostProfileByMoimId(final long moimId) {
         return memberFinder.getHostProfileByMoimId(moimId);
+    }
+
+    @Override
+    public void createUserInquiry(final MemberSession memberSession, final UserInquiryRequest userInquiryRequest) {
+        long memberId = memberSession.id();
+        long universityId = memberSession.universityId();
+        long departmentId = memberSession.departmentId();
+
+        UserInquiryJpaEntity userInquiryJpaEntity = userInquiryRequest.toEntity(memberId, universityId, departmentId);
+        userInquiryAppender.createUserInquiry(userInquiryJpaEntity);
     }
 }
