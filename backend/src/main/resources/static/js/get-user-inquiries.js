@@ -3,8 +3,11 @@ $(document).ready(function () {
 
     // GET 요청으로 inquiries 데이터 가져오기
     $.ajax({
-        url: "http://localhost:8080/api/admin/user-inquiry",
+        url: "/api/admin/user-inquiry",
         method: "GET",
+        xhrFields: {
+            withCredentials: true
+        },
         success: function (response) {
             inquiries = response.data; // 여기서 const를 제거하여 상위 스코프의 변수를 사용합니다.
             if (Array.isArray(inquiries)) {
@@ -76,8 +79,8 @@ function submitAnswer(userInquiryId, memberId) {
     var answerData = {userInquiryId: userInquiryId, responseContent: answerContent, memberId: memberId};
 
     $.ajax({
-        url: "http://localhost:8080/api/admin/user-inquiry/response",
-        type: "POST",
+        url: "/api/admin/user-inquiry/response",
+        method: "POST",
         contentType: "application/json",
         xhrFields: {
             withCredentials: true
@@ -96,8 +99,8 @@ function updateAnswerCompleteStatus(userInquiryId, answerComplete) {
     var requestData = {userInquiryId: userInquiryId, answerComplete: answerComplete};
 
     $.ajax({
-        url: "http://localhost:8080/api/admin/user-inquiry/answer-complete",
-        type: "PATCH",
+        url: "/api/admin/user-inquiry/answer-complete",
+        method: "PATCH",
         contentType: "application/json",
         xhrFields: {
             withCredentials: true
