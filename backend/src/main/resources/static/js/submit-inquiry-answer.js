@@ -4,7 +4,7 @@ function submitQuery() {
     var userQuery = { title: inquiryTitle, content: inquiryContent };
 
     $.ajax({
-        url: "http://localhost:8080/api/admin/",
+        url: "/api/admin/",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(userQuery),
