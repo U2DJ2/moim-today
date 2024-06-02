@@ -21,6 +21,7 @@ import java.util.List;
 import static moim_today.global.constant.MemberConstant.*;
 import static moim_today.global.constant.NumberConstant.*;
 import static moim_today.global.constant.exception.AdminExceptionConstant.ADMIN_FORBIDDEN_ERROR;
+import static moim_today.util.TestConstant.STUDENT_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -69,24 +70,30 @@ class AdminMemberServiceTest {
         departmentRepository.save(department);
         departmentRepository.save(otherDepartment);
 
+        String studentId = STUDENT_ID.value();
+
         MemberJpaEntity member1 = MemberJpaEntity.builder()
                 .universityId(university.getId())
                 .departmentId(department.getId())
+                .studentId(studentId)
                 .build();
 
         MemberJpaEntity member2 = MemberJpaEntity.builder()
                 .universityId(university.getId())
                 .departmentId(department.getId())
+                .studentId(studentId)
                 .build();
 
         MemberJpaEntity member3 = MemberJpaEntity.builder()
                 .universityId(university.getId())
                 .departmentId(otherDepartment.getId())
+                .studentId(studentId)
                 .build();
 
         MemberJpaEntity member4 = MemberJpaEntity.builder()
                 .universityId(otherUniversity.getId())
                 .departmentId(otherDepartment.getId())
+                .studentId(studentId)
                 .build();
 
         memberRepository.save(member1);
