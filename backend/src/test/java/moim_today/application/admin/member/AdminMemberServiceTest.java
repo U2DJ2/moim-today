@@ -19,7 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static moim_today.global.constant.MemberConstant.*;
-import static moim_today.global.constant.NumberConstant.DELETED_MEMBER_PASSWORD_LENGTH;
+import static moim_today.global.constant.NumberConstant.*;
 import static moim_today.global.constant.exception.AdminExceptionConstant.ADMIN_FORBIDDEN_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -129,6 +129,9 @@ class AdminMemberServiceTest {
         assertThat(deletedMember.getStudentId()).isEqualTo(DELETED_MEMBER_STUDENT_ID.value());
         assertThat(deletedMember.getGender()).isEqualTo(Gender.UNKNOWN);
         assertThat(deletedMember.getMemberProfileImageUrl()).isEqualTo(DEFAULT_PROFILE_URL.value());
+        assertThat(deletedMember.getBirthDate().getYear()).isEqualTo(DELETED_MEMBER_BIRTH_YEAR.value());
+        assertThat(deletedMember.getBirthDate().getMonthValue()).isEqualTo(DELETED_MEMBER_BIRTH_MONTH.value());
+        assertThat(deletedMember.getBirthDate().getDayOfMonth()).isEqualTo(DELETED_MEMBER_BIRTH_DAY.value());
     }
 
     @DisplayName("어드민 - 다른 학교의 회원은 삭제할 수 없다.")

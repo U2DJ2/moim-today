@@ -1,5 +1,11 @@
 $(document).ready(function () {
     $('#member-form').on('submit', handleFormSubmit);
+
+    // 삭제 버튼 이벤트 리스너를 동적으로 추가된 요소에도 적용하기 위해
+    $('#member-table-body').on('click', '.delete-btn', function() {
+        const memberId = $(this).data('member-id');
+        deleteMember(memberId);
+    });
 });
 
 function handleFormSubmit(e) {
@@ -13,12 +19,11 @@ function handleFormSubmit(e) {
 
     $.ajax({
         url: `/api/admin/members?departmentId=${departmentId}`,
-        type: 'GET', // 요청 방식
-        credentials: 'include', // 쿠키를 포함시키기 위해 사용되었던 옵션, $.ajax에서는 이 옵션 대신 xhrFields를 사용
+        type: 'GET',
         xhrFields: {
             withCredentials: true
         },
-        dataType: 'json', // 응답 데이터 타입
+        dataType: 'json',
         success: function(data) {
             const members = data.data;
             const tableBody = $('#member-table-body');
@@ -35,6 +40,7 @@ function handleFormSubmit(e) {
                                 <td>${member.birthDate}</td>
                                 <td>${member.gender}</td>
                                 <td>${member.memberProfileImageUrl}</td>
+                                <td><button class="btn btn-danger delete-btn" data-member-id="${member.memberId}">삭제</button></td>
                             </tr>`;
                 tableBody.append(row);
             });
@@ -43,4 +49,24 @@ function handleFormSubmit(e) {
             console.error('Error fetching members:', error);
         }
     });
+}
+
+// 회원 삭제 함수
+function deleteMember(memberId) {
+    if(confirm("이 회원을 삭제하시겠습니까?")) {
+        $.ajax({
+            url: `/api/admin/members/${memberId}`,
+            type: 'DELETE',
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(result) {
+                alert("회원이 삭제되었습니다.");
+                $(`button[data-member-id=${memberId}]`).closest('tr').remove();
+            },
+            error: function(xhr, status, error) {
+                alert("회원 삭제에 실패했습니다.");
+            }
+        });
+    }
 }

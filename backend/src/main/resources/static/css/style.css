@@ -12,3 +12,9 @@
 #content {
     padding: 20px;
 }
+
+.table th {
+    white-space: nowrap; /* 줄바꿈 방지 */
+    overflow: hidden;
+    text-overflow: ellipsis; /* 넘치는 텍스트는 ...으로 표시 */
+}
