@@ -35,7 +35,7 @@ public class UserInquiryJpaEntity extends BaseTimeEntity {
     }
 
     @Builder
-    public UserInquiryJpaEntity(final long memberId,
+    private UserInquiryJpaEntity(final long memberId,
                                 final long universityId,
                                 final long departmentId,
                                 final String inquiryContent,

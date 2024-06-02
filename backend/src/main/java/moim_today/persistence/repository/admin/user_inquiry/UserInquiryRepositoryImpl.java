@@ -23,7 +23,7 @@ public class UserInquiryRepositoryImpl implements UserInquiryRepository{
     }
 
     @Override
-    public UserInquiryJpaEntity findById(final long userInquiryId) {
+    public UserInquiryJpaEntity getById(final long userInquiryId) {
         return userInquiryJpaRepository.findById(userInquiryId)
                 .orElseThrow(() -> new NotFoundException(USER_INQUIRY_NOT_FOUND_ERROR.message()));
     }

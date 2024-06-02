@@ -7,7 +7,6 @@ import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
 import moim_today.persistence.repository.admin.user_inquiry.UserInquiryRepository;
 import moim_today.persistence.repository.department.department.DepartmentRepository;
-import moim_today.persistence.repository.university.UniversityJpaRepository;
 import moim_today.persistence.repository.university.UniversityRepository;
 import moim_today.util.DatabaseCleaner;
 import org.junit.jupiter.api.BeforeEach;
@@ -109,7 +108,7 @@ class UserInquiryServiceTest {
 
         // when
         userInquiryService.updateUserInquiryAnswer(userInquiryAnswerRequest);
-        UserInquiryJpaEntity findUi1 = userInquiryRepository.findById(ui1.getId());
+        UserInquiryJpaEntity findUi1 = userInquiryRepository.getById(ui1.getId());
 
         // then
         assertThat(findUi1.isAnswerComplete()).isTrue();

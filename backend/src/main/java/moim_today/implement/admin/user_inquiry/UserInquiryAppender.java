@@ -10,7 +10,7 @@ public class UserInquiryAppender {
 
     private final UserInquiryRepository userInquiryRepository;
 
-    public UserInquiryAppender(UserInquiryRepository userInquiryRepository) {
+    public UserInquiryAppender(final UserInquiryRepository userInquiryRepository) {
         this.userInquiryRepository = userInquiryRepository;
     }
 

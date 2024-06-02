@@ -12,5 +12,5 @@ public interface UserInquiryRepository {
 
     UserInquiryJpaEntity save(final UserInquiryJpaEntity userInquiryJpaEntity);
 
-    UserInquiryJpaEntity findById(final long userInquiryId);
+    UserInquiryJpaEntity getById(final long userInquiryId);
 }

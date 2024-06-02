@@ -5,6 +5,7 @@ import moim_today.dto.admin.user_inquiry.UserInquiryAnswerRequest;
 import moim_today.dto.admin.user_inquiry.UserInquiryRespondRequest;
 import moim_today.dto.admin.user_inquiry.UserInquiryResponse;
 import moim_today.dto.mail.MailSendRequest;
+import moim_today.implement.member.MemberFinder;
 import moim_today.persistence.entity.admin.UserInquiryJpaEntity;
 import moim_today.persistence.repository.admin.user_inquiry.UserInquiryRepository;
 import moim_today.persistence.repository.department.department.DepartmentRepository;
@@ -20,16 +21,16 @@ import static moim_today.global.constant.MailConstant.USER_INQUIRY_RESPONSE_SUBJ
 public class UserInquiryService {
 
     private final MailService mailService;
-    private final MemberRepository memberRepository;
+    private final MemberFinder memberFinder;
     private final DepartmentRepository departmentRepository;
     private final UserInquiryRepository userInquiryRepository;
 
     public UserInquiryService(final MailService mailService,
-                              final MemberRepository memberRepository,
+                              final MemberFinder memberFinder,
                               final DepartmentRepository departmentRepository,
                               final UserInquiryRepository userInquiryRepository) {
         this.mailService = mailService;
-        this.memberRepository = memberRepository;
+        this.memberFinder = memberFinder;
         this.departmentRepository = departmentRepository;
         this.userInquiryRepository = userInquiryRepository;
     }
@@ -56,21 +57,23 @@ public class UserInquiryService {
 
     @Transactional
     public void updateUserInquiryAnswer(final UserInquiryAnswerRequest userInquiryAnswerRequest) {
-        UserInquiryJpaEntity findUserInquiry = userInquiryRepository.findById(userInquiryAnswerRequest.userInquiryId());
+        UserInquiryJpaEntity findUserInquiry = userInquiryRepository.getById(userInquiryAnswerRequest.userInquiryId());
         findUserInquiry.updateAnswerComplete(userInquiryAnswerRequest.answerComplete());
     }
 
-    @Transactional
     public void respondUserInquiry(final UserInquiryRespondRequest userInquiryRespondRequest) {
         String subject = makeResponseSubject(userInquiryRespondRequest.userInquiryId());
-        String userEmail = memberRepository.getMemberProfile(userInquiryRespondRequest.memberId()).email();
+        String userEmail = getUserEmail(userInquiryRespondRequest.memberId());
         MailSendRequest mailSendRequest = userInquiryRespondRequest.toMailSendRequest(subject, userEmail);
         mailService.sendUserInquiryResponseMail(mailSendRequest, userInquiryRespondRequest.responseContent());
     }
 
-    @Transactional
+    public String getUserEmail(final long memberId){
+        return memberFinder.getMemberProfile(memberId).email();
+    }
+
     public String makeResponseSubject(final long userInquiryId) {
-        UserInquiryJpaEntity findUserInquiry = userInquiryRepository.findById(userInquiryId);
+        UserInquiryJpaEntity findUserInquiry = userInquiryRepository.getById(userInquiryId);
         return USER_INQUIRY_RESPONSE_SUBJECT_PREFIX.value() + findUserInquiry.getInquiryTitle();
     }
 }
