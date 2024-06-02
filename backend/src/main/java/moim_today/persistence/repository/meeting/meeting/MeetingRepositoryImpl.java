@@ -151,8 +151,8 @@ public class MeetingRepositoryImpl implements MeetingRepository {
 
         return queryFactory.select(
                         new QUpcomingMeetingNoticeResponse(
-                                joinedMeetingJpaEntity.id,
                                 meetingJpaEntity.moimId,
+                                joinedMeetingJpaEntity.id,
                                 memberJpaEntity.email,
                                 meetingJpaEntity.agenda,
                                 meetingJpaEntity.startDateTime,
