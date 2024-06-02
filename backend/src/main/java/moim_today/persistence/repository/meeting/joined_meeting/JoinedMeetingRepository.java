@@ -30,4 +30,6 @@ public interface JoinedMeetingRepository {
     List<MemberSimpleResponse> findMembersJoinedMeeting(final long meetingId);
 
     boolean alreadyJoinedMeeting(final long memberId, final long meetingId);
+
+    void deleteAllByMemberId(final long memberId);
 }
