@@ -5,6 +5,7 @@ import moim_today.application.admin.auth.AdminAuthService;
 import moim_today.domain.university.AdminSession;
 import moim_today.dto.admin.auth.AdminLoginRequest;
 import moim_today.dto.admin.auth.AdminSessionResponse;
+import moim_today.dto.university.UniversityNameResponse;
 import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.*;
 
