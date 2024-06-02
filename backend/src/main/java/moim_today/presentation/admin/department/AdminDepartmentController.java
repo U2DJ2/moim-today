@@ -1,8 +1,10 @@
 package moim_today.presentation.admin.department;
 
 import moim_today.application.admin.department.AdminDepartmentService;
+import moim_today.domain.university.AdminSession;
 import moim_today.dto.department.ApproveRequestDepartmentRequest;
 import moim_today.dto.department.RequestDepartmentResponse;
+import moim_today.global.annotation.Login;
 import moim_today.global.response.CollectionResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +20,11 @@ public class AdminDepartmentController {
         this.adminDepartmentService = adminDepartmentService;
     }
 
-    @GetMapping("/request-departments/{universityId}")
+    @GetMapping("/request-departments")
     public CollectionResponse<List<RequestDepartmentResponse>> findAllByUniversityId(
-            @PathVariable final long universityId) {
+            @Login final AdminSession adminSession) {
         List<RequestDepartmentResponse> requestDepartmentResponses =
-                adminDepartmentService.findAllByUniversityId(universityId);
+                adminDepartmentService.findAllByUniversityId(adminSession.universityId());
         return CollectionResponse.from(requestDepartmentResponses);
     }
 
