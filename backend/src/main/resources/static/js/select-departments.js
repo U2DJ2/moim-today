@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    $('#department-select').select2();
     loadDepartments();
 });
 

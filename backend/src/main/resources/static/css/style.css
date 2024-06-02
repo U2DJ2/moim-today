@@ -18,3 +18,7 @@
     overflow: hidden;
     text-overflow: ellipsis; /* 넘치는 텍스트는 ...으로 표시 */
 }
+
+#department-select {
+    max-width: 500px; /* 드롭다운의 최대 너비 설정 */
+}
