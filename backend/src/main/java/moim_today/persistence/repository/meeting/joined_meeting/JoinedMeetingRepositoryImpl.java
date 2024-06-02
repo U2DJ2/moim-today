@@ -107,4 +107,9 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
                         .and(joinedMeetingJpaEntity.meetingId.eq(meetingId)))
                 .fetchOne() != null;
     }
+
+    @Override
+    public void deleteAllByMemberId(final long memberId) {
+        joinedMeetingJpaRepository.deleteAllByMemberId(memberId);
+    }
 }

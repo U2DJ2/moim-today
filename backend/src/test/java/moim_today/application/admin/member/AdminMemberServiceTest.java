@@ -130,6 +130,7 @@ class AdminMemberServiceTest {
 
         //then
         MemberJpaEntity deletedMember = memberRepository.getById(member.getId());
+        assertThat(deletedMember.getEmail()).isNull();
         assertThat(deletedMember.getPassword().length()).isEqualTo(DELETED_MEMBER_PASSWORD_LENGTH.value());
         assertThat(deletedMember.getUsername()).isEqualTo(DELETED_MEMBER_USERNAME.value());
         assertThat(deletedMember.getStudentId()).isEqualTo(DELETED_MEMBER_STUDENT_ID.value());

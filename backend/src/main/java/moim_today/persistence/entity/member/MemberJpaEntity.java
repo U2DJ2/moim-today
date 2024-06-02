@@ -71,7 +71,8 @@ public class MemberJpaEntity extends BaseTimeEntity {
         this.memberProfileImageUrl = profileUpdateRequest.imageUrl();
     }
 
-    public void deleteMember() {
+    public void changeToUnknownMember() {
+        this.email = null;
         this.password = UUID.randomUUID().toString()
                 .substring(DELETED_MEMBER_PASSWORD_START_POINT.value(), DELETED_MEMBER_PASSWORD_LENGTH.value());
         this.username = DELETED_MEMBER_USERNAME.value();
