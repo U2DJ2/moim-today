@@ -34,11 +34,4 @@ public class AdminAuthController {
     public void logout(final HttpServletRequest request) {
         adminAuthService.logout(request);
     }
-    //모임관리(조회, 삭제)
-
-    //미팅관리(조회, 삭제)
-
-    //서비스 문의(조회)
-
-    //학과 추가 문의(조회)
 }

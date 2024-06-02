@@ -1,5 +1,6 @@
 package moim_today.application.admin.member;
 
+import moim_today.domain.member.enums.Gender;
 import moim_today.dto.member.MemberResponse;
 import moim_today.persistence.entity.department.DepartmentJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
@@ -16,6 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+import static moim_today.global.constant.MemberConstant.*;
+import static moim_today.global.constant.NumberConstant.DELETED_MEMBER_PASSWORD_LENGTH;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest

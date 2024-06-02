@@ -10,6 +10,11 @@ import moim_today.global.base_entity.BaseTimeEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.UUID;
+
+import static moim_today.global.constant.MemberConstant.*;
+import static moim_today.global.constant.NumberConstant.DELETED_MEMBER_PASSWORD_LENGTH;
+import static moim_today.global.constant.NumberConstant.DELETED_MEMBER_PASSWORD_START_POINT;
 
 @Getter
 @Table(name = "member")
@@ -65,5 +70,14 @@ public class MemberJpaEntity extends BaseTimeEntity {
 
     public void updateProfile(final ProfileUpdateRequest profileUpdateRequest) {
         this.memberProfileImageUrl = profileUpdateRequest.imageUrl();
+    }
+
+    public void deleteMember() {
+        this.password = UUID.randomUUID().toString()
+                .substring(DELETED_MEMBER_PASSWORD_START_POINT.value(), DELETED_MEMBER_PASSWORD_LENGTH.value());
+        this.username = DELETED_MEMBER_USERNAME.value();
+        this.studentId = DELETED_MEMBER_STUDENT_ID.value();
+        this.gender = Gender.UNKNOWN;
+        this.memberProfileImageUrl = DEFAULT_PROFILE_URL.value();
     }
 }
