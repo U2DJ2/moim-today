@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { GET, POST } from "../../utils/axios";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import alarm from "../../assets/svg/Alarmclock_duotone-1.svg";
 import pin from "../../assets/svg/Pin_duotone.svg";
 import user from "../../assets/svg/User_duotone.svg";
@@ -19,12 +19,38 @@ function MettingDetailPage() {
   const [commentList, setCommentList] = useState([]);
   const [commentNum, setCommentNum] = useState();
   const [attendance, setAttendance] = useState(false);
-  const { meetingId, MoimId } = useParams();
+  const { meetingId } = useParams();
+  const { MoimId } = useParams();
 
+  //Modal
   const [alertMessage, setAlertMessage] = useState("");
   const [isAlertOpen, setAlertOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
 
   const [isHost, setIsHost] = useState(false);
+
+  const [confirmType, setConfirmType] = useState("");
+
+  const closeAlert = () => {
+    setAlertOpen(false);
+  };
+  const deleteAction = () => {
+    setAlertOpen(true);
+    setAlertMessage("해당 미팅을 삭제하시겠습니까?");
+    setIsDelete(true);
+  };
+
+  const confirmBtnContents = {
+    attendanceBtn: {
+      handler: closeAlert,
+    },
+    meetingDeleteBtn: {
+      handler: deleteAction,
+    },
+  };
+
+  const navigate = useNavigate();
   const getMeetingInfo = async () => {
     try {
       const result = await GET(`api/meetings/detail/${meetingId}`);
@@ -117,7 +143,6 @@ function MettingDetailPage() {
       const result = await axios.delete(
         `https://api.moim.today/api/meetings/${meetingId}`
       );
-      console.log(result);
     } catch (e) {
       console.log(e);
     }
@@ -148,14 +173,12 @@ function MettingDetailPage() {
         </h3>
         <button
           className="py-3 px-5 w-fit text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer"
-          onClick={() => {
-            setAlertOpen(false);
-          }}
+          onClick={() => setAlertOpen(true)}
         >
           확인
         </button>
       </NewModal>
-      <div className="grid gap-5">
+      <div className="grid gap-10">
         <div className="grid gap-2">
           <button
             className="w-fit text-sm font-light bg-scarlet text-white font-Pretendard_Light rounded-full px-2 py-1"
@@ -181,7 +204,10 @@ function MettingDetailPage() {
                 <div className="flex items-center gap-4">
                   <div className="flex">
                     <img src={EditIcon} className="w-4 h-4 items-end " />
-                    <p className=" text-sm text-slate-500 hover:text-scarlet">
+                    <p
+                      className=" text-sm text-slate-500 hover:text-scarlet"
+                      onClick={() => setIsEditOpen(true)}
+                    >
                       수정하기
                     </p>
                   </div>
@@ -190,7 +216,10 @@ function MettingDetailPage() {
                     <img src={TrashIcon} className="w-4 h-4 items-end" />
                     <p
                       className="text-sm text-slate-500 hover:text-scarlet"
-                      onClick={() => deleteMeeting()}
+                      onClick={() => {
+                        setAlertOpen(true);
+                        setConfirmType("meetingDeleteBtn");
+                      }}
                     >
                       삭제하기
                     </p>
@@ -267,6 +296,36 @@ function MettingDetailPage() {
           </p>
         )}
       </div>
+      <NewModal
+        show={isEditOpen}
+        size="sm"
+        onClose={() => setIsEditOpen(false)}
+      >
+        <div className="font-Pretendard_SemiBold text-2xl pb-10">
+          미팅 수정하기
+        </div>
+        <div className="grid gap-4 justify-center">
+          <div className="grid justify-center font-Pretendard_Light gap-4">
+            <div className="text-left justify-center">
+              <div className=" font-Pretendard_Medium">미팅 의제</div>
+              <input
+                placeholder="미팅 의제를 입력해주세요."
+                className=" focus:outline-none"
+              />
+            </div>
+            <div className="text-left">
+              <div className=" font-Pretendard_Medium">장소</div>
+              <input
+                placeholder="미팅 장소를 입력해주세요."
+                className=" focus:outline-none"
+              />
+            </div>
+          </div>
+          <button className="py-3 px-5 pt-3 w-fit text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer">
+            완료
+          </button>
+        </div>
+      </NewModal>
     </div>
   );
 }
