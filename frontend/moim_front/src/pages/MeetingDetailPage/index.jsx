@@ -8,7 +8,9 @@ import content from "../../assets/svg/comment_duotone.svg";
 import ContentIndex from "./ContentIndex";
 import infoIcon from "../../assets/svg/Info_duotone_line.svg";
 import CardBtn from "../MoimJoinPage/CardComponent/CardBtn";
+import formatDate from "../../utils/formatDate";
 import axios from "axios";
+import NewModal from "../../components/NewModal";
 function MettingDetailPage() {
   const [meetingInfo, setMeetingInfo] = useState([]);
   const [comment, setComment] = useState("");
@@ -17,6 +19,8 @@ function MettingDetailPage() {
   const [attendance, setAttendance] = useState(false);
   const { meetingId } = useParams();
 
+  const [alertMessage, setAlertMessage] = useState("");
+  const [isAlertOpen, setAlertOpen] = useState(false);
   const getMeetingInfo = async () => {
     try {
       const result = await GET(`api/meetings/detail/${meetingId}`);
@@ -42,7 +46,6 @@ function MettingDetailPage() {
       const result = await axios.get(
         `https://api.moim.today/api/members/meetings/${meetingId}`
       );
-      console.log(result.data);
       setAttendance(result.data.attendanceStatus);
     } catch (e) {
       console.log(e);
@@ -56,6 +59,7 @@ function MettingDetailPage() {
     try {
       const result = await POST("api/meeting-comments", data);
       await getComments();
+      setComment("");
     } catch (e) {
       console.log(e);
     }
@@ -66,22 +70,28 @@ function MettingDetailPage() {
       const response = await POST(
         `api/members/meetings/${meetingId}/acceptance`
       );
+      setAlertOpen(true);
+      setAlertMessage("미팅에 참석되어 스케줄에 추가됩니다.");
       checkIsMember();
+      getMeetingInfo();
     } catch (e) {
-      console.log(e);
+      setAlertOpen(true);
+      setAlertMessage(e.response.data.message);
     }
   };
   const cancelMeeting = async () => {
     try {
       const response = await POST(`api/members/meetings/${meetingId}/refusal`);
+      setAlertOpen(true);
+      setAlertMessage("미팅에 참석을 취소했습니다.");
       checkIsMember();
+      getMeetingInfo();
     } catch (e) {
       console.log(e);
     }
   };
 
   const onClickHandler = async () => {
-    console.log("first");
     try {
       attendance ? await cancelMeeting() : await acceptMeeting();
     } catch (e) {
@@ -96,13 +106,32 @@ function MettingDetailPage() {
   }, []);
 
   const ContentSection = ({ image, indexName, children }) => (
-    <div className="grid grid-4 gap-2 font-Pretendard_Light text-2xl font-light">
+    <div className="grid grid-4 gap-2 font-Pretendard_Light text-xl font-light">
       <ContentIndex image={image} indexName={indexName} />
       {children}
     </div>
   );
   return (
     <div>
+      <NewModal
+        show={isAlertOpen}
+        size="sm"
+        onClose={() => setAlertOpen(false)}
+      >
+        <div className="text-center">
+          <h3 className="mb-5 text-base font-Pretendard_Normal text-black">
+            {alertMessage}
+          </h3>
+          <button
+            className="py-3 px-5 w-fit text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer"
+            onClick={() => {
+              setAlertOpen(false);
+            }}
+          >
+            확인
+          </button>
+        </div>
+      </NewModal>
       <div className="grid gap-5">
         <div className="grid gap-2">
           <button
@@ -124,7 +153,8 @@ function MettingDetailPage() {
         </div>
         <hr />
         <ContentSection image={alarm} indexName="미팅 시간정보">
-          {meetingInfo.startDateTime} ~ {meetingInfo.endDateTime}
+          {meetingInfo.startDateTime && formatDate(meetingInfo.startDateTime)} ~
+          {meetingInfo.endDateTime && formatDate(meetingInfo.endDateTime)}
         </ContentSection>
         <ContentSection image={pin} indexName={"장소"}>
           {meetingInfo.place}
@@ -138,7 +168,7 @@ function MettingDetailPage() {
                   <div key={index} className="flex flex-col items-center gap-4">
                     <img
                       src={member.memberProfileImageUrl}
-                      className=" w-11 h-11"
+                      className=" w-11 h-11 rounded-full"
                     />
                     <div className=" text-xs">{member.username}</div>
                   </div>
@@ -165,7 +195,7 @@ function MettingDetailPage() {
         {Array.isArray(commentList) && commentList.length != 0 ? (
           commentList.map((comment, index) => {
             return (
-              <div key={index} className="flex gap-2">
+              <div key={index} className="flex gap-8">
                 <div className="grid justify-items-center">
                   <img src={comment.imageUrl} className=" w-5 h-5" />
                   <p className=" font-Pretendard_Light text-slate-500 text-sm">
