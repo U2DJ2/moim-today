@@ -12,8 +12,8 @@ public record UserInquiryRespondRequest(
         @NotBlank(message = RESPONSE_CONTENT_BLANK_ERROR) String responseContent
 ) {
 
-    private static final String USER_INQUIRY_ID_MIN_ERROR = "잘못된 문의 ID 값이 들어왔습니다.";
-    private static final String MEMBER_ID_MIN_ERROR = "잘못된 회원 ID 값이 들어왔습니다.";
+    private static final String USER_INQUIRY_ID_MIN_ERROR = "잘못된 문의 ID 값이 입력 되었습니다.";
+    private static final String MEMBER_ID_MIN_ERROR = "잘못된 회원 ID 값이 입력 되었습니다.";
     private static final String RESPONSE_CONTENT_BLANK_ERROR = "답변 내용은 공백일 수 없습니다.";
 
     public MailSendRequest toMailSendRequest(final String subject, final String userEmail){
