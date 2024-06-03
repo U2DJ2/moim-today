@@ -11,16 +11,20 @@ import CardBtn from "../MoimJoinPage/CardComponent/CardBtn";
 import formatDate from "../../utils/formatDate";
 import axios from "axios";
 import NewModal from "../../components/NewModal";
+import EditIcon from "../../assets/svg/Edit.svg";
+import TrashIcon from "../../assets/svg/Trash_duotone.svg";
 function MettingDetailPage() {
   const [meetingInfo, setMeetingInfo] = useState([]);
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState([]);
   const [commentNum, setCommentNum] = useState();
   const [attendance, setAttendance] = useState(false);
-  const { meetingId } = useParams();
+  const { meetingId, MoimId } = useParams();
 
   const [alertMessage, setAlertMessage] = useState("");
   const [isAlertOpen, setAlertOpen] = useState(false);
+
+  const [isHost, setIsHost] = useState(false);
   const getMeetingInfo = async () => {
     try {
       const result = await GET(`api/meetings/detail/${meetingId}`);
@@ -99,10 +103,31 @@ function MettingDetailPage() {
     }
   };
 
+  const getHost = async () => {
+    try {
+      const result = await GET(`api/members/${MoimId}/hosts`);
+      setIsHost(result.isHost);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const deleteMeeting = async () => {
+    try {
+      const result = await axios.delete(
+        `https://api.moim.today/api/meetings/${meetingId}`
+      );
+      console.log(result);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     getMeetingInfo();
     getComments();
     checkIsMember();
+    getHost();
   }, []);
 
   const ContentSection = ({ image, indexName, children }) => (
@@ -144,9 +169,35 @@ function MettingDetailPage() {
               참여 여부를 변경하고 싶으면, 위 아이콘을 눌러주세요.
             </div>
           </div>
+          <div className="flex gap-4 items-end">
+            <div className=" font-Pretendard_Black text-4xl">
+              {meetingInfo.agenda}
+            </div>
+            {isHost ? (
+              <div
+                className="flex font-Pretendard_Light hover:cursor-pointer"
+                onClick={() => console.log("clicked")}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="flex">
+                    <img src={EditIcon} className="w-4 h-4 items-end " />
+                    <p className=" text-sm text-slate-500 hover:text-scarlet">
+                      수정하기
+                    </p>
+                  </div>
 
-          <div className=" font-Pretendard_Black text-4xl">
-            {meetingInfo.agenda}
+                  <div className="flex">
+                    <img src={TrashIcon} className="w-4 h-4 items-end" />
+                    <p
+                      className="text-sm text-slate-500 hover:text-scarlet"
+                      onClick={() => deleteMeeting()}
+                    >
+                      삭제하기
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
         <hr />
