@@ -70,7 +70,7 @@ function CardComponent({
       className="w-auto h-full p-8 grid font-Pretendard_SemiBold text-xl bg-white shadow-[0px_1px_16px_rgba(0,_0,_0,_0.08)] rounded-3xl hover:cursor-pointer"
       onClick={clickHandler}
     >
-      <div className="grid grid-flow-row gap-4">
+      <div className="grid grid-flow-row gap-2">
         {isMeeting ? null : (
           <div className=" text-base font-Pretendard_Light">
             {month}월 {day}일 ({dayOfWeek})
@@ -90,7 +90,6 @@ function CardComponent({
             </div>
           </div>
         </div>
-        <div className="pt-2"></div>
 
         {btn && (
           <CardBtn
