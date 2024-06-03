@@ -10,6 +10,7 @@ import infoIcon from "../../assets/svg/Info_duotone_line.svg";
 import CardBtn from "../MoimJoinPage/CardComponent/CardBtn";
 import formatDate from "../../utils/formatDate";
 import axios from "axios";
+import NewModal from "../../components/NewModal";
 function MettingDetailPage() {
   const [meetingInfo, setMeetingInfo] = useState([]);
   const [comment, setComment] = useState("");
@@ -19,6 +20,7 @@ function MettingDetailPage() {
   const { meetingId } = useParams();
 
   const [alertMessage, setAlertMessage] = useState("");
+  const [isAlertOpen, setAlertOpen] = useState(false);
   const getMeetingInfo = async () => {
     try {
       const result = await GET(`api/meetings/detail/${meetingId}`);
@@ -68,16 +70,20 @@ function MettingDetailPage() {
       const response = await POST(
         `api/members/meetings/${meetingId}/acceptance`
       );
-      setAlertMessage("미팅에 참석되었습니다.");
+      setAlertOpen(true);
+      setAlertMessage("미팅에 참석되어 스케줄에 추가됩니다.");
       checkIsMember();
       getMeetingInfo();
     } catch (e) {
-      console.log(e);
+      setAlertOpen(true);
+      setAlertMessage(e.response.data.message);
     }
   };
   const cancelMeeting = async () => {
     try {
       const response = await POST(`api/members/meetings/${meetingId}/refusal`);
+      setAlertOpen(true);
+      setAlertMessage("미팅에 참석을 취소했습니다.");
       checkIsMember();
       getMeetingInfo();
     } catch (e) {
@@ -107,6 +113,25 @@ function MettingDetailPage() {
   );
   return (
     <div>
+      <NewModal
+        show={isAlertOpen}
+        size="sm"
+        onClose={() => setAlertOpen(false)}
+      >
+        <div className="text-center">
+          <h3 className="mb-5 text-base font-Pretendard_Normal text-black">
+            {alertMessage}
+          </h3>
+          <button
+            className="py-3 px-5 w-fit text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer"
+            onClick={() => {
+              setAlertOpen(false);
+            }}
+          >
+            확인
+          </button>
+        </div>
+      </NewModal>
       <div className="grid gap-5">
         <div className="grid gap-2">
           <button
