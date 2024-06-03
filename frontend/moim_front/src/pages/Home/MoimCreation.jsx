@@ -183,7 +183,21 @@ export default function MoimCreation() {
   };
 
   const onClickHandler = () => {
-    console.log("first");
+    if (data.title === "" || data.contents === "" || data.startDate === "" || data.endDate === "") {
+      alert("필수 입력 항목을 모두 입력해주세요!");
+      return;
+    }
+
+    // capacity가 정수인지 확인
+    if (isNaN(data.capacity)) {
+      alert("참여 인원은 숫자로 입력해주세요!");
+      return;
+    }
+
+    if (data.capacity < 2) {
+      alert("모임 인원은 2명 이상으로 설정해주세요!");
+      return;
+    }
 
     try {
       POST("api/moims", data)
