@@ -1,9 +1,12 @@
 import CardComponent from "../Home/CardContainer";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
 function Overview() {
   const [selected, setSelected] = useState("전체");
   const [moims, setMoims] = useState([]);
+
+  const navigate = useNavigate();
   const getCardInfo = async () => {
     try {
       const result = await axios.get(
@@ -61,17 +64,31 @@ function Overview() {
           <div className="flex gap-5 justify-between font-semibold"></div>
         </div>
         <div className="grid grid-cols-2 gap-8 auto-rows-auto mt-3 max-md:max-w-full">
-          {moims.map((data, index) => (
-            <CardComponent
-              key={data.moimId}
-              title={data.title}
-              category={data.moimCategory}
-              capacity={data.capacity}
-              currentCount={data.currentCount}
-              moimId={data.moimId}
-              image={data.imageUrl}
-            />
-          ))}
+          {moims.length != 0 ? (
+            moims.map((data, index) => (
+              <CardComponent
+                key={data.moimId}
+                title={data.title}
+                category={data.moimCategory}
+                capacity={data.capacity}
+                currentCount={data.currentCount}
+                moimId={data.moimId}
+                image={data.imageUrl}
+              />
+            ))
+          ) : (
+            <div className="pl-9 grid gap-2">
+              <div className="font-Pretendard_Light text-lg">
+                모임이 없습니다.
+              </div>
+              <div
+                className="font-Pretendard_Light text-sm hover:text-scarlet hover:cursor-pointer"
+                onClick={() => navigate("/creation")}
+              >
+                모임 만들러 가기
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>

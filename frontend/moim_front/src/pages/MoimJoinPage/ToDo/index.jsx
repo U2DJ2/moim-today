@@ -47,13 +47,10 @@ function ToDo() {
   };
 
   const handleTodoCheckboxClick = async (todo) => {
-    await axios.patch(
-      `https://api.moim.today/api/todos/todo-progress`,
-      {
-        todoId: todo.todoId,
-        todoProgress: todo.todoProgress === "COMPLETED" ? "PENDING" : "COMPLETED",
-      }
-    );
+    await axios.patch(`https://api.moim.today/api/todos/todo-progress`, {
+      todoId: todo.todoId,
+      todoProgress: todo.todoProgress === "COMPLETED" ? "PENDING" : "COMPLETED",
+    });
 
     // Refresh component
     fetchData();
@@ -62,7 +59,7 @@ function ToDo() {
   return (
     <>
       <div className="grid grid-cols-4 gap-4">
-        {memberData &&
+        {memberData != 0 ? (
           memberData.map((member) => (
             <button
               key={member.memberId}
@@ -73,35 +70,45 @@ function ToDo() {
             >
               {member.memberName}
             </button>
-          ))}
+          ))
+        ) : (
+          <div className="font-Pretendard_Lights">추가된 ToDo가 없습니다.</div>
+        )}
       </div>
       <div>
-        {todoData.map((item) => (
-          <Accordion key={item.todoDate} className="w-full">
-            <Accordion.Panel>
-              <Accordion.Title className="font-Pretendard_SemiBold text-[16px]">
-                {item.todoDate}
-              </Accordion.Title>
-              <Accordion.Content>
-                {item.todoContents.map((todo, todoIndex) => (
-                  <div
-                    key={todo.todoId}
-                    className={`flex items-center gap-2 ${todoIndex === item.todoContents.length - 1 ? "" : "mb-4"
+        {todoData.length === 0 ? (
+          <p className=" font-Pretendard_Light">
+            해당 회원이 추가한 To Do List가 없습니다.
+          </p>
+        ) : (
+          todoData.map((item) => (
+            <Accordion key={item.todoDate} className="w-full">
+              <Accordion.Panel>
+                <Accordion.Title className="font-Pretendard_SemiBold text-[16px]">
+                  {item.todoDate}
+                </Accordion.Title>
+                <Accordion.Content>
+                  {item.todoContents.map((todo, todoIndex) => (
+                    <div
+                      key={todo.todoId}
+                      className={`flex items-center gap-2 ${
+                        todoIndex === item.todoContents.length - 1 ? "" : "mb-4"
                       }`}
-                  >
-                    <Checkbox
-                      onChange={() => handleTodoCheckboxClick(todo)}
-                      checked={todo.todoProgress === "COMPLETED"}
-                    />
-                    <Label className="font-Pretendard_Medium">
-                      {todo.contents}
-                    </Label>
-                  </div>
-                ))}
-              </Accordion.Content>
-            </Accordion.Panel>
-          </Accordion>
-        ))}
+                    >
+                      <Checkbox
+                        onChange={() => handleTodoCheckboxClick(todo)}
+                        checked={todo.todoProgress === "COMPLETED"}
+                      />
+                      <Label className="font-Pretendard_Medium">
+                        {todo.contents}
+                      </Label>
+                    </div>
+                  ))}
+                </Accordion.Content>
+              </Accordion.Panel>
+            </Accordion>
+          ))
+        )}
       </div>
     </>
   );
