@@ -1,6 +1,7 @@
 package moim_today.presentation.moim;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.domain.moim.DisplayStatus;
@@ -870,5 +871,29 @@ class MoimControllerTest extends ControllerTest {
                                 )
                                 .build())
                 ));
+    }
+
+    @DisplayName("비공개 모임에 비밀번호를 이용해 참여한다")
+    @Test
+    void joinPrivateMoim() throws Exception {
+        MoimJoinPrivateRequest moimJoinPrivateRequest = MoimJoinPrivateRequest.builder()
+                .moimId(MOIM_ID.longValue())
+                .password("1234")
+                .build();
+
+        mockMvc.perform(post("/api/moims/members/private")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(moimJoinPrivateRequest)))
+                .andExpect(status().isOk())
+                .andDo(document("멤버가 비공개 모임에 참여 성공",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("모임")
+                                .summary("멤버가 비공개 모임에 참여")
+                                .requestFields(
+                                        fieldWithPath("moimId").type(NUMBER).description("참여할 모임 ID"),
+                                        fieldWithPath("password").type(STRING).description("참여할 모임의 비밀번호")
+                                )
+                                .build()
+                        )));
     }
 }

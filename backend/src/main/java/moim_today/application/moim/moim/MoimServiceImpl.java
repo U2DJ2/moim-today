@@ -183,4 +183,11 @@ public class MoimServiceImpl implements MoimService{
         }
         return moimManager.findAllJoinedMoimSimpleResponseByEndStatus(memberId, LocalDate.now(), ended);
     }
+
+    @Override
+    public void appendMemberToPrivateMoim(final long requestMemberId, final MoimJoinPrivateRequest moimJoinPrivateRequest) {
+        long enterMoimId = moimJoinPrivateRequest.moimId();
+        String password = moimJoinPrivateRequest.password();
+        moimManager.appendMemberToPrivateMoim(requestMemberId, enterMoimId, password, LocalDate.now());
+    }
 }

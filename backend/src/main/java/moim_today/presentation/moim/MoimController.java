@@ -117,6 +117,12 @@ public class MoimController {
         moimService.appendMemberToMoim(memberSession.id(), moimJoinRequest);
     }
 
+    @PostMapping("/members/private")
+    public void joinPrivateMoim(@Login final MemberSession memberSession,
+                                @RequestBody final MoimJoinPrivateRequest moimJoinPrivateRequest){
+        moimService.appendMemberToPrivateMoim(memberSession.id(), moimJoinPrivateRequest);
+    }
+
     @GetMapping("/notices/simple")
     public CollectionResponse<List<MoimNoticeSimpleResponse>> findAllMoimNotice(@Login final MemberSession memberSession,
                                                                                 @RequestParam final long moimId) {

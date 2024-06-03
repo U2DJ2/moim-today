@@ -51,9 +51,10 @@ public class UserInquiryService {
     }
 
     public void respondUserInquiry(final UserInquiryRespondRequest userInquiryRespondRequest) {
+        System.out.println(userInquiryRespondRequest.responseContent());
         String subject = userInquiryFinder.makeResponseSubject(userInquiryRespondRequest.userInquiryId());
         String userEmail = memberFinder.getMemberProfile(userInquiryRespondRequest.memberId()).email();
         MailSendRequest mailSendRequest = userInquiryRespondRequest.toMailSendRequest(subject, userEmail);
-        mailService.sendUserInquiryResponseMail(mailSendRequest, userInquiryRespondRequest.responseContent());
+//        mailService.sendUserInquiryResponseMail(mailSendRequest, userInquiryRespondRequest.responseContent());
     }
 }

@@ -14,7 +14,9 @@ public enum MoimExceptionConstant {
     VIEWED_MOIM_NOT_FOUND_ERROR("서버 내부 오류가 발생했습니다. 모임 ID를 쿠키에서 조회하는 중 문제가 발생했습니다."),
     PRIVATE_MOIM_NEEDS_PASSWORD_ERROR("비공개 모임은 비밀번호를 입력해야 합니다."),
     MOIM_BEFORE_START_ERROR("해당 모임이 시작하기 전입니다."),
-    MOIM_AFTER_END_ERROR("해당 모임이 종료됐습니다.");
+    MOIM_AFTER_END_ERROR("해당 모임이 종료됐습니다."),
+    MOIM_PASSWORD_NOT_MATCHED_ERROR("모임 비밀번호가 일치하지 않습니다."),
+    MOIM_NOT_PUBLIC_ERROR("공개된 모임이 아닙니다.");
 
     private final String message;
 

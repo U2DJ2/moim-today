@@ -80,6 +80,7 @@ public class MoimManager {
     public void appendMemberToMoim(final long requestMemberId, final long moimId, final LocalDate currentDate) {
         MoimJpaEntity enterMoimEntity = moimFinder.getByIdWithPessimisticLock(moimId);
         enterMoimEntity.validateMoimNotEnd(currentDate);
+        enterMoimEntity.validatePublic();
         moimFinder.validateCapacity(enterMoimEntity);
         joinedMoimFinder.validateMemberNotInMoim(moimId, requestMemberId);
 
@@ -129,5 +130,23 @@ public class MoimManager {
             return moimFinder.findEndedMoimSimpleResponsesByMoimIds(joinedMoims, now);
         }
         return moimFinder.findInProgressMoimSimpleResponsesByMoimIds(joinedMoims, now);
+    }
+
+    @Transactional
+    public void appendMemberToPrivateMoim(final long requestMemberId, final long moimId, final String password, final LocalDate currentDate) {
+        MoimJpaEntity enterMoimEntity = moimFinder.getByIdWithPessimisticLock(moimId);
+        enterMoimEntity.validateMoimNotEnd(currentDate);
+        enterMoimEntity.validatePassword(password);
+        moimFinder.validateCapacity(enterMoimEntity);
+        joinedMoimFinder.validateMemberNotInMoim(moimId, requestMemberId);
+
+        moimUpdater.updateMoimCurrentCount(moimId, PLUS_ONE.value());
+        joinedMoimAppender.createJoinedMoim(requestMemberId, moimId);
+
+        List<Long> meetingIds = meetingFinder.findUpcomingMeetingIdsByMoimId(moimId, currentDate);
+        for (long meetingId : meetingIds) {
+            MeetingJpaEntity meetingJpaEntity = meetingFinder.getById(meetingId);
+            joinedMeetingAppender.saveJoinedMeeting(moimId, meetingId, enterMoimEntity.getTitle(), meetingJpaEntity);
+        }
     }
 }

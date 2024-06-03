@@ -223,4 +223,9 @@ public class FakeMoimService implements MoimService {
 
         return List.of(moimSimpleResponse1, moimSimpleResponse2);
     }
+
+    @Override
+    public void appendMemberToPrivateMoim(final long requestMemberId, final MoimJoinPrivateRequest moimJoinPrivateRequest) {
+
+    }
 }

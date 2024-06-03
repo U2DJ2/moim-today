@@ -379,4 +379,53 @@ class MoimJpaEntityTest {
                 .hasMessage(MOIM_AFTER_END_ERROR.message())
                 .isInstanceOf(BadRequestException.class);
     }
+
+    @DisplayName("비밀번호가 일치하는지 검사한다.")
+    @Test
+    void validatePassword() {
+        // given
+        String password = "1234";
+
+        MoimJpaEntity privateMoim = MoimJpaEntity.builder()
+                .password(password)
+                .build();
+
+        // expected
+        assertThatCode(() -> privateMoim.validatePassword(password)).doesNotThrowAnyException();
+    }
+
+    @DisplayName("비밀번호가 일치하지 않으면 에러가 난다.")
+    @Test
+    void validatePasswordError() {
+        // given
+        String password = "1234";
+        String wrongPassword = "123";
+
+        MoimJpaEntity privateMoim = MoimJpaEntity.builder()
+                .password(password)
+                .build();
+
+        // expected
+        assertThatThrownBy(() -> privateMoim.validatePassword(wrongPassword))
+                .hasMessage(MOIM_PASSWORD_NOT_MATCHED_ERROR.message())
+                .isInstanceOf(BadRequestException.class);
+    }
+
+    @DisplayName("모임이 public 인지 검사한다.")
+    @Test
+    void validatePublic() {
+        // given
+        MoimJpaEntity publicMoim = MoimJpaEntity.builder()
+                .displayStatus(DisplayStatus.PUBLIC)
+                .build();
+        MoimJpaEntity privateMoim = MoimJpaEntity.builder()
+                .displayStatus(DisplayStatus.PRIVATE)
+                .build();
+
+        // expected
+        assertThatCode(publicMoim::validatePublic).doesNotThrowAnyException();
+        assertThatThrownBy(privateMoim::validatePublic)
+                .hasMessage(MOIM_NOT_PUBLIC_ERROR.message())
+                .isInstanceOf(ForbiddenException.class);
+    }
 }

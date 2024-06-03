@@ -154,4 +154,16 @@ public class MoimJpaEntity extends BaseTimeEntity {
     public boolean checkVacancy(){
         return currentCount < capacity;
     }
+
+    public void validatePassword(final String password) {
+        if(!this.password.equals(password)){
+            throw new BadRequestException(MOIM_PASSWORD_NOT_MATCHED_ERROR.message());
+        }
+    }
+
+    public void validatePublic() {
+        if(this.displayStatus != DisplayStatus.PUBLIC){
+            throw new ForbiddenException(MOIM_NOT_PUBLIC_ERROR.message());
+        }
+    }
 }

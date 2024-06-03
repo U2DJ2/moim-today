@@ -1,5 +1,6 @@
 package moim_today.implement.moim.moim;
 
+import moim_today.domain.moim.DisplayStatus;
 import moim_today.dto.moim.moim.MoimSimpleResponse;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
@@ -38,6 +39,7 @@ class MoimManagerTest extends ImplementTest {
                 .capacity(MOIM_MAXIMUM_PEOPLE)
                 .endDate(LocalDate.of(2024,5,27))
                 .memberId(MEMBER_ID.longValue())
+                .displayStatus(DisplayStatus.PUBLIC)
                 .build();
 
         MoimJpaEntity savedMoim = moimRepository.save(moimJpaEntity);

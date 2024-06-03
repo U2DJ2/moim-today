@@ -36,4 +36,6 @@ public interface MoimService {
     List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam);
 
     List<MoimSimpleResponse> findAllMyJoinedMoimSimpleResponse(final long memberId, final boolean ended, final boolean onlyHost);
+
+    void appendMemberToPrivateMoim(final long requestMemberId, MoimJoinPrivateRequest moimJoinPrivateRequest);
 }
