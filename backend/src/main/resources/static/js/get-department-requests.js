@@ -9,8 +9,6 @@ $(document).ready(function() {
 
                 response.data.forEach(function(request) {
                     var row = $('<tr>');
-                    row.append($('<td>').text(request.requestDepartmentId));
-                    row.append($('<td>').text(request.universityId));
                     row.append($('<td>').text(request.requestDepartmentName));
                     var approveButton = $('<button>').addClass('btn btn-success').text('승인');
                     approveButton.click(function() {
