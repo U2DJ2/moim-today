@@ -3,7 +3,6 @@ package moim_today.implement.meeting.joined_meeting;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import moim_today.implement.schedule.schedule.ScheduleAppender;
-import moim_today.implement.schedule.schedule.ScheduleFinder;
 import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
@@ -39,11 +38,9 @@ public class JoinedMeetingAppender {
                 ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.toEntity(memberId, moimTitle, meetingJpaEntity);
                 boolean isNew = scheduleAppender.createScheduleIfNotExist(scheduleJpaEntity);
 
-                if (isNew) {
-                    JoinedMeetingJpaEntity joinedMeetingJpaEntity =
-                            JoinedMeetingJpaEntity.toEntity(meetingId, memberId, true);
-                    joinedMeetingRepository.save(joinedMeetingJpaEntity);
-                }
+                JoinedMeetingJpaEntity joinedMeetingJpaEntity =
+                        JoinedMeetingJpaEntity.toEntity(meetingId, memberId, isNew);
+                joinedMeetingRepository.save(joinedMeetingJpaEntity);
             }
         }
     }
