@@ -34,6 +34,7 @@ function MoimHome({ isHost, moimId }) {
 
   const cardClickHandler = (noticeId) => {
     navigate(`notice/${noticeId}`);
+    
   };
 
   const makeNoticeHandler = () => {
