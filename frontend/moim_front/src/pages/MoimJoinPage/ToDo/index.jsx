@@ -78,7 +78,7 @@ function ToDo() {
       <div>
         {todoData.length === 0 ? (
           <p className=" font-Pretendard_Light">
-            해당 회원이 추가한 To Do List가 없습니다.
+            해당 회원이 추가한 할 일이 없습니다.
           </p>
         ) : (
           todoData.map((item) => (

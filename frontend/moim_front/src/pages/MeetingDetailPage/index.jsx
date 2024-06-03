@@ -195,7 +195,10 @@ function MettingDetailPage() {
             return (
               <div key={index} className="flex gap-8">
                 <div className="grid justify-items-center">
-                  <img src={comment.imageUrl} className=" w-5 h-5" />
+                  <img
+                    src={comment.imageUrl}
+                    className="rounded-full w-5 h-5"
+                  />
                   <p className=" font-Pretendard_Light text-slate-500 text-sm">
                     {comment.username}
                   </p>

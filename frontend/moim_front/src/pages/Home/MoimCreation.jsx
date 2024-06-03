@@ -15,10 +15,12 @@ import Dropdown from "../../components/Dropdown/LabelSimple";
 import { POST } from "../../utils/axios";
 
 // Define label style
-const labelStyle = "mt-2.5 mb-2.5 text-base font-Pretendard_SemiBold leading-5 text-stone-700 max-md:max-w-full";
+const labelStyle =
+  "mt-2.5 mb-2.5 text-base font-Pretendard_SemiBold leading-5 text-stone-700 max-md:max-w-full";
 
 // Define common input style
-const commonInputStyle = "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
+const commonInputStyle =
+  "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
 
 const modalTheme = {
   root: {
@@ -138,7 +140,7 @@ function ImageUploader({ setUploadFile }) {
   };
 
   return (
-    <>
+    <div>
       <div className={labelStyle}> 이미지 올리세요 </div>
       <div className="flex justify-center items-center px-4 py-4 mt-2 rounded-xl border border-dashed border-neutral-400 max-md:px-5 max-md:max-w-full">
         {image ? (
@@ -164,7 +166,7 @@ function ImageUploader({ setUploadFile }) {
           onChange={handleImageChange}
         />
       </div>
-    </>
+    </div>
   );
 }
 
@@ -231,7 +233,12 @@ export default function MoimCreation() {
   };
 
   const onClickHandler = () => {
-    if (data.title === "" || data.contents === "" || data.startDate === "" || data.endDate === "") {
+    if (
+      data.title === "" ||
+      data.contents === "" ||
+      data.startDate === "" ||
+      data.endDate === ""
+    ) {
       setAlertMessage("필수 입력 항목을 모두 입력해주세요!");
       setAlertModalOpen(true);
       return;
@@ -264,7 +271,7 @@ export default function MoimCreation() {
     }
   };
   return (
-    <>
+    <div>
       <Modal
         show={isAlertModalOpen}
         size="sm"
@@ -277,7 +284,7 @@ export default function MoimCreation() {
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-base font-Pretendard_Normal text-black">
-              { alertMessage || "모임을 생성했습니다!" }
+              {alertMessage || "모임을 생성했습니다!"}
             </h3>
             <div className="flex justify-center gap-4">
               <button
@@ -376,6 +383,6 @@ export default function MoimCreation() {
           </button>
         </footer>
       </div>
-    </>
+    </div>
   );
 }

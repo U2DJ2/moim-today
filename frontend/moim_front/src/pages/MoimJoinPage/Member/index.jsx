@@ -38,7 +38,7 @@ function Member({ isHost, MoimId }) {
               refreshMembers={getMembers}
             />
           ) : null;
-        })}{" "}
+        })}
       </div>
       <div className="grid gap-7">
         <Dropdown options={["구성원"]} onSelect={handleDropdown} />
