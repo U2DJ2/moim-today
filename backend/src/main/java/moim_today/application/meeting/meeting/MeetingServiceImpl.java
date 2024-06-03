@@ -62,7 +62,7 @@ public class MeetingServiceImpl implements MeetingService {
     @Transactional
     @Override
     public void deleteMeeting(final long memberId, final long meetingId) {
-        meetingRemover.deleteMeeting(meetingId, meetingId);
+        meetingRemover.deleteMeeting(memberId, meetingId);
         scheduleService.deleteAllByMeetingId(meetingId);
         joinedMeetingService.deleteAllByMeetingId(meetingId);
     }

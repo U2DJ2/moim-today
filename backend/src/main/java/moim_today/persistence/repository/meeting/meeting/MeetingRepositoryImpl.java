@@ -141,6 +141,7 @@ public class MeetingRepositoryImpl implements MeetingRepository {
         return queryFactory.select(moimJpaEntity.memberId)
                 .from(meetingJpaEntity)
                 .join(moimJpaEntity).on(moimJpaEntity.id.eq(meetingJpaEntity.moimId))
+                .where(meetingJpaEntity.id.eq(meetingId))
                 .stream().findAny()
                 .orElseThrow(() -> new NotFoundException(MEETING_NOT_FOUND_ERROR.message()));
     }
