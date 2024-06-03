@@ -72,7 +72,7 @@ function ToDo() {
             </button>
           ))
         ) : (
-          <div className="font-Pretendard_Lights">추가된 ToDo가 없습니다.</div>
+          <div className="font-Pretendard_Lights">회원이 없습니다.</div>
         )}
       </div>
       <div>
