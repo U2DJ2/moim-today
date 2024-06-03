@@ -1,6 +1,7 @@
 package moim_today.application.member;
 
 import moim_today.domain.member.MemberSession;
+import moim_today.dto.admin.user_inquiry.UserInquiryRequest;
 import moim_today.dto.member.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,4 +22,6 @@ public interface MemberService {
     MemberJoinedMoimResponse isJoinedMoim(final long moimId, final long memberId);
 
     MemberSimpleResponse getHostProfileByMoimId(final long moimId);
+
+    void createUserInquiry(final MemberSession memberSession, final UserInquiryRequest userInquiryRequest);
 }

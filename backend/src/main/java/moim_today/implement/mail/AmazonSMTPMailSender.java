@@ -4,6 +4,7 @@ import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.*;
 import lombok.extern.slf4j.Slf4j;
 import moim_today.dto.mail.MailSendRequest;
+import moim_today.global.annotation.Implement;
 import moim_today.global.error.InternalServerException;
 import org.springframework.beans.factory.annotation.Value;
 import org.thymeleaf.TemplateEngine;
@@ -17,6 +18,7 @@ import static moim_today.global.constant.MailConstant.DATA;
 import static moim_today.global.constant.exception.MailExceptionConstant.MAIL_SEND_ERROR;
 
 @Slf4j
+@Implement
 public class AmazonSMTPMailSender implements SMTPMailSender {
 
     private final AmazonSimpleEmailService amazonSimpleEmailService;

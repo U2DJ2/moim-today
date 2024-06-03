@@ -94,7 +94,9 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
                 )
                 .from(joinedMeetingJpaEntity)
                 .join(memberJpaEntity).on(memberJpaEntity.id.eq(joinedMeetingJpaEntity.memberId))
-                .where(joinedMeetingJpaEntity.meetingId.eq(meetingId))
+                .where(joinedMeetingJpaEntity.meetingId.eq(meetingId)
+                        .and(joinedMeetingJpaEntity.attendance.isTrue())
+                )
                 .fetch();
     }
 
@@ -104,5 +106,10 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
                 .where(joinedMeetingJpaEntity.memberId.eq(memberId)
                         .and(joinedMeetingJpaEntity.meetingId.eq(meetingId)))
                 .fetchOne() != null;
+    }
+
+    @Override
+    public void deleteAllByMemberId(final long memberId) {
+        joinedMeetingJpaRepository.deleteAllByMemberId(memberId);
     }
 }

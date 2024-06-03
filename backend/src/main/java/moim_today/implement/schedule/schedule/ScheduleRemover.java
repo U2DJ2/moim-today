@@ -41,4 +41,9 @@ public class ScheduleRemover {
             scheduleRepository.deleteAllByMemberInMeeting(memberId, meetingIds);
         }
     }
+
+    @Transactional
+    public void deleteByMemberIdAndMeetingId(final long memberId, final long meetingId) {
+        scheduleRepository.deleteByMemberIdAndMeetingId(memberId, meetingId);
+    }
 }

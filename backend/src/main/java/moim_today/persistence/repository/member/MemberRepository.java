@@ -30,4 +30,6 @@ public interface MemberRepository {
     MemberSimpleResponse getHostProfileByMoimId(final long moimId);
 
     List<MemberResponse> findByUniversityIdAndDepartmentId(final long universityId, final long departmentId);
+
+    void deleteById(final long memberId);
 }

@@ -3,6 +3,7 @@ package moim_today.fake_class.member;
 import moim_today.application.member.MemberService;
 import moim_today.domain.member.MemberSession;
 import moim_today.domain.member.enums.Gender;
+import moim_today.dto.admin.user_inquiry.UserInquiryRequest;
 import moim_today.dto.member.*;
 import moim_today.fake_DB.FakeMemberSession;
 import moim_today.global.error.NotFoundException;
@@ -78,5 +79,10 @@ public class FakeMemberService implements MemberService {
                 .username(USERNAME.value())
                 .memberProfileImageUrl(PROFILE_IMAGE_URL.value())
                 .build();
+    }
+
+    @Override
+    public void createUserInquiry(final MemberSession memberSession, final UserInquiryRequest userInquiryRequest) {
+
     }
 }

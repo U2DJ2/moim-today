@@ -9,7 +9,7 @@ import moim_today.dto.auth.MemberSessionValidateResponse;
 import moim_today.global.error.InternalServerException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 
-import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
+import static moim_today.global.constant.SessionConstant.MEMBER_SESSION;
 import static moim_today.global.constant.NumberConstant.ONE_DAYS_IN_SECONDS;
 import static moim_today.global.constant.NumberConstant.THIRTY_DAYS_IN_SECONDS;
 import static moim_today.global.constant.exception.SessionExceptionConstant.MEMBER_SESSION_JSON_PROCESSING_ERROR;

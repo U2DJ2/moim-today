@@ -11,11 +11,15 @@ import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import moim_today.implement.moim.joined_moim.JoinedMoimRemover;
 import moim_today.implement.schedule.schedule.ScheduleRemover;
 import moim_today.implement.todo.TodoRemover;
+import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static moim_today.global.constant.NumberConstant.MINUS_ONE;
+import static moim_today.global.constant.NumberConstant.PLUS_ONE;
 
 @Implement
 public class MoimManager {
@@ -30,6 +34,7 @@ public class MoimManager {
     private final ScheduleRemover scheduleRemover;
     private final JoinedMoimAppender joinedMoimAppender;
     private final MoimFinder moimFinder;
+    private final MoimUpdater moimUpdater;
 
     public MoimManager(final JoinedMoimFinder joinedMoimFinder,
                        final JoinedMoimRemover joinedMoimRemover,
@@ -40,7 +45,8 @@ public class MoimManager {
                        final MeetingCommentUpdater meetingCommentUpdater,
                        final ScheduleRemover scheduleRemover,
                        final JoinedMoimAppender joinedMoimAppender,
-                       final MoimFinder moimFinder) {
+                       final MoimFinder moimFinder,
+                       final MoimUpdater moimUpdater) {
         this.joinedMoimFinder = joinedMoimFinder;
         this.joinedMoimRemover = joinedMoimRemover;
         this.todoRemover = todoRemover;
@@ -51,6 +57,7 @@ public class MoimManager {
         this.scheduleRemover = scheduleRemover;
         this.joinedMoimAppender = joinedMoimAppender;
         this.moimFinder = moimFinder;
+        this.moimUpdater = moimUpdater;
     }
 
     @Transactional
@@ -59,6 +66,7 @@ public class MoimManager {
         joinedMoimFinder.validateMemberInMoim(memberId, moimId);
 
         joinedMoimRemover.deleteMoimMember(moimId, memberId);
+        moimUpdater.updateMoimCurrentCount(moimId, MINUS_ONE.value());
         todoRemover.deleteAllTodosCreatedByMemberInMoim(moimId, memberId);
 
         List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId);
@@ -69,14 +77,20 @@ public class MoimManager {
     }
 
     @Transactional
-    public void appendMemberToMoim(final long requestMemberId, final long moimId) {
+    public void appendMemberToMoim(final long requestMemberId, final long moimId, final LocalDate currentDate) {
         MoimJpaEntity enterMoimEntity = moimFinder.getByIdWithPessimisticLock(moimId);
+        enterMoimEntity.validateMoimNotEnd(currentDate);
         moimFinder.validateCapacity(enterMoimEntity);
         joinedMoimFinder.validateMemberNotInMoim(moimId, requestMemberId);
 
+        moimUpdater.updateMoimCurrentCount(moimId, PLUS_ONE.value());
         joinedMoimAppender.createJoinedMoim(requestMemberId, moimId);
-        List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId);
-        meetingIds.forEach(meetingId -> joinedMeetingAppender.saveJoinedMeeting(moimId, meetingId));
+
+        List<Long> meetingIds = meetingFinder.findUpcomingMeetingIdsByMoimId(moimId, currentDate);
+        for (long meetingId : meetingIds) {
+            MeetingJpaEntity meetingJpaEntity = meetingFinder.getById(meetingId);
+            joinedMeetingAppender.saveJoinedMeeting(moimId, meetingId, enterMoimEntity.getTitle(), meetingJpaEntity);
+        }
     }
 
     @Transactional(readOnly = true)

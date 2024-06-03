@@ -1,6 +1,7 @@
 package moim_today.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import moim_today.persistence.repository.admin.user_inquiry.UserInquiryRepository;
 import moim_today.persistence.repository.certification.email.EmailCertificationRepository;
 import moim_today.persistence.repository.certification.password.PasswordCertificationRepository;
 import moim_today.persistence.repository.department.department.DepartmentRepository;
@@ -83,6 +84,9 @@ public abstract class ImplementTest {
 
     @Autowired
     protected RequestDepartmentRepository requestDepartmentRepository;
+
+    @Autowired
+    protected UserInquiryRepository userInquiryRepository;
 
     @BeforeEach
     void setUpDatabase() {

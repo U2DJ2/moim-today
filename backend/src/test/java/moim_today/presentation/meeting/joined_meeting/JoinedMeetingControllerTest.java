@@ -32,7 +32,7 @@ class JoinedMeetingControllerTest extends ControllerTest {
                         get("/api/members/meetings/{meetingId}", 1L)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("로그인한 회원의 미팅 참여 여부를 조회한다..",
+                .andDo(document("로그인한 회원의 미팅 참여 여부를 조회한다.",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("미팅")
                                 .summary("미팅 참여 여부 조회")

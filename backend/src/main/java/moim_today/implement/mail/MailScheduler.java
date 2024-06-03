@@ -1,5 +1,6 @@
 package moim_today.implement.mail;
 
+import lombok.extern.slf4j.Slf4j;
 import moim_today.dto.mail.MailSendRequest;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
 import moim_today.global.annotation.Implement;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static moim_today.global.constant.MailConstant.*;
 
+@Slf4j
 @Implement
 public class MailScheduler {
 
@@ -32,6 +34,7 @@ public class MailScheduler {
 
     @Scheduled(cron = HOURLY_CRON_EXPRESSION)
     public void sendUpcomingMeetingMails() {
+        log.info("sendUpcomingMeetingMails");
         LocalDateTime currentDateTime = LocalDateTime.now();
         List<UpcomingMeetingNoticeResponse> upcomingNotices = meetingFinder.findUpcomingNotices(currentDateTime);
 
@@ -40,7 +43,9 @@ public class MailScheduler {
                     MailSendRequest.of(MEETING_INVITATION_EMAIL_SUBJECT.value(), List.of(upcomingNotice.email()));
             String data = makeData(upcomingNotice);
 
+            log.info("[Moim-Today] 다가오는 미팅 정보 전송 이메일 = {}", mailSendRequest.to());
             mailSender.send(mailSendRequest, UPCOMING_MEETING_NOTICE_MAIL.value(), data);
+            log.info("update joinedMeetingId = {}", upcomingNotice.joinedMeetingId());
             joinedMeetingUpdater.updateUpcomingNoticeSent(upcomingNotice.joinedMeetingId(), true);
         }
     }

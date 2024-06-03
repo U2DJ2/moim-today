@@ -401,11 +401,13 @@ class MeetingFinderTest extends ImplementTest {
         JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
                 .meetingId(meetingJpaEntity.getId())
                 .memberId(memberJpaEntity1.getId())
+                .attendance(true)
                 .build();
 
         JoinedMeetingJpaEntity joinedMeetingJpaEntity2 = JoinedMeetingJpaEntity.builder()
                 .meetingId(meetingJpaEntity.getId())
                 .memberId(memberJpaEntity2.getId())
+                .attendance(false)
                 .build();
 
         joinedMeetingRepository.save(joinedMeetingJpaEntity1);
@@ -420,7 +422,7 @@ class MeetingFinderTest extends ImplementTest {
         assertThat(meetingDetailResponse.startDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 4, 10, 0, 0));
         assertThat(meetingDetailResponse.endDateTime()).isEqualTo(LocalDateTime.of(2024, 3, 4, 12, 0, 0));
         assertThat(meetingDetailResponse.place()).isEqualTo(MEETING_PLACE.value());
-        assertThat(meetingDetailResponse.members().size()).isEqualTo(2);
+        assertThat(meetingDetailResponse.members().size()).isEqualTo(1);
     }
 
     @DisplayName("다가오는 미팅 정보들을 조회한다.")

@@ -18,6 +18,8 @@ public interface MoimRepository {
 
     MoimJpaEntity getById(final long moimId);
 
+    List<MoimSimpleResponse> findAllByUniversityId(final long universityId);
+
     String getTitleById(final long moimId);
 
     MoimDateResponse findMoimDate(final long moimId);

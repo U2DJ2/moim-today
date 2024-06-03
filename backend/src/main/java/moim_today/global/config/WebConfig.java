@@ -1,8 +1,10 @@
 package moim_today.global.config;
 
-import moim_today.global.argumentresolver.MemberLoginArgumentResolver;
-import moim_today.global.interceptor.MemberLoginInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import moim_today.global.argumentresolver.AdminLoginArgumentResolver;
+import moim_today.global.argumentresolver.MemberLoginArgumentResolver;
+import moim_today.global.interceptor.AdminLoginInterceptor;
+import moim_today.global.interceptor.MemberLoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -38,14 +40,22 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/departments",
                         "/api/request-departments",
                         "/api/moims/categories",
-                        "/api/admin/login",
-                        "/api/initiation"
+                        "/api/initiation",
+                        "/api/admin/**"
+                );
+
+        registry.addInterceptor(new AdminLoginInterceptor())
+                .order(2)
+                .addPathPatterns("/api/admin/**")
+                .excludePathPatterns(
+                        "/api/admin/login"
                 );
     }
 
     @Override
     public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new MemberLoginArgumentResolver(objectMapper));
+        resolvers.add(new AdminLoginArgumentResolver(objectMapper));
     }
 
     @Override

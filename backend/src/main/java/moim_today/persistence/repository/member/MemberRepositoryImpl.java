@@ -8,12 +8,12 @@ import moim_today.dto.moim.moim.QMoimMemberResponse;
 import moim_today.global.error.BadRequestException;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
-import moim_today.persistence.entity.university.UniversityJpaEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+import static moim_today.global.constant.MemberConstant.DELETED_MEMBER_STUDENT_ID;
 import static moim_today.global.constant.exception.MemberExceptionConstant.*;
 import static moim_today.persistence.entity.department.QDepartmentJpaEntity.departmentJpaEntity;
 import static moim_today.persistence.entity.member.QMemberJpaEntity.memberJpaEntity;
@@ -136,9 +136,15 @@ public class MemberRepositoryImpl implements MemberRepository {
                 .join(departmentJpaEntity).on(memberJpaEntity.departmentId.eq(departmentJpaEntity.id))
                 .where(
                         universityFilter(universityId),
-                        departmentFilter(departmentId)
+                        departmentFilter(departmentId),
+                        memberJpaEntity.studentId.ne(DELETED_MEMBER_STUDENT_ID.value())
                 )
                 .fetch();
+    }
+
+    @Override
+    public void deleteById(final long memberId) {
+        memberJpaRepository.deleteById(memberId);
     }
 
     private BooleanExpression universityFilter(final long universityId) {

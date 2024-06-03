@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import static moim_today.global.constant.MemberSessionConstant.MEMBER_SESSION;
+import static moim_today.global.constant.SessionConstant.MEMBER_SESSION;
 import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.*;
 

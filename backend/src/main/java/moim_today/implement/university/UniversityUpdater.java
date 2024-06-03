@@ -59,12 +59,14 @@ public class UniversityUpdater {
     @Transactional
     public void putUniversity(final ExtractUniversity extractUniversity) {
         Optional<UniversityJpaEntity> findUniversity = universityRepository.findByName(extractUniversity.getSchoolName());
+        String adminPassword = extractUniversity.createAdminPassword();
 
         if (findUniversity.isEmpty()) {
-            universityRepository.save(extractUniversity.toEntity());
+            universityRepository.save(extractUniversity.toEntity(adminPassword));
         } else if (!extractUniversity.isEmailEmpty()) {
             UniversityJpaEntity getUniversity = findUniversity.get();
             getUniversity.updateEmail(extractUniversity.getLink());
+            getUniversity.updateAdminPassword(adminPassword);
             universityRepository.save(getUniversity);
         }
     }

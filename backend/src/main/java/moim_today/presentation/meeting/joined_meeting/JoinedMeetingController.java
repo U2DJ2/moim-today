@@ -6,6 +6,8 @@ import moim_today.dto.meeting.meeting.MeetingAttendanceResponse;
 import moim_today.global.annotation.Login;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RequestMapping("/api")
 @RestController
 public class JoinedMeetingController {
@@ -26,12 +28,12 @@ public class JoinedMeetingController {
     @PostMapping("/members/meetings/{meetingId}/acceptance")
     public void acceptanceJoinMeeting(@Login final MemberSession memberSession,
                                       @PathVariable final long meetingId) {
-        joinedMeetingService.acceptanceJoinMeeting(memberSession.id(), meetingId);
+        joinedMeetingService.acceptanceJoinMeeting(memberSession.id(), meetingId, LocalDateTime.now());
     }
 
     @PostMapping("/members/meetings/{meetingId}/refusal")
     public void refuseJoinMeeting(@Login final MemberSession memberSession,
                                   @PathVariable final long meetingId) {
-        joinedMeetingService.refuseJoinMeeting(memberSession.id(), meetingId);
+        joinedMeetingService.refuseJoinMeeting(memberSession.id(), meetingId, LocalDateTime.now());
     }
 }

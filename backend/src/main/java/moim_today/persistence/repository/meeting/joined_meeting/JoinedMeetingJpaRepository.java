@@ -13,4 +13,6 @@ public interface JoinedMeetingJpaRepository extends JpaRepository<JoinedMeetingJ
     void deleteAllByMeetingId(final long meetingId);
 
     Optional<JoinedMeetingJpaEntity> findByMemberIdAndMeetingId(final long memberId, final long meetingId);
+
+    void deleteAllByMemberId(final long memberId);
 }

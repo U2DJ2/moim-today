@@ -6,6 +6,7 @@ public enum MailConstant {
     PASSWORD_FIND_MAIL("passwordFindMail.html"),
     EMAIL_CERTIFICATION_MAIL("emailCertificationMail.html"),
     UPCOMING_MEETING_NOTICE_MAIL("upcomingMeetingNoticeMail.html"),
+    USER_INQUIRY_RESPONSE_MAIL("userInquiryResponseMail.html"),
     CERTIFICATION_PAGE("certificationPage"),
 
     EMAIL_CERTIFICATION_COMPLETE("이메일 인증이 완료되었습니다. <br> 이전 페이지에서 인증 절차를 마무리해주세요."),
@@ -15,6 +16,7 @@ public enum MailConstant {
     PASSWORD_FIND_SUBJECT("[Moim-Today] 비밀번호 찾기"),
     EMAIL_CERTIFICATION_SUBJECT("[Moim-Today] 회원가입 이메일 인증"),
     MEETING_INVITATION_EMAIL_SUBJECT("[Moim-Today] 다가오는 미팅 정보"),
+    USER_INQUIRY_RESPONSE_SUBJECT_PREFIX("[RE] "),
 
     MEETING_AGENDA("1. 미팅 의제 : "),
     MEETING_START_DATE_TIME("2. 시작 시간 : "),
