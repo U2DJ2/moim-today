@@ -18,6 +18,7 @@ function MettingDetailPage() {
   const [attendance, setAttendance] = useState(false);
   const { meetingId } = useParams();
 
+  const [alertMessage, setAlertMessage] = useState("");
   const getMeetingInfo = async () => {
     try {
       const result = await GET(`api/meetings/detail/${meetingId}`);
@@ -43,7 +44,6 @@ function MettingDetailPage() {
       const result = await axios.get(
         `https://api.moim.today/api/members/meetings/${meetingId}`
       );
-      console.log(result.data);
       setAttendance(result.data.attendanceStatus);
     } catch (e) {
       console.log(e);
@@ -68,7 +68,9 @@ function MettingDetailPage() {
       const response = await POST(
         `api/members/meetings/${meetingId}/acceptance`
       );
+      setAlertMessage("미팅에 참석되었습니다.");
       checkIsMember();
+      getMeetingInfo();
     } catch (e) {
       console.log(e);
     }
@@ -77,13 +79,13 @@ function MettingDetailPage() {
     try {
       const response = await POST(`api/members/meetings/${meetingId}/refusal`);
       checkIsMember();
+      getMeetingInfo();
     } catch (e) {
       console.log(e);
     }
   };
 
   const onClickHandler = async () => {
-    console.log("first");
     try {
       attendance ? await cancelMeeting() : await acceptMeeting();
     } catch (e) {
