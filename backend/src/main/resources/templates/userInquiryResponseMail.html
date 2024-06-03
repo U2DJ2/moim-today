@@ -1,14 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Moim-Today</title>
 </head>
-<body>
-<div style="padding: 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); text-align: left; max-width: 540px; margin: auto;">
-    <div style="font-size: 18px; color: #333; font-family: 'sans-serif';">
-        <span th:utext="${data}"></span>
+<body style="font-family: 'Arial', sans-serif; background-color: #f1f3f5; margin: 0; padding: 32px 0; text-align: center;">
+
+<div style="width: 100%; background-color: #f1f3f5; padding: 32px 0;">
+    <div style="max-width: 600px; width: 100%; background-color: #ffffff; padding: 20px; margin: 0 auto; border-radius: 8px; border: 1px solid #FFC0CB; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <div style="padding: 20px 0; border-bottom: 1px solid #f1f3f5;">
+            <table width="100%">
+                <tr>
+                    <td width="100">
+                        <img src="https://api.moim.today/images/moim-today-logo.png" alt="Logo" style="width:100px; height:60px;">
+                    </td>
+                    <td width="460" style="text-align:right">
+                        <!-- <img src="your-slogan-url-here.png" height="19" style="vertical-align:bottom"> -->
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="font-size: 46px; color: #FF2400; font-weight: bold; font-family: 'Praise', cursive; margin-bottom: 20px; text-align: center;">
+            Moim-Today
+        </div>
+        <div style="padding: 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); text-align: left; max-width: 540px; margin: auto;">
+            <div style="font-size: 18px; color: #333; font-family: 'sans-serif';">
+                <span>안녕하세요, Moim-Today입니다. 문의하신 내용에 대한 답변을 드립니다.</span><br>
+                <span th:utext="${data}"></span>
+            </div>
+        </div>
+
+        <br>
+
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="margin: auto;">
+            <tr>
+                <td style="border-radius: 8px; background: #4CAF50; text-align: center;">
+                    <a href="https://moim.today" target="_blank" style="background: #4CAF50; border: 15px solid #4CAF50; font-family: Arial, sans-serif; font-size: 16px; line-height: 16px; text-align: center; text-decoration: none; color: #ffffff; display: block; border-radius: 8px; width: auto; max-width: 100%;">
+                        Moim-Today 이용하러 가기
+                    </a>
+                </td>
+            </tr>
+        </table>
+
+        <div style="padding: 32px 0; text-align: center; color: #868e96; font-size: 12px; line-height: 1.38; letter-spacing: -0.3px;">
+            모임의 혁신 Moim-Today<br>
+        </div>
     </div>
 </div>
+
 </body>
 </html>
