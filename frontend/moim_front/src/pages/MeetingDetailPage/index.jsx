@@ -158,7 +158,7 @@ function MettingDetailPage() {
       <div className="grid gap-5">
         <div className="grid gap-2">
           <button
-            className=" w-fit text-sm font-light bg-scarlet text-white font-Pretendard_Light rounded-full px-2 py-1"
+            className="w-fit text-sm font-light bg-scarlet text-white font-Pretendard_Light rounded-full px-2 py-1"
             onClick={onClickHandler}
           >
             {attendance ? "참석중" : "미참석"}

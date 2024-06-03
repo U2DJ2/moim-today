@@ -22,7 +22,7 @@ export default function ProfileSection({ selectedDate }) {
       endDateTime: endDateTime.replace("T", " ").split("+")[0],
     };
     try {
-      const response = POST("api/schedules", data);
+      POST("api/schedules", data);
       setIsRefresh(true);
     } catch (e) {
       console.log(e);

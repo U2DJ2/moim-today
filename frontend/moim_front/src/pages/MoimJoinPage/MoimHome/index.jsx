@@ -81,18 +81,22 @@ function MoimHome({ isHost, moimId }) {
   const meetingCardHandler = (meetingId) => {
     navigate(`/meeting/${moimId}/${meetingId}`);
   };
+
   useEffect(() => {
     getMeetings();
     getNotices();
+    // eslint-disable-next-line
   }, []);
+
   useEffect(() => {
     getMeetings();
   }, [meetingOption]);
+
   return (
     <div className="flex flex-col gap-24">
       <div className="grid gap-4">
         <div className="flex gap-4 text-center items-center">
-          <div className="text-4xl font-Pretendard_Black ">공지사항</div>
+          <div className="text-3xl font-Pretendard_Black ">공지사항</div>
           {isHost ? (
             <button
               onClick={makeNoticeHandler}
@@ -127,7 +131,7 @@ function MoimHome({ isHost, moimId }) {
       <div>
         <div className="pb-8">
           <div className="flex items-center gap-4 pb-4">
-            <div className="text-4xl font-Pretendard_Black font-semibold">
+            <div className="text-3xl font-Pretendard_Black font-semibold">
               미팅 확인하기
             </div>
             {isHost ? (
@@ -146,7 +150,7 @@ function MoimHome({ isHost, moimId }) {
           />
         </div>
 
-        <div className="grid grid-cols-card gap-4">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {meetings.length != 0 ? (
             meetings.map((meeting, index) => (
               <CardComponent
