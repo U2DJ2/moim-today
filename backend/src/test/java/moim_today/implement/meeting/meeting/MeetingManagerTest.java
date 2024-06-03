@@ -4,6 +4,7 @@ import moim_today.domain.meeting.enums.MeetingCategory;
 import moim_today.dto.meeting.meeting.MeetingCreateResponse;
 import moim_today.dto.meeting.meeting.MeetingCreateRequest;
 import moim_today.global.error.BadRequestException;
+import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
@@ -311,7 +312,7 @@ class MeetingManagerTest extends ImplementTest {
 
         // then
         assertThat(meetingRepository.count()).isEqualTo(1);
-        assertThat(joinedMeetingRepository.count()).isEqualTo(0);
+        assertThat(joinedMeetingRepository.count()).isEqualTo(1);
         assertThat(scheduleRepository.count()).isEqualTo(1);
     }
 

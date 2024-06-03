@@ -242,7 +242,12 @@ class JoinedMeetingAppenderTest extends ImplementTest {
 
         // then
         assertThat(scheduleRepository.count()).isEqualTo(1);
-        assertThat(joinedMeetingRepository.count()).isEqualTo(0);
+        assertThat(joinedMeetingRepository.count()).isEqualTo(1);
+
+        JoinedMeetingJpaEntity findEntity =
+                joinedMeetingRepository.getByMemberIdAndMeetingId(memberJpaEntity.getId(), meetingJpaEntity.getId());
+
+        assertThat(findEntity.isAttendance()).isFalse();
     }
 
     @DisplayName("모임 참여 정보를 바탕으로 미팅 참여 정보를 생성할 때 다른 스케줄과 겹치지 않으면 미팅에 참여한다.")
@@ -296,5 +301,10 @@ class JoinedMeetingAppenderTest extends ImplementTest {
         // then
         assertThat(scheduleRepository.count()).isEqualTo(2);
         assertThat(joinedMeetingRepository.count()).isEqualTo(1);
+
+        JoinedMeetingJpaEntity findEntity =
+                joinedMeetingRepository.getByMemberIdAndMeetingId(memberJpaEntity.getId(), meetingJpaEntity.getId());
+
+        assertThat(findEntity.isAttendance()).isTrue();
     }
 }
