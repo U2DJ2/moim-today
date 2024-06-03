@@ -134,6 +134,7 @@ public class FakeMoimService implements MoimService {
         // MOIM_ID + 1 , 모임에 이미 참여한 멤버, 실패
         // MOIM_ID + 2 , 없는 모임, 실패
         // MOIM_ID + 3 , 모임 정원이 가득 참, 실패
+        // MOIM_ID + 4 , 모임이 비공개여서, 실패
         if(moimJoinRequest.moimId() == MOIM_ID.longValue() + 1L){
             throw new BadRequestException(MEMBER_ALREADY_JOINED.message());
         }
@@ -142,6 +143,9 @@ public class FakeMoimService implements MoimService {
         }
         else if(moimJoinRequest.moimId() == MOIM_ID.longValue() + 3L){
             throw new BadRequestException(MOIM_CAPACITY_ERROR.message());
+        }
+        else if(moimJoinRequest.moimId() == MOIM_ID.longValue() + 4L){
+            throw new ForbiddenException(MOIM_NOT_PUBLIC_ERROR.message());
         }
     }
 
@@ -226,6 +230,9 @@ public class FakeMoimService implements MoimService {
 
     @Override
     public void appendMemberToPrivateMoim(final long requestMemberId, final MoimJoinPrivateRequest moimJoinPrivateRequest) {
-
+        String password = "1234";
+        if(!moimJoinPrivateRequest.password().equals(password)){
+            throw new BadRequestException(MOIM_PASSWORD_NOT_MATCHED_ERROR.message());
+        }
     }
 }
