@@ -214,10 +214,8 @@ const textInputTheme = {
   },
 };
 
-const labelStyle =
-  "mt-2.5 mb-2.5 font-Pretendard_SemiBold leading-5 text-sm text-black max-md:max-w-full";
-const commonInputStyle =
-  "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
+const labelStyle = "mt-2.5 mb-2.5 font-Pretendard_SemiBold leading-5 text-sm text-black max-md:max-w-full";
+const commonInputStyle = "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
 
 async function fetchAllTodos(setTodoData) {
   // Parse start date

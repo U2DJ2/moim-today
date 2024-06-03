@@ -118,48 +118,42 @@ function MoimJoinPage() {
 
   return (
     <>
-      <div className="flex justify-center items-center self-start font-Pretendard_Black font-normal text-black max-md:px-5 max-md:max-w-full">
-        <div className="flex gap-12 font-bold text-3xl">
-          <div
-            className={`justify-center max-md:px-5 cursor-pointer ${
-              selected === homeKey
-                ? "text-scarlet border-b-4 pb-2 border-scarlet"
-                : ""
+      <div className="grid grid-flow-col-dense justify-items-center gap-8 font-Pretendard_Black font-normal text-2xl text-black">
+        <div
+          className={`justify-center w-fit cursor-pointer ${selected === homeKey
+              ? "text-scarlet border-b-4 pb-2 border-scarlet"
+              : ""
             }`}
-            onClick={() => setSelected(homeKey)}
-          >
-            {homeKey}
-          </div>
-          <div
-            className={`justify-center max-md:px-5 cursor-pointer ${
-              selected === availableTimeKey
-                ? "text-scarlet  border-b-4 pb-2 border-scarlet"
-                : ""
+          onClick={() => setSelected(homeKey)}
+        >
+          {homeKey}
+        </div>
+        <div
+          className={`justify-center w-fit cursor-pointer ${selected === availableTimeKey
+              ? "text-scarlet  border-b-4 pb-2 border-scarlet"
+              : ""
             }`}
-            onClick={() => setSelected(availableTimeKey)}
-          >
-            {availableTimeKey}
-          </div>
-          <div
-            className={`justify-center max-md:px-5 cursor-pointer ${
-              selected === todoKey
-                ? "text-scarlet  border-b-4 pb-2 border-scarlet"
-                : ""
+          onClick={() => setSelected(availableTimeKey)}
+        >
+          {availableTimeKey}
+        </div>
+        <div
+          className={`justify-center w-fit cursor-pointer ${selected === todoKey
+              ? "text-scarlet  border-b-4 pb-2 border-scarlet"
+              : ""
             }`}
-            onClick={() => setSelected(todoKey)}
-          >
-            {todoKey}
-          </div>
-          <div
-            className={`justify-center max-md:px-5 cursor-pointer ${
-              selected === memberKey
-                ? "text-scarlet  border-b-4 pb-2 border-scarlet"
-                : ""
+          onClick={() => setSelected(todoKey)}
+        >
+          {todoKey}
+        </div>
+        <div
+          className={`justify-center w-fit cursor-pointer ${selected === memberKey
+              ? "text-scarlet  border-b-4 pb-2 border-scarlet"
+              : ""
             }`}
-            onClick={() => setSelected(memberKey)}
-          >
-            {memberKey}
-          </div>
+          onClick={() => setSelected(memberKey)}
+        >
+          {memberKey}
         </div>
       </div>
       {selected === homeKey ? (

@@ -1,5 +1,6 @@
 import { Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+
 const modalTheme = {
   root: {
     base: "fixed inset-x-0 top-0 z-50 h-screen overflow-y-auto overflow-x-hidden md:inset-0 md:h-full",
@@ -55,14 +56,15 @@ const modalTheme = {
     popup: "border-t",
   },
 };
-function NewModal({ show, size, onClose, children }) {
+
+function NewModal({ show, size, onClose, description }) {
   return (
     <Modal show={show} size={size} theme={modalTheme} onClose={onClose} popup>
       <Modal.Header />
       <Modal.Body>
         <div className="text-center">
           <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-          {children}
+          {description}
         </div>
       </Modal.Body>
     </Modal>

@@ -131,14 +131,14 @@ function DetailedLeft({
           </div>
         </Modal.Body>
       </Modal>
-      <div className="flex flex-col gap-4 items-center h-full md:w-96 sm:w-full">
-        <img className="rounded-t-2xl w-full h-72" src={image} />
+      <div className="flex flex-col gap-4 items-center h-full w-96 max-md:w-full">
+        <img className="rounded-t-2xl" src={image} />
         <div className="flex flex-col gap-2 items-center">
-          <img className="w-8 h-8 rounded-full" src={profileImg} />
+          <img className="w-10 h-10 rounded-full" src={profileImg} />
           <div className="font-Pretendard_Normal ">{userName}</div>
         </div>
 
-        <div className="text-center font-Pretendard_Black text-3xl text-[#3F3F3F]">
+        <div className="text-center font-Pretendard_Black text-2xl text-[#3F3F3F]">
           {title}
         </div>
         <div className="flex gap-1 font-Pretendard_SemiBold text-sm text-[#6F6F6F] hover:cursor-pointer hover:text-scarlet">

@@ -11,6 +11,7 @@ import CardBtn from "../MoimJoinPage/CardComponent/CardBtn";
 import formatDate from "../../utils/formatDate";
 import axios from "axios";
 import NewModal from "../../components/NewModal";
+
 function MettingDetailPage() {
   const [meetingInfo, setMeetingInfo] = useState([]);
   const [comment, setComment] = useState("");
@@ -133,7 +134,7 @@ function MettingDetailPage() {
       <div className="grid gap-5">
         <div className="grid gap-2">
           <button
-            className=" w-fit text-sm font-light bg-scarlet text-white font-Pretendard_Light rounded-full px-2 py-1"
+            className="w-fit text-sm font-light bg-scarlet text-white font-Pretendard_Light rounded-full px-2 py-1"
             onClick={onClickHandler}
           >
             {attendance ? "참석중" : "미참석"}
@@ -195,7 +196,7 @@ function MettingDetailPage() {
             return (
               <div key={index} className="flex gap-8">
                 <div className="grid justify-items-center">
-                  <img src={comment.imageUrl} className=" w-5 h-5" />
+                  <img src={comment.imageUrl} className="rounded-full w-5 h-5" />
                   <p className=" font-Pretendard_Light text-slate-500 text-sm">
                     {comment.username}
                   </p>
