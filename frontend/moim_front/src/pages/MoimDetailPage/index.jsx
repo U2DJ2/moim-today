@@ -22,7 +22,6 @@ function MoimDetailPage() {
 
   //modal
   const [isAlertOpen, setAlertOpen] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false);
 
   const fetchWriter = async () => {
     try {

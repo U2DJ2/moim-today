@@ -53,8 +53,8 @@ function MoimLayout() {
         profileImg={writerInfo.memberProfileImageUrl}
         joined={true}
       />
-      <div className="flex flex-col min-h-screen max-h-full w-full bg-white shadow-lg overflow-hidden rounded-t-3xl px-20 pt-8 pb-6 gap-8">
-        <Outlet />{" "}
+      <div className="flex flex-col min-h-screen max-h-full w-full bg-white shadow-lg overflow-hidden rounded-t-3xl px-20 pt-8 pb-6 gap-8 max-sm:px-4">
+        <Outlet />
       </div>
     </MoimContainer>
   );

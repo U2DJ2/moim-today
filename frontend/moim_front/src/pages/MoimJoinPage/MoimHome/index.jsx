@@ -34,7 +34,6 @@ function MoimHome({ isHost, moimId }) {
 
   const cardClickHandler = (noticeId) => {
     navigate(`notice/${noticeId}`);
-    
   };
 
   const makeNoticeHandler = () => {
@@ -107,7 +106,7 @@ function MoimHome({ isHost, moimId }) {
           ) : null}
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {notices.length !== 0 ? (
             notices.map((notice, index) => (
               <CardComponent
