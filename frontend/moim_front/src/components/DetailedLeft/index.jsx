@@ -11,7 +11,6 @@ import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 // Images
 import icon from "../../assets/svg/personIcon.svg";
-import clock from "../../assets/svg/clockIcon.svg";
 
 const modalTheme = {
   root: {

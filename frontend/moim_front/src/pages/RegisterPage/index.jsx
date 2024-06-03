@@ -86,12 +86,8 @@ function RegisterPage() {
           console.log(res);
         })
         .catch((error) => {
-          const errorCode = error.response.data.statusCode;
-          if (errorCode === "400") {
-            setIsOpen(true);
-            setMessage(error.response.data.message);
-          }
-          console.log(error.response.data.statusCode);
+          setMessage(error.response.data.message);
+          setIsOpen(true);
         });
     } else if (step === 1) {
       client
