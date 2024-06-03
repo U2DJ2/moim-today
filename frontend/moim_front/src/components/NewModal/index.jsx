@@ -60,8 +60,10 @@ function NewModal({ show, size, onClose, children }) {
     <Modal show={show} size={size} theme={modalTheme} onClose={onClose} popup>
       <Modal.Header />
       <Modal.Body>
-        <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-        {children}
+        <div className="text-center">
+          <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+          {children}
+        </div>
       </Modal.Body>
     </Modal>
   );

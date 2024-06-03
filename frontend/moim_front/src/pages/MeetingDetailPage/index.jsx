@@ -118,19 +118,17 @@ function MettingDetailPage() {
         size="sm"
         onClose={() => setAlertOpen(false)}
       >
-        <div className="text-center">
-          <h3 className="mb-5 text-base font-Pretendard_Normal text-black">
-            {alertMessage}
-          </h3>
-          <button
-            className="py-3 px-5 w-fit text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer"
-            onClick={() => {
-              setAlertOpen(false);
-            }}
-          >
-            확인
-          </button>
-        </div>
+        <h3 className="mb-5 text-base font-Pretendard_Normal text-black">
+          {alertMessage}
+        </h3>
+        <button
+          className="py-3 px-5 w-fit text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer"
+          onClick={() => {
+            setAlertOpen(false);
+          }}
+        >
+          확인
+        </button>
       </NewModal>
       <div className="grid gap-5">
         <div className="grid gap-2">
