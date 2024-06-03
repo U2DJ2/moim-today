@@ -32,7 +32,7 @@ $(document).ready(function() {
 
     function deleteMoim(moimId, row) {
         $.ajax({
-            url: '/api/moims/moims/' + moimId,
+            url: '/api/admin/moims/' + moimId,
             type: 'DELETE',
             success: function() {
                 row.remove();
