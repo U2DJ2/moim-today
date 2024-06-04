@@ -1,10 +1,9 @@
 package moim_today.implement.meeting.meeting;
 
+import moim_today.domain.meeting.enums.MeetingCategory;
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
-import moim_today.dto.meeting.meeting.MeetingDetailResponse;
-import moim_today.dto.meeting.meeting.MeetingSimpleDao;
-import moim_today.dto.meeting.meeting.MeetingUpdateRequest;
+import moim_today.dto.meeting.meeting.*;
 import moim_today.global.annotation.Implement;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 
@@ -30,8 +29,10 @@ public class MeetingComposition {
         this.meetingRemover = meetingRemover;
     }
 
-    public MeetingJpaEntity saveMeeting(final MeetingJpaEntity meetingJpaEntity) {
-        return meetingAppender.saveMeeting(meetingJpaEntity);
+    public MeetingCreateResponse createMeeting(final long memberId,
+                                               final MeetingCreateRequest meetingCreateRequest,
+                                               final LocalDate currentDate) {
+        return meetingAppender.saveMeeting(memberId, meetingCreateRequest, currentDate);
     }
 
     public List<Long> findMeetingIdsByMoimId(final long moimId) {

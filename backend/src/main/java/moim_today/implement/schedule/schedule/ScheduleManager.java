@@ -5,7 +5,6 @@ import moim_today.domain.schedule.TimeTableProcessor;
 import moim_today.dto.schedule.TimeTableRequest;
 import moim_today.global.annotation.Implement;
 
-import moim_today.global.constant.SymbolConstant;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;

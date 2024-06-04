@@ -14,16 +14,13 @@ import java.util.List;
 @Service
 public class MeetingServiceImpl implements MeetingService {
 
-    private final MeetingManager meetingManager;
     private final MeetingComposition meetingComposition;
     private final ScheduleComposition scheduleComposition;
     private final JoinedMeetingComposition joinedMeetingComposition;
 
-    public MeetingServiceImpl(final MeetingManager meetingManager,
-                              final MeetingComposition meetingComposition,
+    public MeetingServiceImpl(final MeetingComposition meetingComposition,
                               final ScheduleComposition scheduleComposition,
                               final JoinedMeetingComposition joinedMeetingComposition) {
-        this.meetingManager = meetingManager;
         this.meetingComposition = meetingComposition;
         this.scheduleComposition = scheduleComposition;
         this.joinedMeetingComposition = joinedMeetingComposition;
@@ -31,7 +28,7 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public MeetingCreateResponse createMeeting(final long memberId, final MeetingCreateRequest meetingCreateRequest) {
-        return meetingManager.createMeeting(memberId, meetingCreateRequest, LocalDate.now());
+        return meetingComposition.createMeeting(memberId, meetingCreateRequest, LocalDate.now());
     }
 
     @Override
