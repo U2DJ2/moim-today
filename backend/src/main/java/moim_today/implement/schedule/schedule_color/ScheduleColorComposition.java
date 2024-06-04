@@ -30,7 +30,7 @@ public class ScheduleColorComposition {
         return scheduleColorFinder.getColorCount(memberId);
     }
 
-    public int updateColorCount(final long memberId, final int count) {
-        return scheduleColorUpdater.updateColorCount(memberId, count);
+    public void updateColorCount(final long memberId, final int count) {
+        scheduleColorUpdater.updateColorCount(memberId, count);
     }
 }

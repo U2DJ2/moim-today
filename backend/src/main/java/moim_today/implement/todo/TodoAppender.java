@@ -4,6 +4,7 @@ import moim_today.dto.todo.TodoCreateRequest;
 import moim_today.global.annotation.Implement;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
 import moim_today.persistence.repository.todo.TodoRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Implement
 public class TodoAppender {
@@ -14,9 +15,9 @@ public class TodoAppender {
         this.todoRepository = todoRepository;
     }
 
+    @Transactional
     public TodoJpaEntity createTodo(final long memberId, final TodoCreateRequest todoCreateRequest){
         TodoJpaEntity todoJpaEntity = todoCreateRequest.toEntity(memberId);
         return todoRepository.save(todoJpaEntity);
     }
-
 }

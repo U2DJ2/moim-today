@@ -34,12 +34,9 @@ public class TodoManager {
     }
 
     @Transactional(readOnly = true)
-    public  List<TodoResponse> findMemberTodosInMoim(final long memberId, final Long moimId,
-                                                        final YearMonth fromDate, final int months) {
-        LocalDate startDate = fromDate.atDay(MONTH_START_POINT.time());
-        LocalDate endDate = fromDate.plusMonths(months).atEndOfMonth();
-
-        return todoFinder.findAllByDateRange(memberId, moimId, startDate, endDate);
+    public List<TodoResponse> findMemberTodosInMoim(final long memberId, final Long moimId,
+                                                    final YearMonth fromDate, final int months) {
+        return todoFinder.findMemberTodosInMoim(memberId, moimId, fromDate, months);
     }
 
     @Transactional(readOnly = true)
@@ -60,13 +57,6 @@ public class TodoManager {
     @Transactional(readOnly = true)
     public TodoJpaEntity getById(final long todoId) {
         return todoFinder.getById(todoId);
-    }
-
-    @Transactional
-    public TodoUpdateResponse updateTodo(final long memberId, final TodoUpdateRequest todoUpdateRequest) {
-        TodoJpaEntity originalTodo = todoFinder.getById(todoUpdateRequest.todoId());
-        validateTodoOwner(memberId, originalTodo);
-        return todoUpdater.updateTodo(originalTodo, todoUpdateRequest);
     }
 
     @Transactional

@@ -11,7 +11,7 @@ import moim_today.implement.member.MemberComposition;
 import moim_today.implement.moim.joined_moim.JoinedMoimComposition;
 import moim_today.implement.moim.moim.*;
 import moim_today.implement.schedule.schedule.ScheduleComposition;
-import moim_today.implement.todo.TodoRemover;
+import moim_today.implement.todo.TodoComposition;
 import moim_today.persistence.entity.moim.joined_moim.JoinedMoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class MoimServiceImpl implements MoimService{
     private final MeetingComposition meetingComposition;
     private final JoinedMoimComposition joinedMoimComposition;
     private final JoinedMeetingComposition joinedMeetingComposition;
-    private final TodoRemover todoRemover;
+    private final TodoComposition todoComposition;
     private final ScheduleComposition scheduleComposition;
     private final MemberComposition memberComposition;
     private final MoimManager moimManager;
@@ -41,7 +41,7 @@ public class MoimServiceImpl implements MoimService{
                            final MeetingComposition meetingComposition,
                            final JoinedMoimComposition joinedMoimComposition,
                            final JoinedMeetingComposition joinedMeetingComposition,
-                           final TodoRemover todoRemover,
+                           final TodoComposition todoComposition,
                            final ScheduleComposition scheduleComposition,
                            final MemberComposition memberComposition,
                            final MoimManager moimManager) {
@@ -50,7 +50,7 @@ public class MoimServiceImpl implements MoimService{
         this.meetingComposition = meetingComposition;
         this.joinedMoimComposition = joinedMoimComposition;
         this.joinedMeetingComposition = joinedMeetingComposition;
-        this.todoRemover = todoRemover;
+        this.todoComposition = todoComposition;
         this.scheduleComposition = scheduleComposition;
         this.memberComposition = memberComposition;
         this.moimManager = moimManager;
@@ -96,7 +96,7 @@ public class MoimServiceImpl implements MoimService{
         moimJpaEntity.validateHostMember(memberId);
 
         joinedMoimComposition.deleteAllByMoimId(moimId);
-        todoRemover.deleteAllByMoimId(moimId);
+        todoComposition.deleteAllByMoimId(moimId);
         moimComposition.deleteById(moimId);
 
         List<Long> meetingIds = meetingComposition.findMeetingIdsByMoimId(moimId);
