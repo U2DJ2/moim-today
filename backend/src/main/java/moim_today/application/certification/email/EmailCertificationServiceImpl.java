@@ -3,9 +3,7 @@ package moim_today.application.certification.email;
 import moim_today.application.mail.MailService;
 import moim_today.dto.certification.CompleteEmailCertificationResponse;
 import moim_today.dto.mail.MailSendRequest;
-import moim_today.implement.certification.email.EmailCertificationAppender;
-import moim_today.implement.certification.email.EmailCertificationFinder;
-import moim_today.implement.certification.email.EmailCertificationUpdater;
+import moim_today.implement.certification.email.EmailCertificationComposition;
 import moim_today.implement.member.MemberFinder;
 import org.springframework.stereotype.Service;
 
@@ -19,20 +17,14 @@ import static moim_today.global.constant.TimeConstant.TEN_MINUTES;
 @Service
 public class EmailCertificationServiceImpl implements EmailCertificationService {
 
-    private final EmailCertificationFinder emailCertificationFinder;
-    private final EmailCertificationAppender emailCertificationAppender;
-    private final EmailCertificationUpdater emailCertificationUpdater;
+    private final EmailCertificationComposition emailCertificationComposition;
     private final MemberFinder memberFinder;
     private final MailService mailService;
 
-    public EmailCertificationServiceImpl(final EmailCertificationFinder emailCertificationFinder,
-                                         final EmailCertificationAppender emailCertificationAppender,
-                                         final EmailCertificationUpdater emailCertificationUpdater,
+    public EmailCertificationServiceImpl(final EmailCertificationComposition emailCertificationComposition,
                                          final MemberFinder memberFinder,
                                          final MailService mailService) {
-        this.emailCertificationFinder = emailCertificationFinder;
-        this.emailCertificationAppender = emailCertificationAppender;
-        this.emailCertificationUpdater = emailCertificationUpdater;
+        this.emailCertificationComposition = emailCertificationComposition;
         this.memberFinder = memberFinder;
         this.mailService = mailService;
     }
@@ -41,7 +33,7 @@ public class EmailCertificationServiceImpl implements EmailCertificationService 
     public void sendCertificationEmail(final String email) {
         memberFinder.validateAlreadyExists(email);
 
-        String emailToken = emailCertificationAppender.createEmailToken(
+        String emailToken = emailCertificationComposition.createEmailToken(
                 email, now().plusMinutes(TEN_MINUTES.time())
         );
 
@@ -51,11 +43,11 @@ public class EmailCertificationServiceImpl implements EmailCertificationService 
 
     @Override
     public void certifyEmail(final String certificationToken) {
-        emailCertificationUpdater.certifyEmail(certificationToken, LocalDateTime.now());
+        emailCertificationComposition.certifyEmail(certificationToken, LocalDateTime.now());
     }
 
     @Override
     public CompleteEmailCertificationResponse completeCertification(final String email) {
-        return emailCertificationFinder.completeCertification(email);
+        return emailCertificationComposition.completeCertification(email);
     }
 }
