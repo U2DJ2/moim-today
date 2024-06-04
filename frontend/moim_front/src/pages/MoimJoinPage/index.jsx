@@ -118,7 +118,7 @@ function MoimJoinPage() {
 
   return (
     <>
-      <div className="grid grid-flow-col-dense justify-items-center gap-8 font-Pretendard_Black font-normal text-2xl text-black">
+      <div className="flex justify-items-start gap-8 font-Pretendard_Black font-normal text-4xl text-black">
         <div
           className={`justify-center w-fit cursor-pointer ${selected === homeKey
               ? "text-scarlet border-b-4 pb-2 border-scarlet"
