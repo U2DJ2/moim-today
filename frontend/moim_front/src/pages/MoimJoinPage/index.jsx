@@ -118,13 +118,11 @@ function MoimJoinPage() {
 
   return (
     <>
-      <div className="flex justify-center items-center w-fit self-start font-Pretendard_Black font-normal text-black max-md:px-5 max-md:w-full max-md:justify-between">
-        <div className="flex gap-16 font-bold text-4xl  max max-lg:text-2xl max-lg:gap-10 max-md:text-xl max-md:gap-8 max-md:justify-between max-md:w-full">
-          <div
-            className={`justify-center max-md:px-0 cursor-pointer ${
-              selected === homeKey
-                ? "text-scarlet border-b-4 pb-2 border-scarlet"
-                : ""
+      <div className="flex justify-items-start gap-8 font-Pretendard_Black font-normal text-4xl text-black">
+        <div
+          className={`justify-center w-fit cursor-pointer ${selected === homeKey
+              ? "text-scarlet border-b-4 pb-2 border-scarlet"
+              : ""
             }`}
             onClick={() => setSelected(homeKey)}
           >
