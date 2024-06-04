@@ -1,4 +1,5 @@
 import { Modal } from "flowbite-react";
+import { Children } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 const modalTheme = {
@@ -57,14 +58,14 @@ const modalTheme = {
   },
 };
 
-function NewModal({ show, size, onClose, description }) {
+function NewModal({ show, size, onClose, children }) {
   return (
     <Modal show={show} size={size} theme={modalTheme} onClose={onClose} popup>
       <Modal.Header />
       <Modal.Body>
         <div className="text-center">
           <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-          {description}
+          {children}
         </div>
       </Modal.Body>
     </Modal>

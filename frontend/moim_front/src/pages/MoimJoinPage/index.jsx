@@ -124,36 +124,40 @@ function MoimJoinPage() {
               ? "text-scarlet border-b-4 pb-2 border-scarlet"
               : ""
             }`}
-          onClick={() => setSelected(homeKey)}
-        >
-          {homeKey}
-        </div>
-        <div
-          className={`justify-center w-fit cursor-pointer ${selected === availableTimeKey
-              ? "text-scarlet  border-b-4 pb-2 border-scarlet"
-              : ""
+            onClick={() => setSelected(homeKey)}
+          >
+            {homeKey}
+          </div>
+          <div
+            className={`justify-center max-md:px-0 cursor-pointer ${
+              selected === availableTimeKey
+                ? "text-scarlet  border-b-4 pb-2 border-scarlet"
+                : ""
             }`}
-          onClick={() => setSelected(availableTimeKey)}
-        >
-          {availableTimeKey}
-        </div>
-        <div
-          className={`justify-center w-fit cursor-pointer ${selected === todoKey
-              ? "text-scarlet  border-b-4 pb-2 border-scarlet"
-              : ""
+            onClick={() => setSelected(availableTimeKey)}
+          >
+            {availableTimeKey}
+          </div>
+          <div
+            className={`justify-center max-md:px-0 cursor-pointer ${
+              selected === todoKey
+                ? "text-scarlet  border-b-4 pb-2 border-scarlet"
+                : ""
             }`}
-          onClick={() => setSelected(todoKey)}
-        >
-          {todoKey}
-        </div>
-        <div
-          className={`justify-center w-fit cursor-pointer ${selected === memberKey
-              ? "text-scarlet  border-b-4 pb-2 border-scarlet"
-              : ""
+            onClick={() => setSelected(todoKey)}
+          >
+            {todoKey}
+          </div>
+          <div
+            className={`justify-center max-md:px-0 cursor-pointer ${
+              selected === memberKey
+                ? "text-scarlet  border-b-4 pb-2 border-scarlet"
+                : ""
             }`}
-          onClick={() => setSelected(memberKey)}
-        >
-          {memberKey}
+            onClick={() => setSelected(memberKey)}
+          >
+            {memberKey}
+          </div>
         </div>
       </div>
       {selected === homeKey ? (

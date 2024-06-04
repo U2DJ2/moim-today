@@ -63,7 +63,7 @@ function ToDo() {
           memberData.map((member) => (
             <button
               key={member.memberId}
-              className={`w-auto justify-center px-6 py-3 text-[16px] text-center text-white bg-black whitespace-nowrap rounded-full font-semibold  hover:cursor-pointer ${
+              className={`w-auto justify-center px-6 py-3 text-[16px] text-center text-white bg-black whitespace-nowrap rounded-full font-semibold font-Pretendard_SemiBold hover:cursor-pointer ${
                 selectedMember === member.memberId ? "bg-scarlet" : ""
               }`}
               onClick={() => handleMemeberSelet(member.memberId)}
@@ -78,7 +78,7 @@ function ToDo() {
       <div>
         {todoData.length === 0 ? (
           <p className=" font-Pretendard_Light">
-            해당 회원이 추가한 To Do List가 없습니다.
+            해당 회원이 추가한 할 일이 없습니다.
           </p>
         ) : (
           todoData.map((item) => (

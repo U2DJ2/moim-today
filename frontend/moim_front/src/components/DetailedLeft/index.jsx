@@ -75,6 +75,7 @@ function DetailedLeft({
   capacity,
   joined,
   image,
+  message,
   setMessage,
   setIsOpen,
   profileImg,
@@ -115,7 +116,7 @@ function DetailedLeft({
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-base font-Pretendard_Normal text-black">
-              {"모임에 가입되셨습니다!"}
+              {message ? message : "모임에 가입되셨습니다!"}
             </h3>
             <div className="flex justify-center gap-4">
               <button
