@@ -6,7 +6,8 @@ import moim_today.dto.member.*;
 import moim_today.implement.admin.user_inquiry.UserInquiryAppender;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.member.MemberComposition;
-import moim_today.implement.moim.moim.MoimManager;
+import moim_today.implement.moim.joined_moim.JoinedMoimComposition;
+import moim_today.implement.moim.moim.MoimComposition;
 import moim_today.persistence.entity.admin.UserInquiryJpaEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,17 +21,18 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberComposition memberComposition;
     private final FileUploader fileUploader;
-    private final MoimManager moimManager;
     private final UserInquiryAppender userInquiryAppender;
+    private final MoimComposition moimComposition;
+    private final JoinedMoimComposition joinedMoimComposition;
 
-    public MemberServiceImpl(final MemberComposition memberComposition,
-                             final FileUploader fileUploader,
-                             final MoimManager moimManager,
-                             final UserInquiryAppender userInquiryAppender) {
+    public MemberServiceImpl(final MemberComposition memberComposition, final FileUploader fileUploader,
+                             final UserInquiryAppender userInquiryAppender, final MoimComposition moimComposition,
+                             final JoinedMoimComposition joinedMoimComposition) {
         this.memberComposition = memberComposition;
         this.fileUploader = fileUploader;
-        this.moimManager = moimManager;
         this.userInquiryAppender = userInquiryAppender;
+        this.moimComposition = moimComposition;
+        this.joinedMoimComposition = joinedMoimComposition;
     }
 
     @Override
@@ -66,13 +68,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberHostResponse isHost(final long memberId, final long moimId) {
-        boolean isHost = moimManager.isHost(memberId, moimId);
+        boolean isHost = moimComposition.isHost(memberId, moimId);
         return MemberHostResponse.from(isHost);
     }
 
     @Override
     public MemberJoinedMoimResponse isJoinedMoim(final long moimId, final long memberId) {
-        boolean isJoinedMoim = moimManager.isJoinedMoim(moimId, memberId);
+        boolean isJoinedMoim = joinedMoimComposition.isJoining(moimId, memberId);
         return MemberJoinedMoimResponse.from(isJoinedMoim);
     }
 

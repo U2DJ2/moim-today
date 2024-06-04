@@ -99,6 +99,28 @@ public class MoimFinder {
     }
 
     @Transactional(readOnly = true)
+    public List<MoimSimpleResponse> findAllJoinedMoimSimpleResponseByEndStatus(final long memberId, final LocalDate now, final boolean ended) {
+        List<Long> joinedMoims = joinedMoimFinder.findMoimIdsByMemberId(memberId);
+        return getMoimSimpleResponses(joinedMoims, now, ended);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MoimSimpleResponse> findAllHostMoimSimpleResponsesByEndStatus(final long hostMemberId, final LocalDate now, final boolean ended) {
+        List<Long> joinedMoims = joinedMoimFinder.findMoimIdsByMemberId(hostMemberId);
+        List<Long> hostMoims = joinedMoims.stream()
+                .filter(moimId -> isHost(hostMemberId, moimId))
+                .toList();
+        return getMoimSimpleResponses(hostMoims, now, ended);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MoimSimpleResponse> getMoimSimpleResponses(final List<Long> joinedMoims, final LocalDate now, final boolean ended) {
+        if (ended) {
+            return findEndedMoimSimpleResponsesByMoimIds(joinedMoims, now);
+        }
+        return findInProgressMoimSimpleResponsesByMoimIds(joinedMoims, now);
+    }
+
     public List<MoimSimpleResponse> findEndedMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now) {
         return moimRepository.findEndedMoimSimpleResponsesByMoimIds(moimIds, now);
     }

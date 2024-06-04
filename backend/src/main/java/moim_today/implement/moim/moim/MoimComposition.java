@@ -10,6 +10,7 @@ import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import java.time.LocalDate;
 import java.util.List;
 
+
 @Implement
 public class MoimComposition {
 
@@ -33,6 +34,10 @@ public class MoimComposition {
         return moimAppender.createMoim(memberId, universityId, moimCreateRequest);
     }
 
+    public void appendMemberToMoim(final long requestMemberId, final long moimId, final LocalDate currentDate) {
+        moimAppender.appendMemberToMoim(requestMemberId, moimId, currentDate);
+    }
+
     public List<MyMoimResponse> findAllMyMoimResponse(final long memberId) {
         return moimFinder.findAllMyMoimResponse(memberId);
     }
@@ -41,19 +46,12 @@ public class MoimComposition {
         return moimFinder.getById(moimId);
     }
 
-    public MoimJpaEntity getByIdWithPessimisticLock(final long moimId) {
-        return moimFinder.getByIdWithPessimisticLock(moimId);
-    }
-
     public String getTitleById(final long moimId) {
         return moimFinder.getTitleById(moimId);
     }
 
-    public MoimDateResponse findMoimDate(final long moimId) {
-        return moimFinder.findMoimDate(moimId);
-    }
-
-    public List<MoimSimpleResponse> findAllMoimResponses(final long universityId, final MoimCategoryDto moimCategoryDto, final MoimSortedFilter moimSortedFilter) {
+    public List<MoimSimpleResponse> findAllMoimResponses(final long universityId, final MoimCategoryDto moimCategoryDto,
+                                                         final MoimSortedFilter moimSortedFilter) {
         return moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
     }
 
@@ -65,27 +63,34 @@ public class MoimComposition {
         return moimFinder.searchMoim(universityId, searchParam);
     }
 
-    public List<MoimSimpleResponse> findEndedMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now) {
-        return moimFinder.findEndedMoimSimpleResponsesByMoimIds(moimIds, now);
+    public List<MoimSimpleResponse> findAllJoinedMoimSimpleResponseByEndStatus(final long memberId, final LocalDate now,
+                                                                               final boolean ended) {
+        return moimFinder.findAllJoinedMoimSimpleResponseByEndStatus(memberId, now, ended);
     }
 
-    public List<MoimSimpleResponse> findInProgressMoimSimpleResponsesByMoimIds(final List<Long> moimIds, final LocalDate now) {
-        return moimFinder.findInProgressMoimSimpleResponsesByMoimIds(moimIds, now);
+    public List<MoimSimpleResponse> findAllHostMoimSimpleResponsesByEndStatus(final long hostMemberId, final LocalDate now,
+                                                                              final boolean ended) {
+        return moimFinder.findAllHostMoimSimpleResponsesByEndStatus(hostMemberId, now, ended);
     }
 
     public void updateMoim(final long memberId, final MoimUpdateRequest moimUpdateRequest) {
         moimUpdater.updateMoim(memberId, moimUpdateRequest);
     }
 
-    public void updateMoimViews(final long moimId, final String viewedMoimsCookieByUrlEncoded, final HttpServletResponse response) {
+    public void updateMoimViews(final long moimId, final String viewedMoimsCookieByUrlEncoded,
+                                final HttpServletResponse response) {
         moimUpdater.updateMoimViews(moimId, viewedMoimsCookieByUrlEncoded, response);
-    }
-
-    public void updateMoimCurrentCount(final long moimId, final int value) {
-        moimUpdater.updateMoimCurrentCount(moimId, value);
     }
 
     public void deleteById(final long moimId) {
         moimRemover.deleteById(moimId);
+    }
+
+    public void deleteMemberFromMoim(final long memberId, final long moimId) {
+        moimRemover.deleteMemberFromMoim(memberId, moimId);
+    }
+
+    public void deleteMoim(final long memberId, final long moimId) {
+        moimRemover.deleteMoim(memberId, moimId);
     }
 }

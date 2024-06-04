@@ -3,7 +3,7 @@ package moim_today.application.todo;
 import moim_today.domain.todo.enums.TodoProgress;
 import moim_today.dto.todo.*;
 import moim_today.implement.moim.joined_moim.JoinedMoimComposition;
-import moim_today.implement.moim.moim.MoimManager;
+import moim_today.implement.moim.moim.MoimComposition;
 import moim_today.implement.todo.TodoComposition;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
 import org.springframework.stereotype.Service;
@@ -17,15 +17,15 @@ import static moim_today.global.constant.MemberConstant.UNKNOWN_MEMBER;
 public class TodoServiceImpl implements TodoService {
 
     private final JoinedMoimComposition joinedMoimComposition;
-    private final MoimManager moimManager;
     private final TodoComposition todoComposition;
+    private final MoimComposition moimComposition;
 
     public TodoServiceImpl(final JoinedMoimComposition joinedMoimComposition,
-                           final MoimManager moimManager,
-                           final TodoComposition todoComposition) {
+                           final TodoComposition todoComposition,
+                           final MoimComposition moimComposition) {
         this.joinedMoimComposition = joinedMoimComposition;
-        this.moimManager = moimManager;
         this.todoComposition = todoComposition;
+        this.moimComposition = moimComposition;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class TodoServiceImpl implements TodoService {
     public MemberMoimTodoResponse findMemberMoimTodosInMoim(final long memberId, final long moimId, final YearMonth requestDate,
                                                             final int months) {
         List<TodoResponse> todoResponses = todoComposition.findMemberTodosInMoim(memberId, moimId, requestDate, months);
-        String moimTitle = moimManager.getTitleById(moimId);
+        String moimTitle = moimComposition.getTitleById(moimId);
         return MemberMoimTodoResponse.of(moimId, moimTitle, todoResponses);
     }
 

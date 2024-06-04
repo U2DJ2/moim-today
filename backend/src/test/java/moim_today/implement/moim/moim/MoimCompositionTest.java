@@ -19,10 +19,10 @@ import static moim_today.util.TestConstant.MEMBER_ID;
 import static moim_today.util.TestConstant.USERNAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MoimManagerTest extends ImplementTest {
+class MoimCompositionTest extends ImplementTest {
 
     @Autowired
-    private MoimManager moimManager;
+    private MoimComposition moimComposition;
 
     @DisplayName("모임에 여석이 2자리 일 때 동시에 10명이 참여 요청하는 경우")
     @Test
@@ -48,7 +48,7 @@ class MoimManagerTest extends ImplementTest {
             final long memberId = i + 1;
             executorService.submit(() -> {
                 try {
-                    moimManager.appendMemberToMoim(memberId, savedMoimId, LocalDate.of(2024,5,25));
+                    moimComposition.appendMemberToMoim(memberId, savedMoimId, LocalDate.of(2024,5,25));
                 } finally {
                     latch.countDown();
                 }
@@ -113,9 +113,9 @@ class MoimManagerTest extends ImplementTest {
         joinedMoimRepository.save(j3);
 
         // when
-        List<MoimSimpleResponse> endedMoims = moimManager.findAllJoinedMoimSimpleResponseByEndStatus(
+        List<MoimSimpleResponse> endedMoims = moimComposition.findAllJoinedMoimSimpleResponseByEndStatus(
                 member1.getId(), LocalDate.of(2024, 5, 16), true);
-        List<MoimSimpleResponse> inProgressMoims = moimManager.findAllJoinedMoimSimpleResponseByEndStatus(
+        List<MoimSimpleResponse> inProgressMoims = moimComposition.findAllJoinedMoimSimpleResponseByEndStatus(
                 member1.getId(), LocalDate.of(2024, 5, 16), false);
 
         // then
@@ -184,9 +184,9 @@ class MoimManagerTest extends ImplementTest {
         joinedMoimRepository.save(j4);
 
         // when
-        List<MoimSimpleResponse> myEndedMoims = moimManager.findAllJoinedMoimSimpleResponseByEndStatus(
+        List<MoimSimpleResponse> myEndedMoims = moimComposition.findAllJoinedMoimSimpleResponseByEndStatus(
                 me.getId(), LocalDate.of(2023,5,12), true);
-        List<MoimSimpleResponse> myInProgressMoims = moimManager.findAllJoinedMoimSimpleResponseByEndStatus(
+        List<MoimSimpleResponse> myInProgressMoims = moimComposition.findAllJoinedMoimSimpleResponseByEndStatus(
                 me.getId(), LocalDate.of(2023, 5, 12), false);
 
         // then
@@ -266,9 +266,9 @@ class MoimManagerTest extends ImplementTest {
         joinedMoimRepository.save(j6);
 
         // when
-        List<MoimSimpleResponse> myEndedMoims = moimManager.findAllHostMoimSimpleResponsesByEndStatus(
+        List<MoimSimpleResponse> myEndedMoims = moimComposition.findAllHostMoimSimpleResponsesByEndStatus(
                 me.getId(), LocalDate.of(2023,5,12), true);
-        List<MoimSimpleResponse> myInProgressMoims = moimManager.findAllHostMoimSimpleResponsesByEndStatus(
+        List<MoimSimpleResponse> myInProgressMoims = moimComposition.findAllHostMoimSimpleResponsesByEndStatus(
                 me.getId(), LocalDate.of(2023, 5, 12), false);
 
         // then
