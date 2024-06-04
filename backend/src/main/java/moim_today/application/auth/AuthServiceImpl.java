@@ -5,7 +5,7 @@ import moim_today.domain.member.MemberSession;
 import moim_today.dto.auth.MemberLoginRequest;
 import moim_today.dto.auth.MemberSignUpRequest;
 import moim_today.dto.auth.MemberSessionValidateResponse;
-import moim_today.implement.department.department.DepartmentFinder;
+import moim_today.implement.department.department.DepartmentComposition;
 import moim_today.implement.member.AuthManager;
 import moim_today.implement.member.MemberFinder;
 import moim_today.implement.university.UniversityFinder;
@@ -17,16 +17,16 @@ public class AuthServiceImpl implements AuthService{
     private final AuthManager authManager;
     private final MemberFinder memberFinder;
     private final UniversityFinder universityFinder;
-    private final DepartmentFinder departmentFinder;
+    private final DepartmentComposition departmentComposition;
 
     public AuthServiceImpl(final AuthManager authManager,
                            final MemberFinder memberFinder,
                            final UniversityFinder universityFinder,
-                           final DepartmentFinder departmentFinder) {
+                           final DepartmentComposition departmentComposition) {
         this.authManager = authManager;
         this.memberFinder = memberFinder;
         this.universityFinder = universityFinder;
-        this.departmentFinder = departmentFinder;
+        this.departmentComposition = departmentComposition;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class AuthServiceImpl implements AuthService{
     public void signUp(final MemberSignUpRequest memberSignUpRequest,
                        final HttpServletRequest request) {
         universityFinder.checkUniversityIdIsPresent(memberSignUpRequest.universityId());
-        departmentFinder.validateBelongToUniversity(memberSignUpRequest.universityId(), memberSignUpRequest.departmentId());
+        departmentComposition.validateBelongToUniversity(memberSignUpRequest.universityId(), memberSignUpRequest.departmentId());
         memberFinder.validateEmailNotExists(memberSignUpRequest.email());
         authManager.signUp(memberSignUpRequest, request);
     }
