@@ -304,30 +304,8 @@ export default function MoimCreation() {
           <h1 className="flex-1 text-3xl max-md:max-w-full">
             모임을 생성해주세요
           </h1>
-          <div className="flex gap-2 justify-center py-3 text-lg whitespace-nowrap items-center">
-            <Checkbox
-              onChange={handleVisibility}
-              inputProps={{ "aria-label": "controlled" }}
-            />
-            <div>공개</div>
-          </div>
         </header>
         <main>
-          {!isChecked && (
-            <>
-              <div className={labelStyle}>비밀번호</div>
-              <div className={`${commonInputStyle} max-md:max-w-full`}>
-                <input
-                  type="password"
-                  className={`w-full bg-transparent outline-none`}
-                  placeholder={"비밀번호를 입력해주세요."}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                />
-              </div>
-            </>
-          )}
           <Dropdown
             label={"카테고리"}
             options={["스터디", "팀 프로젝트", "취미활동", "운동", "기타"]}
