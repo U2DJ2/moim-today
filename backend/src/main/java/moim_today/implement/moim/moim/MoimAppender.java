@@ -11,7 +11,6 @@ public class MoimAppender {
 
     private final MoimRepository moimRepository;
 
-
     public MoimAppender(final MoimRepository moimRepository) {
         this.moimRepository = moimRepository;
     }

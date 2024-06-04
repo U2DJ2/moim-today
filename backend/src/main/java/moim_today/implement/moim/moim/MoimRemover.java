@@ -11,7 +11,6 @@ public class MoimRemover {
 
     public MoimRemover(final MoimRepository moimRepository) {
         this.moimRepository = moimRepository;
-
     }
 
     @Transactional

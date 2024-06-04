@@ -6,7 +6,8 @@ import moim_today.dto.moim.moim.*;
 import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
-import moim_today.implement.meeting.meeting.MeetingFinder;
+import moim_today.implement.meeting.meeting.MeetingComposition;
+import moim_today.implement.member.MemberFinder;
 import moim_today.implement.moim.joined_moim.JoinedMoimAppender;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
 import moim_today.implement.moim.joined_moim.JoinedMoimRemover;
@@ -27,57 +28,51 @@ import static moim_today.global.constant.FileTypeConstant.MOIM_IMAGE;
 @Service
 public class MoimServiceImpl implements MoimService{
 
-    private final MoimAppender moimAppender;
+    private final MoimComposition moimComposition;
     private final FileUploader fileUploader;
-    private final MoimFinder moimFinder;
-    private final MoimUpdater moimUpdater;
-    private final MoimRemover moimRemover;
     private final JoinedMoimAppender joinedMoimAppender;
     private final JoinedMoimFinder joinedMoimFinder;
-    private final MeetingFinder meetingFinder;
+    private final MeetingComposition meetingComposition;
     private final JoinedMeetingRemover joinedMeetingRemover;
     private final TodoRemover todoRemover;
     private final JoinedMoimRemover joinedMoimRemover;
     private final ScheduleRemover scheduleRemover;
     private final MoimManager moimManager;
+    private final MemberFinder memberFinder;
 
-    public MoimServiceImpl(final MoimAppender moimAppender,
+    public MoimServiceImpl(final MoimComposition moimComposition,
                            final FileUploader fileUploader,
-                           final MoimFinder moimFinder,
-                           final MoimUpdater moimUpdater,
-                           final MoimRemover moimRemover,
                            final JoinedMoimAppender joinedMoimAppender,
                            final JoinedMoimFinder joinedMoimFinder,
-                           final MeetingFinder meetingFinder,
+                           final MeetingComposition meetingComposition,
                            final JoinedMeetingRemover joinedMeetingRemover,
                            final TodoRemover todoRemover,
                            final JoinedMoimRemover joinedMoimRemover,
                            final ScheduleRemover scheduleRemover,
-                           final MoimManager moimManager) {
-        this.moimAppender = moimAppender;
+                           final MoimManager moimManager,
+                           final MemberFinder memberFinder) {
+        this.moimComposition = moimComposition;
         this.fileUploader = fileUploader;
-        this.moimFinder = moimFinder;
-        this.moimUpdater = moimUpdater;
-        this.moimRemover = moimRemover;
         this.joinedMoimAppender = joinedMoimAppender;
         this.joinedMoimFinder = joinedMoimFinder;
-        this.meetingFinder = meetingFinder;
+        this.meetingComposition = meetingComposition;
         this.joinedMeetingRemover = joinedMeetingRemover;
         this.todoRemover = todoRemover;
         this.joinedMoimRemover = joinedMoimRemover;
         this.scheduleRemover = scheduleRemover;
         this.moimManager = moimManager;
+        this.memberFinder = memberFinder;
     }
 
     @Override
     public List<MyMoimResponse> findAllMyJoinedMoimResponse(final long memberId) {
-        return moimFinder.findAllMyMoimResponse(memberId);
+        return moimComposition.findAllMyMoimResponse(memberId);
     }
 
     @Override
     public MoimIdResponse createMoim(final long memberId, final long universityId,
                            final MoimCreateRequest moimCreateRequest) {
-        MoimJpaEntity moim = moimAppender.createMoim(memberId, universityId, moimCreateRequest);
+        MoimJpaEntity moim = moimComposition.createMoim(memberId, universityId, moimCreateRequest);
         joinedMoimAppender.createJoinedMoim(memberId, moim.getId());
         return MoimIdResponse.from(moim.getId());
     }
@@ -92,27 +87,27 @@ public class MoimServiceImpl implements MoimService{
     public MoimDetailResponse getMoimDetail(final long moimId,
                                             final String viewedMoimsCookieByUrlEncoded,
                                             final HttpServletResponse response) {
-        MoimJpaEntity moimJpaEntity =  moimFinder.getById(moimId);
-        moimUpdater.updateMoimViews(moimId, viewedMoimsCookieByUrlEncoded, response);
+        MoimJpaEntity moimJpaEntity =  moimComposition.getById(moimId);
+        moimComposition.updateMoimViews(moimId, viewedMoimsCookieByUrlEncoded, response);
         return MoimDetailResponse.from(moimJpaEntity);
     }
 
     @Override
     public void updateMoim(final long memberId, final MoimUpdateRequest moimUpdateRequest) {
-        moimUpdater.updateMoim(memberId, moimUpdateRequest);
+        moimComposition.updateMoim(memberId, moimUpdateRequest);
     }
 
     @Transactional
     @Override
     public void deleteMoim(final long memberId, final long moimId) {
-        MoimJpaEntity moimJpaEntity =  moimFinder.getById(moimId);
+        MoimJpaEntity moimJpaEntity =  moimComposition.getById(moimId);
         moimJpaEntity.validateHostMember(memberId);
 
         joinedMoimRemover.deleteAllByMoimId(moimId);
         todoRemover.deleteAllByMoimId(moimId);
-        moimRemover.deleteById(moimId);
+        moimComposition.deleteById(moimId);
 
-        List<Long> meetingIds = meetingFinder.findMeetingIdsByMoimId(moimId);
+        List<Long> meetingIds = meetingComposition.findMeetingIdsByMoimId(moimId);
 
         joinedMeetingRemover.deleteAllByMeetingIdIn(meetingIds);
         scheduleRemover.deleteAllByMeetingIdIn(meetingIds);
@@ -120,13 +115,13 @@ public class MoimServiceImpl implements MoimService{
 
     @Override
     public MoimMemberTabResponse findMoimMembers(final long memberId, final long moimId) {
-        MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
+        MoimJpaEntity moimJpaEntity = moimComposition.getById(moimId);
         long moimHostId = moimJpaEntity.getMemberId();
-        boolean isHostRequest = moimFinder.isHost(memberId, moimId);
+        boolean isHostRequest = moimComposition.isHost(memberId, moimId);
 
         List<JoinedMoimJpaEntity> joinedMoimJpaEntities = joinedMoimFinder.findByMoimId(moimId);
         List<Long> moimMemberIds = JoinedMoimJpaEntity.extractMemberIds(joinedMoimJpaEntities);
-        List<MoimMemberResponse> moimMemberResponses = moimFinder.findMembersInMoim(moimMemberIds, moimHostId, moimId);
+        List<MoimMemberResponse> moimMemberResponses = memberFinder.findMoimMembers(moimMemberIds, moimHostId, moimId);
 
         return MoimMemberTabResponse.of(isHostRequest, moimMemberResponses);
     }
@@ -137,7 +132,7 @@ public class MoimServiceImpl implements MoimService{
         long moimId = moimMemberKickRequest.moimId();
         long deleteMemberId = moimMemberKickRequest.deleteMemberId();
 
-        MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
+        MoimJpaEntity moimJpaEntity = moimComposition.getById(moimId);
         moimJpaEntity.validateHostMember(requestMemberId);
         moimJpaEntity.validateNotHostMember(moimMemberKickRequest.deleteMemberId());
 
@@ -148,7 +143,7 @@ public class MoimServiceImpl implements MoimService{
     @Override
     public void deleteMember(final long deleteMemberId, final MoimMemberDeleteRequest moimMemberDeleteRequest) {
         long moimId = moimMemberDeleteRequest.moimId();
-        MoimJpaEntity moimJpaEntity = moimFinder.getById(moimId);
+        MoimJpaEntity moimJpaEntity = moimComposition.getById(moimId);
 
         moimJpaEntity.validateNotHostMember(deleteMemberId);
         moimManager.deleteMemberFromMoim(deleteMemberId, moimId);
@@ -166,12 +161,12 @@ public class MoimServiceImpl implements MoimService{
             final MoimCategoryDto moimCategoryDto,
             final MoimSortedFilter moimSortedFilter) {
 
-        return moimFinder.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
+        return moimComposition.findAllMoimResponses(universityId, moimCategoryDto, moimSortedFilter);
     }
 
     @Override
     public List<MoimSimpleResponse> searchMoim(final long universityId, final String searchParam) {
-        return moimFinder.searchMoim(universityId, searchParam);
+        return moimComposition.searchMoim(universityId, searchParam);
     }
 
     @Override
