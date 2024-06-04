@@ -7,6 +7,7 @@ import moim_today.dto.moim.moim.enums.MoimCategoryDto;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingComposition;
 import moim_today.implement.meeting.meeting.MeetingComposition;
+import moim_today.implement.member.MemberComposition;
 import moim_today.implement.member.MemberFinder;
 import moim_today.implement.moim.joined_moim.JoinedMoimComposition;
 import moim_today.implement.moim.moim.*;
@@ -33,7 +34,7 @@ public class MoimServiceImpl implements MoimService{
     private final JoinedMeetingComposition joinedMeetingComposition;
     private final TodoRemover todoRemover;
     private final ScheduleComposition scheduleComposition;
-    private final MemberFinder memberFinder;
+    private final MemberComposition memberComposition;
     private final MoimManager moimManager;
 
     public MoimServiceImpl(final MoimComposition moimComposition,
@@ -43,7 +44,7 @@ public class MoimServiceImpl implements MoimService{
                            final JoinedMeetingComposition joinedMeetingComposition,
                            final TodoRemover todoRemover,
                            final ScheduleComposition scheduleComposition,
-                           final MemberFinder memberFinder,
+                           final MemberComposition memberComposition,
                            final MoimManager moimManager) {
         this.moimComposition = moimComposition;
         this.fileUploader = fileUploader;
@@ -52,7 +53,7 @@ public class MoimServiceImpl implements MoimService{
         this.joinedMeetingComposition = joinedMeetingComposition;
         this.todoRemover = todoRemover;
         this.scheduleComposition = scheduleComposition;
-        this.memberFinder = memberFinder;
+        this.memberComposition = memberComposition;
         this.moimManager = moimManager;
     }
 
@@ -113,7 +114,7 @@ public class MoimServiceImpl implements MoimService{
 
         List<JoinedMoimJpaEntity> joinedMoimJpaEntities = joinedMoimComposition.findByMoimId(moimId);
         List<Long> moimMemberIds = JoinedMoimJpaEntity.extractMemberIds(joinedMoimJpaEntities);
-        List<MoimMemberResponse> moimMemberResponses = memberFinder.findMoimMembers(moimMemberIds, moimHostId, moimId);
+        List<MoimMemberResponse> moimMemberResponses = memberComposition.findMoimMembers(moimMemberIds, moimHostId, moimId);
 
         return MoimMemberTabResponse.of(isHostRequest, moimMemberResponses);
     }

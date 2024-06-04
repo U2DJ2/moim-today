@@ -5,12 +5,12 @@ import moim_today.dto.admin.user_inquiry.UserInquiryRequest;
 import moim_today.dto.member.*;
 import moim_today.implement.admin.user_inquiry.UserInquiryAppender;
 import moim_today.implement.file.FileUploader;
+import moim_today.implement.member.MemberComposition;
 import moim_today.implement.member.MemberFinder;
 import moim_today.implement.member.MemberUpdater;
 import moim_today.implement.moim.moim.MoimManager;
 import moim_today.persistence.entity.admin.UserInquiryJpaEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -20,19 +20,16 @@ import static moim_today.global.constant.FileTypeConstant.PROFILE_IMAGE;
 @Service
 public class MemberServiceImpl implements MemberService {
 
-    private final MemberUpdater memberUpdater;
-    private final MemberFinder memberFinder;
+    private final MemberComposition memberComposition;
     private final FileUploader fileUploader;
     private final MoimManager moimManager;
     private final UserInquiryAppender userInquiryAppender;
 
-    public MemberServiceImpl(final MemberUpdater memberUpdater,
-                             final MemberFinder memberFinder,
+    public MemberServiceImpl(final MemberComposition memberComposition,
                              final FileUploader fileUploader,
                              final MoimManager moimManager,
                              final UserInquiryAppender userInquiryAppender) {
-        this.memberUpdater = memberUpdater;
-        this.memberFinder = memberFinder;
+        this.memberComposition = memberComposition;
         this.fileUploader = fileUploader;
         this.moimManager = moimManager;
         this.userInquiryAppender = userInquiryAppender;
@@ -40,12 +37,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void updatePassword(final MemberSession memberSession, final PasswordUpdateRequest passwordUpdateRequest) {
-        memberUpdater.updatePassword(memberSession.id(), passwordUpdateRequest.newPassword());
+        memberComposition.updatePassword(memberSession.id(), passwordUpdateRequest.newPassword());
     }
 
     @Override
     public void recoverPassword(final PasswordRecoverRequest passwordRecoverRequest) {
-        memberUpdater.recoverPassword(
+        memberComposition.recoverPassword(
                 passwordRecoverRequest.passwordToken(),
                 passwordRecoverRequest.newPassword(),
                 LocalDateTime.now()
@@ -54,13 +51,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberProfileResponse getMemberProfile(final MemberSession memberSession) {
-        return memberFinder.getMemberProfile(memberSession.id());
+        return memberComposition.getMemberProfile(memberSession.id());
     }
 
     @Override
     public void updateProfile(final long memberId,
                               final ProfileUpdateRequest profileUpdateRequest) {
-        memberUpdater.updateProfile(memberId, profileUpdateRequest);
+        memberComposition.updateProfile(memberId, profileUpdateRequest);
     }
 
     @Override
@@ -83,7 +80,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberSimpleResponse getHostProfileByMoimId(final long moimId) {
-        return memberFinder.getHostProfileByMoimId(moimId);
+        return memberComposition.getHostProfileByMoimId(moimId);
     }
 
     @Override
