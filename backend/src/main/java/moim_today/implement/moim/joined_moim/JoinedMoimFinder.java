@@ -52,6 +52,7 @@ public class JoinedMoimFinder {
         return joinedMoimRepository.isJoining(moimId, memberId);
     }
 
+    @Transactional(readOnly = true)
     public List<Long> findMoimIdsByMemberId(final long memberId) {
         return joinedMoimRepository.findMoimIdsByMemberId(memberId);
     }
