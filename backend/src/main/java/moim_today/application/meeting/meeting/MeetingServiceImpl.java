@@ -1,10 +1,10 @@
 package moim_today.application.meeting.meeting;
 
-import moim_today.application.schedule.ScheduleService;
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.meeting.*;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingComposition;
 import moim_today.implement.meeting.meeting.*;
+import moim_today.implement.schedule.schedule.ScheduleComposition;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,16 +16,16 @@ public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingManager meetingManager;
     private final MeetingComposition meetingComposition;
-    private final ScheduleService scheduleService;
+    private final ScheduleComposition scheduleComposition;
     private final JoinedMeetingComposition joinedMeetingComposition;
 
     public MeetingServiceImpl(final MeetingManager meetingManager,
                               final MeetingComposition meetingComposition,
-                              final ScheduleService scheduleService,
+                              final ScheduleComposition scheduleComposition,
                               final JoinedMeetingComposition joinedMeetingComposition) {
         this.meetingManager = meetingManager;
         this.meetingComposition = meetingComposition;
-        this.scheduleService = scheduleService;
+        this.scheduleComposition = scheduleComposition;
         this.joinedMeetingComposition = joinedMeetingComposition;
     }
 
@@ -56,7 +56,7 @@ public class MeetingServiceImpl implements MeetingService {
     @Override
     public void deleteMeeting(final long memberId, final long meetingId) {
         meetingComposition.deleteMeeting(memberId, meetingId);
-        scheduleService.deleteAllByMeetingId(meetingId);
+        scheduleComposition.deleteAllByMeetingId(meetingId);
         joinedMeetingComposition.deleteAllByMeetingId(meetingId);
     }
 }

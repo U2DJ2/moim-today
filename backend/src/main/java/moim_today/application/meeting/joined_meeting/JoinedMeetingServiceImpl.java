@@ -4,8 +4,7 @@ import moim_today.global.error.BadRequestException;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingComposition;
 import moim_today.implement.meeting.meeting.MeetingFinder;
 import moim_today.implement.moim.moim.MoimFinder;
-import moim_today.implement.schedule.schedule.ScheduleAppender;
-import moim_today.implement.schedule.schedule.ScheduleRemover;
+import moim_today.implement.schedule.schedule.ScheduleComposition;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.stereotype.Service;
@@ -22,19 +21,16 @@ public class JoinedMeetingServiceImpl implements JoinedMeetingService {
     private final JoinedMeetingComposition joinedMeetingComposition;
     private final MoimFinder moimFinder;
     private final MeetingFinder meetingFinder;
-    private final ScheduleAppender scheduleAppender;
-    private final ScheduleRemover scheduleRemover;
+    private final ScheduleComposition scheduleComposition;
 
     public JoinedMeetingServiceImpl(final JoinedMeetingComposition joinedMeetingComposition,
                                     final MoimFinder moimFinder,
                                     final MeetingFinder meetingFinder,
-                                    final ScheduleAppender scheduleAppender,
-                                    final ScheduleRemover scheduleRemover) {
+                                    final ScheduleComposition scheduleComposition) {
         this.joinedMeetingComposition = joinedMeetingComposition;
         this.moimFinder = moimFinder;
         this.meetingFinder = meetingFinder;
-        this.scheduleAppender = scheduleAppender;
-        this.scheduleRemover = scheduleRemover;
+        this.scheduleComposition = scheduleComposition;
     }
 
     @Override
@@ -49,7 +45,7 @@ public class JoinedMeetingServiceImpl implements JoinedMeetingService {
         meetingJpaEntity.validateCurrentTime(currentDateTime);
         String moimTitle = moimFinder.getTitleById(meetingJpaEntity.getMoimId());
         ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.toEntity(memberId, moimTitle, meetingJpaEntity);
-        boolean isNew = scheduleAppender.createScheduleIfNotExist(scheduleJpaEntity);
+        boolean isNew = scheduleComposition.createScheduleIfNotExist(scheduleJpaEntity);
 
         if (isNew) {
             boolean attendance = true;
@@ -66,7 +62,7 @@ public class JoinedMeetingServiceImpl implements JoinedMeetingService {
         meetingJpaEntity.validateCurrentTime(currentDateTime);
         boolean attendance = false;
         joinedMeetingComposition.updateAttendance(memberId, meetingId, attendance);
-        scheduleRemover.deleteByMemberIdAndMeetingId(memberId, meetingId);
+        scheduleComposition.deleteByMemberIdAndMeetingId(memberId, meetingId);
     }
 
     @Transactional

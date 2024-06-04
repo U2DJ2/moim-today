@@ -2,7 +2,6 @@ package moim_today.application.moim.moim_notice;
 
 import moim_today.dto.moim.moim_notice.*;
 import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
-import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.implement.moim.moim_notice.MoimNoticeAppender;
 import moim_today.implement.moim.moim_notice.MoimNoticeFinder;
 import moim_today.implement.moim.moim_notice.MoimNoticeRemover;
@@ -20,7 +19,6 @@ public class MoimNoticeServiceImpl implements MoimNoticeService{
     private final MoimNoticeUpdater moimNoticeUpdater;
     private final MoimNoticeRemover moimNoticeRemover;
     private final JoinedMoimFinder joinedMoimFinder;
-
 
     public MoimNoticeServiceImpl(final MoimNoticeAppender moimNoticeAppender,
                                  final MoimNoticeFinder moimNoticeFinder,
