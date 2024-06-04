@@ -8,7 +8,6 @@ import moim_today.implement.file.FileUploader;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingComposition;
 import moim_today.implement.meeting.meeting.MeetingComposition;
 import moim_today.implement.member.MemberComposition;
-import moim_today.implement.member.MemberFinder;
 import moim_today.implement.moim.joined_moim.JoinedMoimComposition;
 import moim_today.implement.moim.moim.*;
 import moim_today.implement.schedule.schedule.ScheduleComposition;

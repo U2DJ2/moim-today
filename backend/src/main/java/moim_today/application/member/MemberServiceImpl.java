@@ -6,8 +6,6 @@ import moim_today.dto.member.*;
 import moim_today.implement.admin.user_inquiry.UserInquiryAppender;
 import moim_today.implement.file.FileUploader;
 import moim_today.implement.member.MemberComposition;
-import moim_today.implement.member.MemberFinder;
-import moim_today.implement.member.MemberUpdater;
 import moim_today.implement.moim.moim.MoimManager;
 import moim_today.persistence.entity.admin.UserInquiryJpaEntity;
 import org.springframework.stereotype.Service;

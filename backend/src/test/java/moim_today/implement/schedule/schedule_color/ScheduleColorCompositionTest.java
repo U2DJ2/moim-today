@@ -3,18 +3,16 @@ package moim_today.implement.schedule.schedule_color;
 import moim_today.domain.schedule.enums.ColorHex;
 import moim_today.persistence.entity.schedule.schedule_color.ScheduleColorJpaEntity;
 import moim_today.util.ImplementTest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ScheduleColorManagerTest extends ImplementTest {
+class ScheduleColorCompositionTest extends ImplementTest {
 
     @Autowired
-    private ScheduleColorManager scheduleColorManager;
+    private ScheduleColorComposition scheduleColorComposition;
 
     @DisplayName("회원의 스케줄 색상 카운트 정보를 바탕으로 hex 색상 정보를 반환한다.")
     @Test
@@ -30,7 +28,7 @@ class ScheduleColorManagerTest extends ImplementTest {
         scheduleColorRepository.save(scheduleColorJpaEntity);
 
         // when
-        String colorHex = scheduleColorManager.getColorHex(memberId);
+        String colorHex = scheduleColorComposition.getColorHex(memberId);
 
         // then
         ColorHex[] values = ColorHex.values();
@@ -52,7 +50,7 @@ class ScheduleColorManagerTest extends ImplementTest {
         scheduleColorRepository.save(scheduleColorJpaEntity);
 
         // when
-        int findColorCount = scheduleColorManager.getColorCount(memberId);
+        int findColorCount = scheduleColorComposition.getColorCount(memberId);
 
         // then
         assertThat(findColorCount).isEqualTo(colorCount);
@@ -66,7 +64,7 @@ class ScheduleColorManagerTest extends ImplementTest {
         int nextCount = 5;
 
         // when
-        scheduleColorManager.updateColorCount(memberId, nextCount);
+        scheduleColorComposition.updateColorCount(memberId, nextCount);
 
         // then
         ScheduleColorJpaEntity findEntity = scheduleColorRepository.getByMemberId(memberId);
@@ -89,11 +87,10 @@ class ScheduleColorManagerTest extends ImplementTest {
         scheduleColorRepository.save(scheduleColorJpaEntity);
 
         // when
-        scheduleColorManager.updateColorCount(memberId, nextCount);
+        scheduleColorComposition.updateColorCount(memberId, nextCount);
 
         // then
         ScheduleColorJpaEntity findEntity = scheduleColorRepository.getByMemberId(memberId);
         assertThat(findEntity.getColorCount()).isEqualTo(colorCount + nextCount);
     }
-
 }

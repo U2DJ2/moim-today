@@ -5,7 +5,7 @@ import moim_today.domain.schedule.TimeTableProcessor;
 import moim_today.dto.schedule.*;
 import moim_today.implement.moim.joined_moim.JoinedMoimComposition;
 import moim_today.implement.schedule.schedule.*;
-import moim_today.implement.schedule.schedule_color.ScheduleColorManager;
+import moim_today.implement.schedule.schedule_color.ScheduleColorComposition;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +20,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleComposition scheduleComposition;
     private final JoinedMoimComposition joinedMoimComposition;
-    private final ScheduleColorManager scheduleColorManager;
+    private final ScheduleColorComposition scheduleColorComposition;
 
     public ScheduleServiceImpl(final ScheduleComposition scheduleComposition,
                                final JoinedMoimComposition joinedMoimComposition,
-                               final ScheduleColorManager scheduleColorManager) {
+                               final ScheduleColorComposition scheduleColorComposition) {
         this.scheduleComposition = scheduleComposition;
         this.joinedMoimComposition = joinedMoimComposition;
-        this.scheduleColorManager = scheduleColorManager;
+        this.scheduleColorComposition = scheduleColorComposition;
     }
 
     @Override
@@ -61,19 +61,19 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void fetchTimeTable(final long memberId, final TimeTableRequest timeTableRequest) {
         String timeTableXML = scheduleComposition.fetchTimetable(timeTableRequest.everytimeUrl());
-        int count = scheduleColorManager.getColorCount(memberId);
+        int count = scheduleColorComposition.getColorCount(memberId);
         TimeTableProcessor timeTableProcessor =
                 scheduleComposition.processTimetable(timeTableXML, timeTableRequest, count);
         int colorCount = timeTableProcessor.getColorCountSize();
-        scheduleColorManager.updateColorCount(memberId, colorCount);
+        scheduleColorComposition.updateColorCount(memberId, colorCount);
 
         scheduleComposition.batchUpdateSchedules(timeTableProcessor.schedules(), memberId);
     }
 
     @Override
     public void createSchedule(final long memberId, final ScheduleCreateRequest scheduleCreateRequest) {
-        String colorHex = scheduleColorManager.getColorHex(memberId);
-        scheduleColorManager.updateColorCount(memberId, SCHEDULE_COLOR_NEXT_COUNT.value());
+        String colorHex = scheduleColorComposition.getColorHex(memberId);
+        scheduleColorComposition.updateColorCount(memberId, SCHEDULE_COLOR_NEXT_COUNT.value());
         ScheduleJpaEntity scheduleJpaEntity = scheduleCreateRequest.toEntity(memberId, colorHex);
         scheduleComposition.createSchedule(scheduleJpaEntity);
     }
