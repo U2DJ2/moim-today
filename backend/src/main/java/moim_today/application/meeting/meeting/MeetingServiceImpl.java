@@ -1,39 +1,32 @@
 package moim_today.application.meeting.meeting;
 
-import moim_today.application.meeting.joined_meeting.JoinedMeetingService;
 import moim_today.application.schedule.ScheduleService;
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.meeting.*;
-import moim_today.implement.meeting.meeting.MeetingFinder;
-import moim_today.implement.meeting.meeting.MeetingManager;
-import moim_today.implement.meeting.meeting.MeetingRemover;
-import moim_today.implement.meeting.meeting.MeetingUpdater;
+import moim_today.implement.meeting.joined_meeting.JoinedMeetingComposition;
+import moim_today.implement.meeting.meeting.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingManager meetingManager;
-    private final MeetingFinder meetingFinder;
-    private final MeetingUpdater meetingUpdater;
-    private final MeetingRemover meetingRemover;
+    private final MeetingComposition meetingComposition;
     private final ScheduleService scheduleService;
-    private final JoinedMeetingService joinedMeetingService;
+    private final JoinedMeetingComposition joinedMeetingComposition;
 
-    public MeetingServiceImpl(final MeetingManager meetingManager, final MeetingFinder meetingFinder,
-                              final MeetingUpdater meetingUpdater, final MeetingRemover meetingRemover,
-                              final ScheduleService scheduleService, final JoinedMeetingService joinedMeetingService) {
+    public MeetingServiceImpl(final MeetingManager meetingManager,
+                              final MeetingComposition meetingComposition,
+                              final ScheduleService scheduleService,
+                              final JoinedMeetingComposition joinedMeetingComposition) {
         this.meetingManager = meetingManager;
-        this.meetingFinder = meetingFinder;
-        this.meetingUpdater = meetingUpdater;
-        this.meetingRemover = meetingRemover;
+        this.meetingComposition = meetingComposition;
         this.scheduleService = scheduleService;
-        this.joinedMeetingService = joinedMeetingService;
+        this.joinedMeetingComposition = joinedMeetingComposition;
     }
 
     @Override
@@ -45,25 +38,25 @@ public class MeetingServiceImpl implements MeetingService {
     public List<MeetingSimpleResponse> findAllByMoimId(final long moimId, final long memberId,
                                                        final MeetingStatus meetingStatus) {
         List<MeetingSimpleDao> meetingSimpleDaos =
-                meetingFinder.findAllByMoimId(moimId, memberId, meetingStatus, LocalDateTime.now());
+                meetingComposition.findAllByMoimId(moimId, memberId, meetingStatus);
         return MeetingSimpleResponse.toResponses(meetingSimpleDaos);
     }
 
     @Override
     public MeetingDetailResponse findDetailsById(final long meetingId) {
-        return meetingFinder.findDetailsById(meetingId);
+        return meetingComposition.findDetailsById(meetingId);
     }
 
     @Override
     public void updateMeeting(final long memberId, final MeetingUpdateRequest meetingUpdateRequest) {
-        meetingUpdater.updateMeeting(memberId, meetingUpdateRequest);
+        meetingComposition.updateMeeting(memberId, meetingUpdateRequest);
     }
 
     @Transactional
     @Override
     public void deleteMeeting(final long memberId, final long meetingId) {
-        meetingRemover.deleteMeeting(memberId, meetingId);
+        meetingComposition.deleteMeeting(memberId, meetingId);
         scheduleService.deleteAllByMeetingId(meetingId);
-        joinedMeetingService.deleteAllByMeetingId(meetingId);
+        joinedMeetingComposition.deleteAllByMeetingId(meetingId);
     }
 }

@@ -1,9 +1,7 @@
 package moim_today.application.meeting.joined_meeting;
 
 import moim_today.global.error.BadRequestException;
-import moim_today.implement.meeting.joined_meeting.JoinedMeetingFinder;
-import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
-import moim_today.implement.meeting.joined_meeting.JoinedMeetingUpdater;
+import moim_today.implement.meeting.joined_meeting.JoinedMeetingComposition;
 import moim_today.implement.meeting.meeting.MeetingFinder;
 import moim_today.implement.moim.moim.MoimFinder;
 import moim_today.implement.schedule.schedule.ScheduleAppender;
@@ -21,24 +19,18 @@ import static moim_today.global.constant.exception.ScheduleExceptionConstant.*;
 @Service
 public class JoinedMeetingServiceImpl implements JoinedMeetingService {
 
-    private final JoinedMeetingFinder joinedMeetingFinder;
-    private final JoinedMeetingUpdater joinedMeetingUpdater;
-    private final JoinedMeetingRemover joinedMeetingRemover;
+    private final JoinedMeetingComposition joinedMeetingComposition;
     private final MoimFinder moimFinder;
     private final MeetingFinder meetingFinder;
     private final ScheduleAppender scheduleAppender;
     private final ScheduleRemover scheduleRemover;
 
-    public JoinedMeetingServiceImpl(final JoinedMeetingFinder joinedMeetingFinder,
-                                    final JoinedMeetingUpdater joinedMeetingUpdater,
-                                    final JoinedMeetingRemover joinedMeetingRemover,
+    public JoinedMeetingServiceImpl(final JoinedMeetingComposition joinedMeetingComposition,
                                     final MoimFinder moimFinder,
                                     final MeetingFinder meetingFinder,
                                     final ScheduleAppender scheduleAppender,
                                     final ScheduleRemover scheduleRemover) {
-        this.joinedMeetingFinder = joinedMeetingFinder;
-        this.joinedMeetingUpdater = joinedMeetingUpdater;
-        this.joinedMeetingRemover = joinedMeetingRemover;
+        this.joinedMeetingComposition = joinedMeetingComposition;
         this.moimFinder = moimFinder;
         this.meetingFinder = meetingFinder;
         this.scheduleAppender = scheduleAppender;
@@ -47,7 +39,7 @@ public class JoinedMeetingServiceImpl implements JoinedMeetingService {
 
     @Override
     public boolean findAttendanceStatus(final long memberId, final long meetingId) {
-        return joinedMeetingFinder.findAttendanceStatus(memberId, meetingId);
+        return joinedMeetingComposition.findAttendanceStatus(memberId, meetingId);
     }
 
     @Transactional
@@ -61,7 +53,7 @@ public class JoinedMeetingServiceImpl implements JoinedMeetingService {
 
         if (isNew) {
             boolean attendance = true;
-            joinedMeetingUpdater.updateAttendance(memberId, meetingId, attendance);
+            joinedMeetingComposition.updateAttendance(memberId, meetingId, attendance);
         } else {
             throw new BadRequestException(SCHEDULE_ALREADY_EXIST.message());
         }
@@ -73,13 +65,13 @@ public class JoinedMeetingServiceImpl implements JoinedMeetingService {
         MeetingJpaEntity meetingJpaEntity = meetingFinder.getById(meetingId);
         meetingJpaEntity.validateCurrentTime(currentDateTime);
         boolean attendance = false;
-        joinedMeetingUpdater.updateAttendance(memberId, meetingId, attendance);
+        joinedMeetingComposition.updateAttendance(memberId, meetingId, attendance);
         scheduleRemover.deleteByMemberIdAndMeetingId(memberId, meetingId);
     }
 
     @Transactional
     @Override
     public void deleteAllByMeetingId(final long meetingId) {
-        joinedMeetingRemover.deleteAllByMeetingId(meetingId);
+        joinedMeetingComposition.deleteAllByMeetingId(meetingId);
     }
 }
