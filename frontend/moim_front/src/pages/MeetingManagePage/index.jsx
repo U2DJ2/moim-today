@@ -1,7 +1,11 @@
-import React from "react";
+import MeetingSection from "./MeetingSection";
 
 function MeetingManagePage() {
-  return <div>MeetingManagePage</div>;
+  return (
+    <>
+      <MeetingSection />
+    </>
+  );
 }
 
 export default MeetingManagePage;
