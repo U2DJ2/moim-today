@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -75,9 +76,20 @@ public class MeetingFinder {
         return meetingRepository.getById(meetingId);
     }
 
-    public List<JoinedMeetingResponse> findAllByMemberId(final long memberId) {
+    @Transactional(readOnly = true)
+    public List<JoinedMeetingResponse> findAllByMemberId(final long memberId, final MeetingStatus meetingStatus,
+                                                         final LocalDateTime currentDateTime) {
         List<Long> meetingIds = joinedMeetingFinder.findAllByMemberId(memberId);
-        List<JoinedMeetingDao> joinedMeetingDaos = meetingRepository.findAllByMeetingIds(meetingIds);
+        List<JoinedMeetingDao> joinedMeetingDaos = new ArrayList<>();
+
+        if(meetingStatus.equals(MeetingStatus.ALL)) {
+            joinedMeetingDaos = meetingRepository.findAllByMeetingIds(meetingIds);
+        } else if(meetingStatus.equals(MeetingStatus.UPCOMING)) {
+            joinedMeetingDaos = meetingRepository.findAllUpcomingByMeetingIds(meetingIds, currentDateTime);
+        } else if(meetingStatus.equals(MeetingStatus.PAST)) {
+            joinedMeetingDaos = meetingRepository.findAllPastByMeetingIds(meetingIds, currentDateTime);
+        }
+
         return JoinedMeetingResponse.toResponses(joinedMeetingDaos);
     }
 }

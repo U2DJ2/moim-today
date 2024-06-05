@@ -48,7 +48,7 @@ public class FakeMeetingService implements MeetingService {
     }
 
     @Override
-    public List<JoinedMeetingResponse> findAllByMemberId(final long memberId) {
+    public List<JoinedMeetingResponse> findAllByMemberId(final long memberId, final MeetingStatus meetingStatus) {
         return List.of();
     }
 

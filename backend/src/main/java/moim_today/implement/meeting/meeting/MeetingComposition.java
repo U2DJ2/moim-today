@@ -58,7 +58,7 @@ public class MeetingComposition {
         meetingRemover.deleteMeeting(memberId, meetingId);
     }
 
-    public List<JoinedMeetingResponse> findAllByMemberId(final long memberId) {
-        return meetingFinder.findAllByMemberId(memberId);
+    public List<JoinedMeetingResponse> findAllByMemberId(final long memberId, final MeetingStatus meetingStatus) {
+        return meetingFinder.findAllByMemberId(memberId, meetingStatus, LocalDateTime.now());
     }
 }

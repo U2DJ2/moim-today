@@ -22,8 +22,11 @@ public class MeetingController {
     }
 
     @GetMapping
-    public CollectionResponse<List<JoinedMeetingResponse>> findMeetings(@Login final MemberSession memberSession) {
-        List<JoinedMeetingResponse> joinedMeetingResponses = meetingService.findAllByMemberId(memberSession.id());
+    public CollectionResponse<List<JoinedMeetingResponse>> findMeetings(
+            @Login final MemberSession memberSession,
+            @RequestParam final MeetingStatus meetingStatus) {
+        List<JoinedMeetingResponse> joinedMeetingResponses =
+                meetingService.findAllByMemberId(memberSession.id(), meetingStatus);
         return CollectionResponse.from(joinedMeetingResponses);
     }
 

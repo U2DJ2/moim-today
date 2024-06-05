@@ -40,8 +40,8 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public List<JoinedMeetingResponse> findAllByMemberId(final long memberId) {
-        return meetingComposition.findAllByMemberId(memberId);
+    public List<JoinedMeetingResponse> findAllByMemberId(final long memberId, final MeetingStatus meetingStatus) {
+        return meetingComposition.findAllByMemberId(memberId, meetingStatus);
     }
 
     @Override

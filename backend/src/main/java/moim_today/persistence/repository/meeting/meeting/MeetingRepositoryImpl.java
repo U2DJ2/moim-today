@@ -11,6 +11,7 @@ import moim_today.dto.meeting.meeting.QJoinedMeetingDao;
 import moim_today.dto.meeting.meeting.QMeetingSimpleDao;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
+import moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -130,6 +131,38 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                 )
                 .from(meetingJpaEntity)
                 .where(meetingJpaEntity.id.in(meetingIds))
+                .fetch();
+    }
+
+    @Override
+    public List<JoinedMeetingDao> findAllUpcomingByMeetingIds(final List<Long> meetingIds,
+                                                              final LocalDateTime currentDateTime) {
+        return queryFactory.select(
+                        new QJoinedMeetingDao(
+                                meetingJpaEntity.id,
+                                meetingJpaEntity.agenda,
+                                meetingJpaEntity.startDateTime
+                        )
+                )
+                .from(meetingJpaEntity)
+                .where(meetingJpaEntity.id.in(meetingIds)
+                        .and(meetingJpaEntity.startDateTime.after(currentDateTime)))
+                .fetch();
+    }
+
+    @Override
+    public List<JoinedMeetingDao> findAllPastByMeetingIds(final List<Long> meetingIds,
+                                                          final LocalDateTime currentDateTime) {
+        return queryFactory.select(
+                        new QJoinedMeetingDao(
+                                meetingJpaEntity.id,
+                                meetingJpaEntity.agenda,
+                                meetingJpaEntity.startDateTime
+                        )
+                )
+                .from(meetingJpaEntity)
+                .where(meetingJpaEntity.id.in(meetingIds)
+                        .and(meetingJpaEntity.startDateTime.before(currentDateTime)))
                 .fetch();
     }
 
