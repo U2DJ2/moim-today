@@ -2,7 +2,6 @@ package moim_today.dto.moim.moim;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
-import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 
@@ -17,7 +16,6 @@ public record MoimDetailResponse(
         int currentCount,
         String imageUrl,
         MoimCategory moimCategory,
-        DisplayStatus displayStatus,
         int views,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate startDate,
@@ -35,7 +33,6 @@ public record MoimDetailResponse(
                 .currentCount(moimJpaEntity.getCurrentCount())
                 .imageUrl(moimJpaEntity.getImageUrl())
                 .moimCategory(moimJpaEntity.getMoimCategory())
-                .displayStatus(moimJpaEntity.getDisplayStatus())
                 .views(moimJpaEntity.getViews())
                 .startDate(moimJpaEntity.getStartDate())
                 .endDate(moimJpaEntity.getEndDate())

@@ -4,37 +4,30 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
-import moim_today.global.error.BadRequestException;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity.MoimJpaEntityBuilder;
 
 import java.time.LocalDate;
 
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
-import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
 import static moim_today.global.constant.NumberConstant.DEFAULT_MOIM_CURRENT_COUNT;
 import static moim_today.global.constant.NumberConstant.DEFAULT_MOIM_VIEWS;
-import static moim_today.global.constant.exception.MoimExceptionConstant.PRIVATE_MOIM_NEEDS_PASSWORD_ERROR;
 
 @Builder
 public record MoimCreateRequest(
         @NotBlank(message = MOIM_TITLE_BLANK_ERROR) String title,
         @NotBlank(message = MOIM_CONTENT_BLANK_ERROR) String contents,
         @Min(value = 2, message = MOIM_CAPACITY_MIN_ERROR) int capacity,
-        String password,
         String imageUrl,
         @NotNull(message = MOIM_CATEGORY_NULL_ERROR) MoimCategory moimCategory,
-        @NotNull(message = MOIM_DISPLAY_STATUS_NULL_ERROR) DisplayStatus displayStatus,
         @NotNull(message = MOIM_START_DATE_NULL_ERROR) LocalDate startDate,
         @NotNull(message = MOIM_END_DATE_NULL_ERROR) LocalDate endDate
 ) {
     private static final String MOIM_TITLE_BLANK_ERROR = "모임 제목은 공백일 수 없습니다.";
     private static final String MOIM_CONTENT_BLANK_ERROR = "모임 내용은 공백일 수 없습니다.";
-    private static final String MOIM_CAPACITY_MIN_ERROR = "모임 정원은 공백일 수 없습니다.";
+    private static final String MOIM_CAPACITY_MIN_ERROR = "모임 정원은 2명 이상이어야 합니다.";
     private static final String MOIM_CATEGORY_NULL_ERROR = "모임 카테고리는 필수 입력 항목입니다.";
-    private static final String MOIM_DISPLAY_STATUS_NULL_ERROR = "모임 공개 여부는 필수 입력 항목입니다.";
     private static final String MOIM_START_DATE_NULL_ERROR = "모임 시간 일자는 필수 입력 항목입니다.";
     private static final String MOIM_END_DATE_NULL_ERROR = "모임 종료 일자는 필수 입력 항목입니다.";
 
@@ -48,18 +41,9 @@ public record MoimCreateRequest(
                 .capacity(capacity)
                 .currentCount(DEFAULT_MOIM_CURRENT_COUNT.value())
                 .moimCategory(moimCategory)
-                .displayStatus(displayStatus)
                 .views(DEFAULT_MOIM_VIEWS.value())
                 .startDate(startDate)
                 .endDate(endDate);
-
-        if (displayStatus.equals(DisplayStatus.PRIVATE) && (password == null || password.isEmpty())) {
-            throw new BadRequestException(PRIVATE_MOIM_NEEDS_PASSWORD_ERROR.message());
-        } else if (displayStatus.equals(DisplayStatus.PRIVATE)){
-            moimJpaEntityBuilder.password(password);
-        } else {
-            moimJpaEntityBuilder.password(DEFAULT_MOIM_PASSWORD.value());
-        }
 
         if (imageUrl == null || imageUrl.isBlank()) {
             return buildMoimByImageUrl(moimJpaEntityBuilder, DEFAULT_MOIM_IMAGE_URL.value());

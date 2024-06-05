@@ -3,7 +3,6 @@ package moim_today.presentation.moim;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.application.moim.moim_notice.MoimNoticeService;
-import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.MoimSortedFilter;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
@@ -71,10 +70,8 @@ class MoimControllerTest extends ControllerTest {
                 MOIM_TITLE.value(),
                 MOIM_CONTENTS.value(),
                 Integer.parseInt(CAPACITY.value()),
-                PASSWORD.value(),
                 MOIM_IMAGE_URL.value(),
                 MoimCategory.STUDY,
-                DisplayStatus.PRIVATE,
                 startDate,
                 endDate
         );
@@ -92,12 +89,9 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("title").type(STRING).description("모임명"),
                                         fieldWithPath("contents").type(STRING).description("내용"),
                                         fieldWithPath("capacity").type(NUMBER).description("모집 인원"),
-                                        fieldWithPath("password").type(STRING).description("모임 비밀번호(공개 여부가 PUBLIC일 경우 Nullable)"),
                                         fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL(Nullable)"),
                                         fieldWithPath("moimCategory").type(VARIES).description(String.format("카테고리 - %s",
                                                 EnumDocsUtils.getEnumNames(MoimCategory.class))),
-                                        fieldWithPath("displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
-                                                EnumDocsUtils.getEnumNames(DisplayStatus.class))),
                                         fieldWithPath("startDate").type(STRING).description("시작 일자"),
                                         fieldWithPath("endDate").type(STRING).description("종료 일자")
                                 )
@@ -159,8 +153,6 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("imageUrl").type(STRING).description("모임 사진 URL"),
                                         fieldWithPath("moimCategory").type(VARIES).description(String.format("카테고리 - %s",
                                                 EnumDocsUtils.getEnumNames(MoimCategory.class))),
-                                        fieldWithPath("displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
-                                                EnumDocsUtils.getEnumNames(DisplayStatus.class))),
                                         fieldWithPath("views").type(NUMBER).description("조회수"),
                                         fieldWithPath("startDate").type(STRING).description("시작 일자"),
                                         fieldWithPath("endDate").type(STRING).description("종료 일자")
@@ -194,9 +186,7 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].currentCount").type(NUMBER).description("현재 인원"),
                                         fieldWithPath("data[0].imageUrl").type(STRING).description("모임 사진 URL"),
                                         fieldWithPath("data[0].moimCategory").type(VARIES).description(String.format("카테고리 - %s",
-                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
-                                        fieldWithPath("data[0].displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
-                                                EnumDocsUtils.getEnumNames(DisplayStatus.class)))
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class)))
                                 )
                                 .build()
                         )));
@@ -211,9 +201,7 @@ class MoimControllerTest extends ControllerTest {
                 .contents(MOIM_CONTENTS.value())
                 .capacity(Integer.parseInt(CAPACITY.value()))
                 .imageUrl(MOIM_IMAGE_URL.value())
-                .password(PASSWORD.value())
                 .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PRIVATE)
                 .startDate(LocalDate.of(2024, 3, 1))
                 .endDate(LocalDate.of(2024, 6, 30))
                 .build();
@@ -232,11 +220,8 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("contents").type(STRING).description("수정한 내용"),
                                         fieldWithPath("capacity").type(NUMBER).description("수정한 모집 인원"),
                                         fieldWithPath("imageUrl").type(STRING).description("수정한 모임 사진 URL"),
-                                        fieldWithPath("password").type(STRING).description("수정한 비밀번호"),
                                         fieldWithPath("moimCategory").type(VARIES).description(String.format("수정한 카테고리 - %s",
                                                 EnumDocsUtils.getEnumNames(MoimCategory.class))),
-                                        fieldWithPath("displayStatus").type(VARIES).description(String.format("수정한 공개 여부 - %s",
-                                                EnumDocsUtils.getEnumNames(DisplayStatus.class))),
                                         fieldWithPath("startDate").type(STRING).description("수정한 시작일자"),
                                         fieldWithPath("endDate").type(STRING).description("수정한 종료일자")
                                 ).build()
@@ -786,9 +771,7 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].currentCount").type(NUMBER).description("현재 인원"),
                                         fieldWithPath("data[0].imageUrl").type(STRING).description("모임 사진 URL"),
                                         fieldWithPath("data[0].moimCategory").type(VARIES).description(String.format("카테고리 - %s",
-                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
-                                        fieldWithPath("data[0].displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
-                                                EnumDocsUtils.getEnumNames(DisplayStatus.class)))
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class)))
                                 )
                                 .build()
                         )));
@@ -833,9 +816,7 @@ class MoimControllerTest extends ControllerTest {
                                                 fieldWithPath("data[0].currentCount").type(NUMBER).description("현재 인원"),
                                                 fieldWithPath("data[0].imageUrl").type(STRING).description("모임 사진 URL"),
                                                 fieldWithPath("data[0].moimCategory").type(VARIES).description(String.format("카테고리 - %s",
-                                                        EnumDocsUtils.getEnumNames(MoimCategory.class))),
-                                                fieldWithPath("data[0].displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
-                                                        EnumDocsUtils.getEnumNames(DisplayStatus.class)))
+                                                        EnumDocsUtils.getEnumNames(MoimCategory.class)))
                                         )
                                         .build())
                         ));
@@ -864,9 +845,7 @@ class MoimControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].currentCount").type(NUMBER).description("현재 인원"),
                                         fieldWithPath("data[0].imageUrl").type(STRING).description("모임 사진 URL"),
                                         fieldWithPath("data[0].moimCategory").type(VARIES).description(String.format("카테고리 - %s",
-                                                EnumDocsUtils.getEnumNames(MoimCategory.class))),
-                                        fieldWithPath("data[0].displayStatus").type(VARIES).description(String.format("공개 여부 - %s",
-                                                EnumDocsUtils.getEnumNames(DisplayStatus.class)))
+                                                EnumDocsUtils.getEnumNames(MoimCategory.class)))
                                 )
                                 .build())
                 ));

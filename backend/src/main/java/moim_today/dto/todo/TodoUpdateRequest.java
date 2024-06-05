@@ -10,11 +10,10 @@ import moim_today.persistence.entity.todo.TodoJpaEntity;
 import java.time.LocalDate;
 
 public record TodoUpdateRequest(
-        @Min(value = 1, message = TODO_ID_MIN_ERROR) long todoId,
-        @Min(value = 1, message = MOIM_ID_MIN_ERROR) long moimId,
+        @Min(value = 0, message = TODO_ID_MIN_ERROR) long todoId,
+        @Min(value = 0, message = MOIM_ID_MIN_ERROR) long moimId,
         @NotBlank(message = TODO_CONTENT_BLANK_ERROR) String contents,
         @NotNull(message = TODO_PROGRESS_NULL_ERROR) TodoProgress todoProgress,
-
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         @NotNull(message = TODO_DATE_NULL_ERROR) LocalDate todoDate

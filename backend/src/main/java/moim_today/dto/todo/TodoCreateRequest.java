@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @Builder
 public record TodoCreateRequest(
-        @Min(value = 1, message = MOIM_ID_MIN_ERROR) long moimId,
+        @Min(value = 0, message = MOIM_ID_MIN_ERROR) long moimId,
         @NotBlank(message = TODO_CONTENT_BLANK_ERROR) String contents,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")

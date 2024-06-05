@@ -58,8 +58,7 @@ public class MoimRepositoryImpl implements MoimRepository {
                                 moimJpaEntity.capacity,
                                 moimJpaEntity.currentCount,
                                 moimJpaEntity.imageUrl,
-                                moimJpaEntity.moimCategory,
-                                moimJpaEntity.displayStatus
+                                moimJpaEntity.moimCategory
                         ))
                 .from(moimJpaEntity)
                 .where(moimJpaEntity.universityId.eq(universityId))
@@ -110,8 +109,7 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.capacity,
                         moimJpaEntity.currentCount,
                         moimJpaEntity.imageUrl,
-                        moimJpaEntity.moimCategory,
-                        moimJpaEntity.displayStatus
+                        moimJpaEntity.moimCategory
                 ))
                 .from(moimJpaEntity)
                 .where(
@@ -130,8 +128,7 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.capacity,
                         moimJpaEntity.currentCount,
                         moimJpaEntity.imageUrl,
-                        moimJpaEntity.moimCategory,
-                        moimJpaEntity.displayStatus
+                        moimJpaEntity.moimCategory
                 ))
                 .from(moimJpaEntity)
                 .where(moimJpaEntity.id.in(moimIds).and(moimJpaEntity.endDate.before(now)))
@@ -146,8 +143,7 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.capacity,
                         moimJpaEntity.currentCount,
                         moimJpaEntity.imageUrl,
-                        moimJpaEntity.moimCategory,
-                        moimJpaEntity.displayStatus
+                        moimJpaEntity.moimCategory
                 ))
                 .from(moimJpaEntity)
                 .where(moimJpaEntity.id.in(moimIds).and(moimJpaEntity.endDate.goe(now)))
@@ -165,8 +161,7 @@ public class MoimRepositoryImpl implements MoimRepository {
                         moimJpaEntity.capacity,
                         moimJpaEntity.currentCount,
                         moimJpaEntity.imageUrl,
-                        moimJpaEntity.moimCategory,
-                        moimJpaEntity.displayStatus
+                        moimJpaEntity.moimCategory
                 ))
                 .from(moimJpaEntity)
                 .where(

@@ -15,8 +15,8 @@ import static moim_today.global.constant.MemberConstant.DEFAULT_PROFILE_URL;
 
 @Builder
 public record MemberSignUpRequest(
-        @Min(value = 1, message = UNIVERSITY_ID_MIN_ERROR) long universityId,
-        @Min(value = 1, message = DEPARTMENT_ID_MIN_ERROR) long departmentId,
+        @Min(value = 0, message = UNIVERSITY_ID_MIN_ERROR) long universityId,
+        @Min(value = 0, message = DEPARTMENT_ID_MIN_ERROR) long departmentId,
         @Email(message = INVALID_EMAIL_FORMAT) @NotBlank(message = EMAIL_BLANK_ERROR) String email,
         @NotBlank(message = PASSWORD_BLANK_ERROR) String password,
         @NotBlank(message = USERNAME_BLANK_ERROR) String username,

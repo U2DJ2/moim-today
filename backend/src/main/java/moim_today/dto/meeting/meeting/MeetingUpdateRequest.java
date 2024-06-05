@@ -6,7 +6,7 @@ import lombok.Builder;
 
 @Builder
 public record MeetingUpdateRequest(
-        @Min(value = 1, message = MEETING_ID_MIN_ERROR) long meetingId,
+        @Min(value = 0, message = MEETING_ID_MIN_ERROR) long meetingId,
         @NotBlank(message = AGENDA_BLANK_ERROR)  String agenda,
         @NotBlank(message = PLACE_BLANK_ERROR)  String place
 ) {

@@ -1,7 +1,6 @@
 package moim_today.implement.moim.moim;
 
 import jakarta.servlet.http.Cookie;
-import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.ViewedMoim;
 import moim_today.domain.moim.ViewedMoimsCookie;
 import moim_today.domain.moim.enums.MoimCategory;
@@ -55,9 +54,7 @@ class MoimUpdaterTest extends ImplementTest {
                 .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
                 .imageUrl(MOIM_IMAGE_URL.value())
-                .password(PASSWORD.value())
                 .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PRIVATE)
                 .startDate(startDate)
                 .endDate(endDate)
                 .build();
@@ -71,9 +68,7 @@ class MoimUpdaterTest extends ImplementTest {
         assertThat(updatedMoim.getContents()).isEqualTo(MOIM_CONTENTS.value());
         assertThat(updatedMoim.getCapacity()).isEqualTo(capacity);
         assertThat(updatedMoim.getImageUrl()).isEqualTo(MOIM_IMAGE_URL.value());
-        assertThat(updatedMoim.getPassword()).isEqualTo(PASSWORD.value());
         assertThat(updatedMoim.getMoimCategory()).isEqualTo(MoimCategory.STUDY);
-        assertThat(updatedMoim.getDisplayStatus()).isEqualTo(DisplayStatus.PRIVATE);
         assertThat(updatedMoim.getStartDate()).isEqualTo(startDate);
         assertThat(updatedMoim.getEndDate()).isEqualTo(endDate);
     }

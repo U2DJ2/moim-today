@@ -7,7 +7,7 @@ import moim_today.persistence.entity.department.request_deparment.RequestDepartm
 
 @Builder
 public record AddDepartmentRequest(
-        @Min(value = 1, message = UNIVERSITY_ID_MIN_ERROR) long universityId,
+        @Min(value = 0, message = UNIVERSITY_ID_MIN_ERROR) long universityId,
         @NotBlank(message = DEPARTMENT_NAME_BLANK_ERROR) String departmentName
 ) {
     private static final String UNIVERSITY_ID_MIN_ERROR = "잘못된 대학 ID 값이 입력 되었습니다.";

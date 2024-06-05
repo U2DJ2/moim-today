@@ -7,7 +7,7 @@ import moim_today.persistence.entity.moim.moim_notice.MoimNoticeJpaEntity;
 
 @Builder
 public record MoimNoticeCreateRequest(
-        @Min(value = 1, message = MOIM_NOTICE_ID_MIN_ERROR) long moimId,
+        @Min(value = 0, message = MOIM_NOTICE_ID_MIN_ERROR) long moimId,
         @NotBlank(message = MOIM_NOTICE_TITLE_BLANK_ERROR) String title,
         @NotBlank(message = MOIM_NOTICE_CONTENT_BLANK_ERROR) String contents
 ) {

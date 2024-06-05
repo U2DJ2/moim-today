@@ -4,10 +4,10 @@ package moim_today.util;
 public enum TestConstant {
 
     // 이메일
-    EMAIL("email"),
+    EMAIL("email@ajou.ac.kr"),
     AJOU_EMAIL("test@ajou.ac.kr"),
     AJOU_EMAIL_DOMAIN("ajou.ac.kr"),
-    WRONG_EMAIL("wrongEmail"),
+    WRONG_EMAIL("wrongEmail@ajou.ac.kr"),
     ALREADY_EXIST_EMAIL("alreayExist@ajou.ac.kr"),
 
     // 비밀번호

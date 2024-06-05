@@ -6,7 +6,7 @@ import lombok.Builder;
 
 @Builder
 public record MoimNoticeUpdateRequest(
-        @Min(value = 1, message = MOIM_NOTICE_ID_MIN_ERROR) long moimNoticeId,
+        @Min(value = 0, message = MOIM_NOTICE_ID_MIN_ERROR) long moimNoticeId,
         @NotBlank(message = MOIM_NOTICE_TITLE_BLANK_ERROR) String title,
         @NotBlank(message = MOIM_NOTICE_CONTENT_BLANK_ERROR) String contents
 ) {

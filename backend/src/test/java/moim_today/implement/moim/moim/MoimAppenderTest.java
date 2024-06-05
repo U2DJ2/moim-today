@@ -1,6 +1,5 @@
 package moim_today.implement.moim.moim;
 
-import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.MoimCreateRequest;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
@@ -21,7 +20,7 @@ class MoimAppenderTest extends ImplementTest {
     @Autowired
     private MoimAppender moimAppender;
 
-    @DisplayName("비공개 모임 생성 요청을 보내면 정상적으로 모든 필드가 초기화되어 DB에 저장된다.")
+    @DisplayName("모임 생성 요청을 보내면 정상적으로 모든 필드가 초기화되어 DB에 저장된다.")
     @Test
     void savePrivateMoim(){
 
@@ -36,10 +35,8 @@ class MoimAppenderTest extends ImplementTest {
                 MOIM_TITLE.value(),
                 MOIM_CONTENTS.value(),
                 capacity,
-                PASSWORD.value(),
                 MOIM_IMAGE_URL.value(),
                 MoimCategory.STUDY,
-                DisplayStatus.PRIVATE,
                 startDate,
                 endDate
         );
@@ -61,9 +58,7 @@ class MoimAppenderTest extends ImplementTest {
         assertThat(moimJpaEntity.getCapacity()).isEqualTo(capacity);
         assertThat(moimJpaEntity.getCurrentCount()).isEqualTo(DEFAULT_MOIM_CURRENT_COUNT.value());
         assertThat(moimJpaEntity.getImageUrl()).isEqualTo(MOIM_IMAGE_URL.value());
-        assertThat(moimJpaEntity.getPassword()).isEqualTo(PASSWORD.value());
         assertThat(moimJpaEntity.getMoimCategory()).isEqualTo(MoimCategory.STUDY);
-        assertThat(moimJpaEntity.getDisplayStatus()).isEqualTo(DisplayStatus.PRIVATE);
         assertThat(moimJpaEntity.getViews()).isEqualTo(DEFAULT_MOIM_VIEWS.value());
         assertThat(moimJpaEntity.getStartDate()).isEqualTo(startDate);
         assertThat(moimJpaEntity.getEndDate()).isEqualTo(endDate);

@@ -2,7 +2,6 @@ package moim_today.dto.moim.moim;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
-import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 
@@ -13,8 +12,7 @@ public record MoimSimpleResponse(
         int capacity,
         int currentCount,
         String imageUrl,
-        MoimCategory moimCategory,
-        DisplayStatus displayStatus
+        MoimCategory moimCategory
 ) {
 
     @QueryProjection
@@ -29,7 +27,6 @@ public record MoimSimpleResponse(
                 .currentCount(moimJpaEntity.getCurrentCount())
                 .imageUrl(moimJpaEntity.getImageUrl())
                 .moimCategory(moimJpaEntity.getMoimCategory())
-                .displayStatus(moimJpaEntity.getDisplayStatus())
                 .build();
     }
 }

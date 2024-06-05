@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Builder
 public record ScheduleUpdateRequest(
-        @Min(value = 1, message = SCHEDULER_ID_MIN_ERROR) long scheduleId,
+        @Min(value = 0, message = SCHEDULER_ID_MIN_ERROR) long scheduleId,
         @NotBlank(message = SCHEDULE_NAME_BLANK_ERROR) String scheduleName,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")

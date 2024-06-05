@@ -7,8 +7,8 @@ import moim_today.dto.mail.MailSendRequest;
 import java.util.List;
 
 public record UserInquiryRespondRequest(
-        @Min(value = 1, message = USER_INQUIRY_ID_MIN_ERROR) long userInquiryId,
-        @Min(value = 1, message = MEMBER_ID_MIN_ERROR) long memberId,
+        @Min(value = 0, message = USER_INQUIRY_ID_MIN_ERROR) long userInquiryId,
+        @Min(value = 0, message = MEMBER_ID_MIN_ERROR) long memberId,
         @NotBlank(message = RESPONSE_CONTENT_BLANK_ERROR) String responseContent
 ) {
 

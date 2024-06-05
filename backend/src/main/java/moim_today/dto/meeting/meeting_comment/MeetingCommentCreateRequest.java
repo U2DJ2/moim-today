@@ -9,7 +9,7 @@ import static moim_today.global.constant.NumberConstant.DEFAULT_PARENT_COMMENT_I
 
 @Builder
 public record MeetingCommentCreateRequest (
-        @Min(value = 1, message = MEETING_ID_MIN_ERROR) long meetingId,
+        @Min(value = 0, message = MEETING_ID_MIN_ERROR) long meetingId,
         @NotBlank(message = COMMENT_CONTENT_BLANK_ERROR) String contents
 ){
     private static final String MEETING_ID_MIN_ERROR = "잘못된 미팅 ID 값이 입력 되었습니다.";
