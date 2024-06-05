@@ -214,8 +214,8 @@ export default function Calendar({
       const startDate = isPast
         ? new Date().toISOString().split("T")[0]
         : calendarStart instanceof Date
-          ? calendarStart.toISOString().split("T")[0]
-          : new Date(calendarStart).toISOString().split("T")[0];
+        ? calendarStart.toISOString().split("T")[0]
+        : new Date(calendarStart).toISOString().split("T")[0];
 
       if (moimId == null) return;
 

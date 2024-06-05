@@ -173,7 +173,7 @@ function School({
         </Modal.Body>
       </Modal>
 
-      <div className="flex flex-col gap-16">
+      <div className="flex flex-col gap-16 max-sm:gap-4">
         <AuthTitle
           title={"School"}
           firstContent={"이제 두번째 단계입니다."}
@@ -183,15 +183,15 @@ function School({
         />
         <div className="flex flex-col gap-12">
           <div className="gap-1">
-            <p className=" font-Pretendard_Black block text-xl text-white">
+            <p className=" font-Pretendard_Black block text-xl text-white max-sm:text-lg">
               학교명
             </p>
-            <p className="border-b border-white font-Pretendard_Light text-gray-300 text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white">
+            <p className="border-b border-white font-Pretendard_Light text-gray-300 text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white max-sm:text-lg">
               {universityName}
             </p>
           </div>
           <div className="flex flex-col gap-1">
-            <p className=" font-Pretendard_Black block text-xl text-white">
+            <p className=" font-Pretendard_Black block text-xl text-white max-sm:text-lg">
               학과
             </p>
 
@@ -201,6 +201,7 @@ function School({
               options={departmentInfo}
               onSelect={handleDropdown}
               setActiveNext={setActiveNext}
+              className=" font-Pretendard_Light"
             />
             <div
               className="text-white font-Pretendard_Light hover:cursor-pointer"
@@ -210,7 +211,7 @@ function School({
             </div>
           </div>
           <div className="gap-1">
-            <p className=" font-Pretendard_Black block text-xl text-white">
+            <p className=" font-Pretendard_Black block text-xl text-white max-sm:text-lg">
               학번
             </p>
             <input
@@ -218,7 +219,7 @@ function School({
               name="studentId"
               autoComplete="off"
               placeholder="학번을 입력해주세요."
-              className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white `}
+              className={`border-b border-white font-Pretendard_Light text-white text-xl pt-2 pb-2 bg-scarlet focus:outline-none w-full block placeholder:text-white placeholder:max-sm:text-lg max-sm:text-lg `}
               value={studentId}
               onChange={studentIdHandler}
             />
