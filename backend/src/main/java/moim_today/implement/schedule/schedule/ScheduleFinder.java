@@ -51,6 +51,7 @@ public class ScheduleFinder {
         return scheduleRepository.findAllByDateTime(memberId, startDateTime, endDateTime);
     }
 
+    @Transactional(readOnly = true)
     public boolean checkJoinAvailability(final ScheduleJpaEntity scheduleJpaEntity) {
         return !scheduleRepository.exists(scheduleJpaEntity);
     }
