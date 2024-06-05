@@ -22,7 +22,7 @@ public class MeetingController {
     }
 
     @GetMapping
-    public CollectionResponse<List<JoinedMeetingResponse>> findMeetings(
+    public CollectionResponse<List<JoinedMeetingResponse>> findMeetingsByMemberId(
             @Login final MemberSession memberSession,
             @RequestParam final MeetingStatus meetingStatus) {
         List<JoinedMeetingResponse> joinedMeetingResponses =

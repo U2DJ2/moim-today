@@ -9,7 +9,6 @@ import moim_today.dto.meeting.meeting.MeetingUpdateRequest;
 import moim_today.fake_class.meeting.meeting.FakeMeetingService;
 import moim_today.util.ControllerTest;
 import moim_today.util.EnumDocsUtils;
-import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +32,27 @@ class MeetingControllerTest extends ControllerTest {
     @Override
     protected Object initController() {
         return new MeetingController(meetingService);
+    }
+
+    @DisplayName("모임내 다가오는 미팅 정보 조회한다.")
+    @Test
+    void findMeetingsByMemberId() throws Exception {
+        mockMvc.perform(
+                        get("/api/meetings")
+                                .param("meetingStatus", String.valueOf(UPCOMING))
+                )
+                .andExpect(status().isOk())
+                .andDo(document("로그인한 회원의 미팅 정보 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅")
+                                .summary("미팅 목록 조회")
+                                .responseFields(
+                                        fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
+                                        fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
+                                        fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜")
+                                )
+                                .build()
+                        )));
     }
 
     @DisplayName("단일 미팅을 생성한다.")
