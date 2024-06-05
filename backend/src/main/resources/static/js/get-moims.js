@@ -5,7 +5,7 @@ $(document).ready(function() {
             type: 'GET',
             success: function(response) {
                 var moimTableBody = $('#moim-table-body');
-                moimTableBody.empty(); // Clear existing table body
+                moimTableBody.empty(); // 기존 테이블 바디를 비웁니다
 
                 response.data.forEach(function(moim) {
                     var row = $('<tr>');
@@ -13,7 +13,9 @@ $(document).ready(function() {
                     row.append($('<td>').text(moim.title));
                     row.append($('<td>').text(moim.capacity));
                     row.append($('<td>').text(moim.currentCount));
-                    row.append($('<td>').text(moim.imageUrl));
+                    // 이미지 URL을 사용하여 <img> 태그를 생성하고 src 속성에 할당합니다. 크기를 100px로 설정합니다.
+                    var imgElement = $('<img>').attr('src', moim.imageUrl).css('width', '100px');
+                    row.append($('<td>').append(imgElement)); // 이미지 요소를 td에 추가합니다.
                     row.append($('<td>').text(moim.moimCategory));
                     row.append($('<td>').text(moim.displayStatus));
                     var deleteButton = $('<button>').addClass('btn btn-danger').text('삭제');
