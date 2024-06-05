@@ -159,7 +159,8 @@ export default function Calendar({
       let allEvents = [];
       for (let month = 1; month <= 8; month++) {
         const response = await axios.get(
-          `https://api.moim.today/api/schedules/monthly?yearMonth=${year}-${month < 10 ? "0" + month : month
+          `https://api.moim.today/api/schedules/monthly?yearMonth=${year}-${
+            month < 10 ? "0" + month : month
           }`,
           {
             headers: {
@@ -172,6 +173,7 @@ export default function Calendar({
           ...response.data.data.map((event) => mapEventData(event, false)),
         ];
       }
+      console.log(response);
       setEvents(allEvents);
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -186,8 +188,8 @@ export default function Calendar({
       const startDate = isPast
         ? new Date().toISOString().split("T")[0]
         : calendarStart instanceof Date
-          ? calendarStart.toISOString().split("T")[0]
-          : new Date(calendarStart).toISOString().split("T")[0];
+        ? calendarStart.toISOString().split("T")[0]
+        : new Date(calendarStart).toISOString().split("T")[0];
 
       if (moimId == null) return;
 
@@ -276,11 +278,10 @@ export default function Calendar({
 
   async function deleteEvent() {
     try {
-      await axios.delete(
-        `https://api.moim.today/api/schedules`, {
+      await axios.delete(`https://api.moim.today/api/schedules`, {
         data: {
           scheduleId: selectedEventId,
-        }
+        },
       });
       setIsModalOpen(false);
       fetchAllEvents(currentYear).catch(console.error);
