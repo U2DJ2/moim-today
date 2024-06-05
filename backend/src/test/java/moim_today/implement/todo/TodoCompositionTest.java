@@ -26,10 +26,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
-class TodoManagerTest extends ImplementTest {
+class TodoCompositionTest extends ImplementTest {
 
     @Autowired
-    private TodoManager todoManager;
+    private TodoComposition todoComposition;
 
     private final LocalDate UPDATE_AFTER_TODO_DATE =
             LocalDate.of(2024, 5, 5);
@@ -87,7 +87,7 @@ class TodoManagerTest extends ImplementTest {
         todoRepository.save(anotherMoimTodo);
 
         // when
-        List<MemberTodoResponse> membersDataRangeTodosInMoim = todoManager.findAllMembersTodosInMoim(MOIM_ID.longValue(),
+        List<MemberTodoResponse> membersDataRangeTodosInMoim = todoComposition.findAllMembersTodosInMoim(MOIM_ID.longValue(),
                 YearMonth.of(2024, 5), 1);
 
         // then
@@ -120,7 +120,7 @@ class TodoManagerTest extends ImplementTest {
                 UPDATE_AFTER_CONTENT.value(), COMPLETED, UPDATE_AFTER_TODO_DATE);
 
         // expected
-        assertThatCode(() -> todoManager.updateTodo(MEMBER_ID.longValue(), todoUpdateRequest))
+        assertThatCode(() -> todoComposition.updateTodo(MEMBER_ID.longValue(), todoUpdateRequest))
                 .doesNotThrowAnyException();
     }
 
@@ -132,7 +132,7 @@ class TodoManagerTest extends ImplementTest {
                 UPDATE_AFTER_CONTENT.value(), PENDING, UPDATE_AFTER_TODO_DATE);
 
         // expected
-        assertThatThrownBy(() -> todoManager.updateTodo(MEMBER_ID.longValue(), todoUpdateRequest))
+        assertThatThrownBy(() -> todoComposition.updateTodo(MEMBER_ID.longValue(), todoUpdateRequest))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(TODO_NOT_FOUND_ERROR.message());
     }
@@ -156,7 +156,7 @@ class TodoManagerTest extends ImplementTest {
                 UPDATE_AFTER_CONTENT.value(), PENDING, UPDATE_AFTER_TODO_DATE);
 
         // expected
-        assertThatThrownBy(() -> todoManager.updateTodo(MEMBER_ID.longValue()+1L, todoUpdateRequest))
+        assertThatThrownBy(() -> todoComposition.updateTodo(MEMBER_ID.longValue()+1L, todoUpdateRequest))
                 .isInstanceOf(ForbiddenException.class)
                 .hasMessage(TODO_NOT_OWNER_ERROR.message());
     }
@@ -179,7 +179,7 @@ class TodoManagerTest extends ImplementTest {
         TodoRemoveRequest todoRemoveRequest = new TodoRemoveRequest(originalTodo.getId());
 
         // when
-        todoManager.deleteTodo(MEMBER_ID.longValue(), todoRemoveRequest);
+        todoComposition.deleteTodo(MEMBER_ID.longValue(), todoRemoveRequest);
 
         // then
         assertThatThrownBy(() -> todoRepository.getById(originalTodo.getId()))
@@ -203,7 +203,7 @@ class TodoManagerTest extends ImplementTest {
         TodoRemoveRequest todoRemoveRequest = new TodoRemoveRequest(originalTodo.getId());
 
         // expected
-        assertThatThrownBy(() -> todoManager.deleteTodo(MEMBER_ID.longValue(), todoRemoveRequest))
+        assertThatThrownBy(() -> todoComposition.deleteTodo(MEMBER_ID.longValue(), todoRemoveRequest))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(TODO_NOT_FOUND_ERROR.message());
     }
@@ -226,7 +226,7 @@ class TodoManagerTest extends ImplementTest {
         TodoRemoveRequest todoRemoveRequest = new TodoRemoveRequest(originalTodo.getId());
 
         // expected
-        assertThatThrownBy(() -> todoManager.deleteTodo(MEMBER_ID.longValue()+1L, todoRemoveRequest))
+        assertThatThrownBy(() -> todoComposition.deleteTodo(MEMBER_ID.longValue()+1L, todoRemoveRequest))
                 .isInstanceOf(ForbiddenException.class)
                 .hasMessage(TODO_NOT_OWNER_ERROR.message());
     }
@@ -246,7 +246,7 @@ class TodoManagerTest extends ImplementTest {
         todoRepository.save(originalTodo);
 
         // when
-        TodoJpaEntity findTodo = todoManager.getById(originalTodo.getId());
+        TodoJpaEntity findTodo = todoComposition.getById(originalTodo.getId());
 
         // then
         assertThat(findTodo.getMemberId()).isEqualTo(originalTodo.getMemberId());
@@ -257,7 +257,7 @@ class TodoManagerTest extends ImplementTest {
     @Test
     void getByIdNoTodoError() {
         // expected
-        assertThatThrownBy(() -> todoManager.getById(TODO_ID.longValue()))
+        assertThatThrownBy(() -> todoComposition.getById(TODO_ID.longValue()))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage(TODO_NOT_FOUND_ERROR.message());
     }
@@ -274,7 +274,7 @@ class TodoManagerTest extends ImplementTest {
         todoRepository.save(todoJpaEntity);
 
         // when
-        todoManager.updateTodoProgress(MEMBER_ID.longValue(), todoJpaEntity.getId(), COMPLETED);
+        todoComposition.updateTodoProgress(MEMBER_ID.longValue(), todoJpaEntity.getId(), COMPLETED);
         TodoJpaEntity updatedTodo = todoRepository.getById(todoJpaEntity.getId());
 
         // then

@@ -30,12 +30,10 @@ class ScheduleColorUpdaterTest extends ImplementTest {
         scheduleColorRepository.save(scheduleColorJpaEntity);
 
         // when
-        int newCount = scheduleColorUpdater.updateColorCount(memberId, nextCount);
+        scheduleColorUpdater.updateColorCount(memberId, nextCount);
 
         // then
         ScheduleColorJpaEntity findEntity = scheduleColorRepository.getByMemberId(memberId);
-
         assertThat(findEntity.getColorCount()).isEqualTo(colorCount + nextCount);
-        assertThat(findEntity.getColorCount()).isEqualTo(newCount);
     }
 }

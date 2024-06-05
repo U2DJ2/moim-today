@@ -2,9 +2,8 @@ package moim_today.application.admin.department;
 
 import moim_today.dto.department.ApproveRequestDepartmentRequest;
 import moim_today.dto.department.RequestDepartmentResponse;
-import moim_today.implement.department.department.DepartmentAppender;
-import moim_today.implement.department.request_department.RequestDepartmentFinder;
-import moim_today.implement.department.request_department.RequestDepartmentRemover;
+import moim_today.implement.department.department.DepartmentComposition;
+import moim_today.implement.department.request_department.RequestDepartmentComposition;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,29 +12,26 @@ import java.util.List;
 @Service
 public class AdminDepartmentService {
 
-    private final RequestDepartmentFinder requestDepartmentFinder;
-    private final RequestDepartmentRemover requestDepartmentRemover;
-    private final DepartmentAppender departmentAppender;
+    private final DepartmentComposition departmentComposition;
+    private final RequestDepartmentComposition requestDepartmentComposition;
 
-    public AdminDepartmentService(final RequestDepartmentFinder requestDepartmentFinder,
-                                  final RequestDepartmentRemover requestDepartmentRemover,
-                                  final DepartmentAppender departmentAppender) {
-        this.requestDepartmentFinder = requestDepartmentFinder;
-        this.requestDepartmentRemover = requestDepartmentRemover;
-        this.departmentAppender = departmentAppender;
+    public AdminDepartmentService(final DepartmentComposition departmentComposition,
+                                  final RequestDepartmentComposition requestDepartmentComposition) {
+        this.departmentComposition = departmentComposition;
+        this.requestDepartmentComposition = requestDepartmentComposition;
     }
 
     public List<RequestDepartmentResponse> findAllByUniversityId(final long universityId) {
-        return requestDepartmentFinder.findAllByUniversityId(universityId);
+        return requestDepartmentComposition.findAllByUniversityId(universityId);
     }
 
     @Transactional
     public void approveRequest(final ApproveRequestDepartmentRequest approveRequestDepartmentRequest) {
-        departmentAppender.addDepartment(
+        departmentComposition.addDepartment(
                 approveRequestDepartmentRequest.universityId(),
                 approveRequestDepartmentRequest.requestDepartmentName()
         );
 
-        requestDepartmentRemover.deleteById(approveRequestDepartmentRequest.requestDepartmentId());
+        requestDepartmentComposition.deleteById(approveRequestDepartmentRequest.requestDepartmentId());
     }
 }

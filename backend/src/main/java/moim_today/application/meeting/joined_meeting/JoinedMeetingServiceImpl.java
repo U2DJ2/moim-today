@@ -1,13 +1,10 @@
 package moim_today.application.meeting.joined_meeting;
 
 import moim_today.global.error.BadRequestException;
-import moim_today.implement.meeting.joined_meeting.JoinedMeetingFinder;
-import moim_today.implement.meeting.joined_meeting.JoinedMeetingRemover;
-import moim_today.implement.meeting.joined_meeting.JoinedMeetingUpdater;
-import moim_today.implement.meeting.meeting.MeetingFinder;
-import moim_today.implement.moim.moim.MoimFinder;
-import moim_today.implement.schedule.schedule.ScheduleAppender;
-import moim_today.implement.schedule.schedule.ScheduleRemover;
+import moim_today.implement.meeting.joined_meeting.JoinedMeetingComposition;
+import moim_today.implement.meeting.meeting.MeetingComposition;
+import moim_today.implement.moim.moim.MoimComposition;
+import moim_today.implement.schedule.schedule.ScheduleComposition;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.stereotype.Service;
@@ -21,47 +18,38 @@ import static moim_today.global.constant.exception.ScheduleExceptionConstant.*;
 @Service
 public class JoinedMeetingServiceImpl implements JoinedMeetingService {
 
-    private final JoinedMeetingFinder joinedMeetingFinder;
-    private final JoinedMeetingUpdater joinedMeetingUpdater;
-    private final JoinedMeetingRemover joinedMeetingRemover;
-    private final MoimFinder moimFinder;
-    private final MeetingFinder meetingFinder;
-    private final ScheduleAppender scheduleAppender;
-    private final ScheduleRemover scheduleRemover;
+    private final JoinedMeetingComposition joinedMeetingComposition;
+    private final MoimComposition moimComposition;
+    private final MeetingComposition meetingComposition;
+    private final ScheduleComposition scheduleComposition;
 
-    public JoinedMeetingServiceImpl(final JoinedMeetingFinder joinedMeetingFinder,
-                                    final JoinedMeetingUpdater joinedMeetingUpdater,
-                                    final JoinedMeetingRemover joinedMeetingRemover,
-                                    final MoimFinder moimFinder,
-                                    final MeetingFinder meetingFinder,
-                                    final ScheduleAppender scheduleAppender,
-                                    final ScheduleRemover scheduleRemover) {
-        this.joinedMeetingFinder = joinedMeetingFinder;
-        this.joinedMeetingUpdater = joinedMeetingUpdater;
-        this.joinedMeetingRemover = joinedMeetingRemover;
-        this.moimFinder = moimFinder;
-        this.meetingFinder = meetingFinder;
-        this.scheduleAppender = scheduleAppender;
-        this.scheduleRemover = scheduleRemover;
+    public JoinedMeetingServiceImpl(final JoinedMeetingComposition joinedMeetingComposition,
+                                    final MoimComposition moimComposition,
+                                    final MeetingComposition meetingComposition,
+                                    final ScheduleComposition scheduleComposition) {
+        this.joinedMeetingComposition = joinedMeetingComposition;
+        this.moimComposition = moimComposition;
+        this.meetingComposition = meetingComposition;
+        this.scheduleComposition = scheduleComposition;
     }
 
     @Override
     public boolean findAttendanceStatus(final long memberId, final long meetingId) {
-        return joinedMeetingFinder.findAttendanceStatus(memberId, meetingId);
+        return joinedMeetingComposition.findAttendanceStatus(memberId, meetingId);
     }
 
     @Transactional
     @Override
     public void acceptanceJoinMeeting(final long memberId, final long meetingId, final LocalDateTime currentDateTime) {
-        MeetingJpaEntity meetingJpaEntity = meetingFinder.getById(meetingId);
+        MeetingJpaEntity meetingJpaEntity = meetingComposition.getById(meetingId);
         meetingJpaEntity.validateCurrentTime(currentDateTime);
-        String moimTitle = moimFinder.getTitleById(meetingJpaEntity.getMoimId());
+        String moimTitle = moimComposition.getTitleById(meetingJpaEntity.getMoimId());
         ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.toEntity(memberId, moimTitle, meetingJpaEntity);
-        boolean isNew = scheduleAppender.createScheduleIfNotExist(scheduleJpaEntity);
+        boolean isNew = scheduleComposition.createScheduleIfNotExist(scheduleJpaEntity);
 
         if (isNew) {
             boolean attendance = true;
-            joinedMeetingUpdater.updateAttendance(memberId, meetingId, attendance);
+            joinedMeetingComposition.updateAttendance(memberId, meetingId, attendance);
         } else {
             throw new BadRequestException(SCHEDULE_ALREADY_EXIST.message());
         }
@@ -70,16 +58,16 @@ public class JoinedMeetingServiceImpl implements JoinedMeetingService {
     @Transactional
     @Override
     public void refuseJoinMeeting(final long memberId, final long meetingId, final LocalDateTime currentDateTime) {
-        MeetingJpaEntity meetingJpaEntity = meetingFinder.getById(meetingId);
+        MeetingJpaEntity meetingJpaEntity = meetingComposition.getById(meetingId);
         meetingJpaEntity.validateCurrentTime(currentDateTime);
         boolean attendance = false;
-        joinedMeetingUpdater.updateAttendance(memberId, meetingId, attendance);
-        scheduleRemover.deleteByMemberIdAndMeetingId(memberId, meetingId);
+        joinedMeetingComposition.updateAttendance(memberId, meetingId, attendance);
+        scheduleComposition.deleteByMemberIdAndMeetingId(memberId, meetingId);
     }
 
     @Transactional
     @Override
     public void deleteAllByMeetingId(final long meetingId) {
-        joinedMeetingRemover.deleteAllByMeetingId(meetingId);
+        joinedMeetingComposition.deleteAllByMeetingId(meetingId);
     }
 }

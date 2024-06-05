@@ -10,18 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class JoinedMoimAppender {
 
     private final JoinedMoimRepository joinedMoimRepository;
-    private final MoimFinder moimFinder;
 
-    public JoinedMoimAppender(final JoinedMoimRepository joinedMoimRepository,
-                              final MoimFinder moimFinder) {
+    public JoinedMoimAppender(final JoinedMoimRepository joinedMoimRepository) {
         this.joinedMoimRepository = joinedMoimRepository;
-        this.moimFinder = moimFinder;
     }
 
     @Transactional
     public void createJoinedMoim(final long memberId, final long moimId) {
         JoinedMoimJpaEntity joinedMoimJpaEntity = JoinedMoimJpaEntity.of(memberId, moimId);
-
         joinedMoimRepository.save(joinedMoimJpaEntity);
     }
 }

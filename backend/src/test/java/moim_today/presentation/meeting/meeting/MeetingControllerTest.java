@@ -9,7 +9,6 @@ import moim_today.dto.meeting.meeting.MeetingUpdateRequest;
 import moim_today.fake_class.meeting.meeting.FakeMeetingService;
 import moim_today.util.ControllerTest;
 import moim_today.util.EnumDocsUtils;
-import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +32,32 @@ class MeetingControllerTest extends ControllerTest {
     @Override
     protected Object initController() {
         return new MeetingController(meetingService);
+    }
+
+    @DisplayName("모임내 다가오는 미팅 정보 조회한다.")
+    @Test
+    void findMeetingsByMemberId() throws Exception {
+        mockMvc.perform(
+                        get("/api/meetings")
+                                .param("meetingStatus", String.valueOf(UPCOMING))
+                )
+                .andExpect(status().isOk())
+                .andDo(document("로그인한 회원의 미팅 정보 조회",
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("미팅")
+                                .summary("로그인한 회원의 미팅 목록 조회")
+                                .queryParameters(
+                                        parameterWithName("meetingStatus").description(
+                                                String.format("미팅 상태 - %s", EnumDocsUtils.getEnumNames(MeetingStatus.class))
+                                        )
+                                )
+                                .responseFields(
+                                        fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
+                                        fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
+                                        fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜")
+                                )
+                                .build()
+                        )));
     }
 
     @DisplayName("단일 미팅을 생성한다.")
@@ -134,13 +159,19 @@ class MeetingControllerTest extends ControllerTest {
                 .andDo(document("모임내 다가오는 미팅 정보 조회",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("미팅")
-                                .summary("미팅 목록 조회")
+                                .summary("모임내 미팅 목록 조회")
+                                .queryParameters(
+                                        parameterWithName("meetingStatus").description(
+                                                String.format("미팅 상태 - %s", EnumDocsUtils.getEnumNames(MeetingStatus.class))
+                                        )
+                                )
                                 .responseFields(
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
                                         fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
                                         fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
-                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
+                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부"),
+                                        fieldWithPath("data[0].joinAvailability").type(BOOLEAN).description("참석 가능 여부")
                                 )
                                 .build()
                         )));
@@ -157,10 +188,10 @@ class MeetingControllerTest extends ControllerTest {
                 .andDo(document("모임내 이전 미팅 정보 조회",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("미팅")
-                                .summary("미팅 목록 조회")
+                                .summary("모임내 미팅 목록 조회")
                                 .queryParameters(
                                         parameterWithName("meetingStatus").description(
-                                                String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(MeetingStatus.class))
+                                                String.format("미팅 상태 - %s", EnumDocsUtils.getEnumNames(MeetingStatus.class))
                                         )
                                 )
                                 .responseFields(
@@ -168,7 +199,8 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
                                         fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
                                         fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
-                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
+                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부"),
+                                        fieldWithPath("data[0].joinAvailability").type(BOOLEAN).description("참석 가능 여부")
                                 )
                                 .build()
                         )));
@@ -185,10 +217,10 @@ class MeetingControllerTest extends ControllerTest {
                 .andDo(document("모임내 모든 미팅 정보 조회",
                         resource(ResourceSnippetParameters.builder()
                                 .tag("미팅")
-                                .summary("미팅 목록 조회")
+                                .summary("모임내 미팅 목록 조회")
                                 .queryParameters(
                                         parameterWithName("meetingStatus").description(
-                                                String.format("미팅 요일 - %s", EnumDocsUtils.getEnumNames(MeetingStatus.class))
+                                                String.format("미팅 상태 - %s", EnumDocsUtils.getEnumNames(MeetingStatus.class))
                                         )
                                 )
                                 .responseFields(
@@ -196,7 +228,8 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
                                         fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
                                         fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
-                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
+                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부"),
+                                        fieldWithPath("data[0].joinAvailability").type(BOOLEAN).description("참석 가능 여부")
                                 )
                                 .build()
                         )));

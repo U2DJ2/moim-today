@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 
 import static moim_today.domain.todo.enums.TodoProgress.COMPLETED;
+import static moim_today.util.TestConstant.*;
 import static moim_today.util.TestConstant.UPDATE_AFTER_CONTENT;
 import static moim_today.util.TestConstant.UPDATE_BEFORE_CONTENT;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -21,14 +22,14 @@ class TodoUpdaterTest extends ImplementTest {
     @Autowired
     private TodoUpdater todoUpdater;
 
-    private final LocalDate UPDATE_AFTER_TODO_DATE =
-            LocalDate.of(1, 1, 1);
+    private final LocalDate UPDATE_AFTER_TODO_DATE = LocalDate.of(1, 1, 1);
 
     @DisplayName("Todo의 Entity를 업데이트한다.")
     @Test
     void updateTodoTest() {
         // given
         TodoJpaEntity originalTodo = TodoJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
                 .contents(UPDATE_BEFORE_CONTENT.value())
                 .todoProgress(TodoProgress.PENDING)
                 .todoDate(LocalDate.of(1000, 1, 1))
@@ -40,7 +41,7 @@ class TodoUpdaterTest extends ImplementTest {
                 UPDATE_AFTER_CONTENT.value(), COMPLETED, UPDATE_AFTER_TODO_DATE);
 
         // when
-        TodoUpdateResponse todoUpdateResponse = todoUpdater.updateTodo(originalTodo, todoUpdateRequest);
+        TodoUpdateResponse todoUpdateResponse = todoUpdater.updateTodo(MEMBER_ID.longValue(), todoUpdateRequest);
 
         // then
         assertThat(todoUpdateResponse.contents()).isEqualTo(UPDATE_AFTER_CONTENT.value());

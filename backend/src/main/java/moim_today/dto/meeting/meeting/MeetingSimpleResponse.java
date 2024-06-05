@@ -5,8 +5,6 @@ import lombok.Builder;
 import moim_today.domain.meeting.Meeting;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Builder
@@ -17,29 +15,22 @@ public record MeetingSimpleResponse(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
         LocalDate startDate,
         long dDay,
-        boolean attendance
+        boolean attendance,
+        boolean joinAvailability
 ) {
 
-    public static List<MeetingSimpleResponse> toResponses(final List<MeetingSimpleDao> meetingSimpleDaos) {
+    public static MeetingSimpleResponse toResponse(final MeetingSimpleDao meetingSimpleDao,
+                                                   final boolean joinAvailability) {
         LocalDate currentDate = LocalDate.now();
-        List<MeetingSimpleResponse> meetingSimpleResponses = new ArrayList<>();
+        long dDay = Meeting.calculateDDay(currentDate, meetingSimpleDao.startDateTime().toLocalDate());
 
-        for (MeetingSimpleDao meetingSimpleDao : meetingSimpleDaos) {
-            long dDay = Meeting.calculateDDay(currentDate, meetingSimpleDao.startDateTime().toLocalDate());
-            MeetingSimpleResponse meetingSimpleResponse = toResponse(meetingSimpleDao, dDay);
-            meetingSimpleResponses.add(meetingSimpleResponse);
-        }
-
-        return meetingSimpleResponses;
-    }
-
-    private static MeetingSimpleResponse toResponse(final MeetingSimpleDao meetingSimpleDao, final long dDay) {
         return MeetingSimpleResponse.builder()
                 .meetingId(meetingSimpleDao.meetingId())
                 .agenda(meetingSimpleDao.agenda())
                 .startDate(meetingSimpleDao.startDateTime().toLocalDate())
                 .dDay(dDay)
                 .attendance(meetingSimpleDao.attendance())
+                .joinAvailability(joinAvailability)
                 .build();
     }
 }

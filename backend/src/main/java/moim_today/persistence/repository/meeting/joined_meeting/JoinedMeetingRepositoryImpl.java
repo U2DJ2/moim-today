@@ -55,6 +55,15 @@ public class JoinedMeetingRepositoryImpl implements JoinedMeetingRepository {
     }
 
     @Override
+    public List<Long> findAllByMemberId(final long memberId) {
+        return queryFactory.select(joinedMeetingJpaEntity.meetingId)
+                .from(joinedMeetingJpaEntity)
+                .where(joinedMeetingJpaEntity.memberId.eq(memberId)
+                        .and(joinedMeetingJpaEntity.attendance.isTrue()))
+                .fetch();
+    }
+
+    @Override
     public JoinedMeetingJpaEntity getByMemberIdAndMeetingId(final long memberId, final long meetingId) {
         return joinedMeetingJpaRepository.findByMemberIdAndMeetingId(memberId, meetingId)
                 .orElseThrow(() -> new NotFoundException(JOINED_MEETING_NOT_FOUND_ERROR.message()));
