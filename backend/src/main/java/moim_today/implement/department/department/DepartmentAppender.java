@@ -40,16 +40,16 @@ public class DepartmentAppender {
     }
 
     @Transactional
-    public void batchUpdate(final List<DepartmentJpaEntity> departmentJpaEntities) {
-        departmentRepository.batchUpdate(departmentJpaEntities);
-    }
-
-    @Transactional
     public void updateDepartmentsIfSizeOver(final Map<String, Set<String>> universityAndDepartments, final int size){
         if(getTotalMapSize(universityAndDepartments) > size){
             batchUpdate(filterUniversityExistToDepartment(universityAndDepartments));
             universityAndDepartments.clear();
         }
+    }
+
+    @Transactional
+    public void batchUpdate(final List<DepartmentJpaEntity> departmentJpaEntities) {
+        departmentRepository.batchUpdate(departmentJpaEntities);
     }
 
     @Transactional(readOnly = true)

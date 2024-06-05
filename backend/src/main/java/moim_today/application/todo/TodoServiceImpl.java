@@ -2,11 +2,9 @@ package moim_today.application.todo;
 
 import moim_today.domain.todo.enums.TodoProgress;
 import moim_today.dto.todo.*;
-import moim_today.implement.moim.joined_moim.JoinedMoimFinder;
-import moim_today.implement.moim.joined_moim.JoinedMoimManager;
-import moim_today.implement.moim.moim.MoimManager;
-import moim_today.implement.todo.TodoAppender;
-import moim_today.implement.todo.TodoManager;
+import moim_today.implement.moim.joined_moim.JoinedMoimComposition;
+import moim_today.implement.moim.moim.MoimComposition;
+import moim_today.implement.todo.TodoComposition;
 import moim_today.persistence.entity.todo.TodoJpaEntity;
 import org.springframework.stereotype.Service;
 
@@ -18,34 +16,28 @@ import static moim_today.global.constant.MemberConstant.UNKNOWN_MEMBER;
 @Service
 public class TodoServiceImpl implements TodoService {
 
-    private final TodoAppender todoAppender;
-    private final TodoManager todoManager;
-    private final JoinedMoimManager joinedMoimManager;
-    private final MoimManager moimManager;
-    private final JoinedMoimFinder joinedMoimFinder;
+    private final JoinedMoimComposition joinedMoimComposition;
+    private final TodoComposition todoComposition;
+    private final MoimComposition moimComposition;
 
-    public TodoServiceImpl(final TodoAppender todoAppender,
-                           final TodoManager todoManager,
-                           final JoinedMoimManager joinedMoimManager,
-                           final MoimManager moimManager,
-                           final JoinedMoimFinder joinedMoimFinder) {
-        this.todoAppender = todoAppender;
-        this.todoManager = todoManager;
-        this.joinedMoimManager = joinedMoimManager;
-        this.moimManager = moimManager;
-        this.joinedMoimFinder = joinedMoimFinder;
+    public TodoServiceImpl(final JoinedMoimComposition joinedMoimComposition,
+                           final TodoComposition todoComposition,
+                           final MoimComposition moimComposition) {
+        this.joinedMoimComposition = joinedMoimComposition;
+        this.todoComposition = todoComposition;
+        this.moimComposition = moimComposition;
     }
 
     @Override
     public TodoCreateResponse createTodo(final long memberId, final TodoCreateRequest todoCreateRequest) {
-        joinedMoimFinder.validateMemberInMoim(memberId, todoCreateRequest.moimId());
-        TodoJpaEntity todo = todoAppender.createTodo(memberId, todoCreateRequest);
+        joinedMoimComposition.validateMemberInMoim(memberId, todoCreateRequest.moimId());
+        TodoJpaEntity todo = todoComposition.createTodo(memberId, todoCreateRequest);
         return TodoCreateResponse.from(todo.getId());
     }
 
     @Override
     public List<MemberMoimTodoResponse> findAllMemberTodos(final long memberId, final YearMonth requestDate, final int months) {
-        List<Long> moimIds = joinedMoimManager.findMoimIdsByMemberId(memberId);
+        List<Long> moimIds = joinedMoimComposition.findMoimIdsByMemberId(memberId);
         return moimIds.stream()
                 .map(moimId -> findMemberMoimTodosInMoim(memberId, moimId, requestDate, months))
                 .filter(memberMoimTodoResponse -> !memberMoimTodoResponse.todoGroupByDates().isEmpty())
@@ -58,36 +50,36 @@ public class TodoServiceImpl implements TodoService {
                                                            final long moimId,
                                                            final YearMonth requestDate,
                                                            final int months) {
-        joinedMoimFinder.validateMemberInMoim(requestMemberId, moimId);
+        joinedMoimComposition.validateMemberInMoim(requestMemberId, moimId);
         if(UNKNOWN_MEMBER.longValue() == memberId){
-            return todoManager.findAllMembersTodosInMoim(moimId, requestDate, months);
+            return todoComposition.findAllMembersTodosInMoim(moimId, requestDate, months);
         }
-        List<TodoResponse> memberTodosInMoim = todoManager.findMemberTodosInMoim(memberId, moimId, requestDate, months);
+        List<TodoResponse> memberTodosInMoim = todoComposition.findMemberTodosInMoim(memberId, moimId, requestDate, months);
         return List.of(MemberTodoResponse.of(memberId,memberTodosInMoim));
     }
 
     @Override
     public TodoUpdateResponse updateTodo(final long memberId, final TodoUpdateRequest todoUpdateRequest) {
-        joinedMoimFinder.validateMemberInMoim(memberId, todoUpdateRequest.moimId());
-        return todoManager.updateTodo(memberId, todoUpdateRequest);
+        joinedMoimComposition.validateMemberInMoim(memberId, todoUpdateRequest.moimId());
+        return todoComposition.updateTodo(memberId, todoUpdateRequest);
     }
 
     @Override
     public void deleteTodo(final long memberId, final TodoRemoveRequest todoRemoveRequest) {
-        todoManager.deleteTodo(memberId, todoRemoveRequest);
+        todoComposition.deleteTodo(memberId, todoRemoveRequest);
     }
 
     @Override
     public TodoResponse getById(final long todoId) {
-        TodoJpaEntity todo = todoManager.getById(todoId);
+        TodoJpaEntity todo = todoComposition.getById(todoId);
         return TodoResponse.from(todo);
     }
 
     @Override
-    public MemberMoimTodoResponse findMemberMoimTodosInMoim(final long memberId, final long moimId, final YearMonth requestDate,
-                                                            final int months) {
-        List<TodoResponse> todoResponses = todoManager.findMemberTodosInMoim(memberId, moimId, requestDate, months);
-        String moimTitle = moimManager.getTitleById(moimId);
+    public MemberMoimTodoResponse findMemberMoimTodosInMoim(final long memberId, final long moimId,
+                                                            final YearMonth requestDate, final int months) {
+        List<TodoResponse> todoResponses = todoComposition.findMemberTodosInMoim(memberId, moimId, requestDate, months);
+        String moimTitle = moimComposition.getTitleById(moimId);
         return MemberMoimTodoResponse.of(moimId, moimTitle, todoResponses);
     }
 
@@ -95,6 +87,6 @@ public class TodoServiceImpl implements TodoService {
     public TodoUpdateResponse updateTodoProgress(final long memberId, final TodoProgressUpdateRequest todoProgressUpdateRequest) {
         long todoId = todoProgressUpdateRequest.todoId();
         TodoProgress todoProgress = todoProgressUpdateRequest.todoProgress();
-        return todoManager.updateTodoProgress(memberId, todoId, todoProgress);
+        return todoComposition.updateTodoProgress(memberId, todoId, todoProgress);
     }
 }

@@ -32,9 +32,6 @@ public class FileUploader {
     }
 
     public String uploadFile(final String fileType, final MultipartFile multipartFile) {
-
-        String uploadFolder = fileType;
-
         String originalFileName = multipartFile.getOriginalFilename();
         String uploadFileName = createFileName(originalFileName);
 
@@ -43,7 +40,7 @@ public class FileUploader {
         objectMetadata.setContentType(multipartFile.getContentType());
 
         try (InputStream inputStream = multipartFile.getInputStream()) {
-            String keyName = uploadFolder + "/" + uploadFileName;
+            String keyName = fileType + "/" + uploadFileName;
             amazonS3.putObject(
                     new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead));

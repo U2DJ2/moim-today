@@ -50,16 +50,16 @@ public class MemberUpdater {
         memberJpaEntity.updatePassword(passwordEncoder, newPassword);
     }
 
-    private void validateExpiredDateTime(final PasswordCertificationJpaEntity passwordCertificationJpaEntity,
-                                         final LocalDateTime now) {
-        Certification certification = Certification.toDomain(passwordCertificationJpaEntity);
-        certification.validateExpiredDateTime(now, PASSWORD_CERTIFICATION_FAIL.value());
-    }
-
     @Transactional
     public void updateProfile(final long memberId,
                               final ProfileUpdateRequest profileUpdateRequest) {
         MemberJpaEntity memberJpaEntity = memberRepository.getById(memberId);
         memberJpaEntity.updateProfile(profileUpdateRequest);
+    }
+
+    private void validateExpiredDateTime(final PasswordCertificationJpaEntity passwordCertificationJpaEntity,
+                                         final LocalDateTime now) {
+        Certification certification = Certification.toDomain(passwordCertificationJpaEntity);
+        certification.validateExpiredDateTime(now, PASSWORD_CERTIFICATION_FAIL.value());
     }
 }

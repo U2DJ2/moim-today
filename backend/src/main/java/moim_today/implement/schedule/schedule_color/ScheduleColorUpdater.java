@@ -5,22 +5,35 @@ import moim_today.persistence.entity.schedule.schedule_color.ScheduleColorJpaEnt
 import moim_today.persistence.repository.schedule.schedule_color.ScheduleColorRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Implement
 public class ScheduleColorUpdater {
 
-    public final ScheduleColorRepository scheduleColorRepository;
+    private final ScheduleColorRepository scheduleColorRepository;
+    private final ScheduleColorAppender scheduleColorAppender;
 
-    public ScheduleColorUpdater(final ScheduleColorRepository scheduleColorRepository) {
+    public ScheduleColorUpdater(final ScheduleColorRepository scheduleColorRepository,
+                                final ScheduleColorAppender scheduleColorAppender) {
         this.scheduleColorRepository = scheduleColorRepository;
+        this.scheduleColorAppender = scheduleColorAppender;
     }
 
     @Transactional
-    public int updateColorCount(final long memberId, final int count) {
+    public void updateColorCount(final long memberId, final int nextCount) {
+        Optional<ScheduleColorJpaEntity> optionalEntity = scheduleColorRepository.findByMemberId(memberId);
+
+        if (optionalEntity.isEmpty()) {
+            scheduleColorAppender.save(memberId, nextCount);
+        } else {
+            updateColor(memberId, nextCount);
+        }
+    }
+
+    private void updateColor(final long memberId, final int count) {
         ScheduleColorJpaEntity scheduleColorJpaEntity = scheduleColorRepository.getByMemberId(memberId);
         int currentCount = scheduleColorJpaEntity.getColorCount();
         int newCount = currentCount + count;
         scheduleColorJpaEntity.updateColorCount(newCount);
-
-        return newCount;
     }
 }

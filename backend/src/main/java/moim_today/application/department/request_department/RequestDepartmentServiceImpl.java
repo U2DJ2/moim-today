@@ -1,22 +1,21 @@
 package moim_today.application.department.request_department;
 
 import moim_today.dto.department.AddDepartmentRequest;
-import moim_today.implement.department.request_department.RequestDepartmentAppender;
+import moim_today.implement.department.request_department.RequestDepartmentComposition;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class RequestDepartmentServiceImpl implements RequestDepartmentService {
 
-    private final RequestDepartmentAppender requestDepartmentAppender;
+    private final RequestDepartmentComposition requestDepartmentComposition;
 
-    public RequestDepartmentServiceImpl(final RequestDepartmentAppender requestDepartmentAppender) {
-        this.requestDepartmentAppender = requestDepartmentAppender;
+    public RequestDepartmentServiceImpl(final RequestDepartmentComposition requestDepartmentComposition) {
+        this.requestDepartmentComposition = requestDepartmentComposition;
     }
 
     @Override
     public void addDepartment(final AddDepartmentRequest addDepartmentRequest) {
-        requestDepartmentAppender.addDepartment(addDepartmentRequest);
+        requestDepartmentComposition.addDepartment(addDepartmentRequest);
     }
 }
