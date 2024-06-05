@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import moim_today.domain.moim.MoimSortedFilter;
 import moim_today.dto.moim.moim.*;
 import moim_today.dto.moim.moim.enums.MoimCategoryDto;
-import moim_today.implement.file.FileUploader;
+import moim_today.implement.file.FileComposition;
 import moim_today.implement.member.MemberComposition;
 import moim_today.implement.moim.joined_moim.JoinedMoimComposition;
 import moim_today.implement.moim.moim.*;
@@ -23,16 +23,16 @@ import static moim_today.global.constant.FileTypeConstant.MOIM_IMAGE;
 public class MoimServiceImpl implements MoimService{
 
     private final MoimComposition moimComposition;
-    private final FileUploader fileUploader;
     private final JoinedMoimComposition joinedMoimComposition;
     private final MemberComposition memberComposition;
+    private final FileComposition fileComposition;
 
-    public MoimServiceImpl(final MoimComposition moimComposition, final FileUploader fileUploader,
-                           final JoinedMoimComposition joinedMoimComposition, final MemberComposition memberComposition) {
+    public MoimServiceImpl(final MoimComposition moimComposition, final JoinedMoimComposition joinedMoimComposition,
+                           final MemberComposition memberComposition, final FileComposition fileComposition) {
         this.moimComposition = moimComposition;
-        this.fileUploader = fileUploader;
         this.joinedMoimComposition = joinedMoimComposition;
         this.memberComposition = memberComposition;
+        this.fileComposition = fileComposition;
     }
 
     @Override
@@ -40,9 +40,10 @@ public class MoimServiceImpl implements MoimService{
         return moimComposition.findAllMyMoimResponse(memberId);
     }
 
+    @Transactional
     @Override
     public MoimIdResponse createMoim(final long memberId, final long universityId,
-                           final MoimCreateRequest moimCreateRequest) {
+                                     final MoimCreateRequest moimCreateRequest) {
         MoimJpaEntity moim = moimComposition.createMoim(memberId, universityId, moimCreateRequest);
         joinedMoimComposition.createJoinedMoim(memberId, moim.getId());
         return MoimIdResponse.from(moim.getId());
@@ -50,7 +51,7 @@ public class MoimServiceImpl implements MoimService{
 
     @Override
     public MoimImageResponse uploadMoimImage(final MultipartFile file) {
-        String imageUrl = fileUploader.uploadFile(MOIM_IMAGE.value(), file);
+        String imageUrl = fileComposition.uploadFile(MOIM_IMAGE.value(), file);
         return MoimImageResponse.from(imageUrl);
     }
 

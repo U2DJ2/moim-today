@@ -48,4 +48,9 @@ public class UserInquiryFinder {
         UserInquiryJpaEntity findUserInquiry = userInquiryRepository.getById(userInquiryId);
         return USER_INQUIRY_RESPONSE_SUBJECT_PREFIX.value() + findUserInquiry.getInquiryTitle();
     }
+
+    @Transactional(readOnly = true)
+    public UserInquiryJpaEntity getById(final long userInquiryId) {
+        return userInquiryRepository.getById(userInquiryId);
+    }
 }

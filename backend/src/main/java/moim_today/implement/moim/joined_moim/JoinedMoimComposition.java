@@ -37,10 +37,6 @@ public class JoinedMoimComposition {
         joinedMoimFinder.validateMemberInMoim(memberId, moimId);
     }
 
-    public void validateMemberNotInMoim(final long moimId, final long memberId) {
-        joinedMoimFinder.validateMemberNotInMoim(memberId, moimId);
-    }
-
     public boolean isJoining(final long moimId, final long memberId) {
         return joinedMoimFinder.isJoining(moimId, memberId);
     }

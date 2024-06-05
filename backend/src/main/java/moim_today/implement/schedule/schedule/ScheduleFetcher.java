@@ -18,11 +18,11 @@ import static moim_today.global.constant.SymbolConstant.*;
 
 
 @Implement
-public class ScheduleManager {
+public class ScheduleFetcher {
 
     private final RestTemplate restTemplate;
 
-    public ScheduleManager(final RestTemplate restTemplate) {
+    public ScheduleFetcher(final RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

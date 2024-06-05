@@ -38,10 +38,6 @@ public class MeetingCommentComposition {
         return meetingCommentFinder.getById(meetingCommentId);
     }
 
-    public void updateDeletedMembers(final long memberId, final List<Long> meetingIds) {
-        meetingCommentUpdater.updateDeletedMembers(memberId, meetingIds);
-    }
-
     public void updateMeetingComment(final long meetingCommentId,
                                      final MeetingCommentUpdateRequest meetingCommentUpdateRequest) {
         meetingCommentUpdater.updateMeetingComment(meetingCommentId, meetingCommentUpdateRequest);

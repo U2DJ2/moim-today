@@ -4,7 +4,7 @@ import moim_today.application.mail.MailService;
 import moim_today.dto.certification.CompleteEmailCertificationResponse;
 import moim_today.dto.mail.MailSendRequest;
 import moim_today.implement.certification.email.EmailCertificationComposition;
-import moim_today.implement.member.MemberFinder;
+import moim_today.implement.member.MemberComposition;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,20 +18,19 @@ import static moim_today.global.constant.TimeConstant.TEN_MINUTES;
 public class EmailCertificationServiceImpl implements EmailCertificationService {
 
     private final EmailCertificationComposition emailCertificationComposition;
-    private final MemberFinder memberFinder;
+    private final MemberComposition memberComposition;
     private final MailService mailService;
 
     public EmailCertificationServiceImpl(final EmailCertificationComposition emailCertificationComposition,
-                                         final MemberFinder memberFinder,
-                                         final MailService mailService) {
+                                         final MemberComposition memberComposition, final MailService mailService) {
         this.emailCertificationComposition = emailCertificationComposition;
-        this.memberFinder = memberFinder;
+        this.memberComposition = memberComposition;
         this.mailService = mailService;
     }
 
     @Override
     public void sendCertificationEmail(final String email) {
-        memberFinder.validateAlreadyExists(email);
+        memberComposition.validateAlreadyExists(email);
 
         String emailToken = emailCertificationComposition.createEmailToken(
                 email, now().plusMinutes(TEN_MINUTES.time())

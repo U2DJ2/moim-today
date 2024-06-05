@@ -21,18 +21,18 @@ public class ScheduleComposition {
     private final ScheduleFinder scheduleFinder;
     private final ScheduleUpdater scheduleUpdater;
     private final ScheduleRemover scheduleRemover;
-    private final ScheduleManager scheduleManager;
+    private final ScheduleFetcher scheduleFetcher;
 
     public ScheduleComposition(final ScheduleAppender scheduleAppender,
                                final ScheduleFinder scheduleFinder,
                                final ScheduleUpdater scheduleUpdater,
                                final ScheduleRemover scheduleRemover,
-                               final ScheduleManager scheduleManager) {
+                               final ScheduleFetcher scheduleFetcher) {
         this.scheduleAppender = scheduleAppender;
         this.scheduleFinder = scheduleFinder;
         this.scheduleUpdater = scheduleUpdater;
         this.scheduleRemover = scheduleRemover;
-        this.scheduleManager = scheduleManager;
+        this.scheduleFetcher = scheduleFetcher;
     }
 
     public void batchUpdateSchedules(final List<Schedule> schedules, final long memberId) {
@@ -67,16 +67,8 @@ public class ScheduleComposition {
         scheduleRemover.deleteSchedule(memberId, scheduleId);
     }
 
-    public void deleteAllByMeetingIdIn(final List<Long> meetingIds) {
-        scheduleRemover.deleteAllByMeetingIdIn(meetingIds);
-    }
-
     public void deleteAllByMeetingId(final long meetingId) {
         scheduleRemover.deleteAllByMeetingId(meetingId);
-    }
-
-    public void deleteAllByMemberInMeeting(final long memberId, final List<Long> meetingIds) {
-        scheduleRemover.deleteAllByMemberInMeeting(memberId, meetingIds);
     }
 
     public void deleteByMemberIdAndMeetingId(final long memberId, final long meetingId) {
@@ -84,12 +76,12 @@ public class ScheduleComposition {
     }
 
     public String fetchTimetable(final String everytimeUrl) {
-        return scheduleManager.fetchTimetable(everytimeUrl);
+        return scheduleFetcher.fetchTimetable(everytimeUrl);
     }
 
     public TimeTableProcessor processTimetable(final String timeTableXML,
                                                final TimeTableRequest timeTableRequest,
                                                final int colorCount) {
-        return scheduleManager.processTimetable(timeTableXML, timeTableRequest, colorCount);
+        return scheduleFetcher.processTimetable(timeTableXML, timeTableRequest, colorCount);
     }
 }

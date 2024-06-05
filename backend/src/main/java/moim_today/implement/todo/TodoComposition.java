@@ -56,10 +56,6 @@ public class TodoComposition {
         todoRemover.deleteAllByMoimId(moimId);
     }
 
-    public void deleteAllTodosCreatedByMemberInMoim(final long moimId, final long memberId) {
-        todoRemover.deleteAllTodosCreatedByMemberInMoim(memberId, moimId);
-    }
-
     public void deleteById(final long todoId) {
         todoRemover.deleteById(todoId);
     }

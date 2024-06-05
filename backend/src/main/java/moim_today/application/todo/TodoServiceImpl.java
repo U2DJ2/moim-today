@@ -76,8 +76,8 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public MemberMoimTodoResponse findMemberMoimTodosInMoim(final long memberId, final long moimId, final YearMonth requestDate,
-                                                            final int months) {
+    public MemberMoimTodoResponse findMemberMoimTodosInMoim(final long memberId, final long moimId,
+                                                            final YearMonth requestDate, final int months) {
         List<TodoResponse> todoResponses = todoComposition.findMemberTodosInMoim(memberId, moimId, requestDate, months);
         String moimTitle = moimComposition.getTitleById(moimId);
         return MemberMoimTodoResponse.of(moimId, moimTitle, todoResponses);

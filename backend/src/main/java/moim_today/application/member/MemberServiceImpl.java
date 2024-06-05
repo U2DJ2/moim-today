@@ -3,8 +3,8 @@ package moim_today.application.member;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.admin.user_inquiry.UserInquiryRequest;
 import moim_today.dto.member.*;
-import moim_today.implement.admin.user_inquiry.UserInquiryAppender;
-import moim_today.implement.file.FileUploader;
+import moim_today.implement.admin.user_inquiry.UserInquiryComposition;
+import moim_today.implement.file.FileComposition;
 import moim_today.implement.member.MemberComposition;
 import moim_today.implement.moim.joined_moim.JoinedMoimComposition;
 import moim_today.implement.moim.moim.MoimComposition;
@@ -20,19 +20,21 @@ import static moim_today.global.constant.FileTypeConstant.PROFILE_IMAGE;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberComposition memberComposition;
-    private final FileUploader fileUploader;
-    private final UserInquiryAppender userInquiryAppender;
+    private final UserInquiryComposition userInquiryComposition;
     private final MoimComposition moimComposition;
     private final JoinedMoimComposition joinedMoimComposition;
+    private final FileComposition fileComposition;
 
-    public MemberServiceImpl(final MemberComposition memberComposition, final FileUploader fileUploader,
-                             final UserInquiryAppender userInquiryAppender, final MoimComposition moimComposition,
-                             final JoinedMoimComposition joinedMoimComposition) {
+    public MemberServiceImpl(final MemberComposition memberComposition,
+                             final UserInquiryComposition userInquiryComposition,
+                             final MoimComposition moimComposition,
+                             final JoinedMoimComposition joinedMoimComposition,
+                             final FileComposition fileComposition) {
         this.memberComposition = memberComposition;
-        this.fileUploader = fileUploader;
-        this.userInquiryAppender = userInquiryAppender;
+        this.userInquiryComposition = userInquiryComposition;
         this.moimComposition = moimComposition;
         this.joinedMoimComposition = joinedMoimComposition;
+        this.fileComposition = fileComposition;
     }
 
     @Override
@@ -62,7 +64,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public ProfileImageResponse uploadProfileImage(final long memberId, final MultipartFile file) {
-        String imageUrl = fileUploader.uploadFile(PROFILE_IMAGE.value(), file);
+        String imageUrl = fileComposition.uploadFile(PROFILE_IMAGE.value(), file);
         return ProfileImageResponse.from(imageUrl);
     }
 
@@ -90,6 +92,6 @@ public class MemberServiceImpl implements MemberService {
         long departmentId = memberSession.departmentId();
 
         UserInquiryJpaEntity userInquiryJpaEntity = userInquiryRequest.toEntity(memberId, universityId, departmentId);
-        userInquiryAppender.createUserInquiry(userInquiryJpaEntity);
+        userInquiryComposition.createUserInquiry(userInquiryJpaEntity);
     }
 }
