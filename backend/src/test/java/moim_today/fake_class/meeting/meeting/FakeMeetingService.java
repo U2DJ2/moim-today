@@ -5,7 +5,6 @@ import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.meeting.*;
 import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.global.error.ForbiddenException;
-import moim_today.util.TestConstant;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +28,8 @@ public class FakeMeetingService implements MeetingService {
                 .agenda(MEETING_AGENDA.value())
                 .startDate(LocalDate.of(2024, 3, 4))
                 .dDay(3)
+                .attendance(false)
+                .joinAvailability(true)
                 .build();
 
         MeetingSimpleResponse meetingSimpleResponse2 = MeetingSimpleResponse.builder()
@@ -36,6 +37,8 @@ public class FakeMeetingService implements MeetingService {
                 .agenda(MEETING_AGENDA.value())
                 .startDate(LocalDate.of(2024, 3, 5))
                 .dDay(2)
+                .attendance(true)
+                .joinAvailability(true)
                 .build();
 
         MeetingSimpleResponse meetingSimpleResponse3 = MeetingSimpleResponse.builder()
@@ -43,9 +46,34 @@ public class FakeMeetingService implements MeetingService {
                 .agenda(MEETING_AGENDA.value())
                 .startDate(LocalDate.of(2024, 3, 6))
                 .dDay(1)
+                .attendance(true)
+                .joinAvailability(true)
                 .build();
 
         return List.of(meetingSimpleResponse1, meetingSimpleResponse2, meetingSimpleResponse3);
+    }
+
+    @Override
+    public List<JoinedMeetingResponse> findAllByMemberId(final long memberId, final MeetingStatus meetingStatus) {
+        JoinedMeetingResponse joinedMeetingResponse1 = JoinedMeetingResponse.builder()
+                .meetingId(MEETING_ID.longValue())
+                .agenda(MEETING_AGENDA.value())
+                .startDate(LocalDate.of(2024, 3, 4))
+                .build();
+
+        JoinedMeetingResponse joinedMeetingResponse2 = JoinedMeetingResponse.builder()
+                .meetingId(MEETING_ID.longValue())
+                .agenda(MEETING_AGENDA.value())
+                .startDate(LocalDate.of(2024, 3, 4))
+                .build();
+
+        JoinedMeetingResponse joinedMeetingResponse3 = JoinedMeetingResponse.builder()
+                .meetingId(MEETING_ID.longValue())
+                .agenda(MEETING_AGENDA.value())
+                .startDate(LocalDate.of(2024, 3, 4))
+                .build();
+
+        return List.of(joinedMeetingResponse1, joinedMeetingResponse2, joinedMeetingResponse3);
     }
 
     @Override

@@ -2,6 +2,8 @@ package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
+import moim_today.dto.meeting.meeting.JoinedMeetingDao;
+import moim_today.dto.meeting.meeting.JoinedMeetingResponse;
 import moim_today.dto.meeting.meeting.MeetingDetailResponse;
 import moim_today.dto.meeting.meeting.MeetingSimpleDao;
 import moim_today.dto.member.MemberSimpleResponse;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -71,5 +74,22 @@ public class MeetingFinder {
     @Transactional(readOnly = true)
     public MeetingJpaEntity getById(final long meetingId) {
         return meetingRepository.getById(meetingId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<JoinedMeetingResponse> findAllByMemberId(final long memberId, final MeetingStatus meetingStatus,
+                                                         final LocalDateTime currentDateTime) {
+        List<Long> meetingIds = joinedMeetingFinder.findAllByMemberId(memberId);
+        List<JoinedMeetingDao> joinedMeetingDaos = new ArrayList<>();
+
+        if(meetingStatus.equals(MeetingStatus.ALL)) {
+            joinedMeetingDaos = meetingRepository.findAllByMeetingIds(meetingIds);
+        } else if(meetingStatus.equals(MeetingStatus.UPCOMING)) {
+            joinedMeetingDaos = meetingRepository.findAllUpcomingByMeetingIds(meetingIds, currentDateTime);
+        } else if(meetingStatus.equals(MeetingStatus.PAST)) {
+            joinedMeetingDaos = meetingRepository.findAllPastByMeetingIds(meetingIds, currentDateTime);
+        }
+
+        return JoinedMeetingResponse.toResponses(joinedMeetingDaos);
     }
 }

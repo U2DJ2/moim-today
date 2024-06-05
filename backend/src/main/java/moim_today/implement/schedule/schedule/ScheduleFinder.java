@@ -5,6 +5,7 @@ import moim_today.domain.schedule.ScheduleYearMonth;
 import moim_today.dto.schedule.MoimScheduleResponse;
 import moim_today.dto.schedule.ScheduleResponse;
 import moim_today.global.annotation.Implement;
+import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import moim_today.persistence.repository.schedule.schedule.ScheduleRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,5 +49,10 @@ public class ScheduleFinder {
         LocalDateTime endDateTime = scheduleYearMonth.atMonthlyEndDateTime();
 
         return scheduleRepository.findAllByDateTime(memberId, startDateTime, endDateTime);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean checkJoinAvailability(final ScheduleJpaEntity scheduleJpaEntity) {
+        return !scheduleRepository.exists(scheduleJpaEntity);
     }
 }

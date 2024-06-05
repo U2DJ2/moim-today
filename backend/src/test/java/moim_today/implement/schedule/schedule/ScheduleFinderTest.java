@@ -5,6 +5,7 @@ import moim_today.dto.schedule.ScheduleResponse;
 import moim_today.persistence.entity.member.MemberJpaEntity;
 import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import moim_today.util.ImplementTest;
+import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
 
+import static moim_today.util.TestConstant.*;
 import static org.assertj.core.api.Assertions.*;
 
 class ScheduleFinderTest extends ImplementTest {
@@ -482,5 +484,61 @@ class ScheduleFinderTest extends ImplementTest {
 
         // then
         assertThat(scheduleResponses.size()).isEqualTo(3);
+    }
+
+    @DisplayName("이미 해당 시간대에 존재하면 미팅 참석 가능 여부를 false로 반환한다.")
+    @Test
+    void checkJoinAvailabilityReturnFalse() {
+        // given 1
+        long memberId = MEMBER_ID.longValue();
+
+        ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(memberId)
+                .startDateTime(LocalDateTime.of(2024, 3, 31, 20, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 31, 22, 0, 0))
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity);
+
+        // given 2
+        ScheduleJpaEntity newScheduleEntity = ScheduleJpaEntity.builder()
+                .memberId(memberId)
+                .startDateTime(LocalDateTime.of(2024, 3, 31, 21, 59, 59))
+                .endDateTime(LocalDateTime.of(2024, 3, 31, 23, 0, 0))
+                .build();
+
+        // when
+        boolean joinAvailability = scheduleFinder.checkJoinAvailability(newScheduleEntity);
+
+        // then
+        assertThat(joinAvailability).isFalse();
+    }
+
+    @DisplayName("이미 해당 시간대에 존재하지 않으면 미팅 참석 가능 여부를 true를 반환한다.")
+    @Test
+    void checkJoinAvailabilityReturnTrue() {
+        // given 1
+        long memberId = MEMBER_ID.longValue();
+
+        ScheduleJpaEntity scheduleJpaEntity = ScheduleJpaEntity.builder()
+                .memberId(memberId)
+                .startDateTime(LocalDateTime.of(2024, 3, 31, 20, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 31, 22, 0, 0))
+                .build();
+
+        scheduleRepository.save(scheduleJpaEntity);
+
+        // given 2
+        ScheduleJpaEntity newScheduleEntity = ScheduleJpaEntity.builder()
+                .memberId(memberId)
+                .startDateTime(LocalDateTime.of(2024, 3, 31, 22, 0, 0))
+                .endDateTime(LocalDateTime.of(2024, 3, 31, 23, 0, 0))
+                .build();
+
+        // when
+        boolean joinAvailability = scheduleFinder.checkJoinAvailability(newScheduleEntity);
+
+        // then
+        assertThat(joinAvailability).isTrue();
     }
 }

@@ -32,4 +32,9 @@ public class JoinedMeetingFinder {
     public List<MemberSimpleResponse> findMembersJoinedMeeting(final long meetingId) {
         return joinedMeetingRepository.findMembersJoinedMeeting(meetingId);
     }
+
+    @Transactional(readOnly = true)
+    public List<Long> findAllByMemberId(final long memberId) {
+        return joinedMeetingRepository.findAllByMemberId(memberId);
+    }
 }

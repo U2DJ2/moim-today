@@ -5,14 +5,12 @@ import moim_today.dto.admin.meeting.AdminMeetingResponse;
 import moim_today.dto.admin.meeting.QAdminMeetingResponse;
 import moim_today.dto.mail.QUpcomingMeetingNoticeResponse;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
+import moim_today.dto.meeting.meeting.JoinedMeetingDao;
 import moim_today.dto.meeting.meeting.MeetingSimpleDao;
+import moim_today.dto.meeting.meeting.QJoinedMeetingDao;
 import moim_today.dto.meeting.meeting.QMeetingSimpleDao;
 import moim_today.global.error.NotFoundException;
-import moim_today.persistence.entity.email_subscribe.QEmailSubscribeJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
-import moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity;
-import moim_today.persistence.entity.member.QMemberJpaEntity;
-import moim_today.persistence.entity.moim.moim.QMoimJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -118,6 +116,52 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                         .and(joinedMeetingJpaEntity.memberId.eq(memberId))
                 )
                 .orderBy(meetingJpaEntity.startDateTime.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<JoinedMeetingDao> findAllByMeetingIds(final List<Long> meetingIds) {
+        return queryFactory.select(
+                        new QJoinedMeetingDao(
+                                meetingJpaEntity.id,
+                                meetingJpaEntity.agenda,
+                                meetingJpaEntity.startDateTime
+                        )
+                )
+                .from(meetingJpaEntity)
+                .where(meetingJpaEntity.id.in(meetingIds))
+                .fetch();
+    }
+
+    @Override
+    public List<JoinedMeetingDao> findAllUpcomingByMeetingIds(final List<Long> meetingIds,
+                                                              final LocalDateTime currentDateTime) {
+        return queryFactory.select(
+                        new QJoinedMeetingDao(
+                                meetingJpaEntity.id,
+                                meetingJpaEntity.agenda,
+                                meetingJpaEntity.startDateTime
+                        )
+                )
+                .from(meetingJpaEntity)
+                .where(meetingJpaEntity.id.in(meetingIds)
+                        .and(meetingJpaEntity.startDateTime.after(currentDateTime)))
+                .fetch();
+    }
+
+    @Override
+    public List<JoinedMeetingDao> findAllPastByMeetingIds(final List<Long> meetingIds,
+                                                          final LocalDateTime currentDateTime) {
+        return queryFactory.select(
+                        new QJoinedMeetingDao(
+                                meetingJpaEntity.id,
+                                meetingJpaEntity.agenda,
+                                meetingJpaEntity.startDateTime
+                        )
+                )
+                .from(meetingJpaEntity)
+                .where(meetingJpaEntity.id.in(meetingIds)
+                        .and(meetingJpaEntity.startDateTime.before(currentDateTime)))
                 .fetch();
     }
 
