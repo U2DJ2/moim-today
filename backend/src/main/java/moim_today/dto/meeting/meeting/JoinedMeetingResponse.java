@@ -6,7 +6,6 @@ import lombok.Builder;
 import java.time.LocalDate;
 import java.util.List;
 
-import static java.util.stream.Collectors.*;
 
 @Builder
 public record JoinedMeetingResponse(
@@ -20,7 +19,7 @@ public record JoinedMeetingResponse(
     public static List<JoinedMeetingResponse> toResponses(final List<JoinedMeetingDao> joinedMeetingDaos) {
         return joinedMeetingDaos.stream()
                 .map(JoinedMeetingResponse::toResponse)
-                .collect(toList());
+                .toList();
     }
 
     public static JoinedMeetingResponse toResponse(final JoinedMeetingDao joinedMeetingDao) {
