@@ -1,5 +1,6 @@
 package moim_today.presentation.file;
 
+import jakarta.validation.Valid;
 import moim_today.application.file.FileService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.file.FileDeleteRequest;
@@ -28,7 +29,7 @@ public class FileController {
 
     @DeleteMapping
     public void deleteFile(@Login final MemberSession memberSession,
-                           @RequestBody final FileDeleteRequest fileDeleteRequest){
+                           @RequestBody @Valid final FileDeleteRequest fileDeleteRequest){
         fileService.deleteFile(memberSession, fileDeleteRequest);
     }
 }

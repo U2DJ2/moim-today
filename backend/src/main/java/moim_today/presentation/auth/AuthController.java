@@ -19,7 +19,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public void login(@RequestBody final MemberLoginRequest memberLoginRequest,
+    public void login(@RequestBody @Valid final MemberLoginRequest memberLoginRequest,
                       final HttpServletRequest request) {
         authService.login(memberLoginRequest, request);
     }
@@ -30,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/sign-up")
-    public void signUp(@Valid @RequestBody final MemberSignUpRequest memberSignUpRequest,
+    public void signUp(@RequestBody @Valid final MemberSignUpRequest memberSignUpRequest,
                        final HttpServletRequest request) {
         authService.signUp(memberSignUpRequest, request);
     }

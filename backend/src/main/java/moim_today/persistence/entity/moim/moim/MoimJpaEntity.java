@@ -119,9 +119,7 @@ public class MoimJpaEntity extends BaseTimeEntity {
         this.moimCategory = moimUpdateRequest.moimCategory();
         this.startDate = moimUpdateRequest.startDate();
         this.endDate = moimUpdateRequest.endDate();
-        this.displayStatus = moimUpdateRequest.displayStatus();
 
-        updatePasswordByDisplayStatus(moimUpdateRequest.password());
         updateImageUrl(moimUpdateRequest.imageUrl());
     }
 
@@ -130,7 +128,7 @@ public class MoimJpaEntity extends BaseTimeEntity {
     }
 
     private void updateImageUrl(final String updateImageUrl) {
-        if (updateImageUrl == null) {
+        if (updateImageUrl == null || updateImageUrl.isBlank()) {
             this.imageUrl = DEFAULT_MOIM_IMAGE_URL.value();
         } else {
             this.imageUrl = updateImageUrl;
