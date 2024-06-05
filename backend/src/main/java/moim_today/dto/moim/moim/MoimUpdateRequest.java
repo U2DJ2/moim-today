@@ -27,8 +27,8 @@ public record MoimUpdateRequest(
         private static final String MOIM_TITLE_BLANK_ERROR = "모임 제목은 공백일 수 없습니다.";
         private static final String MOIM_CONTENT_BLANK_ERROR = "모임 내용은 공백일 수 없습니다.";
         private static final String MOIM_CAPACITY_MIN_ERROR = "모임 정원은 공백일 수 없습니다.";
-        private static final String MOIM_CATEGORY_NULL_ERROR = "모임 카테고리는 공백일 수 없습니다.";
-        private static final String MOIM_START_DATE_NULL_ERROR = "모임 시간 일자는 공백일 수 없습니다.";
-        private static final String MOIM_END_DATE_NULL_ERROR = "모임 종료 일자는 공백일 수 없습니다.";
+        private static final String MOIM_CATEGORY_NULL_ERROR = "모임 카테고리는 필수 입력 항목입니다.";
+        private static final String MOIM_START_DATE_NULL_ERROR = "모임 시간 일자는 필수 입력 항목입니다.";
+        private static final String MOIM_END_DATE_NULL_ERROR = "모임 종료 일자 필수 입력 항목입니다.";
 
 }
