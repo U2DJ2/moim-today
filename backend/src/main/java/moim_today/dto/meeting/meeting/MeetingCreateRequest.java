@@ -10,28 +10,24 @@ import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 
 import java.time.LocalDateTime;
 
+import static moim_today.global.constant.exception.ValidationExceptionConstant.*;
+
 @Builder
 public record MeetingCreateRequest(
         @Min(value = 0, message = MOIM_ID_MIN_ERROR) long moimId,
-        @NotBlank(message = AGENDA_BLANK_ERROR) String agenda,
+        @NotBlank(message = MEETING_AGENDA_BLANK_ERROR) String agenda,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-        @NotNull(message = START_DATETIME_NULL_ERROR)
+        @NotNull(message = MEETING_START_DATETIME_NULL_ERROR)
         LocalDateTime startDateTime,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-        @NotNull(message = END_DATETIME_NULL_ERROR)
+        @NotNull(message = MEETING_END_DATETIME_NULL_ERROR)
         LocalDateTime endDateTime,
 
-        @NotBlank(message = PLACE_BLANK_ERROR) String place,
+        @NotBlank(message = MEETING_PLACE_BLANK_ERROR) String place,
         @NotNull(message = MEETING_CATEGORY_NULL_ERROR) MeetingCategory meetingCategory
 ) {
-    private static final String MOIM_ID_MIN_ERROR = "잘못된 모임 ID 값이 입력 되었습니다.";
-    private static final String AGENDA_BLANK_ERROR = "미팅 의제는 공백일 수 없습니다.";
-    private static final String START_DATETIME_NULL_ERROR = "시작 날짜와 시간은 필수 입력 항목입니다.";
-    private static final String END_DATETIME_NULL_ERROR = "종료 날짜와 시간은 필수 입력 항목입니다.";
-    private static final String PLACE_BLANK_ERROR = "미팅 장소는 공백일 수 없습니다.";
-    private static final String MEETING_CATEGORY_NULL_ERROR = "카테고리는 필수 입력 항목입니다.";
 
     public MeetingJpaEntity toEntity() {
         return MeetingJpaEntity.builder()

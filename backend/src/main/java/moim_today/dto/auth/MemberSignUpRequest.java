@@ -12,13 +12,14 @@ import moim_today.persistence.entity.member.MemberJpaEntity;
 import java.time.LocalDate;
 
 import static moim_today.global.constant.MemberConstant.DEFAULT_PROFILE_URL;
+import static moim_today.global.constant.exception.ValidationExceptionConstant.*;
 
 @Builder
 public record MemberSignUpRequest(
         @Min(value = 0, message = UNIVERSITY_ID_MIN_ERROR) long universityId,
         @Min(value = 0, message = DEPARTMENT_ID_MIN_ERROR) long departmentId,
-        @Email(message = INVALID_EMAIL_FORMAT) @NotBlank(message = EMAIL_BLANK_ERROR) String email,
-        @NotBlank(message = PASSWORD_BLANK_ERROR) String password,
+        @Email(message = EMAIL_INVALID_ERROR) @NotBlank(message = EMAIL_BLANK_ERROR) String email,
+        @NotBlank(message = MEMBER_PASSWORD_BLANK_ERROR) String password,
         @NotBlank(message = USERNAME_BLANK_ERROR) String username,
         @NotBlank(message = STUDENT_ID_BLANK_ERROR) String studentId,
 
@@ -26,15 +27,6 @@ public record MemberSignUpRequest(
         @NotNull(message = BIRTH_DATE_NULL_ERROR) LocalDate birthDate,
         @NotNull(message = GENDER_NULL_ERROR) Gender gender
 ) {
-    private static final String UNIVERSITY_ID_MIN_ERROR = "잘못된 대학 ID 값이 입력 되었습니다.";
-    private static final String DEPARTMENT_ID_MIN_ERROR = "잘못된 학과 ID 값이 입력 되었습니다.";
-    private static final String PASSWORD_BLANK_ERROR = "패스워드는 공백일 수 없습니다.";
-    private static final String USERNAME_BLANK_ERROR = "사용자 이름은 공백일 수 없습니다.";
-    private static final String STUDENT_ID_BLANK_ERROR = "학번은 공백일 수 없습니다.";
-    private static final String EMAIL_BLANK_ERROR = "이메일은 공백일 수 없습니다.";
-    private static final String INVALID_EMAIL_FORMAT = "이메일 형식이 올바르지 않습니다.";
-    private static final String BIRTH_DATE_NULL_ERROR = "생일은 필수 입력 항목 입니다.";
-    private static final String GENDER_NULL_ERROR = "성별은 필수 입력 항목 입니다.";
 
     public MemberJpaEntity toEntity(final String encodedPassword) {
         return MemberJpaEntity.builder()

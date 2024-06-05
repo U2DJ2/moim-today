@@ -3,9 +3,11 @@ package moim_today.dto.certification;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+import static moim_today.global.constant.exception.ValidationExceptionConstant.EMAIL_BLANK_ERROR;
+import static moim_today.global.constant.exception.ValidationExceptionConstant.EMAIL_INVALID_ERROR;
+
 public record CompleteEmailCertificationRequest(
-        @Email(message = INVALID_EMAIL_FORMAT) @NotBlank(message = EMAIL_BLANK_ERROR) String email
+        @Email(message = EMAIL_INVALID_ERROR) @NotBlank(message = EMAIL_BLANK_ERROR) String email
 ) {
-    private static final String EMAIL_BLANK_ERROR = "이메일은 공백일 수 없습니다.";
-    private static final String INVALID_EMAIL_FORMAT = "이메일 형식이 올바르지 않습니다.";
+
 }
