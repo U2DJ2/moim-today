@@ -3,7 +3,7 @@ import landingImg from "../../assets/svg/landingImg.svg";
 
 function AuthRight({ cardColor, textColor }) {
   return (
-    <div className="flex-1 w-[50%] relative">
+    <div className="flex-1 w-[50%] relative max-xl:hidden">
       <div
         className={`flex w-[100%] h-[130%] absolute left-48 -rotate-12 rounded-[64px] bg-${cardColor}`}
       ></div>
