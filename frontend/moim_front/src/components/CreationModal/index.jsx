@@ -21,8 +21,9 @@ function CreationModal({
   const modalRef = useRef();
 
   useEffect(() => {
-    console.log(startDateTime);
-    console.log(endDateTime);
+    console.log("시작 : " + startDateTime + " 종료 : " + endDateTime);
+
+    // eslint-disable-next-line
   }, []);
 
   const createMeeting = async () => {

@@ -1,11 +1,19 @@
+// React
 import { useState, useEffect, useRef } from "react";
+
+// API
 import axios from "axios";
+
+// UI
+import { Modal } from "flowbite-react";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
+
+// Calendar
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { Modal } from "flowbite-react";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
+
 
 const modalTheme = {
   root: {
@@ -86,41 +94,13 @@ export default function Calendar({
   const calendarRef = useRef(null);
   const [events, setEvents] = useState([]);
   const [calendarStart, setCalendarStart] = useState(new Date());
+  const [loadedMonths, setLoadedMonths] = useState(new Set());
   const currentYear = new Date().getFullYear();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [selectedEventId, setSelectedEventId] = useState(null);
 
-  useEffect(() => {
-    if (isPersonal) {
-      fetchAllEvents(currentYear).catch(console.error);
-    } else if (isMeeting) {
-      memberId != null ? fetchAvailables() : null;
-    } else if (isAvailable) {
-      fetchAvailables();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (calendarRef.current && selectedDate) {
-      Promise.resolve().then(() => {
-        calendarRef.current.getApi().gotoDate(selectedDate);
-      });
-    }
-  }, [selectedDate]);
-
-  useEffect(() => {
-    if (setIsRefresh) {
-      setIsRefresh(false);
-      fetchAvailables();
-      if (isPersonal) {
-        setIsRefresh(false);
-        fetchAllEvents(currentYear);
-      }
-    }
-  }, [isRefresh]);
-
-  const GetMemberWeekly = async (memberId) => {
+  const getMemberWeekly = async (memberId) => {
     //모임 내 멤버 별 가용시간
     try {
       let allEvents = [];
@@ -145,34 +125,82 @@ export default function Calendar({
     }
   };
 
+  const onDateChanged = (dateInfo) => {
+    const date = new Date(dateInfo.startStr);
+    setCalendarStart(date);
+    fetchMonthEvents(date.getFullYear(), date.getMonth() + 1);
+  };
+
   useEffect(() => {
-    console.log("member:", memberId);
-    console.log(calendarStart);
-    if (memberId != null) GetMemberWeekly(memberId);
+    if (isPersonal) {
+      fetchMonthEvents(currentYear, calendarStart.getMonth() + 1).catch(console.error);
+    } else if (isMeeting) {
+      memberId != null ? fetchAvailables() : null;
+    } else if (isAvailable) {
+      fetchAvailables();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (calendarRef.current && selectedDate) {
+      Promise.resolve().then(() => {
+        calendarRef.current.getApi().gotoDate(selectedDate);
+      });
+    }
+  }, [selectedDate]);
+
+
+  useEffect(() => {
+    if (setIsRefresh) {
+      setIsRefresh(false);
+
+      // Reset all events and fetch new events
+      setEvents([]);
+      setLoadedMonths(new Set());
+      
+      var year = calendarStart.getFullYear();
+
+      // Get new events
+      if (isMeeting) {
+        memberId != null ? fetchAvailables() : null;
+      } else {
+        fetchMonthEvents(year, calendarStart.getMonth() + 1).catch(console.error);
+      }
+
+      if (isPersonal) {
+        setIsRefresh(false);
+        fetchMonthEvents(year, calendarStart.getMonth() + 1);
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isRefresh]);
+
+  useEffect(() => {
+    if (memberId != null) getMemberWeekly(memberId);
     else {
       fetchAvailables();
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [memberId, calendarStart]);
 
-  async function fetchAllEvents(year) {
+  async function fetchMonthEvents(year, month) {
     try {
-      let allEvents = [];
-      for (let month = 1; month <= 8; month++) {
-        const response = await axios.get(
-          `https://api.moim.today/api/schedules/monthly?yearMonth=${year}-${month < 10 ? "0" + month : month
-          }`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        allEvents = [
-          ...allEvents,
-          ...response.data.data.map((event) => mapEventData(event, false)),
-        ];
-      }
-      setEvents(allEvents);
+      if (loadedMonths.has(`${year}-${month}`)) return;
+      const response = await axios.get(
+        `https://api.moim.today/api/schedules/monthly?yearMonth=${year}-${month < 10 ? "0" + month : month}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const newEvents = response.data.data.map((event) => mapEventData(event, false));
+      setEvents((prevEvents) => [...prevEvents, ...newEvents]);
+      setLoadedMonths((prev) => new Set(prev).add(`${year}-${month}`));
     } catch (error) {
       console.error("Error fetching events:", error);
     }
@@ -230,9 +258,7 @@ export default function Calendar({
       console.log("handleDateSelected", selectInfo);
     }
     let calendarApi = selectInfo.view.calendar;
-    if (isMeeting) {
-      setShowModal(true);
-    } else if (isPersonal) {
+    if (isMeeting || isPersonal) {
       setShowModal(true);
     }
 
@@ -242,7 +268,6 @@ export default function Calendar({
     calendarApi.unselect(); // clear date selection
   }
 
-  // Function to handle event click
   function handleEventClick(info) {
     if (isPersonal) {
       setModalMessage("일정을 삭제하시겠습니까?");
@@ -251,39 +276,25 @@ export default function Calendar({
     }
   }
 
-  // Function to handle event change
   function handleEventChange(info) {
     console.log("Event changed:", info.event);
   }
 
-  // Function to handle event remove
   function handleEventRemove(info) {
     console.log("Event removed:", info.event);
   }
 
-  function personalSubmit() {
-    calendarRef.current.getApi().unselect();
-  }
-
-  const handleDateSet = (dateInfo) => {
-    fetchAvailables();
-  };
-
-  const onChangeDate = (dateInfo) => {
-    console.log(dateInfo.startStr.split("T")[0]);
-    setCalendarStart(dateInfo.startStr.split("T")[0]);
-  };
-
   async function deleteEvent() {
     try {
-      await axios.delete(
-        `https://api.moim.today/api/schedules`, {
+      await axios.delete(`https://api.moim.today/api/schedules`, {
         data: {
           scheduleId: selectedEventId,
-        }
+        },
       });
       setIsModalOpen(false);
-      fetchAllEvents(currentYear).catch(console.error);
+      
+      // Refresh the calendar
+      setIsRefresh(true);
     } catch (error) {
       console.error("Error deleting event:", error);
     }
@@ -315,7 +326,7 @@ export default function Calendar({
             eventChange={handleEventChange}
             eventRemove={handleEventRemove}
             datesSet={(dateInfo) => {
-              onChangeDate(dateInfo);
+              onDateChanged(dateInfo);
             }}
           />
         </div>

@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import MiniCalendar from "../ToDo/MiniCalendar";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { Datepicker } from "flowbite-react";
 import Calendar from "../../../components/Calendar/PersonalCalendar";
-import { useParams } from "react-router";
 import { fetchMembers } from "../../../api/moim";
-import axios from "axios";
 
 function AvailableTime({ moimId }) {
   const [selectedDate, setSelectedDate] = useState(
@@ -13,9 +11,7 @@ function AvailableTime({ moimId }) {
   const [members, setMembers] = useState([]);
   const [memberId, setMemberId] = useState(null);
   const [memberSchedule, setMemberSchedule] = useState([]);
-
   const [selected, setSelected] = useState();
-
   const [events, setEvents] = useState([]);
 
   const handleMiniCalendarDateSelect = (date) => {
@@ -30,13 +26,14 @@ function AvailableTime({ moimId }) {
       console.log(e);
     }
   };
+
   function mapEventData(event, backgroundEvent) {
     const formattedEvent = {
       id: event.scheduleId || event.calendarId,
       title: event.scheduleName || "",
       start: event.startDateTime.replace(" ", "T"),
       end: event.endDateTime.replace(" ", "T"),
-      allDay: false, // Assuming all events fetched are not all-day events
+      allDay: false,
       backgroundColor: event.colorHex,
     };
     if (backgroundEvent) {
@@ -48,6 +45,7 @@ function AvailableTime({ moimId }) {
   useEffect(() => {
     GetMembers(moimId);
   }, []);
+
   const calendarTheme = {
     root: {
       base: "relative",
@@ -134,6 +132,7 @@ function AvailableTime({ moimId }) {
       },
     },
   };
+
   const onClickMember = (member) => {
     console.log(member);
     setSelected(member.memberId);
@@ -142,8 +141,8 @@ function AvailableTime({ moimId }) {
 
   const { MoimId } = useParams();
   return (
-    <div className="flex gap-5 h-full w-full">
-      <div className="flex flex-col">
+    <div className="flex flex-col md:flex-row gap-5 h-full w-full">
+      <div className="flex flex-col md:flex-1">
         <div className="flex-1">
           <Datepicker
             showTodayButton={false}
@@ -152,36 +151,33 @@ function AvailableTime({ moimId }) {
             inline
             onSelectedDateChanged={handleMiniCalendarDateSelect}
           />
-          <div className="grid justify-items-center gap-3">
+          <div className="grid justify-items-center gap-3 mt-4 md:mt-0">
             {members != null
-              ? members.map((member, index) => {
-                  return (
+              ? members.map((member, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-items-center gap-2 cursor-pointer focus:text-scarlet"
+                    onClick={() => onClickMember(member)}
+                  >
+                    <img
+                      className="focus:cursor-pointer w-6 h-6 rounded-full"
+                      src={member.profileImageUrl}
+                    />
                     <div
-                      key={index}
-                      className="flex justify-items-center gap-2 cursor-pointer focus:text-scarlet"
-                      onClick={() => onClickMember(member)}
+                      className={`flex font-Pretendard_Light focus:text-scarlet ${
+                        selected === member.memberId ? "text-scarlet" : null
+                      }`}
                     >
-                      <img
-                        className="focus:cursor-pointer w-6 h-6 rounded-full "
-                        src={member.profileImageUrl}
-                      />
-                      <div
-                        className={`flex font-Pretendard_Light focus:text-scarlet
-                        ${
-                          selected === member.memberId ? "text-scarlet" : null
-                        }`}
-                      >
-                        {member.memberName}
-                      </div>
+                      {member.memberName}
                     </div>
-                  );
-                })
+                  </div>
+                ))
               : null}
           </div>
         </div>
       </div>
 
-      <div className="flex-[3_3_0%]">
+      <div className="flex-[3_3_0%] w-full">
         <Calendar
           selectedDate={selectedDate}
           isPersonal={false}
