@@ -5,10 +5,13 @@ import moim_today.dto.meeting.meeting.*;
 import moim_today.implement.meeting.joined_meeting.JoinedMeetingComposition;
 import moim_today.implement.meeting.meeting.*;
 import moim_today.implement.schedule.schedule.ScheduleComposition;
+import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
+import moim_today.persistence.entity.schedule.schedule.ScheduleJpaEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,7 +39,18 @@ public class MeetingServiceImpl implements MeetingService {
                                                        final MeetingStatus meetingStatus) {
         List<MeetingSimpleDao> meetingSimpleDaos =
                 meetingComposition.findAllByMoimId(moimId, memberId, meetingStatus);
-        return MeetingSimpleResponse.toResponses(meetingSimpleDaos);
+        List<MeetingSimpleResponse> meetingSimpleResponses = new ArrayList<>();
+
+        for (MeetingSimpleDao meetingSimpleDao : meetingSimpleDaos) {
+            MeetingJpaEntity meetingJpaEntity = meetingComposition.getById(meetingSimpleDao.meetingId());
+            ScheduleJpaEntity scheduleJpaEntity =
+                    ScheduleJpaEntity.toEntity(memberId, meetingSimpleDao.agenda(), meetingJpaEntity);
+            boolean joinAvailability = scheduleComposition.checkJoinAvailability(scheduleJpaEntity);
+
+            meetingSimpleResponses.add(MeetingSimpleResponse.toResponse(meetingSimpleDao, joinAvailability));
+        }
+
+        return meetingSimpleResponses;
     }
 
     @Override

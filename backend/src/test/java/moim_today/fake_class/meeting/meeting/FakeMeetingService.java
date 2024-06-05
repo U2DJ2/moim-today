@@ -28,6 +28,8 @@ public class FakeMeetingService implements MeetingService {
                 .agenda(MEETING_AGENDA.value())
                 .startDate(LocalDate.of(2024, 3, 4))
                 .dDay(3)
+                .attendance(false)
+                .joinAvailability(true)
                 .build();
 
         MeetingSimpleResponse meetingSimpleResponse2 = MeetingSimpleResponse.builder()
@@ -35,6 +37,8 @@ public class FakeMeetingService implements MeetingService {
                 .agenda(MEETING_AGENDA.value())
                 .startDate(LocalDate.of(2024, 3, 5))
                 .dDay(2)
+                .attendance(true)
+                .joinAvailability(true)
                 .build();
 
         MeetingSimpleResponse meetingSimpleResponse3 = MeetingSimpleResponse.builder()
@@ -42,6 +46,8 @@ public class FakeMeetingService implements MeetingService {
                 .agenda(MEETING_AGENDA.value())
                 .startDate(LocalDate.of(2024, 3, 6))
                 .dDay(1)
+                .attendance(true)
+                .joinAvailability(true)
                 .build();
 
         return List.of(meetingSimpleResponse1, meetingSimpleResponse2, meetingSimpleResponse3);

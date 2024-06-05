@@ -59,6 +59,10 @@ public class ScheduleComposition {
         return scheduleFinder.findAllByMonthly(memberId, yearMonth);
     }
 
+    public boolean checkJoinAvailability(final ScheduleJpaEntity scheduleJpaEntity) {
+        return scheduleFinder.checkJoinAvailability(scheduleJpaEntity);
+    }
+
     public void updateSchedule(final long memberId, final ScheduleUpdateRequest scheduleUpdateRequest) {
         scheduleUpdater.updateSchedule(memberId, scheduleUpdateRequest);
     }

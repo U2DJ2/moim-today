@@ -160,7 +160,8 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
                                         fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
                                         fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
-                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
+                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부"),
+                                        fieldWithPath("data[0].joinAvailability").type(BOOLEAN).description("참석 가능 여부")
                                 )
                                 .build()
                         )));
@@ -188,7 +189,8 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
                                         fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
                                         fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
-                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
+                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부"),
+                                        fieldWithPath("data[0].joinAvailability").type(BOOLEAN).description("참석 가능 여부")
                                 )
                                 .build()
                         )));
@@ -216,7 +218,8 @@ class MeetingControllerTest extends ControllerTest {
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
                                         fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜"),
                                         fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
-                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부")
+                                        fieldWithPath("data[0].attendance").type(BOOLEAN).description("참석 여부"),
+                                        fieldWithPath("data[0].joinAvailability").type(BOOLEAN).description("참석 가능 여부")
                                 )
                                 .build()
                         )));
