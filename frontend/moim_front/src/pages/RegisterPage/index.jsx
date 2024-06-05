@@ -17,6 +17,8 @@ import Personal from "./Personal";
 import TimeTable from "./TimeTable";
 import Congrats from "./Congrats";
 
+import NewModal from "../../components/NewModal";
+
 axios.defaults.withCredentials = true; // withCredentials 전역 설정
 
 function RegisterPage() {
@@ -202,13 +204,13 @@ function RegisterPage() {
             <div className="flex justify-center mt-16">
               <div className="flex gap-8">
                 <button
-                  className={` w-44 justify-center px-7 py-5 text-[22px] font-bold text-center text-black bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer  `}
+                  className={` w-44 justify-center px-7 py-5 text-[22px] font-bold text-center text-black bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer max-sm:w-28 max-sm:text-lg `}
                   onClick={() => previousClick()}
                 >
                   이전
                 </button>
                 <button
-                  className={` w-44 justify-center px-7 py-5 text-[22px] font-bold text-center bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer   ${
+                  className={` w-44 justify-center px-7 py-5 text-[22px] font-bold text-center bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer max-sm:w-28 max-sm:text-lg  ${
                     activeNext ? " text-scarlet  " : " text-[#8D8D8D]  "
                   }`}
                   disabled={!activeNext}
@@ -245,7 +247,10 @@ function RegisterPage() {
         </div>
       </div>
       <AuthRight cardColor={"white"} textColor={"scarlet"} />
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen} message={message} />
+      <NewModal show={isOpen} size="sm" onClose={() => setIsOpen(false)}>
+        <div className="text-sm font-Pretendard_Light">{message}</div>
+      </NewModal>
+      {/* <Modal isOpen={isOpen} setIsOpen={setIsOpen} message={message} /> */}
     </div>
   );
 }

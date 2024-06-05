@@ -42,7 +42,7 @@ function Account({ email, setEmail, password, setPassword, setActiveNext }) {
         titleColor={"white"}
         contentColor={"white"}
       />
-      <div className="flex flex-col gap-12">
+      <div className="flex flex-col gap-12  max-sm:px-10">
         <div className=" gap-1 max-sm:flex max-sm:flex-col max-sm:items-start ">
           <p className=" font-Pretendard_Black block text-2xl text-white max-sm:text-xl">
             Email
@@ -57,7 +57,7 @@ function Account({ email, setEmail, password, setPassword, setActiveNext }) {
             onChange={emailHandler}
           />
           <p
-            className={`mt-2 text-xl font-medium max-sm:text-lg ${
+            className={`mt-2 text-xl font-medium font-Pretendard_Light max-sm:text-xs ${
               !validationEmail ? "text-white" : "text-scarlet"
             } ${validationEmail && email ? "hidden" : "block"}`}
           >
@@ -78,7 +78,7 @@ function Account({ email, setEmail, password, setPassword, setActiveNext }) {
             onChange={passwordHandler}
           />
           <p
-            className={`mt-2 text-xl font-medium ${
+            className={`mt-2 text-xl font-medium font-Pretendard_Light max-sm:text-xs ${
               !validationPassword ? "text-white" : "text-scarlet"
             } ${validationPassword && password ? "hidden" : "block"}`}
           >
