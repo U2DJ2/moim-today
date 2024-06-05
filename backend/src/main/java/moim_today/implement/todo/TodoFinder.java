@@ -20,7 +20,7 @@ public class TodoFinder {
     private final TodoRepository todoRepository;
     private final JoinedMoimFinder joinedMoimFinder;
 
-    public TodoFinder(TodoRepository todoRepository, final JoinedMoimFinder joinedMoimFinder) {
+    public TodoFinder(final TodoRepository todoRepository, final JoinedMoimFinder joinedMoimFinder) {
         this.todoRepository = todoRepository;
         this.joinedMoimFinder = joinedMoimFinder;
     }
