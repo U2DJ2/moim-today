@@ -31,17 +31,17 @@ function handleFormSubmit(e) {
 
             members.forEach(member => {
                 const row = `<tr>
-                                <td>${member.memberId}</td>
-                                <td>${member.universityName}</td>
-                                <td>${member.departmentName}</td>
-                                <td>${member.email}</td>
-                                <td>${member.username}</td>
-                                <td>${member.studentId}</td>
-                                <td>${member.birthDate}</td>
-                                <td>${member.gender}</td>
-                                <td>${member.memberProfileImageUrl}</td>
-                                <td><button class="btn btn-danger delete-btn" data-member-id="${member.memberId}">삭제</button></td>
-                            </tr>`;
+                    <td>${member.memberId}</td>
+                    <td>${member.universityName}</td>
+                    <td>${member.departmentName}</td>
+                    <td>${member.email}</td>
+                    <td>${member.username}</td>
+                    <td>${member.studentId}</td>
+                    <td>${member.birthDate}</td>
+                    <td>${member.gender}</td>
+                    <td><img src="${member.memberProfileImageUrl}" style="width: 50px;"></td>
+                    <td><button class="btn btn-danger delete-btn" data-member-id="${member.memberId}">삭제</button></td>
+                </tr>`;
                 tableBody.append(row);
             });
         },
