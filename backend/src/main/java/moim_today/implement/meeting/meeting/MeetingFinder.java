@@ -2,6 +2,8 @@ package moim_today.implement.meeting.meeting;
 
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.mail.UpcomingMeetingNoticeResponse;
+import moim_today.dto.meeting.meeting.JoinedMeetingDao;
+import moim_today.dto.meeting.meeting.JoinedMeetingResponse;
 import moim_today.dto.meeting.meeting.MeetingDetailResponse;
 import moim_today.dto.meeting.meeting.MeetingSimpleDao;
 import moim_today.dto.member.MemberSimpleResponse;
@@ -71,5 +73,11 @@ public class MeetingFinder {
     @Transactional(readOnly = true)
     public MeetingJpaEntity getById(final long meetingId) {
         return meetingRepository.getById(meetingId);
+    }
+
+    public List<JoinedMeetingResponse> findAllByMemberId(final long memberId) {
+        List<Long> meetingIds = joinedMeetingFinder.findAllByMemberId(memberId);
+        List<JoinedMeetingDao> joinedMeetingDaos = meetingRepository.findAllByMeetingIds(meetingIds);
+        return JoinedMeetingResponse.toResponses(joinedMeetingDaos);
     }
 }

@@ -5,7 +5,6 @@ import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.dto.meeting.meeting.*;
 import moim_today.dto.member.MemberSimpleResponse;
 import moim_today.global.error.ForbiddenException;
-import moim_today.util.TestConstant;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,6 +45,11 @@ public class FakeMeetingService implements MeetingService {
                 .build();
 
         return List.of(meetingSimpleResponse1, meetingSimpleResponse2, meetingSimpleResponse3);
+    }
+
+    @Override
+    public List<JoinedMeetingResponse> findAllByMemberId(final long memberId) {
+        return List.of();
     }
 
     @Override
