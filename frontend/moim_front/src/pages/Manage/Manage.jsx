@@ -76,6 +76,15 @@ function Sidebar({ activeSection, setActiveSection }) {
           onClick={() => setActiveSection("overview")}
         />
         <SidebarElementLink
+          icon={<ArticleIcon />}
+          text="미팅 관리"
+          color={
+            activeSection === "overview" ? "text-scarlet" : "text-gray-400"
+          }
+          className="mt-16 max-md:mt-10"
+          onClick={() => setActiveSection("overview")}
+        />
+        <SidebarElementLink
           icon={<PersonIcon />}
           text="프로필 설정"
           color={activeSection === "profile" ? "text-scarlet" : "text-gray-400"}
@@ -110,7 +119,6 @@ export default function Manage() {
       .catch((error) => {
         console.log(error);
       });
-      
   }, [userInfo]);
 
   useEffect(() => {

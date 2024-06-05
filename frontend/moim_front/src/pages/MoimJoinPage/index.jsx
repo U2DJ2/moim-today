@@ -99,7 +99,7 @@ function MoimJoinPage() {
       const result = await fetchMoimInfo(MoimId);
       setMoimInfo(result.data);
     } catch (e) {
-      console.log(e);
+      setMessage(e.response.data.message);
     }
   };
 
@@ -108,7 +108,7 @@ function MoimJoinPage() {
       const result = await checkWriter(MoimId);
       setIsHost(result.data.isHost);
     } catch (e) {
-      console.log(e);
+      setMessage(e.response.data.message);
     }
   };
 

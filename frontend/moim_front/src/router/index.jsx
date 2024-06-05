@@ -36,6 +36,7 @@ import ManageMoimPage from "../pages/ManageMoimPage";
 import ManageProfilePage from "../pages/ManageProfilePage";
 import MoimLayout from "../components/MoimLayout";
 import NoticeDetailPage from "../pages/NoticeDetailPage";
+import ManageMeetingPage from "../pages/MeetingManagePage";
 
 /**
  * Basic Router
@@ -89,6 +90,7 @@ function Router() {
       <Route element={<ManageLayout />}>
         <Route path="/manage" element={<ManageProfilePage />} />
         <Route path="/manage/moim" element={<ManageMoimPage />} />
+        <Route path="/manage/meeting" element={ManageMeetingPage} />
       </Route>
 
       <Route path="/login" element={<LoginPage />} />
