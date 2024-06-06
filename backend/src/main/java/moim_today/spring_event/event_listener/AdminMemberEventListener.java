@@ -28,7 +28,7 @@ public class AdminMemberEventListener {
     }
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void memberDeleteFromMoim(final AdminMemberDeleteEvent adminMemberDeleteEvent){
         long memberId = adminMemberDeleteEvent.memberId();
         List<Long> joinedMoimIds = joinedMoimComposition.findMoimIdsByMemberId(memberId);
@@ -36,7 +36,7 @@ public class AdminMemberEventListener {
     }
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteMemberSchedules(final AdminMemberDeleteEvent adminMemberDeleteEvent){
         long memberId = adminMemberDeleteEvent.memberId();
         scheduleComposition.deleteAllByMemberId(memberId);
