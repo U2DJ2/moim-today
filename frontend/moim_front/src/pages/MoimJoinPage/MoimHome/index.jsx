@@ -54,6 +54,7 @@ function MoimHome({ isHost, moimId }) {
       getNotices();
     } catch (e) {
       console.log(e);
+      
     }
   };
   const getNotices = async () => {
