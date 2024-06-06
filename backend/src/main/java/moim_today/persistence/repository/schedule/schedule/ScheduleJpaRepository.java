@@ -13,5 +13,7 @@ public interface ScheduleJpaRepository extends JpaRepository<ScheduleJpaEntity, 
 
     void deleteByMemberIdAndMeetingId(final long memberId, final long meetingId);
 
+    void deleteAllByMemberId(final long memberId);
+
     List<ScheduleJpaEntity> findAllByMemberId(final long memberId);
 }

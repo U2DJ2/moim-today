@@ -75,6 +75,10 @@ public class ScheduleComposition {
         scheduleRemover.deleteAllByMeetingId(meetingId);
     }
 
+    public void deleteAllByMemberId(final long memberId){
+        scheduleRemover.deleteAllByMemberId(memberId);
+    }
+
     public void deleteByMemberIdAndMeetingId(final long memberId, final long meetingId) {
         scheduleRemover.deleteByMemberIdAndMeetingId(memberId, meetingId);
     }

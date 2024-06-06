@@ -240,4 +240,25 @@ class ScheduleRemoverTest extends ImplementTest {
         // then
         assertThat(scheduleRepository.count()).isEqualTo(0);
     }
+
+    @DisplayName("특정 회원 id를 가진 모든 스케줄을 삭제한다")
+    @Test
+    void deleteAllByMemberId() {
+        // given
+        ScheduleJpaEntity s1 = ScheduleJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .meetingId(MEETING_ID.longValue())
+                .build();
+
+        ScheduleJpaEntity s2 = ScheduleJpaEntity.builder()
+                .memberId(MEMBER_ID.longValue())
+                .meetingId(MEETING_ID.longValue())
+                .build();
+
+        // when
+        scheduleRemover.deleteAllByMemberId(MEMBER_ID.longValue());
+
+        // then
+        assertThat(scheduleRepository.count()).isEqualTo(0);
+    }
 }
