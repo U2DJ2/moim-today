@@ -27,16 +27,16 @@ public class AdminMemberEventListener {
         this.scheduleComposition = scheduleComposition;
     }
 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void memberDeleteFromMoim(final AdminMemberDeleteEvent adminMemberDeleteEvent){
         long memberId = adminMemberDeleteEvent.memberId();
         List<Long> joinedMoimIds = joinedMoimComposition.findMoimIdsByMemberId(memberId);
         joinedMoimIds.forEach(moimId -> moimComposition.deleteMemberFromMoim(memberId, moimId));
     }
 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void deleteMemberSchedules(final AdminMemberDeleteEvent adminMemberDeleteEvent){
         long memberId = adminMemberDeleteEvent.memberId();
         scheduleComposition.deleteAllByMemberId(memberId);
