@@ -6,7 +6,9 @@ import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
 
 public record JoinedMeetingDao(
+        long moimId,
         long meetingId,
+        String moimTitle,
         String agenda,
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
