@@ -28,7 +28,7 @@ function MeetingSection() {
       setAlert(e.response.data.message);
     }
   };
-  const meetingCardHandler = (meetingId) => {
+  const meetingCardHandler = (meetingId, moimId) => {
     navigate(`/meeting/${moimId}/${meetingId}`);
   };
 
@@ -72,17 +72,21 @@ function MeetingSection() {
           <div className="grid grid-cols-4 gap-4">
             {meetingInfo.length != 0 ? (
               meetingInfo.map((meeting, index) => {
+                console.log(meeting.agenda);
                 return (
                   <CardComponent
                     key={meeting.meetingId}
                     date={meeting.date}
                     isMeeting={true}
                     btn={false}
-                    meetingId={meetingInfo.meetingId}
+                    moimTitle={meeting.moimTitle}
+                    meetingId={meeting.meetingId}
                     dday={meeting.dDay}
-                    startDate={meetingInfo.startDate}
-                    title={meetingInfo.agenda}
-                    clickHandler={() => meetingCardHandler(meeting.meetingId)}
+                    startDate={meeting.startDate}
+                    title={meeting.agenda}
+                    clickHandler={() =>
+                      meetingCardHandler(meeting.meetingId, meeting.moimId)
+                    }
                   />
                 );
               })

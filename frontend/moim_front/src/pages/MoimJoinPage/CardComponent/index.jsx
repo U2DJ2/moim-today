@@ -15,6 +15,7 @@ function CardComponent({
   initialAttendance,
   startDate,
   attendance,
+  moimTitle = null,
 }) {
   // const [attendance, setAttendance] = useState(initialAttendance);
   const meetingCancel = async () => {
@@ -84,9 +85,15 @@ function CardComponent({
                 <div className="text-xl text-scarlet ">{dateConverter}</div>
               ) : null}
             </div>
-
-            <div className=" font-Pretendard_Medium font-bold text-2xl">
-              {title}
+            <div className="flex flex-col gap-1">
+              {moimTitle ? (
+                <div className="flex items-center font-Pretendard_Light text-xs w-fit text-slate-500">
+                  {moimTitle}
+                </div>
+              ) : null}
+              <div className=" font-Pretendard_Medium font-bold text-2xl">
+                {title}
+              </div>
             </div>
           </div>
         </div>
