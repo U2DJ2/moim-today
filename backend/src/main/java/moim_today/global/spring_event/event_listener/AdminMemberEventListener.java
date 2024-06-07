@@ -1,9 +1,9 @@
-package moim_today.spring_event.event_listener;
+package moim_today.global.spring_event.event_listener;
 
+import moim_today.global.spring_event.event.AdminMemberDeleteEvent;
 import moim_today.implement.moim.joined_moim.JoinedMoimComposition;
 import moim_today.implement.moim.moim.MoimComposition;
 import moim_today.implement.schedule.schedule.ScheduleComposition;
-import moim_today.spring_event.event.AdminMemberDeleteEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

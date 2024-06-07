@@ -1,4 +1,4 @@
-package moim_today.spring_event.event;
+package moim_today.global.spring_event.event;
 
 public record AdminMemberDeleteEvent(
         long memberId
