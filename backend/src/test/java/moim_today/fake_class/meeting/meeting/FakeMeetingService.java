@@ -56,19 +56,25 @@ public class FakeMeetingService implements MeetingService {
     @Override
     public List<JoinedMeetingResponse> findAllByMemberId(final long memberId, final MeetingStatus meetingStatus) {
         JoinedMeetingResponse joinedMeetingResponse1 = JoinedMeetingResponse.builder()
+                .moimId(MOIM_ID.longValue())
                 .meetingId(MEETING_ID.longValue())
+                .moimTitle(MOIM_TITLE.value())
                 .agenda(MEETING_AGENDA.value())
                 .startDate(LocalDate.of(2024, 3, 4))
                 .build();
 
         JoinedMeetingResponse joinedMeetingResponse2 = JoinedMeetingResponse.builder()
+                .moimId(MOIM_ID.longValue())
                 .meetingId(MEETING_ID.longValue())
+                .moimTitle(MOIM_TITLE.value())
                 .agenda(MEETING_AGENDA.value())
                 .startDate(LocalDate.of(2024, 3, 4))
                 .build();
 
         JoinedMeetingResponse joinedMeetingResponse3 = JoinedMeetingResponse.builder()
+                .moimId(MOIM_ID.longValue())
                 .meetingId(MEETING_ID.longValue())
+                .moimTitle(MOIM_TITLE.value())
                 .agenda(MEETING_AGENDA.value())
                 .startDate(LocalDate.of(2024, 3, 4))
                 .build();

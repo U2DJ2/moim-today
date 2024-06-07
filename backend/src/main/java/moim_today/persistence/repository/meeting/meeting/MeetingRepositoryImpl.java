@@ -11,6 +11,8 @@ import moim_today.dto.meeting.meeting.QJoinedMeetingDao;
 import moim_today.dto.meeting.meeting.QMeetingSimpleDao;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
+import moim_today.persistence.entity.meeting.meeting.QMeetingJpaEntity;
+import moim_today.persistence.entity.moim.moim.QMoimJpaEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -123,12 +125,15 @@ public class MeetingRepositoryImpl implements MeetingRepository {
     public List<JoinedMeetingDao> findAllByMeetingIds(final List<Long> meetingIds) {
         return queryFactory.select(
                         new QJoinedMeetingDao(
+                                moimJpaEntity.id,
                                 meetingJpaEntity.id,
+                                moimJpaEntity.title,
                                 meetingJpaEntity.agenda,
                                 meetingJpaEntity.startDateTime
                         )
                 )
                 .from(meetingJpaEntity)
+                .join(moimJpaEntity).on(meetingJpaEntity.moimId.eq(moimJpaEntity.id))
                 .where(meetingJpaEntity.id.in(meetingIds))
                 .fetch();
     }
@@ -138,12 +143,15 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                                                               final LocalDateTime currentDateTime) {
         return queryFactory.select(
                         new QJoinedMeetingDao(
+                                moimJpaEntity.id,
                                 meetingJpaEntity.id,
+                                moimJpaEntity.title,
                                 meetingJpaEntity.agenda,
                                 meetingJpaEntity.startDateTime
                         )
                 )
                 .from(meetingJpaEntity)
+                .join(moimJpaEntity).on(meetingJpaEntity.moimId.eq(moimJpaEntity.id))
                 .where(meetingJpaEntity.id.in(meetingIds)
                         .and(meetingJpaEntity.startDateTime.after(currentDateTime)))
                 .fetch();
@@ -154,12 +162,15 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                                                           final LocalDateTime currentDateTime) {
         return queryFactory.select(
                         new QJoinedMeetingDao(
+                                moimJpaEntity.id,
                                 meetingJpaEntity.id,
+                                moimJpaEntity.title,
                                 meetingJpaEntity.agenda,
                                 meetingJpaEntity.startDateTime
                         )
                 )
                 .from(meetingJpaEntity)
+                .join(moimJpaEntity).on(meetingJpaEntity.moimId.eq(moimJpaEntity.id))
                 .where(meetingJpaEntity.id.in(meetingIds)
                         .and(meetingJpaEntity.startDateTime.before(currentDateTime)))
                 .fetch();

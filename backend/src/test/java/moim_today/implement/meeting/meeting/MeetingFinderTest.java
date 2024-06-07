@@ -10,6 +10,7 @@ import moim_today.persistence.entity.email_subscribe.EmailSubscribeJpaEntity;
 import moim_today.persistence.entity.meeting.joined_meeting.JoinedMeetingJpaEntity;
 import moim_today.persistence.entity.meeting.meeting.MeetingJpaEntity;
 import moim_today.persistence.entity.member.MemberJpaEntity;
+import moim_today.persistence.entity.moim.moim.MoimJpaEntity;
 import moim_today.util.ImplementTest;
 import moim_today.util.TestConstant;
 import org.junit.jupiter.api.DisplayName;
@@ -797,7 +798,15 @@ class MeetingFinderTest extends ImplementTest {
     @Test
     void findAllByMeetingIds() {
         // given 1
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .title(MOIM_TITLE.value())
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+
+        // given 2
         MeetingJpaEntity beforeMeetingJpaEntity = MeetingJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
                 .agenda(MEETING_AGENDA.value())
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
@@ -805,6 +814,7 @@ class MeetingFinderTest extends ImplementTest {
                 .build();
 
         MeetingJpaEntity afterMeetingJpaEntity = MeetingJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
                 .agenda(MEETING_AGENDA.value())
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 14, 0, 0))
@@ -846,7 +856,15 @@ class MeetingFinderTest extends ImplementTest {
     @Test
     void findAllUpcomingByMeetingIds() {
         // given 1
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .title(MOIM_TITLE.value())
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+
+        // given 2
         MeetingJpaEntity beforeMeetingJpaEntity = MeetingJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
                 .agenda(MEETING_AGENDA.value())
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 11, 59, 59))
@@ -854,6 +872,7 @@ class MeetingFinderTest extends ImplementTest {
                 .build();
 
         MeetingJpaEntity afterMeetingJpaEntity1 = MeetingJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
                 .agenda(MEETING_AGENDA.value())
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 1))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 14, 0, 0))
@@ -861,6 +880,7 @@ class MeetingFinderTest extends ImplementTest {
                 .build();
 
         MeetingJpaEntity afterMeetingJpaEntity2 = MeetingJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
                 .agenda(MEETING_AGENDA.value())
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 1))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 14, 0, 0))
@@ -871,7 +891,7 @@ class MeetingFinderTest extends ImplementTest {
         meetingRepository.save(afterMeetingJpaEntity1);
         meetingRepository.save(afterMeetingJpaEntity2);
 
-        // given 2
+        // given 3
         long memberId = MEMBER_ID.longValue();
 
         JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
@@ -910,7 +930,15 @@ class MeetingFinderTest extends ImplementTest {
     @Test
     void findAllPastByMeetingIds() {
         // given 1
+        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
+                .title(MOIM_TITLE.value())
+                .build();
+
+        moimRepository.save(moimJpaEntity);
+
+        // given 2
         MeetingJpaEntity beforeMeetingJpaEntity1 = MeetingJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
                 .agenda(MEETING_AGENDA.value())
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 11, 59, 59))
@@ -918,6 +946,7 @@ class MeetingFinderTest extends ImplementTest {
                 .build();
 
         MeetingJpaEntity beforeMeetingJpaEntity2 = MeetingJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
                 .agenda(MEETING_AGENDA.value())
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 10, 0, 0))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 11, 59, 59))
@@ -925,6 +954,7 @@ class MeetingFinderTest extends ImplementTest {
                 .build();
 
         MeetingJpaEntity afterMeetingJpaEntity = MeetingJpaEntity.builder()
+                .moimId(moimJpaEntity.getId())
                 .agenda(MEETING_AGENDA.value())
                 .startDateTime(LocalDateTime.of(2024, 3, 4, 12, 0, 1))
                 .endDateTime(LocalDateTime.of(2024, 3, 4, 14, 0, 0))
@@ -935,7 +965,7 @@ class MeetingFinderTest extends ImplementTest {
         meetingRepository.save(beforeMeetingJpaEntity2);
         meetingRepository.save(afterMeetingJpaEntity);
 
-        // given 2
+        // given 3
         long memberId = MEMBER_ID.longValue();
 
         JoinedMeetingJpaEntity joinedMeetingJpaEntity1 = JoinedMeetingJpaEntity.builder()
