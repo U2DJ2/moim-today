@@ -117,6 +117,7 @@ function MettingDetailPage() {
     try {
       const response = await POST(`api/members/meetings/${meetingId}/refusal`);
       setAlertOpen(true);
+      setConfirmType("attendance");
       setAlertMessage("미팅에 참석을 취소했습니다.");
       checkIsMember();
       getMeetingInfo();
@@ -146,6 +147,7 @@ function MettingDetailPage() {
     try {
       await deleteMeeting();
       setAlertOpen(true);
+      setConfirmType("meetingDelete");
       setAlertMessage("미팅을 삭제했습니다.");
     } catch (e) {
       console.log(e);

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import NewModal from "../.././../components/NewModal";
 import CardComponent from "../../MoimJoinPage/CardComponent";
+import { useNavigate } from "react-router";
 
 function MeetingSection() {
   const [selected, setSelected] = useState("전체");
@@ -13,6 +14,7 @@ function MeetingSection() {
     "지난 미팅": "PAST",
     "다가오는 미팅": "UPCOMING",
   };
+  const navigate = useNavigate();
   const getMeetings = async () => {
     try {
       const result = await axios.get("https://api.moim.today/api/meetings", {
@@ -26,6 +28,9 @@ function MeetingSection() {
       setAlert(e.response.data.message);
     }
   };
+  const meetingCardHandler = (meetingId) => {
+    navigate(`/meeting/${moimId}/${meetingId}`);
+  };
 
   useEffect(() => {
     getMeetings();
@@ -37,7 +42,7 @@ function MeetingSection() {
         <h1 className="text-6xl font-black pb-3 font-Pretendard_Black text-black max-md:max-w-full max-md:text-4xl">
           My Meetings
         </h1>
-        <div className="flex items-center self-start font-Pretendard_Medium font-normal text-black max-md:px-5 max-md:max-w-full">
+        <div className="flex flex-col items-start self-start font-Pretendard_Medium font-normal text-black gap-6 max-md:px-5 max-md:max-w-full">
           <div className="flex gap-3">
             <div
               className={`justify-center px-9 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
@@ -64,16 +69,27 @@ function MeetingSection() {
               다가오는 미팅
             </div>
           </div>
-          {meetingInfo.map((meeting, index) => {
-            return (
-              <CardComponent
-                key={meeting.meetingId}
-                meetingId={meetingInfo.meetingId}
-                startDate={meetingInfo.startDate}
-                title={meetingInfo.agenda}
-              />
-            );
-          })}
+          <div className="grid grid-cols-4 gap-4">
+            {meetingInfo.length != 0 ? (
+              meetingInfo.map((meeting, index) => {
+                return (
+                  <CardComponent
+                    key={meeting.meetingId}
+                    date={meeting.date}
+                    isMeeting={true}
+                    btn={false}
+                    meetingId={meetingInfo.meetingId}
+                    dday={meeting.dDay}
+                    startDate={meetingInfo.startDate}
+                    title={meetingInfo.agenda}
+                    clickHandler={() => meetingCardHandler(meeting.meetingId)}
+                  />
+                );
+              })
+            ) : (
+              <div>미팅이 없습니다.</div>
+            )}
+          </div>
         </div>
       </div>
       <NewModal show={isShow} size="sm" onClose={() => setShow(false)}>
