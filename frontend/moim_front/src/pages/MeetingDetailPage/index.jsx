@@ -173,7 +173,7 @@ function MettingDetailPage() {
         </h3>
         <button
           className="py-3 px-5 w-fit text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer"
-          onClick={() => setAlertOpen(true)}
+          onClick={() => setAlertOpen(false)}
         >
           확인
         </button>

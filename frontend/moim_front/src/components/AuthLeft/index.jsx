@@ -32,18 +32,19 @@ function AuthLeft({
       isKeepLogin: memory ? true : false,
     };
     POST("api/login", data)
-      .then((res) => {
+      .then(() => {
         navigation("/");
       })
       .catch((error) => {
-        const errorCode = error.response.data.statusCode;
-
-        if (errorCode === "404") {
-          setOpenAlertModal(true);
+        setOpenAlertModal(true);
+        // If the error message is not provided by the server, set the default message
+        if (!error.response.data.message) {
+          setMessage("로그인에 실패했습니다.");
+          return;
+        }
+        else
+        {
           setMessage(error.response.data.message);
-        } else {
-          setOpenAlertModal(true);
-          setMessage(error.message);
         }
       });
   };
@@ -81,9 +82,8 @@ function AuthLeft({
             name="password"
             placeholder="비밀번호를 입력해주세요."
             autoComplete="off"
-            className={`border-b border-[#575757] font-Pretendard_Light text-black text-xl pt-2 pb-2 focus:outline-none w-full ${
-              password && "font-mono"
-            }`}
+            className={`border-b border-[#575757] font-Pretendard_Light text-black text-xl pt-2 pb-2 focus:outline-none w-full ${password && "font-mono"
+              }`}
             value={password}
             onChange={passwordHandler}
           />
