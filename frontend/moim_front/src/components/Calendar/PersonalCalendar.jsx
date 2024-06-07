@@ -162,7 +162,7 @@ export default function Calendar({
       // Reset all events and fetch new events
       setEvents([]);
       setLoadedMonths(new Set());
-      
+
       var year = calendarStart.getFullYear();
 
       // Get new events
@@ -210,15 +210,15 @@ export default function Calendar({
   }
 
   async function fetchAvailables() {
-    //모임 가용시간
+    // 모임 가용시간
     try {
       let allEvents = [];
       const isPast = new Date(calendarStart) < new Date();
       const startDate = isPast
         ? new Date().toISOString().split("T")[0]
         : calendarStart instanceof Date
-        ? calendarStart.toISOString().split("T")[0]
-        : new Date(calendarStart).toISOString().split("T")[0];
+          ? calendarStart.toISOString().split("T")[0]
+          : new Date(calendarStart).toISOString().split("T")[0];
 
       if (moimId == null) return;
 
@@ -295,7 +295,7 @@ export default function Calendar({
         },
       });
       setIsModalOpen(false);
-      
+
       // Refresh the calendar
       setIsRefresh(true);
     } catch (error) {

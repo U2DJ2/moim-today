@@ -104,6 +104,7 @@ function AvailableTime({ moimId }) {
 
   const handleShowAll = () => {
     // 전체 보기 기능 추가
+    setSelectedMemberId(null);
   };
 
   const GetMembers = async () => {
