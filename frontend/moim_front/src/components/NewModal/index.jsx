@@ -1,5 +1,4 @@
 import { Modal } from "flowbite-react";
-import { Children } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 const modalTheme = {

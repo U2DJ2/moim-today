@@ -105,11 +105,14 @@ export default function Calendar({
     try {
       let allEvents = [];
 
+      // Parse calendar start date. expression is like "2024-06-01"
+      var parseDate = calendarStart.toISOString().split("T")[0];
+
       const memberSchedule = await axios.get(
         `https://api.moim.today/api/schedules/weekly/available-time/members/${memberId}`,
         {
           params: {
-            startDate: calendarStart,
+            startDate: parseDate,
           },
         }
       );

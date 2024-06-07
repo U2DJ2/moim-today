@@ -10,8 +10,6 @@ import DetailedLeft from "../../components/DetailedLeft";
 import DetailedRight from "../../components/DetailedRight";
 
 // UI
-
-import { HiOutlineExclamationCircle } from "react-icons/hi";
 import NewModal from "../../components/NewModal";
 
 function MoimDetailPage() {
