@@ -135,6 +135,7 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                 .from(meetingJpaEntity)
                 .join(moimJpaEntity).on(meetingJpaEntity.moimId.eq(moimJpaEntity.id))
                 .where(meetingJpaEntity.id.in(meetingIds))
+                .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
     }
 
@@ -154,6 +155,7 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                 .join(moimJpaEntity).on(meetingJpaEntity.moimId.eq(moimJpaEntity.id))
                 .where(meetingJpaEntity.id.in(meetingIds)
                         .and(meetingJpaEntity.startDateTime.after(currentDateTime)))
+                .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
     }
 
@@ -173,6 +175,7 @@ public class MeetingRepositoryImpl implements MeetingRepository {
                 .join(moimJpaEntity).on(meetingJpaEntity.moimId.eq(moimJpaEntity.id))
                 .where(meetingJpaEntity.id.in(meetingIds)
                         .and(meetingJpaEntity.startDateTime.before(currentDateTime)))
+                .orderBy(meetingJpaEntity.startDateTime.asc())
                 .fetch();
     }
 
