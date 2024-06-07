@@ -52,19 +52,19 @@ public class TodoController {
 
     @PatchMapping
     public TodoUpdateResponse updateTodo(@Login final MemberSession memberSession,
-                                         @RequestBody final TodoUpdateRequest todoUpdateRequest) {
+                                         @RequestBody @Valid final TodoUpdateRequest todoUpdateRequest) {
         return todoService.updateTodo(memberSession.id(), todoUpdateRequest);
     }
 
     @PatchMapping("/todo-progress")
     public TodoUpdateResponse updateTodoProgress(@Login final MemberSession memberSession,
-                                                 @RequestBody final TodoProgressUpdateRequest todoProgressUpdateRequest){
+                                                 @RequestBody @Valid final TodoProgressUpdateRequest todoProgressUpdateRequest){
         return todoService.updateTodoProgress(memberSession.id(), todoProgressUpdateRequest);
     }
 
     @DeleteMapping
     public void deleteTodo(@Login final MemberSession memberSession,
-                           @RequestBody final TodoRemoveRequest todoRemoveRequest) {
+                           @RequestBody @Valid final TodoRemoveRequest todoRemoveRequest) {
         todoService.deleteTodo(memberSession.id(), todoRemoveRequest);
     }
 }

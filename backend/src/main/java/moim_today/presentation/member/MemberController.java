@@ -1,5 +1,6 @@
 package moim_today.presentation.member;
 
+import jakarta.validation.Valid;
 import moim_today.application.member.MemberService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.admin.user_inquiry.UserInquiryRequest;
@@ -19,13 +20,13 @@ public class MemberController {
     }
 
     @PostMapping("/password-recovery")
-    public void recoverPassword(@RequestBody final PasswordRecoverRequest passwordRecoverRequest) {
+    public void recoverPassword(@RequestBody @Valid final PasswordRecoverRequest passwordRecoverRequest) {
         memberService.recoverPassword(passwordRecoverRequest);
     }
 
     @PatchMapping("/password")
     public void updatePassword(@Login final MemberSession memberSession,
-                               @RequestBody final PasswordUpdateRequest passwordUpdateRequest) {
+                               @RequestBody @Valid final PasswordUpdateRequest passwordUpdateRequest) {
         memberService.updatePassword(memberSession, passwordUpdateRequest);
     }
 
@@ -36,7 +37,7 @@ public class MemberController {
 
     @PatchMapping("/profile")
     public void updateProfile(@Login final MemberSession memberSession,
-                              @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
+                              @RequestBody @Valid final ProfileUpdateRequest profileUpdateRequest) {
         memberService.updateProfile(memberSession.id(), profileUpdateRequest);
     }
 
@@ -65,7 +66,7 @@ public class MemberController {
 
     @PostMapping("/user-inquiry")
     public void createUserInquiry(@Login final MemberSession memberSession,
-                                  @RequestBody final UserInquiryRequest userInquiryRequest){
+                                  @RequestBody @Valid final UserInquiryRequest userInquiryRequest){
         memberService.createUserInquiry(memberSession, userInquiryRequest);
     }
 }

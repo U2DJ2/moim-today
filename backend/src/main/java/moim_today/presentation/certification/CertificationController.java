@@ -1,5 +1,6 @@
 package moim_today.presentation.certification;
 
+import jakarta.validation.Valid;
 import moim_today.application.certification.email.EmailCertificationService;
 import moim_today.application.certification.password.PasswordCertificationService;
 import moim_today.dto.certification.CompleteEmailCertificationRequest;
@@ -29,20 +30,20 @@ public class CertificationController {
 
     @ResponseBody
     @PostMapping("/password")
-    public void sendPasswordToken(@RequestBody final PasswordFindRequest passwordFindRequest) {
+    public void sendPasswordToken(@RequestBody @Valid final PasswordFindRequest passwordFindRequest) {
         passwordCertificationService.sendPasswordToken(passwordFindRequest.email());
     }
 
     @ResponseBody
     @PostMapping("/email")
-    public void sendCertificationEmail(@RequestBody final EmailCertificationRequest emailCertificationRequest) {
+    public void sendCertificationEmail(@RequestBody @Valid final EmailCertificationRequest emailCertificationRequest) {
         emailCertificationService.sendCertificationEmail(emailCertificationRequest.email());
     }
 
     @ResponseBody
     @PostMapping("/email/complete")
     public CompleteEmailCertificationResponse completeCertification(
-            @RequestBody final CompleteEmailCertificationRequest completeEmailCertificationRequest
+            @RequestBody @Valid final CompleteEmailCertificationRequest completeEmailCertificationRequest
     ) {
         return emailCertificationService.completeCertification(completeEmailCertificationRequest.email());
     }

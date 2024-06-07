@@ -1,6 +1,7 @@
 package moim_today.presentation.admin.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import moim_today.application.admin.auth.AdminAuthService;
 import moim_today.domain.university.AdminSession;
 import moim_today.dto.admin.auth.AdminLoginRequest;
@@ -21,7 +22,7 @@ public class AdminAuthController {
     }
 
     @PostMapping("/login")
-    public void adminLogin(@RequestBody final AdminLoginRequest adminLoginRequest,
+    public void adminLogin(@RequestBody @Valid final AdminLoginRequest adminLoginRequest,
                            final HttpServletRequest request) {
         adminAuthService.login(adminLoginRequest, request);
     }

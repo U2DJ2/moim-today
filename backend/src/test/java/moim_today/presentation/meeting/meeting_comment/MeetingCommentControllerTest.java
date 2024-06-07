@@ -115,7 +115,7 @@ class MeetingCommentControllerTest extends ControllerTest {
                 .contents(MEETING_COMMENT_CONTENTS.value())
                 .build();
 
-        mockMvc.perform(patch("/api/meeting-comments/")
+        mockMvc.perform(patch("/api/meeting-comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(meetingCommentUpdateRequest)))
                 .andExpect(status().isOk())
@@ -136,7 +136,7 @@ class MeetingCommentControllerTest extends ControllerTest {
     void deleteMeetingComment() throws Exception {
         MeetingCommentDeleteRequest meetingCommentDeleteRequest = new MeetingCommentDeleteRequest(MEETING_COMMENT_ID.longValue());
 
-        mockMvc.perform(delete("/api/meeting-comments/")
+        mockMvc.perform(delete("/api/meeting-comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(meetingCommentDeleteRequest)))
                 .andExpect(status().isOk())

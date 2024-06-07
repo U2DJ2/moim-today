@@ -1,5 +1,6 @@
 package moim_today.presentation.meeting.meeting;
 
+import jakarta.validation.Valid;
 import moim_today.application.meeting.meeting.MeetingService;
 import moim_today.domain.meeting.enums.MeetingStatus;
 import moim_today.domain.member.MemberSession;
@@ -33,7 +34,7 @@ public class MeetingController {
     @PostMapping
     public MeetingCreateResponse createMeeting(
             @Login final MemberSession memberSession,
-            @RequestBody final MeetingCreateRequest meetingCreateRequest) {
+            @RequestBody @Valid final MeetingCreateRequest meetingCreateRequest) {
         return meetingService.createMeeting(memberSession.id(), meetingCreateRequest);
     }
 
@@ -54,7 +55,7 @@ public class MeetingController {
 
     @PatchMapping
     public void updateMeeting(@Login final MemberSession memberSession,
-                              @RequestBody final MeetingUpdateRequest meetingUpdateRequest) {
+                              @RequestBody @Valid final MeetingUpdateRequest meetingUpdateRequest) {
         meetingService.updateMeeting(memberSession.id(), meetingUpdateRequest);
     }
 

@@ -128,11 +128,11 @@ class AdminMemberServiceTest {
 
         //when
         List<MemberResponse> allMembers1 = adminMemberService.findAllMembers(university.getId(), department.getId());
-        List<MemberResponse> allMembers2 = adminMemberService.findAllMembers(0, 0);
+        List<MemberResponse> allMembers2 = adminMemberService.findAllMembers(otherUniversity.getId(), otherDepartment.getId());
 
         //then
         assertThat(allMembers1.size()).isEqualTo(2);
-        assertThat(allMembers2.size()).isEqualTo(4);
+        assertThat(allMembers2.size()).isEqualTo(1);
     }
 
     @DisplayName("어드민 - 회원을 삭제한다.")

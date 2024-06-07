@@ -2,7 +2,6 @@ package moim_today.fake_class.moim;
 
 import jakarta.servlet.http.HttpServletResponse;
 import moim_today.application.moim.moim.MoimService;
-import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.MoimSortedFilter;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.*;
@@ -59,7 +58,6 @@ public class FakeMoimService implements MoimService {
                 .currentCount(Integer.parseInt(CURRENT_COUNT.value()))
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PUBLIC)
                 .views(Integer.parseInt(VIEWS.value()))
                 .startDate(LocalDate.of(2024, 3, 1))
                 .endDate(LocalDate.of(2024, 6, 30))
@@ -156,7 +154,6 @@ public class FakeMoimService implements MoimService {
                 .currentCount(CURRENT_COUNT.intValue())
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PUBLIC)
                 .build();
 
         MoimSimpleResponse moimSimpleResponse2 = MoimSimpleResponse.builder()
@@ -166,7 +163,6 @@ public class FakeMoimService implements MoimService {
                 .currentCount(CURRENT_COUNT.intValue())
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PUBLIC)
                 .build();
 
         return List.of(moimSimpleResponse1, moimSimpleResponse2);
@@ -181,7 +177,6 @@ public class FakeMoimService implements MoimService {
                 .currentCount(CURRENT_COUNT.intValue())
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PUBLIC)
                 .build();
 
         MoimSimpleResponse moimSimpleResponse2 = MoimSimpleResponse.builder()
@@ -191,7 +186,6 @@ public class FakeMoimService implements MoimService {
                 .currentCount(CURRENT_COUNT.intValue())
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PUBLIC)
                 .build();
 
         return List.of(moimSimpleResponse1, moimSimpleResponse2);
@@ -208,7 +202,6 @@ public class FakeMoimService implements MoimService {
                 .currentCount(CURRENT_COUNT.intValue())
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PUBLIC)
                 .build();
 
         MoimSimpleResponse moimSimpleResponse2 = MoimSimpleResponse.builder()
@@ -218,7 +211,6 @@ public class FakeMoimService implements MoimService {
                 .currentCount(CURRENT_COUNT.intValue())
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PUBLIC)
                 .build();
 
         return List.of(moimSimpleResponse1, moimSimpleResponse2);

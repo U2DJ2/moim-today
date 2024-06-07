@@ -1,5 +1,6 @@
 package moim_today.presentation.admin.user_inquiry;
 
+import jakarta.validation.Valid;
 import moim_today.application.admin.user_inquiry.UserInquiryService;
 import moim_today.domain.university.AdminSession;
 import moim_today.dto.admin.user_inquiry.UserInquiryAnswerRequest;
@@ -32,12 +33,12 @@ public class UserInquiryController {
     }
 
     @PatchMapping("/answer-complete")
-    public void updateUserInquiryAnswer(@RequestBody final UserInquiryAnswerRequest userInquiryAnswerRequest){
+    public void updateUserInquiryAnswer(@RequestBody @Valid final UserInquiryAnswerRequest userInquiryAnswerRequest){
         userInquiryService.updateUserInquiryAnswer(userInquiryAnswerRequest);
     }
 
     @PostMapping("/response")
-    public void respondUserInquiry(@RequestBody final UserInquiryRespondRequest userInquiryRespondRequest){
+    public void respondUserInquiry(@RequestBody @Valid final UserInquiryRespondRequest userInquiryRespondRequest){
         userInquiryService.respondUserInquiry(userInquiryRespondRequest);
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import static moim_today.global.constant.StatusCodeConstant.BAD_REQUEST;
+import static moim_today.global.constant.SymbolConstant.ERROR_MESSAGE_DELIMITER;
 import static moim_today.global.constant.exception.SpringExceptionConstant.*;
 
 @Slf4j
@@ -78,7 +79,7 @@ public class ApiRestControllerAdvice {
     // description : Enum class JSON Parse Error
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ErrorResponse handleIncorrectData(final HttpMessageNotReadableException e){
+    public ErrorResponse handleIncorrectData(final HttpMessageNotReadableException e) {
         return ErrorResponse.of(BAD_REQUEST.statusCode(), e.getMessage());
     }
 
@@ -102,7 +103,12 @@ public class ApiRestControllerAdvice {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ErrorResponse handleException(final MethodArgumentTypeMismatchException e) {
         log.error("MethodArgumentTypeMismatchException={}", e.getMessage());
-        BadRequestException exception = new BadRequestException(METHOD_ARGUMENT_TYPE_MISMATCH.message());
+        String errorMessage = String.join(ERROR_MESSAGE_DELIMITER.value(),
+                METHOD_ARGUMENT_TYPE_MISMATCH.message(),
+                MISSING_PARAMETER.message() + e.getParameter().getParameterName(),
+                MISMATCH_TYPE.message() + e.getParameter().getParameterType());
+
+        BadRequestException exception = new BadRequestException(errorMessage);
         return ErrorResponse.of(exception.getStatusCode(), exception.getMessage());
     }
 
@@ -111,7 +117,12 @@ public class ApiRestControllerAdvice {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ErrorResponse handleException(final MissingServletRequestParameterException e) {
         log.error("MissingServletRequestParameterException={}", e.getMessage());
-        BadRequestException exception = new BadRequestException(MISSING_SERVLET_REQUEST_PARAMETER.message());
+        String errorMessage = String.join(ERROR_MESSAGE_DELIMITER.value(),
+                MISSING_SERVLET_REQUEST_PARAMETER.message(),
+                MISSING_PARAMETER.message() + e.getParameterName(),
+                MISMATCH_TYPE.message() + e.getParameterType());
+
+        BadRequestException exception = new BadRequestException(errorMessage);
         return ErrorResponse.of(exception.getStatusCode(), exception.getMessage());
     }
 

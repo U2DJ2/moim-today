@@ -1,27 +1,28 @@
 package moim_today.dto.moim.moim;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 
 import java.time.LocalDate;
 
+import static moim_today.global.constant.exception.ValidationExceptionConstant.*;
+
 @Builder
 public record MoimUpdateRequest(
-        long moimId,
-        String title,
-        String contents,
-        int capacity,
-        //imageUrl null 허용
+        @Min(value = 0, message = MOIM_ID_MIN_ERROR) long moimId,
+        @NotBlank(message = MOIM_TITLE_BLANK_ERROR) String title,
+        @NotBlank(message = MOIM_CONTENT_BLANK_ERROR) String contents,
+        @Min(value = 2, message = MOIM_CAPACITY_MIN_ERROR) int capacity,
         String imageUrl,
-        //비밀번호 null 허용
-        String password,
-        MoimCategory moimCategory,
-        DisplayStatus displayStatus,
+        @NotNull(message = MOIM_CATEGORY_NULL_ERROR) MoimCategory moimCategory,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-        LocalDate startDate,
+        @NotNull(message = MOIM_START_DATE_NULL_ERROR) LocalDate startDate,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-        LocalDate endDate
+        @NotNull(message = MOIM_END_DATE_NULL_ERROR) LocalDate endDate
 ) {
+
 }
