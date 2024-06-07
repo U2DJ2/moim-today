@@ -88,7 +88,7 @@ public class ApiRestControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorResponse handleValidationExceptions(final MethodArgumentNotValidException e) {
         String errorMessage = e.getBindingResult().getFieldErrors().stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .map(error -> error.getDefaultMessage())
                 .findFirst()
                 .orElse(e.getMessage());
         return ErrorResponse.of(BAD_REQUEST.statusCode(), errorMessage);
