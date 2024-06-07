@@ -54,7 +54,6 @@ function MoimHome({ isHost, moimId }) {
       getNotices();
     } catch (e) {
       console.log(e);
-      
     }
   };
   const getNotices = async () => {
@@ -154,6 +153,7 @@ function MoimHome({ isHost, moimId }) {
           {meetings.length != 0 ? (
             meetings.map((meeting, index) => (
               <CardComponent
+                joinAvailability={meeting.joinAvailability}
                 key={index}
                 date={meeting.date}
                 startDate={meeting.startDate}

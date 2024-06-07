@@ -12,6 +12,7 @@ function CardComponent({
   clickHandler,
   isMeeting,
   meetingId,
+  joinAvailability = null,
   initialAttendance,
   startDate,
   attendance,
@@ -95,6 +96,11 @@ function CardComponent({
                 {title}
               </div>
             </div>
+            {joinAvailability === null ? null : (
+              <div className="font-Pretendard_Light text-slate-400 text-xs">
+                해당 시간에 이미 일정이 존재합니다.
+              </div>
+            )}
           </div>
         </div>
 

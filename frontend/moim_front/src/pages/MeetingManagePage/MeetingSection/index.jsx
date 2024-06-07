@@ -22,6 +22,7 @@ function MeetingSection() {
           meetingStatus: meetingStatus[selected],
         },
       });
+      console.log(result.data);
       setMeetingInfo(result.data.data);
     } catch (e) {
       setShow(true);
@@ -72,7 +73,6 @@ function MeetingSection() {
           <div className="grid grid-cols-4 gap-4">
             {meetingInfo.length != 0 ? (
               meetingInfo.map((meeting, index) => {
-                console.log(meeting.agenda);
                 return (
                   <CardComponent
                     key={meeting.meetingId}
