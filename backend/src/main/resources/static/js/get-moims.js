@@ -17,7 +17,7 @@ $(document).ready(function() {
                     var imgElement = $('<img>').attr('src', moim.imageUrl).css('width', '100px');
                     row.append($('<td>').append(imgElement)); // 이미지 요소를 td에 추가합니다.
                     row.append($('<td>').text(moim.moimCategory));
-                    row.append($('<td>').text(moim.displayStatus));
+                    // row.append($('<td>').text(moim.displayStatus));
                     var deleteButton = $('<button>').addClass('btn btn-danger').text('삭제');
                     deleteButton.click(function() {
                         deleteMoim(moim.moimId, row);
