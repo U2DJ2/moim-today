@@ -150,7 +150,7 @@ function MettingDetailPage() {
       setConfirmType("meetingDelete");
       setAlertMessage("미팅을 삭제했습니다.");
     } catch (e) {
-      console.log(e);
+      console.log(e);g
     }
   };
 

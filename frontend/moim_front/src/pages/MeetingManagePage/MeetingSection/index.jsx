@@ -70,7 +70,7 @@ function MeetingSection() {
               다가오는 미팅
             </div>
           </div>
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {meetingInfo.length != 0 ? (
               meetingInfo.map((meeting, index) => {
                 return (

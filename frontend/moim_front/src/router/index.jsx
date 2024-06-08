@@ -72,7 +72,6 @@ function Router() {
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/detailed/:MoimId" element={<MoimDetailPage />} />
         <Route path="/meeting/:MoimId" element={<MeetingCreation />} />
 
         <Route element={<MoimLayout />}>
@@ -85,6 +84,7 @@ function Router() {
             path="/join/:moimId/notice/:moimNoticeId"
             element={<NoticeDetailPage />}
           />
+          <Route path="/detailed/:MoimId" element={<MoimDetailPage />} />
         </Route>
       </Route>
 
