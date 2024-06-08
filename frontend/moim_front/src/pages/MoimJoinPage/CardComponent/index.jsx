@@ -69,7 +69,7 @@ function CardComponent({
 
   return (
     <div
-      className="w-auto h-fit p-8 grid font-Pretendard_SemiBold text-xl bg-white shadow-[0px_1px_16px_rgba(0,_0,_0,_0.08)] rounded-3xl hover:cursor-pointer"
+      className="w-auto h-fit p-8 grid font-Pretendard_SemiBold text-xl bg-white shadow-[0px_1px_16px_rgba(0,_0,_0,_0.08)] rounded-3xl hover:cursor-pointer max-2xl:p-4 max-2xl:text-sm"
       onClick={clickHandler}
     >
       <div className="grid grid-flow-row gap-2">
