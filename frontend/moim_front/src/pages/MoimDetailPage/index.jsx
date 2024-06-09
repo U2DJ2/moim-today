@@ -12,8 +12,6 @@ import DetailedRight from "../../components/DetailedRight";
 // UI
 import NewModal from "../../components/NewModal";
 
-import MoimContainer from "../../components/PageContainer/MoimContainer";
-
 function MoimDetailPage() {
   const { MoimId } = useParams();
   const [message, setMessage] = useState("");
@@ -52,19 +50,19 @@ function MoimDetailPage() {
   }, []);
 
   return (
-    <MoimContainer>
-      <DetailedLeft
-        userName={writerInfo.username}
-        title={moimInfo.title}
-        currentCount={moimInfo.currentCount}
-        capacity={moimInfo.capacity}
-        category={moimInfo.category}
-        contents={moimInfo.contents}
-        image={moimInfo.imageUrl}
-        profileImg={writerInfo.memberProfileImageUrl}
-        joined={false}
-      />
-      <div className="flex flex-col min-h-screen max-h-full w-full bg-white shadow-lg overflow-hidden rounded-t-3xl px-20 pt-8 pb-6 gap-8 max-sm:px-4">
+    <div className="bg-gradient-to-b justify-center from-white to-[#F6F8FE] pl-10">
+      <div className="flex gap-8 pt-2 flex-1 overflow-auto">
+        <DetailedLeft
+          userName={writerInfo.username}
+          title={moimInfo.title}
+          currentCount={moimInfo.currentCount}
+          capacity={moimInfo.capacity}
+          joined={false}
+          image={moimInfo.imageUrl}
+          setMessage={setMessage}
+          message={message}
+          setIsOpen={setAlertOpen}
+        />
         <DetailedRight moimInfo={moimInfo} className={"pl-3"} />
       </div>
       <NewModal
@@ -88,8 +86,8 @@ function MoimDetailPage() {
           </div>
         </div>
       </NewModal>
-    </MoimContainer>
-  )
+    </div>
+  );
 }
 
 export default MoimDetailPage;
