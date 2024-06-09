@@ -66,7 +66,6 @@ function MoimHome({ isHost, moimId }) {
   const getNotices = async () => {
     try {
       const result = await fetchNotices(moimId);
-      console.log(result);
       setNotices(result.data.data);
     } catch (e) {
       console.log(e);
@@ -76,6 +75,7 @@ function MoimHome({ isHost, moimId }) {
     try {
       const result = await fetchMeetings(moimId, meetingOption);
       setMeetings(result.data.data);
+      console.log("ghi", meetings);
     } catch (e) {
       console.log(e);
     }
@@ -188,6 +188,7 @@ function MoimHome({ isHost, moimId }) {
                   dday={meeting.dDay}
                   title={meeting.agenda}
                   attendance={meeting.attendance}
+                  joinAvailability={meeting.joinAvailability}
                   btn={false}
                   isMeeting={true}
                   meetingId={meeting.meetingId}
