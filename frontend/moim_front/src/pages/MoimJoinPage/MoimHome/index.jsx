@@ -75,7 +75,6 @@ function MoimHome({ isHost, moimId }) {
     try {
       const result = await fetchMeetings(moimId, meetingOption);
       setMeetings(result.data.data);
-      console.log("ghi", meetings);
     } catch (e) {
       console.log(e);
     }
