@@ -10,9 +10,8 @@ import DetailedLeft from "../../components/DetailedLeft";
 import DetailedRight from "../../components/DetailedRight";
 
 // UI
-
-import { HiOutlineExclamationCircle } from "react-icons/hi";
 import NewModal from "../../components/NewModal";
+import MoimContainer from "../../components/PageContainer/MoimContainer";
 
 function MoimDetailPage() {
   const { MoimId } = useParams();
@@ -52,7 +51,18 @@ function MoimDetailPage() {
   }, []);
 
   return (
-    <div>
+    <MoimContainer>
+      <DetailedLeft
+        userName={writerInfo.username}
+        title={moimInfo.title}
+        currentCount={moimInfo.currentCount}
+        capacity={moimInfo.capacity}
+        category={moimInfo.category}
+        contents={moimInfo.contents}
+        image={moimInfo.imageUrl}
+        profileImg={writerInfo.memberProfileImageUrl}
+        joined={false}
+      />
       <div className="flex gap-8 flex-1 overflow-auto">
         <DetailedRight moimInfo={moimInfo} className={"pl-3"} />
       </div>
@@ -77,7 +87,7 @@ function MoimDetailPage() {
           </div>
         </div>
       </NewModal>
-    </div>
+    </MoimContainer>
   );
 }
 
