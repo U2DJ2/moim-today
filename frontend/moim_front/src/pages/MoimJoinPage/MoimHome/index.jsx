@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import CardComponent from "../CardComponent";
 import SimpleDrop from "../../../components/Dropdown/Simple";
-import { useNavigate, } from "react-router";
+import { useNavigate } from "react-router";
 import { GET, POST } from "../../../utils/axios";
 import CreationModal from "../../../components/CreationModal";
 import { fetchMeetings } from "../../../api/moim";
 import { fetchNotices } from "../../../api/moim";
 import AlertModal from "../../../components/NewModal";
-
 
 function MoimHome({ isHost, moimId }) {
   const [showModal, setShowModal] = useState(false);
@@ -63,7 +62,6 @@ function MoimHome({ isHost, moimId }) {
         setAlertOpen(true);
         console.log(e);
       });
-
   };
   const getNotices = async () => {
     try {
@@ -106,7 +104,11 @@ function MoimHome({ isHost, moimId }) {
 
   return (
     <>
-      <AlertModal show={isAlertOpen} size="sm" onClose={() => setAlertOpen(false)}>
+      <AlertModal
+        show={isAlertOpen}
+        size="sm"
+        onClose={() => setAlertOpen(false)}
+      >
         <div className="text-sm font-Pretendard_Light">{alertMessage}</div>
         <div className="flex justify-center pt-4">
           <button
@@ -240,7 +242,6 @@ function MoimHome({ isHost, moimId }) {
         )}
       </div>
     </>
-
   );
 }
 

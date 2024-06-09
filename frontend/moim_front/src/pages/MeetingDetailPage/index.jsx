@@ -32,6 +32,9 @@ function MettingDetailPage() {
 
   const [confirmType, setConfirmType] = useState("");
 
+  const [editAgenda, setEditAgenda] = useState("");
+  const [editPlace, setEditPlace] = useState("");
+
   const closeAlert = () => {
     setAlertOpen(false);
   };
@@ -101,6 +104,7 @@ function MettingDetailPage() {
         `api/members/meetings/${meetingId}/acceptance`
       );
       setAlertOpen(true);
+      setConfirmType("attendance");
       setAlertMessage("미팅에 참석되어 스케줄에 추가됩니다.");
       checkIsMember();
       getMeetingInfo();
@@ -113,9 +117,20 @@ function MettingDetailPage() {
     try {
       const response = await POST(`api/members/meetings/${meetingId}/refusal`);
       setAlertOpen(true);
+      setConfirmType("attendance");
       setAlertMessage("미팅에 참석을 취소했습니다.");
       checkIsMember();
       getMeetingInfo();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const deleteMeeting = async () => {
+    try {
+      const result = await axios.delete(
+        `https://api.moim.today/api/meetings/${meetingId}`
+      );
     } catch (e) {
       console.log(e);
     }
@@ -128,6 +143,17 @@ function MettingDetailPage() {
       console.log(e);
     }
   };
+  const onClickDeleteHandler = async () => {
+    try {
+      await deleteMeeting();
+      setAlertOpen(true);
+      setConfirmType("meetingDelete");
+      setAlertMessage("미팅을 삭제했습니다.");
+    } catch (e) {
+      console.log(e);
+      g;
+    }
+  };
 
   const getHost = async () => {
     try {
@@ -138,11 +164,19 @@ function MettingDetailPage() {
     }
   };
 
-  const deleteMeeting = async () => {
+  const MeetingEditHandler = async () => {
+    const body = {
+      meetingId: meetingId,
+      agenda: editAgenda,
+      place: editPlace,
+    };
     try {
-      const result = await axios.delete(
-        `https://api.moim.today/api/meetings/${meetingId}`
+      const result = await axios.patch(
+        "https://api.moim.today/api/meetings",
+        body
       );
+      setIsEditOpen(false);
+      getMeetingInfo();
     } catch (e) {
       console.log(e);
     }
@@ -173,7 +207,9 @@ function MettingDetailPage() {
         </h3>
         <button
           className="py-3 px-5 w-fit text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer"
-          onClick={() => setAlertOpen(false)}
+          onClick={() =>
+            confirmType === "attendance" ? setAlertOpen(false) : navigate(-1)
+          }
         >
           확인
         </button>
@@ -184,7 +220,7 @@ function MettingDetailPage() {
             className="w-fit text-sm font-light bg-scarlet text-white font-Pretendard_Light rounded-full px-2 py-1"
             onClick={onClickHandler}
           >
-            {attendance ? "참석중" : "미참석"}
+            {attendance ? "현재 참석중" : "현재 미참석"}
           </button>
           <div className="flex items-center">
             <img src={infoIcon} className=" w-4 h-4" />
@@ -216,10 +252,7 @@ function MettingDetailPage() {
                     <img src={TrashIcon} className="w-4 h-4 items-end" />
                     <p
                       className="text-sm text-slate-500 hover:text-scarlet"
-                      onClick={() => {
-                        setAlertOpen(true);
-                        setConfirmType("meetingDeleteBtn");
-                      }}
+                      onClick={onClickDeleteHandler}
                     >
                       삭제하기
                     </p>
@@ -304,13 +337,14 @@ function MettingDetailPage() {
         <div className="font-Pretendard_SemiBold text-2xl pb-10">
           미팅 수정하기
         </div>
-        <div className="grid gap-4 justify-center">
+        <div className="grid gap-8 justify-center">
           <div className="grid justify-center font-Pretendard_Light gap-4">
             <div className="text-left justify-center">
               <div className=" font-Pretendard_Medium">미팅 의제</div>
               <input
                 placeholder="미팅 의제를 입력해주세요."
                 className=" focus:outline-none"
+                onChange={(e) => setEditAgenda(e.target.value)}
               />
             </div>
             <div className="text-left">
@@ -318,10 +352,14 @@ function MettingDetailPage() {
               <input
                 placeholder="미팅 장소를 입력해주세요."
                 className=" focus:outline-none"
+                onChange={(e) => setEditPlace(e.target.value)}
               />
             </div>
           </div>
-          <button className="py-3 px-5 pt-3 w-fit text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer">
+          <button
+            className="py-3 px-5 pt-3 w-full text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer"
+            onClick={() => MeetingEditHandler()}
+          >
             완료
           </button>
         </div>
