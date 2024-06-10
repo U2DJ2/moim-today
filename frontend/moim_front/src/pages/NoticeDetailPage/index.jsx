@@ -30,6 +30,7 @@ function NoticeDetailPage() {
         <div className=" font-Pretendard_Black text-4xl">
           {noticeInfo.title}
         </div>
+        
         <div className="flex gap-4 pb-4">
           <div className="font-Pretendard_Light">
             생성일 : {noticeInfo.createdAt}

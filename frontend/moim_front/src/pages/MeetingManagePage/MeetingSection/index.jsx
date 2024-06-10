@@ -78,6 +78,7 @@ function MeetingSection() {
                     key={meeting.meetingId}
                     date={meeting.date}
                     isMeeting={true}
+                    isPossible={false}
                     btn={false}
                     moimTitle={meeting.moimTitle}
                     meetingId={meeting.meetingId}

@@ -145,6 +145,8 @@ function MoimHome({ isHost, moimId }) {
                   title={notice.title}
                   btn={false}
                   isMeeting={false}
+                  joinPossible={false}
+                  joinAvailability={null}
                   clickHandler={() => cardClickHandler(notice.moimNoticeId)}
                 />
               ))
@@ -190,6 +192,7 @@ function MoimHome({ isHost, moimId }) {
                   joinAvailability={meeting.joinAvailability}
                   btn={false}
                   isMeeting={true}
+                  isPossible={true}
                   meetingId={meeting.meetingId}
                   clickHandler={() => meetingCardHandler(meeting.meetingId)}
                 />

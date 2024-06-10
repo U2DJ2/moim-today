@@ -14,6 +14,7 @@ function CardComponent({
   meetingId,
   joinAvailability = null,
   initialAttendance,
+  isPossible,
   startDate,
   attendance,
   moimTitle = null,
@@ -96,15 +97,16 @@ function CardComponent({
                 {title}
               </div>
             </div>
-            {joinAvailability === true ? (
-              <div className="font-Pretendard_Light text-slate-400 text-xs">
-                해당 시간에 미팅을 참석할 수 있습니다.
-              </div>
-            ) : (
+            {isPossible ? (
+              joinAvailability === true ? (
+                null
+                ) : attendance!=true?(
               <div className="font-Pretendard_Light text-scarlet text-xs">
                 해당 시간에 이미 일정이 존재합니다.
               </div>
-            )}
+            ):(<div className="font-Pretendard_Light text-green-500 text-xs ">참석한 모임입니다.</div>)
+            ) : null}
+
           </div>
         </div>
 
