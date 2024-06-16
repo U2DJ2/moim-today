@@ -18,7 +18,6 @@ function CardComponent({
   attendance,
   moimTitle = null,
 }) {
-  // const [attendance, setAttendance] = useState(initialAttendance);
   const meetingCancel = async () => {
     try {
       const response = await axios.post(
@@ -96,7 +95,7 @@ function CardComponent({
                 {title}
               </div>
             </div>
-            {joinAvailability === true ? (
+            {joinAvailability === true && attendance === false ? (
               <div className="font-Pretendard_Light text-slate-400 text-xs">
                 해당 시간에 미팅을 참석할 수 있습니다.
               </div>
@@ -107,7 +106,6 @@ function CardComponent({
             )}
           </div>
         </div>
-
         {btn && (
           <CardBtn
             name={attendance ? "취소하기" : "참여하기"}
