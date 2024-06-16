@@ -24,6 +24,7 @@ function DetailedLeft({
   const navigate = useNavigate();
   const [isAlertModalOpen, setAlertModalOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [status, setStatus] = useState(false);
 
   const body = {
     moimId: MoimId,
@@ -33,10 +34,12 @@ function DetailedLeft({
     axios
       .post("https://api.moim.today/api/moims/members", body)
       .then(() => {
+        setStatus(true);
         setAlertModalOpen(true);
       })
       .catch((error) => {
         // setIsOpen(true);
+        setStatus(false);
         setMessage(error.response.data.message);
         setAlertModalOpen(true);
       });
@@ -56,7 +59,7 @@ function DetailedLeft({
           <button
             className="py-3 px-5 w-fit text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer"
             onClick={() => {
-              setAlertModalOpen(false);
+              status ? navigate(`/join/${MoimId}`) : setAlertModalOpen(false);
             }}
           >
             확인
