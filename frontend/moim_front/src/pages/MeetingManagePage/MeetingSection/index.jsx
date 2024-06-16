@@ -22,7 +22,6 @@ function MeetingSection() {
           meetingStatus: meetingStatus[selected],
         },
       });
-      console.log(result.data);
       setMeetingInfo(result.data.data);
     } catch (e) {
       setShow(true);
@@ -45,34 +44,21 @@ function MeetingSection() {
         </h1>
         <div className="flex flex-col items-start self-start font-Pretendard_Medium font-normal text-black gap-6 max-md:px-5 max-md:max-w-full">
           <div className="flex gap-3">
-            <div
-              className={`justify-center px-9 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
-                selected === "전체" ? "bg-black text-white" : ""
-              }`}
-              onClick={() => setSelected("전체")}
-            >
-              전체
-            </div>
-            <div
-              className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
-                selected === "지난 미팅" ? "bg-black text-white" : ""
-              }`}
-              onClick={() => setSelected("지난 미팅")}
-            >
-              지난 미팅
-            </div>
-            <div
-              className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
-                selected === "다가오는 미팅" ? "bg-black text-white" : ""
-              }`}
-              onClick={() => setSelected("다가오는 미팅")}
-            >
-              다가오는 미팅
-            </div>
+            {Object.keys(meetingStatus).map((status, index) => (
+              <div
+                key={index}
+                className={`justify-center px-9 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
+                  selected === status ? "bg-black text-white" : ""
+                }`}
+                onClick={() => setSelected(status)}
+              >
+                {status}
+              </div>
+            ))}
           </div>
           <div className="grid sm:grid-cols-1 md:grid-row-2 lg:grid-cols-4 gap-4 ">
             {meetingInfo.length != 0 ? (
-              meetingInfo.map((meeting, index) => {
+              meetingInfo.map((meeting) => {
                 return (
                   <CardComponent
                     key={meeting.meetingId}
