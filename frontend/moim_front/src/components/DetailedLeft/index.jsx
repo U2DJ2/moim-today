@@ -19,8 +19,6 @@ function DetailedLeft({
   profileImg,
 }) {
   let { MoimId } = useParams();
-  console.log(MoimId);
-
   const navigate = useNavigate();
   const [isAlertModalOpen, setAlertModalOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -73,7 +71,6 @@ function DetailedLeft({
           <img className="w-10 h-10 rounded-full" src={profileImg} />
           <div className="font-Pretendard_Normal ">{userName}</div>
         </div>
-
         <div className="text-center font-Pretendard_Black text-2xl text-[#3F3F3F]">
           {title}
         </div>
