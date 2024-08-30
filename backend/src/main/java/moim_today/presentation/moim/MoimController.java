@@ -1,6 +1,7 @@
 package moim_today.presentation.moim;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import moim_today.application.moim.moim.MoimService;
 import moim_today.application.moim.moim_notice.MoimNoticeService;
 import moim_today.domain.member.MemberSession;
@@ -51,7 +52,7 @@ public class MoimController {
 
     @PostMapping
     public MoimIdResponse createMoim(@Login final MemberSession memberSession,
-                                     @RequestBody final MoimCreateRequest moimCreateRequest) {
+                                     @RequestBody @Valid final MoimCreateRequest moimCreateRequest) {
         return moimService.createMoim(memberSession.id(), memberSession.universityId(), moimCreateRequest);
     }
 
@@ -77,7 +78,7 @@ public class MoimController {
 
     @PatchMapping
     public void updateMoim(@Login final MemberSession memberSession,
-                           @RequestBody final MoimUpdateRequest moimUpdateRequest) {
+                           @RequestBody @Valid final MoimUpdateRequest moimUpdateRequest) {
         moimService.updateMoim(memberSession.id(), moimUpdateRequest);
     }
 
@@ -89,31 +90,31 @@ public class MoimController {
 
     @DeleteMapping
     public void deleteMoim(@Login final MemberSession memberSession,
-                           @RequestBody final MoimDeleteRequest moimDeleteRequest) {
+                           @RequestBody @Valid final MoimDeleteRequest moimDeleteRequest) {
         moimService.deleteMoim(memberSession.id(), moimDeleteRequest.moimId());
     }
 
     @DeleteMapping("/members/kick")
     public void forceDeleteMember(@Login final MemberSession memberSession,
-                                  @RequestBody final MoimMemberKickRequest moimMemberKickRequest) {
+                                  @RequestBody @Valid final MoimMemberKickRequest moimMemberKickRequest) {
         moimService.kickMember(memberSession.id(), moimMemberKickRequest);
     }
 
     @PostMapping("/notices")
     public void createMoimNotice(@Login final MemberSession memberSession,
-                                 @RequestBody final MoimNoticeCreateRequest moimNoticeCreateRequest) {
+                                 @RequestBody @Valid final MoimNoticeCreateRequest moimNoticeCreateRequest) {
         moimNoticeService.createMoimNotice(memberSession.id(), moimNoticeCreateRequest);
     }
 
     @DeleteMapping("/members")
     public void deleteMember(@Login final MemberSession memberSession,
-                             @RequestBody final MoimMemberDeleteRequest moimMemberDeleteRequest) {
+                             @RequestBody @Valid final MoimMemberDeleteRequest moimMemberDeleteRequest) {
         moimService.deleteMember(memberSession.id(), moimMemberDeleteRequest);
     }
 
     @PostMapping("/members")
     public void joinMoim(@Login final MemberSession memberSession,
-                         @RequestBody final MoimJoinRequest moimJoinRequest) {
+                         @RequestBody @Valid final MoimJoinRequest moimJoinRequest) {
         moimService.appendMemberToMoim(memberSession.id(), moimJoinRequest);
     }
 
@@ -131,13 +132,13 @@ public class MoimController {
 
     @PatchMapping("/notices")
     public void updateMoimNotice(@Login final MemberSession memberSession,
-                                 @RequestBody final MoimNoticeUpdateRequest moimNoticeUpdateRequest) {
+                                 @RequestBody @Valid final MoimNoticeUpdateRequest moimNoticeUpdateRequest) {
         moimNoticeService.updateMoimNotice(memberSession.id(), moimNoticeUpdateRequest);
     }
 
     @DeleteMapping("/notices")
     public void deleteMoimNotice(@Login final MemberSession memberSession,
-                                 @RequestBody final MoimNoticeDeleteRequest moimNoticeDeleteRequest) {
+                                 @RequestBody @Valid final MoimNoticeDeleteRequest moimNoticeDeleteRequest) {
         moimNoticeService.deleteMoimNotice(memberSession.id(), moimNoticeDeleteRequest);
     }
 

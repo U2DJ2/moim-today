@@ -1,5 +1,6 @@
 package moim_today.presentation.meeting.meeting_comment;
 
+import jakarta.validation.Valid;
 import moim_today.application.meeting.meeting_comment.MeetingCommentService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.meeting.meeting_comment.*;
@@ -20,7 +21,7 @@ public class MeetingCommentController {
 
     @PostMapping
     public void createMeetingComment(@Login final MemberSession memberSession,
-                                     @RequestBody final MeetingCommentCreateRequest meetingCommentCreateRequest) {
+                                     @RequestBody @Valid final MeetingCommentCreateRequest meetingCommentCreateRequest) {
         meetingCommentService.createMeetingComment(memberSession.id(), meetingCommentCreateRequest);
     }
 
@@ -35,13 +36,13 @@ public class MeetingCommentController {
 
     @PatchMapping
     public void updateMeetingComment(@Login final MemberSession memberSession,
-                                     @RequestBody final MeetingCommentUpdateRequest meetingCommentUpdateRequest) {
+                                     @RequestBody @Valid final MeetingCommentUpdateRequest meetingCommentUpdateRequest) {
         meetingCommentService.updateMeetingComment(memberSession.id(), meetingCommentUpdateRequest);
     }
 
     @DeleteMapping
     public void deleteMeetingComment(@Login final MemberSession memberSession,
-                                     @RequestBody final MeetingCommentDeleteRequest deleteMeetingCommentRequest) {
+                                     @RequestBody @Valid final MeetingCommentDeleteRequest deleteMeetingCommentRequest) {
         meetingCommentService.deleteMeetingComment(memberSession.id(), deleteMeetingCommentRequest.meetingCommentId());
     }
 }

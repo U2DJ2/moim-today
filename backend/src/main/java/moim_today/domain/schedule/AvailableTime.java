@@ -7,9 +7,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
+import static moim_today.global.constant.NumberConstant.AVAILABLE_TIME_OFFSET;
 import static moim_today.global.constant.NumberConstant.SCHEDULE_TIME_START_IDX;
 
 
@@ -27,35 +27,16 @@ public record AvailableTime(
     public static List<AvailableTime> calculateAvailableTimes(final List<MoimScheduleResponse> moimScheduleResponses,
                                                               final LocalDate startDate) {
         ScheduleLocalDate scheduleLocalDate = ScheduleLocalDate.from(startDate);
-        LocalDateTime start = scheduleLocalDate.atWeeklyStartDateTime();
-        LocalDateTime end = scheduleLocalDate.atWeeklyEndDateTime();
-
-        Map<Long, List<MoimScheduleResponse>> schedulesByMember = Member.groupSchedulesByMember(moimScheduleResponses);
-
-        List<LocalDateTime> allTimes = getAllTimes(moimScheduleResponses, start, end);
-        List<AvailableTime> availableTimes = new ArrayList<>();
-
-        for (int i = 0; i < allTimes.size() - 1; i++) {
-            LocalDateTime startDateTime = allTimes.get(i);
-            LocalDateTime endDateTime = allTimes.get(i + 1);
-
-            List<Member> availableMembers = Member.filterByDateTime(schedulesByMember, startDateTime, endDateTime);
-
-            if (!availableMembers.isEmpty()) {
-                availableTimes.add(AvailableTime.toDomain(availableMembers, startDateTime, endDateTime));
-            }
-        }
-
-        return availableTimes;
+        List<LocalDateTime> allTimes = getAllTimes(moimScheduleResponses, scheduleLocalDate);
+        return getAvailableTimes(allTimes, moimScheduleResponses);
     }
 
     private static List<LocalDateTime> getAllTimes(final List<MoimScheduleResponse> moimScheduleResponses,
-                                                   final LocalDateTime startTime,
-                                                   final LocalDateTime endTime) {
+                                                   final ScheduleLocalDate scheduleLocalDate) {
         List<LocalDateTime> times = getTimesFromSchedules(moimScheduleResponses);
         List<LocalDateTime> allTimes = new ArrayList<>(times);
-        allTimes.add(SCHEDULE_TIME_START_IDX.value(), startTime);
-        allTimes.add(endTime);
+        allTimes.add(SCHEDULE_TIME_START_IDX.value(), scheduleLocalDate.atWeeklyStartDateTime());
+        allTimes.add(scheduleLocalDate.atWeeklyEndDateTime());
 
         return allTimes;
     }
@@ -66,5 +47,22 @@ public record AvailableTime(
                 .distinct()
                 .sorted()
                 .toList();
+    }
+
+    private static List<AvailableTime> getAvailableTimes(final List<LocalDateTime> allTimes,
+                                                         final List<MoimScheduleResponse> moimScheduleResponses) {
+        List<AvailableTime> availableTimes = new ArrayList<>();
+
+        for (int i = 0; i < allTimes.size() - AVAILABLE_TIME_OFFSET.value(); i++) {
+            LocalDateTime startDateTime = allTimes.get(i);
+            LocalDateTime endDateTime = allTimes.get(i + AVAILABLE_TIME_OFFSET.value());
+            List<Member> availableMembers = Member.filterByDateTime(moimScheduleResponses, startDateTime, endDateTime);
+
+            if (!availableMembers.isEmpty()) {
+                availableTimes.add(AvailableTime.toDomain(availableMembers, startDateTime, endDateTime));
+            }
+        }
+
+        return availableTimes;
     }
 }

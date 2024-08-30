@@ -1,6 +1,5 @@
 package moim_today.persistence.entity.moim.moim;
 
-import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.MoimUpdateRequest;
 import moim_today.global.error.BadRequestException;
@@ -12,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
-import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
 import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_DATE_TIME_BAD_REQUEST_ERROR;
 import static moim_today.global.constant.exception.MoimExceptionConstant.*;
 import static moim_today.util.TestConstant.*;
@@ -171,83 +169,6 @@ class MoimJpaEntityTest {
                 .hasMessage(MEETING_DATE_TIME_BAD_REQUEST_ERROR.message());
     }
 
-    @DisplayName("수정시 공개 여부가 PUBLIC이라면 default password가 설정된다.")
-    @Test
-    void updateMoimDisplayStatusPublicTest() {
-
-        //given
-        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
-                .build();
-
-        int capacity = Integer.parseInt(CAPACITY.value());
-        LocalDate startDate = LocalDate.of(2024, 3, 1);
-        LocalDate endDate = LocalDate.of(2024, 6, 30);
-
-        MoimUpdateRequest moimUpdateRequest = MoimUpdateRequest.builder()
-                .title(MOIM_TITLE.value())
-                .contents(MOIM_CONTENTS.value())
-                .capacity(capacity)
-                .imageUrl(MOIM_IMAGE_URL.value())
-                .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PUBLIC)
-                .startDate(startDate)
-                .endDate(endDate)
-                .build();
-
-        //expected
-        assertThatCode(() -> moimJpaEntity.updateMoim(moimUpdateRequest))
-                .doesNotThrowAnyException();
-
-        assertThat(moimJpaEntity.getTitle()).isEqualTo(MOIM_TITLE.value());
-        assertThat(moimJpaEntity.getContents()).isEqualTo(MOIM_CONTENTS.value());
-        assertThat(moimJpaEntity.getCapacity()).isEqualTo(capacity);
-        assertThat(moimJpaEntity.getImageUrl()).isEqualTo(MOIM_IMAGE_URL.value());
-        assertThat(moimJpaEntity.getPassword()).isEqualTo(DEFAULT_MOIM_PASSWORD.value());
-        assertThat(moimJpaEntity.getMoimCategory()).isEqualTo(MoimCategory.STUDY);
-        assertThat(moimJpaEntity.getDisplayStatus()).isEqualTo(DisplayStatus.PUBLIC);
-        assertThat(moimJpaEntity.getStartDate()).isEqualTo(startDate);
-        assertThat(moimJpaEntity.getEndDate()).isEqualTo(endDate);
-    }
-
-    @DisplayName("수정시 공개 여부가 PRIVATE이라면 입력한 password가 설정된다.")
-    @Test
-    void updateMoimDisplayStatusPrivateTest() {
-
-        //given
-        MoimJpaEntity moimJpaEntity = MoimJpaEntity.builder()
-                .build();
-
-        int capacity = Integer.parseInt(CAPACITY.value());
-        LocalDate startDate = LocalDate.of(2024, 3, 1);
-        LocalDate endDate = LocalDate.of(2024, 6, 30);
-
-        MoimUpdateRequest moimUpdateRequest = MoimUpdateRequest.builder()
-                .title(MOIM_TITLE.value())
-                .contents(MOIM_CONTENTS.value())
-                .capacity(capacity)
-                .password(PASSWORD.value())
-                .imageUrl(MOIM_IMAGE_URL.value())
-                .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PRIVATE)
-                .startDate(startDate)
-                .endDate(endDate)
-                .build();
-
-        //expected
-        assertThatCode(() -> moimJpaEntity.updateMoim(moimUpdateRequest))
-                .doesNotThrowAnyException();
-
-        assertThat(moimJpaEntity.getTitle()).isEqualTo(MOIM_TITLE.value());
-        assertThat(moimJpaEntity.getContents()).isEqualTo(MOIM_CONTENTS.value());
-        assertThat(moimJpaEntity.getCapacity()).isEqualTo(capacity);
-        assertThat(moimJpaEntity.getImageUrl()).isEqualTo(MOIM_IMAGE_URL.value());
-        assertThat(moimJpaEntity.getPassword()).isEqualTo(PASSWORD.value());
-        assertThat(moimJpaEntity.getMoimCategory()).isEqualTo(MoimCategory.STUDY);
-        assertThat(moimJpaEntity.getDisplayStatus()).isEqualTo(DisplayStatus.PRIVATE);
-        assertThat(moimJpaEntity.getStartDate()).isEqualTo(startDate);
-        assertThat(moimJpaEntity.getEndDate()).isEqualTo(endDate);
-    }
-
     @DisplayName("수정시 imageUrl값이 없다면 default imageURL 값이 들어간다.")
     @Test
     void updateMoimImageUrlIsNullTest() {
@@ -264,9 +185,7 @@ class MoimJpaEntityTest {
                 .title(MOIM_TITLE.value())
                 .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
-                .password(PASSWORD.value())
                 .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PRIVATE)
                 .startDate(startDate)
                 .endDate(endDate)
                 .build();
@@ -279,9 +198,7 @@ class MoimJpaEntityTest {
         assertThat(moimJpaEntity.getContents()).isEqualTo(MOIM_CONTENTS.value());
         assertThat(moimJpaEntity.getCapacity()).isEqualTo(capacity);
         assertThat(moimJpaEntity.getImageUrl()).isEqualTo(DEFAULT_MOIM_IMAGE_URL.value());
-        assertThat(moimJpaEntity.getPassword()).isEqualTo(PASSWORD.value());
         assertThat(moimJpaEntity.getMoimCategory()).isEqualTo(MoimCategory.STUDY);
-        assertThat(moimJpaEntity.getDisplayStatus()).isEqualTo(DisplayStatus.PRIVATE);
         assertThat(moimJpaEntity.getStartDate()).isEqualTo(startDate);
         assertThat(moimJpaEntity.getEndDate()).isEqualTo(endDate);
     }
@@ -302,10 +219,8 @@ class MoimJpaEntityTest {
                 .title(MOIM_TITLE.value())
                 .contents(MOIM_CONTENTS.value())
                 .capacity(capacity)
-                .password(PASSWORD.value())
                 .imageUrl(MOIM_IMAGE_URL.value())
                 .moimCategory(MoimCategory.STUDY)
-                .displayStatus(DisplayStatus.PRIVATE)
                 .startDate(startDate)
                 .endDate(endDate)
                 .build();
@@ -318,9 +233,7 @@ class MoimJpaEntityTest {
         assertThat(moimJpaEntity.getContents()).isEqualTo(MOIM_CONTENTS.value());
         assertThat(moimJpaEntity.getCapacity()).isEqualTo(capacity);
         assertThat(moimJpaEntity.getImageUrl()).isEqualTo(MOIM_IMAGE_URL.value());
-        assertThat(moimJpaEntity.getPassword()).isEqualTo(PASSWORD.value());
         assertThat(moimJpaEntity.getMoimCategory()).isEqualTo(MoimCategory.STUDY);
-        assertThat(moimJpaEntity.getDisplayStatus()).isEqualTo(DisplayStatus.PRIVATE);
         assertThat(moimJpaEntity.getStartDate()).isEqualTo(startDate);
         assertThat(moimJpaEntity.getEndDate()).isEqualTo(endDate);
     }

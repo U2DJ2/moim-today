@@ -3,7 +3,6 @@ package moim_today.persistence.entity.moim.moim;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
-import moim_today.domain.moim.DisplayStatus;
 import moim_today.domain.moim.enums.MoimCategory;
 import moim_today.dto.moim.moim.MoimUpdateRequest;
 import moim_today.global.annotation.Association;
@@ -15,10 +14,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_IMAGE_URL;
-import static moim_today.global.constant.MoimConstant.DEFAULT_MOIM_PASSWORD;
-import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_DATE_TIME_BAD_REQUEST_ERROR;
-import static moim_today.global.constant.exception.MoimExceptionConstant.MOIM_HOST_ERROR;
 import static moim_today.global.constant.NumberConstant.VIEW_COUNT_OF_ONE;
+import static moim_today.global.constant.exception.MeetingExceptionConstant.MEETING_DATE_TIME_BAD_REQUEST_ERROR;
 import static moim_today.global.constant.exception.MoimExceptionConstant.*;
 
 @Getter
@@ -47,13 +44,8 @@ public class MoimJpaEntity extends BaseTimeEntity {
 
     private String imageUrl;
 
-    private String password;
-
     @Enumerated(EnumType.STRING)
     private MoimCategory moimCategory;
-
-    @Enumerated(EnumType.STRING)
-    private DisplayStatus displayStatus;
 
     private int views;
 
@@ -67,9 +59,8 @@ public class MoimJpaEntity extends BaseTimeEntity {
     @Builder
     private MoimJpaEntity(final long universityId, final long memberId, final String title,
                           final String contents, final int capacity, final int currentCount,
-                          final String imageUrl, final String password, final MoimCategory moimCategory,
-                          final DisplayStatus displayStatus, final int views,
-                          final LocalDate startDate, final LocalDate endDate) {
+                          final String imageUrl, final MoimCategory moimCategory,
+                          final int views, final LocalDate startDate, final LocalDate endDate) {
         this.universityId = universityId;
         this.memberId = memberId;
         this.title = title;
@@ -77,9 +68,7 @@ public class MoimJpaEntity extends BaseTimeEntity {
         this.capacity = capacity;
         this.currentCount = currentCount;
         this.imageUrl = imageUrl;
-        this.password = password;
         this.moimCategory = moimCategory;
-        this.displayStatus = displayStatus;
         this.views = views;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -119,9 +108,7 @@ public class MoimJpaEntity extends BaseTimeEntity {
         this.moimCategory = moimUpdateRequest.moimCategory();
         this.startDate = moimUpdateRequest.startDate();
         this.endDate = moimUpdateRequest.endDate();
-        this.displayStatus = moimUpdateRequest.displayStatus();
 
-        updatePasswordByDisplayStatus(moimUpdateRequest.password());
         updateImageUrl(moimUpdateRequest.imageUrl());
     }
 
@@ -130,20 +117,10 @@ public class MoimJpaEntity extends BaseTimeEntity {
     }
 
     private void updateImageUrl(final String updateImageUrl) {
-        if (updateImageUrl == null) {
+        if (updateImageUrl == null || updateImageUrl.isBlank()) {
             this.imageUrl = DEFAULT_MOIM_IMAGE_URL.value();
         } else {
             this.imageUrl = updateImageUrl;
-        }
-    }
-
-    private void updatePasswordByDisplayStatus(final String updatePassword) {
-        if (displayStatus.equals(DisplayStatus.PUBLIC)) {
-            this.password = DEFAULT_MOIM_PASSWORD.value();
-        } else {
-            if (updatePassword != null) {
-                this.password = updatePassword;
-            }
         }
     }
 

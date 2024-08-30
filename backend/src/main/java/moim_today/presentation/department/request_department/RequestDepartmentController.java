@@ -1,5 +1,6 @@
 package moim_today.presentation.department.request_department;
 
+import jakarta.validation.Valid;
 import moim_today.application.department.request_department.RequestDepartmentService;
 import moim_today.dto.department.AddDepartmentRequest;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class RequestDepartmentController {
     }
 
     @PostMapping("/request-departments")
-    public void requestAddDepartment(@RequestBody final AddDepartmentRequest addDepartmentRequest) {
+    public void requestAddDepartment(@RequestBody @Valid final AddDepartmentRequest addDepartmentRequest) {
         requestDepartmentService.addDepartment(addDepartmentRequest);
     }
 }

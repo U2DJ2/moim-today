@@ -5,11 +5,9 @@ import moim_today.dto.schedule.MoimScheduleResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
-import static moim_today.global.constant.NumberConstant.MOIM_SCHEDULE_FIRST_IDX;
+import static java.util.stream.Collectors.*;
+
 
 @Builder
 public record Member(
@@ -18,24 +16,11 @@ public record Member(
         String memberProfileImageUrl
 ) {
 
-    public static Map<Long, List<MoimScheduleResponse>> groupSchedulesByMember(final List<MoimScheduleResponse> moimScheduleResponses) {
-
-        return moimScheduleResponses.stream()
-                .collect(Collectors.groupingBy(MoimScheduleResponse::memberId));
-    }
-
-    public static List<Member> filterByDateTime(final Map<Long, List<MoimScheduleResponse>> schedulesByMember,
+    public static List<Member> filterByDateTime(final List<MoimScheduleResponse> moimScheduleResponses,
                                                 final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
-        return schedulesByMember.values().stream()
-                .filter(
-                        moimScheduleResponses -> moimScheduleResponses.stream()
-                                .noneMatch(
-                                        moimScheduleResponse -> isScheduleConflicting(moimScheduleResponse, startDateTime, endDateTime))
-                )
-                .map(moimScheduleResponses -> {
-                    MoimScheduleResponse moimScheduleResponse = moimScheduleResponses.get(MOIM_SCHEDULE_FIRST_IDX.value());
-                    return moimScheduleResponse.toDomain();
-                })
+        return moimScheduleResponses.stream()
+                .filter(schedule -> !isScheduleConflicting(schedule, startDateTime, endDateTime))
+                .map(MoimScheduleResponse::toDomain)
                 .collect(toList());
     }
 

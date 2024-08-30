@@ -1,5 +1,6 @@
 package moim_today.presentation.schedule;
 
+import jakarta.validation.Valid;
 import moim_today.application.schedule.ScheduleService;
 import moim_today.domain.member.MemberSession;
 import moim_today.dto.schedule.*;
@@ -56,25 +57,25 @@ public class ScheduleController {
 
     @PostMapping("/timetable")
     public void fetchTimeTable(@Login final MemberSession memberSession,
-                               @RequestBody final TimeTableRequest timeTableRequest) {
+                               @RequestBody @Valid final TimeTableRequest timeTableRequest) {
         scheduleService.fetchTimeTable(memberSession.id(), timeTableRequest);
     }
 
     @PostMapping
     public void createSchedule(@Login final MemberSession memberSession,
-                               @RequestBody final ScheduleCreateRequest scheduleCreateRequest) {
+                               @RequestBody @Valid final ScheduleCreateRequest scheduleCreateRequest) {
         scheduleService.createSchedule(memberSession.id(), scheduleCreateRequest);
     }
 
     @PatchMapping
     public void updateSchedule(@Login final MemberSession memberSession,
-                               @RequestBody final ScheduleUpdateRequest scheduleUpdateRequest) {
+                               @RequestBody @Valid final ScheduleUpdateRequest scheduleUpdateRequest) {
         scheduleService.updateSchedule(memberSession.id(), scheduleUpdateRequest);
     }
 
     @DeleteMapping
     public void deleteSchedule(@Login final MemberSession memberSession,
-                               @RequestBody final ScheduleDeleteRequest scheduleDeleteRequest) {
+                               @RequestBody @Valid final ScheduleDeleteRequest scheduleDeleteRequest) {
         scheduleService.deleteSchedule(memberSession.id(), scheduleDeleteRequest.scheduleId());
     }
 }

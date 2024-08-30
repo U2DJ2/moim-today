@@ -52,8 +52,11 @@ class MeetingControllerTest extends ControllerTest {
                                         )
                                 )
                                 .responseFields(
+                                        fieldWithPath("data[0].moimId").type(NUMBER).description("모임 id"),
                                         fieldWithPath("data[0].meetingId").type(NUMBER).description("미팅 id"),
+                                        fieldWithPath("data[0].moimTitle").type(STRING).description("모임 제목"),
                                         fieldWithPath("data[0].agenda").type(STRING).description("미팅 의제"),
+                                        fieldWithPath("data[0].dDay").type(NUMBER).description("D-Day"),
                                         fieldWithPath("data[0].startDate").type(STRING).description("미팅 시작 날짜")
                                 )
                                 .build()

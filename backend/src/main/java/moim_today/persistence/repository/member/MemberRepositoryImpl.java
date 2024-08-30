@@ -135,7 +135,7 @@ public class MemberRepositoryImpl implements MemberRepository {
                 .join(universityJpaEntity).on(memberJpaEntity.universityId.eq(universityJpaEntity.id))
                 .join(departmentJpaEntity).on(memberJpaEntity.departmentId.eq(departmentJpaEntity.id))
                 .where(
-                        universityFilter(universityId),
+                        memberJpaEntity.universityId.eq(universityId),
                         departmentFilter(departmentId),
                         memberJpaEntity.studentId.ne(DELETED_MEMBER_STUDENT_ID.value())
                 )
@@ -145,13 +145,6 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public void deleteById(final long memberId) {
         memberJpaRepository.deleteById(memberId);
-    }
-
-    private BooleanExpression universityFilter(final long universityId) {
-        if(universityId == 0) {
-            return null;
-        }
-        return memberJpaEntity.universityId.eq(universityId);
     }
 
     private BooleanExpression departmentFilter(final long departmentId) {

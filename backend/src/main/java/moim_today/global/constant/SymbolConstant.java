@@ -9,7 +9,8 @@ public enum SymbolConstant {
     SLASH("/"),
     AT("@"),
     EMAIL_EXTENSION("ac.kr"),
-    PERCENT("%");
+    PERCENT("%"),
+    ERROR_MESSAGE_DELIMITER(" | ");
 
     private final String value;
 

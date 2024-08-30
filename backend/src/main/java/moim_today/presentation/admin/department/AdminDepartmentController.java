@@ -1,5 +1,6 @@
 package moim_today.presentation.admin.department;
 
+import jakarta.validation.Valid;
 import moim_today.application.admin.department.AdminDepartmentService;
 import moim_today.domain.university.AdminSession;
 import moim_today.dto.department.ApproveRequestDepartmentRequest;
@@ -29,7 +30,7 @@ public class AdminDepartmentController {
     }
 
     @PostMapping("/request-departments")
-    public void approveRequest(@RequestBody final ApproveRequestDepartmentRequest approveRequestDepartmentRequest) {
+    public void approveRequest(@RequestBody @Valid final ApproveRequestDepartmentRequest approveRequestDepartmentRequest) {
         adminDepartmentService.approveRequest(approveRequestDepartmentRequest);
     }
 }

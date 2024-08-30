@@ -3,8 +3,9 @@ package moim_today.application.admin.member;
 import moim_today.dto.member.MemberResponse;
 import moim_today.global.error.ForbiddenException;
 import moim_today.persistence.entity.member.MemberJpaEntity;
-import moim_today.persistence.repository.meeting.joined_meeting.JoinedMeetingRepository;
 import moim_today.persistence.repository.member.MemberRepository;
+import moim_today.global.spring_event.event.AdminMemberDeleteEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,13 +17,13 @@ import static moim_today.global.constant.exception.AdminExceptionConstant.ADMIN_
 public class AdminMemberService {
 
     private final MemberRepository memberRepository;
-    private final JoinedMeetingRepository joinedMeetingRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public AdminMemberService(final MemberRepository memberRepository,
-                              final JoinedMeetingRepository joinedMeetingRepository
+                              final ApplicationEventPublisher applicationEventPublisher
     ) {
         this.memberRepository = memberRepository;
-        this.joinedMeetingRepository = joinedMeetingRepository;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Transactional(readOnly = true)
@@ -38,7 +39,8 @@ public class AdminMemberService {
             throw new ForbiddenException(ADMIN_FORBIDDEN_ERROR.message());
         }
 
-        joinedMeetingRepository.deleteAllByMemberId(memberId);
+        AdminMemberDeleteEvent adminMemberDeleteEvent = new AdminMemberDeleteEvent(memberId);
+        applicationEventPublisher.publishEvent(adminMemberDeleteEvent);
         member.changeToUnknownMember();
     }
 }
