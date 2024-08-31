@@ -12,10 +12,10 @@ public record Department(
 
     public static List<DepartmentJpaEntity> toEntities(final Map<String, Set<String>> universityAndDepartments,
                                                        final List<UniversityJpaEntity> universityJpaEntities) {
-        Map<Long, Set<String>> existingUniversities = convertToUnivIdAndDepartments(universityAndDepartments, universityJpaEntities);
+        Map<Long, Set<String>> knownUniversities = filterKnownUniversity(universityAndDepartments, universityJpaEntities);
         List<DepartmentJpaEntity> departmentJpaEntities = new ArrayList<>();
 
-        for (Map.Entry<Long, Set<String>> entrySet : existingUniversities.entrySet()) {
+        for (Map.Entry<Long, Set<String>> entrySet : knownUniversities.entrySet()) {
             for (String departmentName : entrySet.getValue()) {
                 departmentJpaEntities.add(DepartmentJpaEntity.builder()
                         .universityId(entrySet.getKey())
@@ -26,8 +26,8 @@ public record Department(
         return departmentJpaEntities;
     }
 
-    private static Map<Long, Set<String>> convertToUnivIdAndDepartments(final Map<String, Set<String>> universityAndDepartments,
-                                                                       final List<UniversityJpaEntity> universityJpaEntities) {
+    public static Map<Long, Set<String>> filterKnownUniversity(final Map<String, Set<String>> universityAndDepartments,
+                                                               final List<UniversityJpaEntity> universityJpaEntities) {
         Map<Long, Set<String>> existingUniversities = new HashMap<>();
 
         universityJpaEntities.forEach(universityJpaEntity -> {

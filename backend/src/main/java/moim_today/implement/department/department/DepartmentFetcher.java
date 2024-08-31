@@ -31,9 +31,7 @@ public class DepartmentFetcher {
     public List<String> getAllMajor() {
         String url = UNIVERSITY_API_URL.value() + apiKey + FETCH_ALL_DEPARTMENT_URL.value();
         String response = restTemplate.getForObject(url, String.class);
-        List<String> allMajor = new ArrayList<>();
-        fetchAllMajor(response, allMajor);
-        return allMajor;
+        return fetchAllMajor(response);
     }
 
     public void patchDepartmentQueue(final Map<String, Set<String>> baseMap,
@@ -50,7 +48,8 @@ public class DepartmentFetcher {
         return fetchAllDepartments(response);
     }
 
-    private void fetchAllMajor(final String response, final List<String> allMajor) {
+    private List<String> fetchAllMajor(final String response) {
+        List<String> allMajor = new ArrayList<>();
         try {
             JsonNode root = objectMapper.readTree(response);
             JsonNode content = root.path(DATA_SEARCH.value()).path(CONTENT.value());
@@ -62,6 +61,7 @@ public class DepartmentFetcher {
         } catch (JsonProcessingException e) {
             throw new InternalServerException(CRAWLING_PARSE_ERROR.message());
         }
+        return allMajor;
     }
 
     private Map<String, Set<String>> fetchAllDepartments(final String response) {
