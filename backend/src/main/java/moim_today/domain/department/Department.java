@@ -30,10 +30,18 @@ public record Department(
                                                                        final List<UniversityJpaEntity> universityJpaEntities) {
         Map<Long, Set<String>> existingUniversities = new HashMap<>();
 
-        universityJpaEntities.stream()
-                .forEach(universityJpaEntity -> {
-                    existingUniversities.put(universityJpaEntity.getId(), universityAndDepartments.get(universityJpaEntity.getUniversityName()));
-                });
+        universityJpaEntities.forEach(universityJpaEntity -> {
+            Long universityId = universityJpaEntity.getId();
+            String universityName = universityJpaEntity.getUniversityName();
+
+            Set<String> departments = universityAndDepartments.get(universityName);
+
+            if (departments != null) {
+                existingUniversities.computeIfAbsent(universityId, k -> new HashSet<>())
+                        .addAll(departments);
+            }
+        });
+
 
         return existingUniversities;
     }

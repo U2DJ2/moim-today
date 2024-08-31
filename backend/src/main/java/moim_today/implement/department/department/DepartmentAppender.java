@@ -9,6 +9,10 @@ import moim_today.persistence.repository.department.department.DepartmentReposit
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static moim_today.global.constant.DepartmentConstant.DEPARTMENT_UPDATE_BATCH_SIZE;
 
@@ -29,18 +33,27 @@ public class DepartmentAppender {
 
     @Transactional
     public void putAllDepartment() {
+        // 모든 학과 정보 조회
         List<String> allMajor = departmentFetcher.getAllMajor();
-        Map<String, Set<String>> departmentUpdateQueue = new HashMap<>();
 
+        // 업데이트 할 Department 정보
+        Map<String, Set<String>> departmentUpdateQueue = new ConcurrentHashMap<>();
+
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
         for (String eachMajor : allMajor) {
-            departmentFetcher.patchDepartmentQueue(departmentUpdateQueue, eachMajor);
-            updateDepartmentsIfSizeOver(departmentUpdateQueue, DEPARTMENT_UPDATE_BATCH_SIZE.intValue());
+            executorService.execute(() -> {
+                // Major의 모든 학과 정보 가져와서 대학교와 매핑하는 departmentUpdateQueue에 저장
+                departmentFetcher.patchDepartmentQueue(departmentUpdateQueue, eachMajor);
+                // 가져온 departmentUpdateQueue로 업뎃
+                updateDepartmentsIfSizeOver(departmentUpdateQueue, DEPARTMENT_UPDATE_BATCH_SIZE.intValue());
+            });
         }
+        shutdownAndAwaitTermination(executorService);
         batchUpdate(filterUniversityExistToDepartment(departmentUpdateQueue));
     }
 
     @Transactional
-    public void updateDepartmentsIfSizeOver(final Map<String, Set<String>> universityAndDepartments, final int size){
+    public synchronized void updateDepartmentsIfSizeOver(final Map<String, Set<String>> universityAndDepartments, final int size){
         if(getTotalMapSize(universityAndDepartments) > size){
             batchUpdate(filterUniversityExistToDepartment(universityAndDepartments));
             universityAndDepartments.clear();
@@ -54,9 +67,11 @@ public class DepartmentAppender {
 
     @Transactional(readOnly = true)
     public List<DepartmentJpaEntity> filterUniversityExistToDepartment(final Map<String, Set<String>> universityAndDepartments) {
-        List<UniversityJpaEntity> universityIdAndDepartments = universityFinder
+        // 대학교 Entity를 대학교 이름으로 가져옴
+        List<UniversityJpaEntity> universities = universityFinder
                 .findUniversitiesByName(universityAndDepartments.keySet().stream().toList());
-        return Department.toEntities(universityAndDepartments, universityIdAndDepartments);
+        // 대학교 + 학과 정보와 대학교 Entity 정보를 추가하여 DepartmentJpaEnttiy로 변환
+        return Department.toEntities(universityAndDepartments, universities);
     }
 
     @Transactional
@@ -77,4 +92,18 @@ public class DepartmentAppender {
         }
         return totalSize;
     }
+
+    private void shutdownAndAwaitTermination(ExecutorService executorService) {
+        executorService.shutdown();
+        try {
+            if(!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+                if (!executorService.awaitTermination(60, TimeUnit.SECONDS))
+                    System.err.println("Pool did not terminate");
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }

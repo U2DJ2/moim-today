@@ -38,7 +38,6 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
                 .toList();
     }
 
-    @Transactional
     @Override
     public void batchUpdate(final List<DepartmentJpaEntity> departmentJpaEntities) {
         String sql = "INSERT INTO department (university_id, department_name) VALUES (?, ?)";
