@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static moim_today.global.constant.UniversityConstant.*;
 import static moim_today.global.constant.exception.CrawlingExceptionConstant.CRAWLING_PARSE_ERROR;
@@ -30,28 +31,25 @@ public class DepartmentFetcher {
     public List<String> getAllMajor() {
         String url = UNIVERSITY_API_URL.value() + apiKey + FETCH_ALL_DEPARTMENT_URL.value();
         String response = restTemplate.getForObject(url, String.class);
-        List<String> allMajor = new ArrayList<>();
-        fetchAllMajor(response, allMajor);
-        return allMajor;
+        return fetchAllMajor(response);
     }
 
     public void patchDepartmentQueue(final Map<String, Set<String>> baseMap,
                                      final String majorSeq){
         Map<String, Set<String>> addingMap = getDepartmentsOfUniversity(majorSeq);
         for (Map.Entry<String, Set<String>> entry : addingMap.entrySet()) {
-            baseMap.computeIfAbsent(entry.getKey(), k -> new HashSet<>()).addAll(entry.getValue());
+            baseMap.computeIfAbsent(entry.getKey(), k -> ConcurrentHashMap.newKeySet()).addAll(entry.getValue());
         }
     }
 
     private Map<String, Set<String>> getDepartmentsOfUniversity(final String majorSeq) {
         String url = UNIVERSITY_API_URL.value() + apiKey + FETCH_ALL_UNIVERSITY_BY_DEPARTMENT_URL.value() + majorSeq;
         String response = restTemplate.getForObject(url, String.class);
-        Map<String, Set<String>> universityAndDepartments = new HashMap<>();
-        fetchAllDepartments(response, universityAndDepartments);
-        return universityAndDepartments;
+        return fetchAllDepartments(response);
     }
 
-    private void fetchAllMajor(final String response, final List<String> allMajor) {
+    private List<String> fetchAllMajor(final String response) {
+        List<String> allMajor = new ArrayList<>();
         try {
             JsonNode root = objectMapper.readTree(response);
             JsonNode content = root.path(DATA_SEARCH.value()).path(CONTENT.value());
@@ -63,9 +61,11 @@ public class DepartmentFetcher {
         } catch (JsonProcessingException e) {
             throw new InternalServerException(CRAWLING_PARSE_ERROR.message());
         }
+        return allMajor;
     }
 
-    private void fetchAllDepartments(final String response, final Map<String, Set<String>> universityAndDepartments) {
+    private Map<String, Set<String>> fetchAllDepartments(final String response) {
+        Map<String, Set<String>> universityAndDepartments = new HashMap<>();
         try {
             JsonNode root = objectMapper.readTree(response);
             JsonNode content = root.path(DATA_SEARCH.value()).path(CONTENT.value());
@@ -81,6 +81,7 @@ public class DepartmentFetcher {
         } catch (JsonProcessingException e) {
             throw new InternalServerException(CRAWLING_PARSE_ERROR.message());
         }
+        return universityAndDepartments;
     }
 
     private void patchMap(final Map<String, Set<String>> universityAndDepartments, final String universityName, final String departmentName) {

@@ -1,5 +1,6 @@
 package moim_today.implement.department.department;
 
+import lombok.extern.slf4j.Slf4j;
 import moim_today.domain.department.Department;
 import moim_today.global.annotation.Implement;
 import moim_today.implement.university.UniversityFinder;
@@ -9,9 +10,12 @@ import moim_today.persistence.repository.department.department.DepartmentReposit
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
-import static moim_today.global.constant.DepartmentConstant.DEPARTMENT_UPDATE_BATCH_SIZE;
-
+@Slf4j
 @Implement
 public class DepartmentAppender {
 
@@ -30,21 +34,17 @@ public class DepartmentAppender {
     @Transactional
     public void putAllDepartment() {
         List<String> allMajor = departmentFetcher.getAllMajor();
-        Map<String, Set<String>> departmentUpdateQueue = new HashMap<>();
+        Map<String, Set<String>> departmentUpdateQueue = new ConcurrentHashMap<>();
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
 
         for (String eachMajor : allMajor) {
-            departmentFetcher.patchDepartmentQueue(departmentUpdateQueue, eachMajor);
-            updateDepartmentsIfSizeOver(departmentUpdateQueue, DEPARTMENT_UPDATE_BATCH_SIZE.intValue());
+            executorService.execute(() -> {
+                departmentFetcher.patchDepartmentQueue(departmentUpdateQueue, eachMajor);
+            });
         }
-        batchUpdate(filterUniversityExistToDepartment(departmentUpdateQueue));
-    }
+        shutdownAndAwaitTermination(executorService);
 
-    @Transactional
-    public void updateDepartmentsIfSizeOver(final Map<String, Set<String>> universityAndDepartments, final int size){
-        if(getTotalMapSize(universityAndDepartments) > size){
-            batchUpdate(filterUniversityExistToDepartment(universityAndDepartments));
-            universityAndDepartments.clear();
-        }
+        batchUpdate(filterKnownUniversities(departmentUpdateQueue));
     }
 
     @Transactional
@@ -53,10 +53,10 @@ public class DepartmentAppender {
     }
 
     @Transactional(readOnly = true)
-    public List<DepartmentJpaEntity> filterUniversityExistToDepartment(final Map<String, Set<String>> universityAndDepartments) {
-        List<UniversityJpaEntity> universityIdAndDepartments = universityFinder
+    public List<DepartmentJpaEntity> filterKnownUniversities(final Map<String, Set<String>> universityAndDepartments) {
+        List<UniversityJpaEntity> universities = universityFinder
                 .findUniversitiesByName(universityAndDepartments.keySet().stream().toList());
-        return Department.toEntities(universityAndDepartments, universityIdAndDepartments);
+        return Department.toEntities(universityAndDepartments, universities);
     }
 
     @Transactional
@@ -70,11 +70,26 @@ public class DepartmentAppender {
         }
     }
 
-    private int getTotalMapSize(final Map<String, Set<String>> mapWithSet){
-        int totalSize = 0;
-        for(Map.Entry<String, Set<String>> entry : mapWithSet.entrySet()){
-            totalSize += entry.getValue().size();
+    private void shutdownAndAwaitTermination(final ExecutorService executorService) {
+        executorService.shutdown();
+        try {
+            if(!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+                if (!executorService.awaitTermination(60, TimeUnit.SECONDS))
+                    System.err.println("Pool did not terminate");
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
-        return totalSize;
+    }
+
+    private void logSizeOfMap(final Map<String, Set<String>> departmentUpdateQueue) {
+        long totalSize = 0;
+
+        for (Map.Entry<String, Set<String>> entry : departmentUpdateQueue.entrySet()) {
+            totalSize += (entry.getValue().size() * 4L);
+        }
+
+        log.debug("size of departmentUpdateQueue: {}kb", totalSize / 1024);
     }
 }
