@@ -57,7 +57,9 @@ function Personal({
       />
       <div className="flex flex-col gap-8">
         <div>
-          <p className="font-Pretendard_Black block text-xl text-white">이름</p>
+          <p className="font-Pretendard_Black block text-xl text-white max-sm:text-lg">
+            이름
+          </p>
           <input
             type="text"
             name="username"
@@ -69,7 +71,7 @@ function Personal({
           />
         </div>
         <div className="flex flex-col gap-3">
-          <p className=" font-Pretendard_Black block text-xl text-white">
+          <p className=" font-Pretendard_Black block text-xl text-white max-sm:text-lg">
             생년월일
           </p>
           <div className="flex gap-4 ">
@@ -100,7 +102,7 @@ function Personal({
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <p className=" font-Pretendard_Black block text-xl text-white">
+          <p className=" font-Pretendard_Black block text-xl text-white max-sm:text-lg">
             성별
           </p>
           <div className="flex gap-4">

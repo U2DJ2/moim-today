@@ -214,10 +214,8 @@ const textInputTheme = {
   },
 };
 
-const labelStyle =
-  "mt-2.5 mb-2.5 font-Pretendard_SemiBold leading-5 text-sm text-black max-md:max-w-full";
-const commonInputStyle =
-  "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
+const labelStyle = "mt-2.5 mb-2.5 font-Pretendard_SemiBold leading-5 text-sm text-black max-md:max-w-full";
+const commonInputStyle = "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
 
 async function fetchAllTodos(setTodoData) {
   // Parse start date
@@ -349,7 +347,7 @@ function Sidebar({ onDateChange, setOpenAddTodoModal }) {
           className="w-52 justify-center px-6 py-3 text-[16px] text-center text-white bg-black whitespace-nowrap rounded-full font-semibold  hover:cursor-pointer"
           onClick={handleAddTodo}
         >
-          TODO 추가하기
+          할 일 추가하기
         </button>
         <div className="mt-8"></div>
 
@@ -456,7 +454,7 @@ export default function Schedule() {
               />
             </div>
             <div>
-              <div className={labelStyle}>{"운영 시간"}</div>
+              <div className={labelStyle}>{"마감 시간"}</div>
               <DatePicker
                 inputClassName={`w-full ${commonInputStyle}`}
                 onChange={(date) => setTodoDate(date.startDate)} // update todoDate state

@@ -38,11 +38,11 @@ function Member({ isHost, MoimId }) {
               refreshMembers={getMembers}
             />
           ) : null;
-        })}{" "}
+        })}
       </div>
       <div className="grid gap-7">
         <Dropdown options={["구성원"]} onSelect={handleDropdown} />
-        <div className="flex flex-col gap-8 justify-items-stretch">
+        <div className="flex flex-col gap-8">
           {members.map((member, index) => {
             return (
               <MemberInfo

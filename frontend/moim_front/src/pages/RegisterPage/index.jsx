@@ -17,6 +17,8 @@ import Personal from "./Personal";
 import TimeTable from "./TimeTable";
 import Congrats from "./Congrats";
 
+import NewModal from "../../components/NewModal";
+
 axios.defaults.withCredentials = true; // withCredentials 전역 설정
 
 function RegisterPage() {
@@ -86,12 +88,8 @@ function RegisterPage() {
           console.log(res);
         })
         .catch((error) => {
-          const errorCode = error.response.data.statusCode;
-          if (errorCode === "400") {
-            setIsOpen(true);
-            setMessage(error.response.data.message);
-          }
-          console.log(error.response.data.statusCode);
+          setMessage(error.response.data.message);
+          setIsOpen(true);
         });
     } else if (step === 1) {
       client
@@ -149,107 +147,107 @@ function RegisterPage() {
   };
 
   return (
-    <div className="flex w-full h-screen overflow-hidden relative pl-40 bg-scarlet">
-      <div className="flex flex-1 flex-col items-start justify-center w-96 gap-16">
-        {step === 0 ? (
-          <Account
-            email={email}
-            setEmail={setEmail}
-            password={password}
-            setPassword={setPassword}
-            setActiveNext={setActiveNext}
-          />
-        ) : step === 1 ? (
-          <AuthCheck
-            setEmailAuth={setEmailAuth}
-            setActiveNext={setActiveNext}
-          />
-        ) : step === 2 ? (
-          <School
-            universityId={universityId}
-            universityName={universityName}
-            studentId={studentId}
-            setStudentId={setStudentId}
-            department={department}
-            setDepartment={setDepartment}
-            setActiveNext={setActiveNext}
-            setDepartmentId={setDepartmentId}
-            departmentId={departmentId}
-          />
-        ) : step === 3 ? (
-          <Personal
-            username={username}
-            setUserName={setUserName}
-            birthDate={birthDate}
-            setBirthDate={setBirthDate}
-            gender={gender}
-            setGender={setGender}
-            setActiveNext={setActiveNext}
-          />
-        ) : step === 4 ? (
-          <Congrats
-            setStep={setStep}
-            step={step}
-            setActiveNext={setActiveNext}
-          />
-        ) : (
-          <TimeTable
-            setStartDate={setStartDate}
-            setEndDate={setEndDate}
-            setEverytimeUrl={setEverytimeUrl}
-            everytimeUrl={everytimeUrl}
-          />
-        )}
+    <div className="flex w-full h-screen overflow-hidden relative pl-40 bg-scarlet max-xl:pl-0 max-xl:justify-center ">
+      <div className="flex w-fit justify-center items-center ">
+        <div className="flex flex-1 flex-col items-start justify-center w-96 gap-8 max-xl:justify-center max-sm:items-center ">
+          {step === 0 ? (
+            <Account
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              setActiveNext={setActiveNext}
+            />
+          ) : step === 1 ? (
+            <AuthCheck
+              setEmailAuth={setEmailAuth}
+              setActiveNext={setActiveNext}
+            />
+          ) : step === 2 ? (
+            <School
+              universityId={universityId}
+              universityName={universityName}
+              studentId={studentId}
+              setStudentId={setStudentId}
+              department={department}
+              setDepartment={setDepartment}
+              setActiveNext={setActiveNext}
+              setDepartmentId={setDepartmentId}
+              departmentId={departmentId}
+            />
+          ) : step === 3 ? (
+            <Personal
+              username={username}
+              setUserName={setUserName}
+              birthDate={birthDate}
+              setBirthDate={setBirthDate}
+              gender={gender}
+              setGender={setGender}
+              setActiveNext={setActiveNext}
+            />
+          ) : step === 4 ? (
+            <Congrats
+              setStep={setStep}
+              step={step}
+              setActiveNext={setActiveNext}
+            />
+          ) : (
+            <TimeTable
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+              setEverytimeUrl={setEverytimeUrl}
+              everytimeUrl={everytimeUrl}
+            />
+          )}
 
-        {step !== 4 && step != 5 && (
-          <div className="flex justify-center mt-16">
-            <div className="flex gap-8">
-              <button
-                className={`w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-black bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer  `}
-                onClick={() => previousClick()}
-              >
-                이전
-              </button>
-              <button
-                className={`${
-                  activeNext
-                    ? "w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-scarlet bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer "
-                    : "w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-[#8D8D8D] bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer "
-                }`}
-                disabled={!activeNext}
-                onClick={() => nextClick()}
-              >
-                다음
-              </button>
+          {step !== 4 && step != 5 && (
+            <div className="flex justify-center mt-16">
+              <div className="flex gap-8">
+                <button
+                  className={` w-44 justify-center px-7 py-5 text-[22px] font-bold text-center text-black bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer max-sm:w-28 max-sm:text-lg `}
+                  onClick={() => previousClick()}
+                >
+                  이전
+                </button>
+                <button
+                  className={` w-44 justify-center px-7 py-5 text-[22px] font-bold text-center bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer max-sm:w-28 max-sm:text-lg  ${
+                    activeNext ? " text-scarlet  " : " text-[#8D8D8D]  "
+                  }`}
+                  disabled={!activeNext}
+                  onClick={() => nextClick()}
+                >
+                  다음
+                </button>
+              </div>
             </div>
-          </div>
-        )}
-        {step === 5 && (
-          <div className="flex justify-center mt-16">
-            <div className="flex gap-8">
-              <button
-                className={`w-52 justify-center px-7 py-5 text-[22px] font-bold text-slate-400  bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer  `}
-                onClick={() => navigate("/")}
-              >
-                건너뛰기
-              </button>
-              <button
-                className={`${
-                  activeNext
-                    ? "w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-scarlet bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer "
-                    : "w-52 justify-center px-7 py-5 text-[22px] font-bold text-center text-[#8D8D8D] bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer "
-                }`}
-                disabled={!activeNext}
-                onClick={() => nextClick()}
-              >
-                다음
-              </button>
+          )}
+          {step === 5 && (
+            <div className="flex justify-center mt-16 max-sm:mt-4">
+              <div className="flex gap-8">
+                <button
+                  className={`w-44 justify-center px-7 py-5 text-xl font-bold text-slate-400  bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer max-sm:w-40  `}
+                  onClick={() => navigate("/")}
+                >
+                  건너뛰기
+                </button>
+                <button
+                  className={`w-44 justify-center px-7 py-5 text-xl font-bold text-center  bg-white whitespace-nowrap rounded-[50px] font-Pretendard_Black hover:cursor-pointer ${
+                    activeNext ? "text-scarlet " : " text-[#8D8D8D]"
+                  }`}
+                  disabled={!activeNext}
+                  onClick={() => nextClick()}
+                >
+                  다음
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       <AuthRight cardColor={"white"} textColor={"scarlet"} />
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen} message={message} />
+      <NewModal show={isOpen} size="sm" onClose={() => setIsOpen(false)}>
+        <div className="text-sm font-Pretendard_Light">{message}</div>
+      </NewModal>
     </div>
   );
 }

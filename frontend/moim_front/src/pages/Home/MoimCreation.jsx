@@ -3,7 +3,9 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 // UI and Icons
+import { Modal } from "flowbite-react";
 import { Checkbox } from "@mui/material";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 // Date Picker
 import DateRangePicker from "../../components/DatePicker/Range";
@@ -20,14 +22,60 @@ const labelStyle =
 const commonInputStyle =
   "justify-center px-4 py-3.5 text-sm font-Pretendard_Medium leading-5.5 rounded-xl bg-neutral-50 text-black";
 
-const textCapture = (label, setTitle, setContents) => {
-  if (label === "모임명") {
-    setTitle(e.target.value);
-    console.log("first");
-  } else if (label === "상세설명") {
-    setContents(e.target.value);
-  }
-  console.log("z");
+const modalTheme = {
+  root: {
+    base: "fixed inset-x-0 top-0 z-50 h-screen overflow-y-auto overflow-x-hidden md:inset-0 md:h-full",
+    show: {
+      on: "flex bg-gray-900 bg-opacity-50 dark:bg-opacity-80",
+      off: "hidden",
+    },
+    sizes: {
+      sm: "max-w-sm",
+      md: "max-w-md",
+      lg: "max-w-lg",
+      xl: "max-w-xl",
+      "2xl": "max-w-2xl",
+      "3xl": "max-w-3xl",
+      "4xl": "max-w-4xl",
+      "5xl": "max-w-5xl",
+      "6xl": "max-w-6xl",
+      "7xl": "max-w-7xl",
+    },
+    positions: {
+      "top-left": "items-start justify-start",
+      "top-center": "items-start justify-center",
+      "top-right": "items-start justify-end",
+      "center-left": "items-center justify-start",
+      center: "items-center justify-center",
+      "center-right": "items-center justify-end",
+      "bottom-right": "items-end justify-end",
+      "bottom-center": "items-end justify-center",
+      "bottom-left": "items-end justify-start",
+    },
+  },
+  content: {
+    base: "relative h-full w-full p-4 md:h-auto",
+    inner:
+      "relative flex max-h-[90dvh] flex-col rounded-xl bg-white shadow dark:bg-gray-700",
+  },
+  body: {
+    base: "flex-1 overflow-auto p-6",
+    popup: "pt-0",
+  },
+  header: {
+    base: "flex items-start justify-between rounded-t border-b mt-0.5 p-5 dark:border-gray-600",
+    popup: "border-b-0 p-2",
+    title:
+      "pt-0.5 text-xl font-Pretendard_SemiBold text-gray-900 dark:text-white",
+    close: {
+      base: "ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white",
+      icon: "h-5 w-5",
+    },
+  },
+  footer: {
+    base: "flex items-center space-x-2 rounded-b border-gray-200 p-6 dark:border-gray-600",
+    popup: "border-t",
+  },
 };
 
 function InputField({
@@ -92,7 +140,7 @@ function ImageUploader({ setUploadFile }) {
   };
 
   return (
-    <>
+    <div>
       <div className={labelStyle}> 이미지 올리세요 </div>
       <div className="flex justify-center items-center px-4 py-4 mt-2 rounded-xl border border-dashed border-neutral-400 max-md:px-5 max-md:max-w-full">
         {image ? (
@@ -118,7 +166,7 @@ function ImageUploader({ setUploadFile }) {
           onChange={handleImageChange}
         />
       </div>
-    </>
+    </div>
   );
 }
 
@@ -133,6 +181,8 @@ export default function MoimCreation() {
   const [capacity, setCapacity] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
   const [displayStatus, setDisplay] = useState("PRIVATE");
+  const [isAlertModalOpen, setAlertModalOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -183,7 +233,29 @@ export default function MoimCreation() {
   };
 
   const onClickHandler = () => {
-    console.log("first");
+    if (
+      data.title === "" ||
+      data.contents === "" ||
+      data.startDate === "" ||
+      data.endDate === ""
+    ) {
+      setAlertMessage("필수 입력 항목을 모두 입력해주세요!");
+      setAlertModalOpen(true);
+      return;
+    }
+
+    // capacity가 정수인지 확인
+    if (isNaN(data.capacity)) {
+      setAlertMessage("참여 인원은 숫자로 입력해주세요!");
+      setAlertModalOpen(true);
+      return;
+    }
+
+    if (data.capacity < 2) {
+      setAlertMessage("참여 인원은 2명 이상으로 설정해주세요!");
+      setAlertModalOpen(true);
+      return;
+    }
 
     try {
       POST("api/moims", data)
@@ -199,89 +271,96 @@ export default function MoimCreation() {
     }
   };
   return (
-    <div className="flex flex-col justify-center p-8 bg-white rounded-[32px] max-md:px-5">
-      <header className="flex gap-0 pb-8 justify-between font-Pretendard_Black font-semibold text-black leading-[150%] max-md:flex-wrap items-center">
-        <h1 className="flex-1 text-3xl max-md:max-w-full">
-          모임을 생성해주세요
-        </h1>
-        <div className="flex gap-2 justify-center py-3 text-lg whitespace-nowrap items-center">
-          <Checkbox
-            onChange={handleVisibility}
-            inputProps={{ "aria-label": "controlled" }}
-          />
-          <div>공개</div>
-        </div>
-      </header>
-      <main>
-        {!isChecked && (
-          <>
-            <div className={labelStyle}>비밀번호</div>
-            <div className={`${commonInputStyle} max-md:max-w-full`}>
-              <input
-                type="password"
-                className={`w-full bg-transparent outline-none`}
-                placeholder={"비밀번호를 입력해주세요."}
-                onChange={(e) => {
-                  setPassword(e.target.value);
+    <div>
+      <Modal
+        show={isAlertModalOpen}
+        size="sm"
+        onClose={() => setAlertModalOpen(false)}
+        theme={modalTheme}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-base font-Pretendard_Normal text-black">
+              {alertMessage || "모임을 생성했습니다!"}
+            </h3>
+            <div className="flex justify-center gap-4">
+              <button
+                className="py-3 px-5 w-fit text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer"
+                onClick={() => {
+                  setAlertModalOpen(false);
                 }}
-              />
+              >
+                네
+              </button>
             </div>
-          </>
-        )}
-        <Dropdown
-          label={"카테고리"}
-          options={["스터디", "팀 프로젝트", "취미활동", "운동", "기타"]}
-          onSelect={handleDropdown}
-          labelStyle={labelStyle}
-          commonInputStyle={commonInputStyle}
-        />
-        <InputField
-          label="모임명"
-          placeholder="모임 이름을 적어주세요."
-          setTitle={setTitle}
-          setContents={setContents}
-          changeHandler={(e) => {
-            setTitle(e.target.value);
-          }}
-        />
-        <InputField
-          label="상세 설명"
-          placeholder="모임 설명을 적어주세요."
-          setTitle={setTitle}
-          setContents={setContents}
-          changeHandler={(e) => {
-            setContents(e.target.value);
-          }}
-        />
-        <ImageUploader setUploadFile={setUploadFile} />
-        <div className={labelStyle}>{"운영 시간"}</div>
-        <DateRangePicker
-          onChange={handleDateRange}
-          inputClassName={`w-full ${commonInputStyle}`}
-          useMinDate={true}
-        />
-        <InputField
-          label="참여 인원"
-          placeholder="참여 인원을 숫자만 입력해주세요!"
-          changeHandler={(e) => {
-            setCapacity(parseInt(e.target.value));
-          }}
-        />
-      </main>
-      <footer className="flex justify-center gap-12">
-        <button
-          className="mt-10 text-lg font-Pretendard_SemiBold leading-7 text-gray-400"
-          onClick={handleCancel}
-        >
-          취소하기
-        </button>
-        <button
-          className="mt-10 text-lg font-Pretendard_SemiBold leading-7 text-rose-600"
-          onClick={onClickHandler}
-        >
-          생성하기
-        </button>
-      </footer>
+          </div>
+        </Modal.Body>
+      </Modal>
+      <div className="flex flex-col justify-center p-8 bg-white rounded-[32px] max-md:px-5">
+        <header className="flex gap-0 pb-8 justify-between font-Pretendard_Black font-semibold text-black leading-[150%] max-md:flex-wrap items-center">
+          <h1 className="flex-1 text-3xl max-md:max-w-full">
+            모임을 생성해주세요
+          </h1>
+        </header>
+        <main>
+          <Dropdown
+            label={"카테고리"}
+            options={["스터디", "팀 프로젝트", "취미활동", "운동", "기타"]}
+            onSelect={handleDropdown}
+            labelStyle={labelStyle}
+            commonInputStyle={commonInputStyle}
+          />
+          <InputField
+            label="모임명"
+            placeholder="모임 이름을 적어주세요."
+            setTitle={setTitle}
+            setContents={setContents}
+            changeHandler={(e) => {
+              setTitle(e.target.value);
+            }}
+          />
+          <InputField
+            label="상세 설명"
+            placeholder="모임 설명을 적어주세요."
+            setTitle={setTitle}
+            setContents={setContents}
+            changeHandler={(e) => {
+              setContents(e.target.value);
+            }}
+          />
+          <ImageUploader setUploadFile={setUploadFile} />
+          <div className={labelStyle}>{"운영 시간"}</div>
+          <DateRangePicker
+            onChange={handleDateRange}
+            inputClassName={`w-full ${commonInputStyle}`}
+            useMinDate={true}
+          />
+          <InputField
+            label="참여 인원"
+            placeholder="참여 인원을 숫자만 입력해주세요!"
+            changeHandler={(e) => {
+              setCapacity(parseInt(e.target.value));
+            }}
+          />
+        </main>
+        <footer className="flex justify-center gap-12">
+          <button
+            className="mt-10 text-lg font-Pretendard_SemiBold leading-7 text-gray-400"
+            onClick={handleCancel}
+          >
+            취소하기
+          </button>
+          <button
+            className="mt-10 text-lg font-Pretendard_SemiBold leading-7 text-rose-600"
+            onClick={onClickHandler}
+          >
+            생성하기
+          </button>
+        </footer>
+      </div>
     </div>
   );
 }

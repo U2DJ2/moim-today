@@ -11,22 +11,33 @@ function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const sections = ["홈", "프로필 설정", "모임 관리"];
+  const sections = ["홈", "프로필 설정", "모임 관리", "미팅 관리"];
 
-  const links = [<HomeIcon />, <PersonIcon />, <ArticleIcon />];
+  const links = [
+    <HomeIcon />,
+    <PersonIcon />,
+    <ArticleIcon />,
+    <ArticleIcon />,
+  ];
 
   const onClickHandler = (section) => {
     if (section === "홈") navigate("/");
     else if (section === "프로필 설정") {
       navigate("/manage");
-    } else navigate("/manage/moim");
+    } else if (section === "모임 관리") {
+      navigate("/manage/moim");
+    } else {
+      navigate("/manage/meeting");
+    }
   };
 
   const currentSection = useMemo(() => {
     if (location.pathname === "/manage") {
       return "프로필 설정";
-    } else {
+    } else if (location.pathname === "/manage/moim") {
       return "모임 관리";
+    } else {
+      return "미팅 관리";
     }
   }, [location.pathname]);
 

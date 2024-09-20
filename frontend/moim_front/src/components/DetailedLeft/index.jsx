@@ -11,7 +11,6 @@ import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 // Images
 import icon from "../../assets/svg/personIcon.svg";
-import clock from "../../assets/svg/clockIcon.svg";
 
 const modalTheme = {
   root: {
@@ -76,6 +75,7 @@ function DetailedLeft({
   capacity,
   joined,
   image,
+  message,
   setMessage,
   setIsOpen,
   profileImg,
@@ -97,8 +97,9 @@ function DetailedLeft({
         setAlertModalOpen(true);
       })
       .catch((error) => {
-        setIsOpen(true);
         setMessage(error.response.data.message);
+        // setAlertModalOpen(true)
+        setIsOpen(true);
       });
   };
 
@@ -116,7 +117,7 @@ function DetailedLeft({
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-base font-Pretendard_Normal text-black">
-              {"모임에 가입되셨습니다!"}
+              {message ? message : "모임에 가입되셨습니다."}
             </h3>
             <div className="flex justify-center gap-4">
               <button
@@ -132,14 +133,14 @@ function DetailedLeft({
           </div>
         </Modal.Body>
       </Modal>
-      <div className="flex flex-col gap-4 items-center h-full md:w-96 sm:w-full">
-        <img className="rounded-t-2xl w-full h-72" src={image} />
+      <div className="flex flex-col gap-4 items-center h-full w-96 max-md:w-full">
+        <img className="rounded-t-2xl" src={image} />
         <div className="flex flex-col gap-2 items-center">
-          <img className="w-8 h-8 rounded-full" src={profileImg} />
+          <img className="w-10 h-10 rounded-full" src={profileImg} />
           <div className="font-Pretendard_Normal ">{userName}</div>
         </div>
 
-        <div className="text-center font-Pretendard_Black text-3xl text-[#3F3F3F]">
+        <div className="text-center font-Pretendard_Black text-2xl text-[#3F3F3F]">
           {title}
         </div>
         <div className="flex gap-1 font-Pretendard_SemiBold text-sm text-[#6F6F6F] hover:cursor-pointer hover:text-scarlet">

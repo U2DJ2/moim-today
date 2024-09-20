@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { GET, POST } from "../../utils/axios";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import alarm from "../../assets/svg/Alarmclock_duotone-1.svg";
 import pin from "../../assets/svg/Pin_duotone.svg";
 import user from "../../assets/svg/User_duotone.svg";
@@ -8,7 +8,11 @@ import content from "../../assets/svg/comment_duotone.svg";
 import ContentIndex from "./ContentIndex";
 import infoIcon from "../../assets/svg/Info_duotone_line.svg";
 import CardBtn from "../MoimJoinPage/CardComponent/CardBtn";
+import formatDate from "../../utils/formatDate";
 import axios from "axios";
+import NewModal from "../../components/NewModal";
+import EditIcon from "../../assets/svg/Edit.svg";
+import TrashIcon from "../../assets/svg/Trash_duotone.svg";
 function MettingDetailPage() {
   const [meetingInfo, setMeetingInfo] = useState([]);
   const [comment, setComment] = useState("");
@@ -16,7 +20,40 @@ function MettingDetailPage() {
   const [commentNum, setCommentNum] = useState();
   const [attendance, setAttendance] = useState(false);
   const { meetingId } = useParams();
+  const { MoimId } = useParams();
 
+  //Modal
+  const [alertMessage, setAlertMessage] = useState("");
+  const [isAlertOpen, setAlertOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+
+  const [isHost, setIsHost] = useState(false);
+
+  const [confirmType, setConfirmType] = useState("");
+
+  const [editAgenda, setEditAgenda] = useState("");
+  const [editPlace, setEditPlace] = useState("");
+
+  const closeAlert = () => {
+    setAlertOpen(false);
+  };
+  const deleteAction = () => {
+    setAlertOpen(true);
+    setAlertMessage("해당 미팅을 삭제하시겠습니까?");
+    setIsDelete(true);
+  };
+
+  const confirmBtnContents = {
+    attendanceBtn: {
+      handler: closeAlert,
+    },
+    meetingDeleteBtn: {
+      handler: deleteAction,
+    },
+  };
+
+  const navigate = useNavigate();
   const getMeetingInfo = async () => {
     try {
       const result = await GET(`api/meetings/detail/${meetingId}`);
@@ -42,7 +79,6 @@ function MettingDetailPage() {
       const result = await axios.get(
         `https://api.moim.today/api/members/meetings/${meetingId}`
       );
-      console.log(result.data);
       setAttendance(result.data.attendanceStatus);
     } catch (e) {
       console.log(e);
@@ -56,6 +92,7 @@ function MettingDetailPage() {
     try {
       const result = await POST("api/meeting-comments", data);
       await getComments();
+      setComment("");
     } catch (e) {
       console.log(e);
     }
@@ -66,24 +103,80 @@ function MettingDetailPage() {
       const response = await POST(
         `api/members/meetings/${meetingId}/acceptance`
       );
+      setAlertOpen(true);
+      setConfirmType("attendance");
+      setAlertMessage("미팅에 참석되어 스케줄에 추가됩니다.");
       checkIsMember();
+      getMeetingInfo();
     } catch (e) {
-      console.log(e);
+      setAlertOpen(true);
+      setAlertMessage(e.response.data.message);
     }
   };
   const cancelMeeting = async () => {
     try {
       const response = await POST(`api/members/meetings/${meetingId}/refusal`);
+      setAlertOpen(true);
+      setConfirmType("attendance");
+      setAlertMessage("미팅에 참석을 취소했습니다.");
       checkIsMember();
+      getMeetingInfo();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const deleteMeeting = async () => {
+    try {
+      const result = await axios.delete(
+        `https://api.moim.today/api/meetings/${meetingId}`
+      );
     } catch (e) {
       console.log(e);
     }
   };
 
   const onClickHandler = async () => {
-    console.log("first");
     try {
       attendance ? await cancelMeeting() : await acceptMeeting();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const onClickDeleteHandler = async () => {
+    try {
+      await deleteMeeting();
+      setAlertOpen(true);
+      setConfirmType("meetingDelete");
+      setAlertMessage("미팅을 삭제했습니다.");
+    } catch (e) {
+      console.log(e);
+      g;
+    }
+  };
+
+  const getHost = async () => {
+    try {
+      const result = await GET(`api/members/${MoimId}/hosts`);
+      setIsHost(result.isHost);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const MeetingEditHandler = async () => {
+    const body = {
+      meetingId: meetingId,
+      agenda: editAgenda,
+      place: editPlace,
+    };
+    try {
+      const result = await axios.patch(
+        "https://api.moim.today/api/meetings",
+        body
+      );
+      setIsEditOpen(false);
+      getMeetingInfo();
     } catch (e) {
       console.log(e);
     }
@@ -93,23 +186,41 @@ function MettingDetailPage() {
     getMeetingInfo();
     getComments();
     checkIsMember();
+    getHost();
   }, []);
 
   const ContentSection = ({ image, indexName, children }) => (
-    <div className="grid grid-4 gap-2 font-Pretendard_Light text-2xl font-light">
+    <div className="grid grid-4 gap-2 font-Pretendard_Light text-xl font-light">
       <ContentIndex image={image} indexName={indexName} />
       {children}
     </div>
   );
   return (
     <div>
-      <div className="grid gap-5">
+      <NewModal
+        show={isAlertOpen}
+        size="sm"
+        onClose={() => setAlertOpen(false)}
+      >
+        <h3 className="mb-5 text-base font-Pretendard_Normal text-black">
+          {alertMessage}
+        </h3>
+        <button
+          className="py-3 px-5 w-fit text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer"
+          onClick={() =>
+            confirmType === "attendance" ? setAlertOpen(false) : navigate(-1)
+          }
+        >
+          확인
+        </button>
+      </NewModal>
+      <div className="grid gap-10">
         <div className="grid gap-2">
           <button
-            className=" w-fit text-sm font-light bg-scarlet text-white font-Pretendard_Light rounded-full px-2 py-1"
+            className="w-fit text-sm font-light bg-scarlet text-white font-Pretendard_Light rounded-full px-2 py-1"
             onClick={onClickHandler}
           >
-            {attendance ? "참석중" : "미참석"}
+            {attendance ? "현재 참석중" : "현재 미참석"}
           </button>
           <div className="flex items-center">
             <img src={infoIcon} className=" w-4 h-4" />
@@ -117,14 +228,44 @@ function MettingDetailPage() {
               참여 여부를 변경하고 싶으면, 위 아이콘을 눌러주세요.
             </div>
           </div>
+          <div className="flex gap-4 items-end">
+            <div className=" font-Pretendard_Black text-4xl">
+              {meetingInfo.agenda}
+            </div>
+            {isHost ? (
+              <div
+                className="flex font-Pretendard_Light hover:cursor-pointer"
+                onClick={() => console.log("clicked")}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="flex">
+                    <img src={EditIcon} className="w-4 h-4 items-end " />
+                    <p
+                      className=" text-sm text-slate-500 hover:text-scarlet"
+                      onClick={() => setIsEditOpen(true)}
+                    >
+                      수정하기
+                    </p>
+                  </div>
 
-          <div className=" font-Pretendard_Black text-4xl">
-            {meetingInfo.agenda}
+                  <div className="flex">
+                    <img src={TrashIcon} className="w-4 h-4 items-end" />
+                    <p
+                      className="text-sm text-slate-500 hover:text-scarlet"
+                      onClick={onClickDeleteHandler}
+                    >
+                      삭제하기
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
         <hr />
         <ContentSection image={alarm} indexName="미팅 시간정보">
-          {meetingInfo.startDateTime} ~ {meetingInfo.endDateTime}
+          {meetingInfo.startDateTime && formatDate(meetingInfo.startDateTime)} ~
+          {meetingInfo.endDateTime && formatDate(meetingInfo.endDateTime)}
         </ContentSection>
         <ContentSection image={pin} indexName={"장소"}>
           {meetingInfo.place}
@@ -138,7 +279,7 @@ function MettingDetailPage() {
                   <div key={index} className="flex flex-col items-center gap-4">
                     <img
                       src={member.memberProfileImageUrl}
-                      className=" w-11 h-11"
+                      className=" w-11 h-11 rounded-full"
                     />
                     <div className=" text-xs">{member.username}</div>
                   </div>
@@ -165,9 +306,12 @@ function MettingDetailPage() {
         {Array.isArray(commentList) && commentList.length != 0 ? (
           commentList.map((comment, index) => {
             return (
-              <div key={index} className="flex gap-2">
+              <div key={index} className="flex gap-8">
                 <div className="grid justify-items-center">
-                  <img src={comment.imageUrl} className=" w-5 h-5" />
+                  <img
+                    src={comment.imageUrl}
+                    className="rounded-full w-5 h-5"
+                  />
                   <p className=" font-Pretendard_Light text-slate-500 text-sm">
                     {comment.username}
                   </p>
@@ -185,6 +329,41 @@ function MettingDetailPage() {
           </p>
         )}
       </div>
+      <NewModal
+        show={isEditOpen}
+        size="sm"
+        onClose={() => setIsEditOpen(false)}
+      >
+        <div className="font-Pretendard_SemiBold text-2xl pb-10">
+          미팅 수정하기
+        </div>
+        <div className="grid gap-8 justify-center">
+          <div className="grid justify-center font-Pretendard_Light gap-4">
+            <div className="text-left justify-center">
+              <div className=" font-Pretendard_Medium">미팅 의제</div>
+              <input
+                placeholder="미팅 의제를 입력해주세요."
+                className=" focus:outline-none"
+                onChange={(e) => setEditAgenda(e.target.value)}
+              />
+            </div>
+            <div className="text-left">
+              <div className=" font-Pretendard_Medium">장소</div>
+              <input
+                placeholder="미팅 장소를 입력해주세요."
+                className=" focus:outline-none"
+                onChange={(e) => setEditPlace(e.target.value)}
+              />
+            </div>
+          </div>
+          <button
+            className="py-3 px-5 pt-3 w-full text-base font-Pretendard_Normal text-white bg-scarlet rounded-[50px] hover:cursor-pointer"
+            onClick={() => MeetingEditHandler()}
+          >
+            완료
+          </button>
+        </div>
+      </NewModal>
     </div>
   );
 }

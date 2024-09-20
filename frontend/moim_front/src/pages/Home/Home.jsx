@@ -28,13 +28,10 @@ function SearchBar({ setSearchTerm }) {
   return (
     <div className="flex flex-col justify-center mt-2 text-zinc-950 text-opacity-70 max-md:max-w-full">
       <form
-        className="flex gap-3 px-6 py-3 bg-zinc-50 bg-opacity-90 rounded-[40px] max-md:flex-wrap"
+        className="flex gap-3 px-6 py-3 bg-zinc-50 bg-opacity-90 rounded-[40px]"
         onSubmit={handleSubmit}
       >
-        <button
-          type="submit"
-          className="justify-center px-1.5 py-1.5 text-lg text-center leading-[8px]"
-        >
+        <button type="submit" className="justify-center px-1.5 py-1.5 text-lg text-center leading-[8px]">
           <SearchIcon />
         </button>
         <input
@@ -72,17 +69,15 @@ function FilterBar({
       <div className="flex justify-center items-center self-start px-16 font-Pretendard_SemiBold text-neutral-900 max-md:px-5 max-md:max-w-full">
         <div className="flex gap-3">
           <div
-            className={`justify-center px-9 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
-              selected === "CREATED_AT" ? "bg-gray-200" : ""
-            }`}
+            className={`justify-center px-9 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${selected === "CREATED_AT" ? "bg-gray-200" : ""
+              }`}
             onClick={() => setSelected("CREATED_AT")}
           >
             최신순
           </div>
           <div
-            className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${
-              selected === "VIEWS" ? "bg-gray-200" : ""
-            }`}
+            className={`justify-center px-6 py-3 rounded-[64px] max-md:px-5 cursor-pointer ${selected === "VIEWS" ? "bg-gray-200" : ""
+              }`}
             onClick={() => setSelected("VIEWS")}
           >
             조회수 순
@@ -171,7 +166,7 @@ export default function Home() {
         setSelected={setSelected}
         setMoimSortedFilter={setMoimSortedFilter}
       />
-      <div className="px-12">
+      <div className="px-12 pt-2">
         <Dropdown
           options={[
             "전체",
