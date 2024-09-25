@@ -5,6 +5,7 @@ import moim_today.global.annotation.Implement;
 import moim_today.global.error.NotFoundException;
 import moim_today.persistence.entity.university.UniversityJpaEntity;
 import moim_today.persistence.repository.university.UniversityRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class UniversityFinder {
         this.universityRepository = universityRepository;
     }
 
+    @Cacheable(value = "UniversityFinder.getAllUniversity")
     @Transactional(readOnly = true)
     public List<UniversityResponse> getAllUniversity() {
         List<UniversityJpaEntity> universityJpaEntities = universityRepository.findAll();
