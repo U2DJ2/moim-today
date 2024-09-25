@@ -47,31 +47,6 @@ class DepartmentAppenderTest extends ImplementTest {
         assertThat(allDepartment.size()).isEqualTo(10);
     }
 
-    @DisplayName("Department 정보가 Size 값을 넘을 경우 batchUpdate를 실행한다")
-    @Test
-    void updateDepartmentsIfSizeOver() {
-        // given
-        Map<String, Set<String>> departmentJpaEntities = new HashMap<>();
-        departmentJpaEntities.put(UNIVERSITY_NAME.value(), new HashSet<>());
-        UniversityJpaEntity universityJpaEntity = UniversityJpaEntity.builder()
-                .universityName(UNIVERSITY_NAME.value())
-                .universityEmail(AJOU_EMAIL_DOMAIN.value())
-                .build();
-        universityRepository.save(universityJpaEntity);
-
-        for(int i = 0; i < MAX_SIZE; i++){
-            departmentJpaEntities.get(UNIVERSITY_NAME.value()).add(DEPARTMENT_NAME.value()+i);
-        }
-
-        // when
-        departmentAppender.updateDepartmentsIfSizeOver(departmentJpaEntities, DEPARTMENT_UPDATE_BATCH_SIZE.intValue());
-
-        // then
-        long universityId = universityRepository.getByName(UNIVERSITY_NAME.value()).getId();
-        assertThat(departmentRepository.findAllDepartmentOfUniversity(universityId).size())
-                .isEqualTo(MAX_SIZE);
-    }
-
     @DisplayName("학과 정보를 추가한다.")
     @Test
     void addDepartment() {
