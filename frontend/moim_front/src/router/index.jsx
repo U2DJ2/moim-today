@@ -1,6 +1,6 @@
 // React
 import { useEffect } from "react";
-import { Routes, Route, useNavigate, useParams } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 // Pages : Home
 import HomePage from "../pages/Home/Home";
@@ -9,8 +9,10 @@ import MoimCreationPage from "../pages/Home/MoimCreation";
 // Pages : Authentication
 import LoginPage from "../pages/Login";
 
+// Page : Inquiry
+import InquiryPage from "../pages/InquiryPage";
+
 // Page : Manage
-import Manage from "../pages/Manage/Manage";
 import RegisterPage from "../pages/RegisterPage";
 import Schedule from "../pages/Schedule";
 
@@ -33,6 +35,9 @@ import ManageLayout from "../assets/ManageLayout";
 import ManageMoimPage from "../pages/ManageMoimPage";
 import ManageProfilePage from "../pages/ManageProfilePage";
 import MoimLayout from "../components/MoimLayout";
+import NoticeDetailPage from "../pages/NoticeDetailPage";
+import ManageMeetingPage from "../pages/MeetingManagePage";
+import MeetingManagePage from "../pages/MeetingManagePage";
 
 /**
  * Basic Router
@@ -67,8 +72,8 @@ function Router() {
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/detailed/:MoimId" element={<MoimDetailPage />} />
         <Route path="/meeting/:MoimId" element={<MeetingCreation />} />
+        <Route path="/detailed/:MoimId" element={<MoimDetailPage />} />
 
         <Route element={<MoimLayout />}>
           <Route path="/join/:MoimId" element={<MoimJoinPage />} />
@@ -76,17 +81,23 @@ function Router() {
             path="/meeting/:MoimId/:meetingId"
             element={<MeetingDetailPage />}
           />
+          <Route
+            path="/join/:moimId/notice/:moimNoticeId"
+            element={<NoticeDetailPage />}
+          />
         </Route>
       </Route>
 
       <Route element={<ManageLayout />}>
         <Route path="/manage" element={<ManageProfilePage />} />
         <Route path="/manage/moim" element={<ManageMoimPage />} />
+        <Route path="/manage/meeting" element={<MeetingManagePage />} />
       </Route>
 
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/creation" element={<MoimCreationPage />} />
+      <Route path="/inquiry" element={<InquiryPage />} />
       <Route path="/schedule" element={<Schedule />} />
     </Routes>
   );

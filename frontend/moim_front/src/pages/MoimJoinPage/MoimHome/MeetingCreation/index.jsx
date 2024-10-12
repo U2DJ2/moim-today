@@ -28,7 +28,7 @@ function MeetingCreation() {
 
   const onSelect = (option) => {
     console.log(option);
-    if (option === "정기모임") {
+    if (option === "정기미팅") {
       setMeetingCategory("REGULAR");
     } else {
       setMeetingCategory("SINGLE");
@@ -78,7 +78,7 @@ function MeetingCreation() {
             <div className="grid gap-1">
               <div className=" font-Pretendard_Black flex">미팅 카테고리</div>
               <DropDown
-                options={["정기모임", "단기모임"]}
+                options={["정기미팅", "단기미팅"]}
                 onSelect={onSelect}
               />
             </div>

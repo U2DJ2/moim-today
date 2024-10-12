@@ -21,15 +21,6 @@ function InputField({ label, value, editable }) {
   const [inputValue, setInputValue] = useState(value);
   const [open, setOpen] = useState(false);
 
-  const handleInputChange = (e) => {
-    setInputValue("수정이 완료됐습니다");
-  };
-
-  const handleInputBlur = () => {
-    setOpen(true);
-    // console.log("수정된 값:", inputValue);
-  };
-
   useEffect(() => {
     let timer;
     if (open) {
@@ -80,7 +71,9 @@ function ImageInputer({ setProfileImg, profileImg }) {
       setImage(reader.result);
       console.log(image);
     };
+
     console.log(profileImg);
+
     if (file) {
       reader.readAsDataURL(file);
       convertAndSendImage(file);
@@ -103,7 +96,12 @@ function ImageInputer({ setProfileImg, profileImg }) {
         "https://api.moim.today/api/members/profile",
         response
       );
+
       console.log(result);
+
+      // Refresh current page
+      window.location.reload();
+
     } catch (error) {
       console.error("이미지 전송 중 오류:", error);
     }
@@ -114,7 +112,7 @@ function ImageInputer({ setProfileImg, profileImg }) {
         loading="lazy"
         src={
           typeof profileImg === "string" &&
-          profileImg.split("/").pop() === "default-profile.png"
+            profileImg.split("/").pop() === "default-profile.png"
             ? "https://cdn.builder.io/api/v1/image/assets/TEMP/6bf0157b2a958fbe906dbd51a7e42975c058c0ecf274028bbcdbf686001a61ed?apiKey=d805a42ceca34cfc9ccedfe9a24c9a43&"
             : profileImg
         }
@@ -139,21 +137,9 @@ export default function ProfileSection({
   profileImg,
   userInfo,
 }) {
-  const onClickHandler = async () => {
-    // const body={
-    //   universityId:
-
-    // }
-    try {
-      const response = await POST("api/request-departments", body);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   return (
-    <section className="flex flex-col w-full max-md:ml-0 max-md:w-full h-full">
-      <div className="flex flex-col self-stretch p-12 text-sm font-semibold leading-5 whitespace-nowrap bg-slate-50 rounded-[64px_64px_0px_0px] text-stone-500 max-md:px-5 max-md:mt-6 max-md:max-w-full h-full flex-grow">
+    <section className="flex flex-col w-full">
+      <div className="flex flex-col self-stretch p-12 text-sm font-semibold leading-5 whitespace-nowrap bg-slate-50 rounded-[64px_0px_0px_0px] text-stone-500 max-md:px-5 max-md:mt-6 max-md:max-w-full h-full flex-grow">
         <h1 className="text-6xl font-Pretendard_Black text-black max-md:max-w-full max-md:text-4xl">
           Profile
         </h1>
@@ -163,7 +149,6 @@ export default function ProfileSection({
         <ImageInputer setProfileImg={setProfileImg} profileImg={profileImg} />
         <InputField label="이름" value={name} editable={false} />
         <InputField label="학과" value={major} editable={false} />
-        <src img={infoIcon} className="w-4 h-4" />
       </div>
     </section>
   );

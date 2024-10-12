@@ -5,6 +5,7 @@ function ManageProfilePage() {
   const [name, setName] = useState("");
   const [major, setMajor] = useState("");
   const [profileImg, setProfileImg] = useState("");
+  const [universityId, setUniversityId]=useState()
 
   useEffect(() => {
     GET("/api/members/profile")

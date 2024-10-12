@@ -9,6 +9,7 @@ import { GET } from "../../utils/axios";
 
 function Header() {
   const [profileImg, setProfileImg] = useState("");
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
   const handleManage = () => {
@@ -30,8 +31,8 @@ function Header() {
   const getProfile = async () => {
     try {
       const result = await GET("api/members/profile");
+      setUserName(result.username);
       setProfileImg(result.memberProfileImageUrl);
-      console.log(result);
     } catch (e) {
       console.log(e);
     }
@@ -51,7 +52,10 @@ function Header() {
         <div className="justify-center my-auto" onClick={handleSchedule}>
           캘린더
         </div>
-        <ProfileDropdown image={profileImg} />
+        <div className="flex flex-col items-center">
+          <div className="text-xs">{userName}</div>
+          <ProfileDropdown image={profileImg} />
+        </div>
       </div>
     </header>
   );
