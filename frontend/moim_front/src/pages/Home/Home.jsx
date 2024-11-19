@@ -6,7 +6,6 @@ import axios from "axios";
 
 // Components
 import Dropdown from "../../components/Dropdown/Simple";
-import Filter from "../../components/Dropdown/Filter";
 import CardContainer from "./CardContainer";
 
 // UI

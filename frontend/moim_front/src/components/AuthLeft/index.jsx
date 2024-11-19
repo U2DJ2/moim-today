@@ -42,7 +42,9 @@ function AuthLeft({
         if (errorCode === "404") {
           setOpenAlertModal(true);
           setMessage(error.response.data.message);
-        } else {
+        }
+
+        else {
           setOpenAlertModal(true);
           setMessage(error.message);
         }
