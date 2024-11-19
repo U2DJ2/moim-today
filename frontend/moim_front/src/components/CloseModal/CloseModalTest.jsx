@@ -1,4 +1,4 @@
-import "./ModalTest.css";
+import "./CloseModalTest.css";
 
 export default function Modal({ isOpen, setIsOpen, message }) {
   // Add class to body when modal is active to remove scroll bar
