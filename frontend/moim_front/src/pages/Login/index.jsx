@@ -1,36 +1,25 @@
 // React
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-// UI
-
+//UI
+import ModalTheme from "../../components/Modal/modalTheme.js";
 
 // Components
 import AuthRight from "../../components/AuthRight";
 import AuthLeft from "../../components/AuthLeft";
 import AlertModal from "../../components/Modal/index.jsx";
-import ModalTheme from "../../components/Modal/modalTheme.js";
+
+// hook
+import useResize from "../../hook/useResize.js";
 
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [openAlertModal, setOpenAlertModal] = useState(false);
 
-  // 화면 크기가 작은지 여부를 판단하는 함수
-  const handleResize = () => {
-    setIsSmallScreen(window.innerWidth <= 1280); // 작은 화면 기준 (예: 모바일 화면)
-  };
-
-  // 컴포넌트가 마운트될 때와 화면 크기가 변경될 때 이벤트 리스너 등록
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    handleResize(); // 초기 화면 크기 설정
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const isSmallScreen = useResize(1280);
 
   return (
     <>
