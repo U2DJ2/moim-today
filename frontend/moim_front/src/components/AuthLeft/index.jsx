@@ -45,13 +45,19 @@ function AuthLeft({
 
         else {
           console.log(setOpenAlertModal)
-          setOpenAlertModal(error.message);
+          setOpenAlertModal("로그인 정보를 입력해주세요.");
         }
       });
   };
 
+  const activeEnter= (e) => {
+    if(e.key === "Enter"){
+      onLoginClick();
+    }
+  }
+
   return (
-    <div className={`${className}`}>
+    <div className={`${className}`} onKeyDown={activeEnter}>
       <div className="w-full max-w-lg">
         <AuthTitle
           title={title}
