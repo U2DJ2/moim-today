@@ -1,10 +1,11 @@
-import { Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { Modal } from "flowbite-react";
+import ModalTheme from "../AlertModal/modalTheme.js";
 
-export default function AlertModal({show, onClose, message, theme}) {
+export default function AlertModal({show, onClose, message}) {
     return(
         <>
-            <Modal show={show} size="lg" onClose={onClose} theme={theme} popup>
+            <Modal show={show} size="lg" onClose={onClose} theme={ModalTheme} popup>
                 <Modal.Header />
                 <Modal.Body>
                     <div className="text-center">

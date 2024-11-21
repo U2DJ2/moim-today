@@ -16,7 +16,6 @@ function AuthLeft({
   password,
   setPassword,
   setOpenAlertModal,
-  setMessage,
   className,
 }) {
   const [memory, setMemory] = useState(true);
@@ -40,13 +39,13 @@ function AuthLeft({
         const errorCode = error.response.data.statusCode;
 
         if (errorCode === "404") {
-          setOpenAlertModal(true);
-          setMessage(error.response.data.message);
+          console.log(setOpenAlertModal)
+          setOpenAlertModal(error.response.data.message);
         }
 
         else {
-          setOpenAlertModal(true);
-          setMessage(error.message);
+          console.log(setOpenAlertModal)
+          setOpenAlertModal(error.message);
         }
       });
   };
