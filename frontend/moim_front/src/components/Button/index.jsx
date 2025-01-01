@@ -1,8 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router";
 
-function Button({ name, textColor, bgColor, btnType, onClick }) {
-  const navigation = useNavigate();
+function Button({ name, textColor, bgColor,  onClick }) {
 
   return (
     <button

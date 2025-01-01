@@ -7,7 +7,7 @@ import axios from "axios";
 
 // Components
 import AuthRight from "../../components/AuthRight";
-import Modal from "../../components/Modal/ModalTest.jsx";
+import Modal from "../../components/CloseModal/CloseModalTest.jsx";
 
 // Pages
 import Account from "./Account";
